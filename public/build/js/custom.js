@@ -67,11 +67,14 @@ function init_sidebar() {
         $RIGHT_COL.css('min-height', contentHeight);
     };
 
+
+    ////////func to include
     var openUpMenu = function () {
         $SIDEBAR_MENU.find('li').removeClass('active active-sm');
         $SIDEBAR_MENU.find('li ul').slideUp();
     }
 
+       ////////func to include
     $SIDEBAR_MENU.find('a').on('click', function (ev) {
         var $li = $(this).parent();
 

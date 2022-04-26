@@ -1,11 +1,65 @@
-import React from 'react'
+import React , {useEffect} from 'react'
+import $ from 'jquery'
+
 
 const Header = () => {
+  const $BODY = $('body')
+  const $MENU_TOGGLE = $('.menu_toggle')
+  const $SIDEBAR_MENU = $('.sidebar-menu')
+  const $SIDEBAR_FOOTER = $('.sidebar-footer')
+  const $LEFT_COL = $('.left_col')
+  const $RIGHT_COL = $('.right_col')
+  const $NAV_MENU = $('.nav_menu')
+  const $FOOTER = $('footer');
+  var setContentHeight = function () {
+    // reset height
+    $RIGHT_COL.css('min-height', $(window).height());
+
+    var bodyHeight = $BODY.outerHeight(),
+        footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+        leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+        contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+
+    // normalize content
+    contentHeight -= $NAV_MENU.height() + footerHeight;
+
+    $RIGHT_COL.css('min-height', contentHeight);
+};
+
+  const newFunc = ()=> {
+ 
+        // toggle small or large menu
+ console.log("hello");
+          if ($BODY.hasClass('nav-md')) {
+              $SIDEBAR_MENU.find('li.active ul').hide();
+              $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+          } else {
+              $SIDEBAR_MENU.find('li.active-sm ul').show();
+              $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+          }
+  
+          $BODY.toggleClass('nav-md nav-sm');
+  
+          setContentHeight();
+  
+          $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+      
+  
+   }
+  useEffect(() => {
+    return () => {
+      $(".menu_toggle").on('click', ()=>newFunc());
+    };
+ 
+  }, [])
+ 
+
+  
   return (
     <>
 <div className="top_nav">
   <div className="nav_menu">
-    <div className="nav toggle"><a id="menu_toggle"><i className="fa fa-bars" /></a></div>
+    <div className="nav toggle"><a className="menu_toggle"><i className="fa fa-bars" /></a></div>
     <nav className="nav navbar-nav">
       <ul className=" navbar-right">
         {/* User Profile */}
