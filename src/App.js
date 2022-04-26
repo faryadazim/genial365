@@ -2,6 +2,7 @@ import Nav from './Layout/Nav'
 import Header from './Layout/Header'
 import Footer from './Layout/Footer'
 import Content from './Layout/Content'
+import './App.css'
 
 function App() {
   return (
