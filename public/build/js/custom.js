@@ -1846,7 +1846,7 @@ function init_PNotify() {
 
 function init_CustomNotification() {
 
-    console.log('run_customtabs');
+    // console.log('run_customtabs');
 
     if (typeof (CustomTabs) === 'undefined') { return; }
     console.log('init_CustomTabs');
@@ -1961,7 +1961,7 @@ function init_EasyPieChart() {
 
 function init_charts() {
 
-    console.log('run_charts  typeof [' + typeof (Chart) + ']');
+    // console.log('run_charts  typeof [' + typeof (Chart) + ']');
 
     if (typeof (Chart) === 'undefined') { return; }
 
@@ -2367,7 +2367,7 @@ function init_charts() {
 function init_compose() {
 
     if (typeof ($.fn.slideToggle) === 'undefined') { return; }
-    console.log('init_compose');
+    // console.log('init_compose');
 
     $('#compose, .compose-close').click(function () {
         $('.compose').slideToggle();
@@ -2482,7 +2482,7 @@ function init_calendar() {
 
 function init_DataTables() {
 
-    console.log('run_datatables');
+    // console.log('run_datatables');
 
     if (typeof ($.fn.DataTable) === 'undefined') { return; }
     console.log('init_DataTables');

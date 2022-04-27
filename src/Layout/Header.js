@@ -27,9 +27,7 @@ const Header = () => {
 };
 
   const newFunc = ()=> {
- 
-        // toggle small or large menu
- console.log("hello");
+  
           if ($BODY.hasClass('nav-md')) {
               $SIDEBAR_MENU.find('li.active ul').hide();
               $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');

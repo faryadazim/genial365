@@ -7,8 +7,7 @@ const Nav = () => {
     $(".sidebar-menu").find("li ul").slideUp();
   };
   const newFunc = (ev) => {
-    var $li = $(ev.target).parent();
-    console.log("firsy time render", $li);
+    var $li = $(ev.target).parent(); 
 
     if ($li.is(".active")) {
       $li.removeClass("active active-sm");
