@@ -5,7 +5,7 @@ const Footer = () => {
     <>
   <footer>
   <div className="pull-right">
-    Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
+    Towel - Management System by <a href="www.technupur.com">Technupur</a>
   </div>
   <div className="clearfix" />
 </footer>

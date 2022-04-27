@@ -2,50 +2,41 @@ import React, { useEffect } from "react";
 import $ from "jquery";
 
 const Nav = () => {
- 
-  // $SIDEBAR_MENU = $('.sidebar-menu');
   var openUpMenu = function () {
-    $('.sidebar-menu').find('li').removeClass('active active-sm');
-    $('.sidebar-menu').find('li ul').slideUp();
-}
+    $(".sidebar-menu").find("li").removeClass("active active-sm");
+    $(".sidebar-menu").find("li ul").slideUp();
+  };
   const newFunc = (ev) => {
-    // console.log(ev.target);
-    // $SIDEBAR_MENU.find('a').on('click', function (ev) {
-      var $li = $(ev.target).parent();
-      // console.log(ev.target , "somewhere in java");
-      console.log("firsy time render" , $li);
+    var $li = $(ev.target).parent();
+    console.log("firsy time render", $li);
 
-      if ($li.is('.active')) {
-        $li.removeClass('active active-sm');
-        $('ul:first', $li).slideUp(function () {
-            // setContentHeight();
-        });
+    if ($li.is(".active")) {
+      $li.removeClass("active active-sm");
+      $("ul:first", $li).slideUp(function () {});
     } else {
-        // prevent closing menu if we are on child menu
-        if (!$li.parent().is('.child_menu')) {
+      if (!$li.parent().is(".child_menu")) {
+        openUpMenu();
+      } else {
+        if ($("body").is("nav-sm")) {
+          if (!$li.parent().is("child_menu")) {
             openUpMenu();
-        } else {
-            if ($('body').is('nav-sm')) {
-                if (!$li.parent().is('child_menu')) {
-                    openUpMenu();
-                }
-            }
+          }
         }
+      }
 
-        $li.addClass('active');
+      $li.addClass("active");
 
-        $('ul:first', $li).slideDown(function () {
-            // setContentHeight();
-        });
+      $("ul:first", $li).slideDown(function () {
+        // setContentHeight();
+      });
     }
-
-
-
   };
   useEffect(() => {
     return () => {
       // $('.sidebar-menu').on('click', ()=>newFunc ()   )   };
-      $(".sidebar-menu").find("a").on("click", (ev)=>newFunc(ev));
+      $(".sidebar-menu")
+        .find("a")
+        .on("click", (ev) => newFunc(ev));
     };
   }, []);
 
