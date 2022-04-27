@@ -4,12 +4,15 @@ import Footer from './Layout/Footer'
 import Content from './Layout/Content'
 import './App.css'
 import Login from './Auth/Login'
+import { useState } from 'react'
+
 
 function App() {
+  const [isLogin, setisLogin] = useState(false)
   return (
   <>
-{/*  
-  <div className="container body">
+ {
+   isLogin?<div className="container body">
     <div className="main_container">
       <Nav/>
       <Header/>
@@ -19,8 +22,10 @@ function App() {
       
     </div>
  
-</div> */}
-<Login/>
+</div> :<Login setisLogin={setisLogin} isLogin={isLogin}/>
+ }
+  
+
 </>
   );
 }

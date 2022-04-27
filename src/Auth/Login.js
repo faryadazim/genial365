@@ -1,7 +1,7 @@
 import React from "react";
 
 
-const Login = () => {
+const Login = ({setisLogin , isLogin}) => {
   return (
     <div  >
       <div> 
@@ -27,7 +27,8 @@ const Login = () => {
                   />
                 </div>
                 <div className="text-right">
-                  <a className="btn btn-default submit btn-official px-3" href="index.html">
+                  <a className="btn btn-default submit btn-official px-3" 
+                  onClick={()=>setisLogin(!isLogin)}>
                     Log in
                   </a>
                  
