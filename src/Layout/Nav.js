@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
-import $ from "jquery";
+import $ from 'jquery'
+import  'jquery'
+  
 
 const Nav = () => {
   var openUpMenu = function () {
@@ -7,6 +9,7 @@ const Nav = () => {
     $(".sidebar-menu").find("li ul").slideUp();
   };
   const newFunc = (ev) => {
+    console.log("Click ")
     var $li = $(ev.target).parent(); 
 
     if ($li.is(".active")) {

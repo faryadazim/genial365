@@ -1,46 +1,79 @@
-import React , {useEffect} from 'react' 
-import  'jquery'
-import $ from 'jquery';
-// import "vendor/chosen.jquery";
+import React , {useEffect} from 'react'
+import $ from 'jquery'
+
 
 const Header = () => {
+  // const $BODY = $('body')
+  const $BODY = document.getElementsByTagName('body');
+  // const $MENU_TOGGLE = $('.menu_toggle')
+  const $MENU_TOGGLE = document.getElementsByClassName('menu_toggle');
+  
+  // const $SIDEBAR_MENU = $('.sidebar-menu')
+  const $SIDEBAR_MENU = document.getElementsByClassName('sidebar-menu');
+  // const $SIDEBAR_FOOTER = $('.sidebar-footer')
+  const $SIDEBAR_FOOTER = document.getElementsByClassName('sidebar-footer');
+  
+  // const $LEFT_COL = $('.left_col')
+  const $LEFT_COL = document.getElementsByClassName('left_col');
+  // const $RIGHT_COL = $('.right_col')
+  const $RIGHT_COL = document.getElementsByClassName('right_col');
+  // const $NAV_MENU = $('.nav_menu')
+  const $NAV_MENU = document.getElementsByClassName('nav_menu');
+  const $FOOTERJ = $('footer');
+  const $FOOTER = document.getElementsByTagName('footer');
+  let arrayOfElements = Array.from($FOOTER)
+  console.log("jQuery deoc" ,$FOOTERJ  ,  arrayOfElements);
+
+const fooFunct = () =>{
+  console.log("geewrwerwewerwer");
  
-  var setContentHeight = function () {
-    // reset height
-    $('.right_col').css('min-height', $(window).height());
+}
 
-    var bodyHeight = $('body').outerHeight(),
-        footerHeight = $('body').hasClass('footer_fixed') ? -10 : $('footer').height(),
-        leftColHeight = $('.left_col').eq(1).height() + $('.sidebar-footer').height(),
-        contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+//   var setContentHeight = function () {
+//     // reset height
+//     $RIGHT_COL.css('min-height', $(window).height());
 
-    // normalize content
-    contentHeight -=$('.nav_menu').height() + footerHeight;
+//     var bodyHeight = $BODY.outerHeight(),
+//         footerHeight = $BODY.hasClass('footer_fixed') ? -10 : $FOOTER.height(),
+//         leftColHeight = $LEFT_COL.eq(1).height() + $SIDEBAR_FOOTER.height(),
+//         contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
 
-    $('.right_col').css('min-height', contentHeight);
-};
+//     // normalize content
+//     contentHeight -= $NAV_MENU.height() + footerHeight;
+
+//     $RIGHT_COL.css('min-height', contentHeight);
+// };
 
   const newFunc = ()=> {
+  console.log("new Funfctioertrotvsdv run ");
+
+          // if ($BODY.hasClass('nav-md')) {
+          //     $SIDEBAR_MENU.find('li.active ul').hide();
+          //     $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
+          // } else {
+          //     $SIDEBAR_MENU.find('li.active-sm ul').show();
+          //     $SIDEBAR_MENU.find('li.active-sm').addClass('active').removeClass('active-sm');
+          // }
   
-    if (document.querySelector('body').classList.contains('nav-md')) {
-              $('.sidebar-menu').find('li.active ul').hide(); 
-              $('.sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
-          } else {
-              $('.sidebar-menu').find('li.active-sm ul').show();
-              $('.sidebar-menu').find('li.active-sm').addClass('active').removeClass('active-sm');
-          }
+          // $BODY.toggleClass('nav-md nav-sm');
   
-          $('body').toggleClass('nav-md nav-sm'); 
+          // // setContentHeight();
   
-          setContentHeight();
-  
-          $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+          // // $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+          
+          // document.getElementsByClassName('dataTable').each(function () { $(this).dataTable().fnDraw(); });
+      
       
   
    }
   useEffect(() => {
-    return () => { 
-      document.querySelector(".menu_toggle").addEventListener('click', ()=>newFunc());
+    // console.log( document.getElementsByTagName('body')  , "Whole docs");
+    // console.log( $BODY  , "Whole docs");
+    
+    
+    return () => {
+      // fooFunct();
+      document.getElementsByClassName('menu_toggle')[0].addEventListener('click', ()=>newFunc());
     };
  
   }, [])
