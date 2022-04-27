@@ -24,6 +24,10 @@ const Header = () => {
   
     if (document.querySelector('body').classList.contains('nav-md')) {
               $('.sidebar-menu').find('li.active ul').hide(); 
+              // document.getElementByClassName("sidebar-menu").find('li.active ul').style.display = "none";
+              // console.log("jQuery" ,  $('.sidebar-menu').find('li.active ul'))
+              // console.log( "pure " ,document.getElementsByClassName("li.active ul"))
+
               $('.sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
           } else {
               $('.sidebar-menu').find('li.active-sm ul').show();
