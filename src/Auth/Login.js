@@ -29,7 +29,10 @@ const Login = ({setisLogin , isLogin}) => {
                 <div className="text-right">
                   <button className="btn btn-default submit btn-official px-3 btn-sm"  type="submit" 
                  aria-invalid="true"
-                 onClick={(e)=>e.preventDefault()}>
+                 onClick={
+                   (e)=>{e.preventDefault()
+                    setisLogin(!isLogin)}
+                 }>
                     Log in
                   </button> 
                  

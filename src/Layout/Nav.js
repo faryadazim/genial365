@@ -1,16 +1,15 @@
 import React, { useEffect } from "react";
-import $ from 'jquery'
-import  'jquery'
-  
-
+import $ from "jquery";
+import "jquery";
+import { NavLink } from "react-router-dom";
 const Nav = () => {
   var openUpMenu = function () {
     $(".sidebar-menu").find("li").removeClass("active active-sm");
     $(".sidebar-menu").find("li ul").slideUp();
   };
   const newFunc = (ev) => {
-    console.log("Click ")
-    var $li = $(ev.target).parent(); 
+    console.log("Click ");
+    var $li = $(ev.target).parent();
 
     if ($li.is(".active")) {
       $li.removeClass("active active-sm");
@@ -189,29 +188,7 @@ const Nav = () => {
                     </li>
                   </ul>
                 </li>
-                <li>
-                  <a>
-                    <i className="fa fa-bug" /> Additional Pages{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">E-commerce</a>
-                    </li>
-                    <li>
-                      <a href="#">Projects</a>
-                    </li>
-                    <li>
-                      <a href="#">Project Detail</a>
-                    </li>
-                    <li>
-                      <a href="#">Contacts</a>
-                    </li>
-                    <li>
-                      <a href="#">Profile</a>
-                    </li>
-                  </ul>
-                </li>
+
                 <li>
                   <a>
                     <i className="fa fa-windows" /> Extras{" "}
@@ -266,6 +243,29 @@ const Nav = () => {
                     </li>
                     <li>
                       <a href="#">Level One</a>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <a>
+                    <i className="fa fa-bug" />
+                    User Control <span className="fa fa-chevron-down" />
+                  </a>
+                  <ul className="nav child_menu">
+                    <li>
+                      <NavLink to="RoleAccess">Add Role</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="UserAccess">Add User</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="PagesAccess">Add Pages</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="ModuleAccess">Add Modules</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="PermissionAccess">Permissions</NavLink>
                     </li>
                   </ul>
                 </li>

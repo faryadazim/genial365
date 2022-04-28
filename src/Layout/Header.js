@@ -60,7 +60,7 @@ const Header = () => {
       <ul className=" navbar-right">
         {/* User Profile */}
         <li className="nav-item dropdown open" style={{paddingLeft: 15}}>
-          <a href="javascript:;" className="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false"><img src="images/img.jpg" alt />John Doe</a>
+          <a href="javascript:;" className="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false"><img src="images/img.jpg" alt />Super Admin</a>
           <div className="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
             <a className="dropdown-item" href="javascript:;"> Profile</a>
             <a className="dropdown-item" href="javascript:;">
