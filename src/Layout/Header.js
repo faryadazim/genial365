@@ -21,7 +21,7 @@ const Header = () => {
 };
 
   const newFunc = ()=> {
-  
+      console.log("clicked using javascritp");
     if (document.querySelector('body').classList.contains('nav-md')) {
               $('.sidebar-menu').find('li.active ul').hide();  
               $('.sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');

@@ -8,7 +8,7 @@ const Nav = () => {
     $(".sidebar-menu").find("li ul").slideUp();
   };
   const newFunc = (ev) => {
-    console.log("Click ");
+    console.log("Click using jQuery ");
     var $li = $(ev.target).parent();
 
     if ($li.is(".active")) {
@@ -34,10 +34,10 @@ const Nav = () => {
   };
   useEffect(() => {
     return () => {
-      // $('.sidebar-menu').on('click', ()=>newFunc ()   )   };
-      $(".sidebar-menu")
-        .find("a")
-        .on("click", (ev) => newFunc(ev));
+      $('.sidebar-menu').on('click', (e)=>newFunc (e)   )   
+      // $(".sidebar-menu")
+      //   .find("a")
+      //   .on("click", (ev) => newFunc(ev));
     };
   }, []);
 
