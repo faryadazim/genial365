@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Permission = () => {
+const RolePermission = () => {
   return (
     <>
     <div className="right_col  h-100" role="main">
@@ -17,4 +17,4 @@ const Permission = () => {
   )
 }
 
-export default Permission 
+export default RolePermission 

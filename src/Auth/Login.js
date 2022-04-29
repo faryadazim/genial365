@@ -1,7 +1,11 @@
+import { ToastContainer, toast } from 'react-toastify';
 import React from "react";
 
 
 const Login = ({setisLogin , isLogin}) => {
+  
+  const notify = () => toast("Login SuccessFully!");
+  
   return (
     <div  >
       <div> 
@@ -31,7 +35,9 @@ const Login = ({setisLogin , isLogin}) => {
                  aria-invalid="true"
                  onClick={
                    (e)=>{e.preventDefault()
-                    setisLogin(!isLogin)}
+                    setisLogin(!isLogin)
+                    notify()}
+                   
                  }>
                     Log in
                   </button> 

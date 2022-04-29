@@ -5,7 +5,7 @@ const Footer = () => {
     <>
   <footer>
   <div className="pull-right">
-    Towel - Management System by <a href="www.technupur.com">Technupur</a>
+    Weaving - Management System by <a href="www.technupur.com">Technupur</a>
   </div>
   <div className="clearfix" />
 </footer>

@@ -47,5 +47,5 @@
 
 
   .heightOfLoader{
-    height: 91vh;
+    height: 91vh !important;
   }

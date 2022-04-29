@@ -6,7 +6,7 @@ import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
 import { ToastContainer, toast } from 'react-toastify';
-const AddRole = () => { 
+const AddModule = () => { 
   const [isLoading, setisLoading] = useState(false); 
   
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
@@ -42,7 +42,7 @@ const AddRole = () => {
                 {" "}
                 <div className="x_panel">
                   <div className="x_title">
-                    <h2 className="pl-2 pt-2">Role Creation</h2>
+                    <h2 className="pl-2 pt-2">Add Module</h2>
                     <ul className="nav navbar-right panel_toolbox">
                       <li className="dropdown invisible">
                         <a
@@ -95,7 +95,7 @@ const AddRole = () => {
                       {/* <span className="section">Personal Info</span> */}
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          Enter Role Type<span className="required">*</span>
+                          Module Name<span className="required">*</span>
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <input
@@ -103,7 +103,22 @@ const AddRole = () => {
                             data-validate-length-range={6}
                             data-validate-words={2}
                             name="name"
-                            placeholder="ex. Ali A.Khan"
+                            placeholder="ex. Sales Record"
+                            required="required"
+                          />
+                        </div>
+                      </div>
+                      <div className="field item form-group">
+                        <label className="col-form-label col-md-3 col-sm-3  label-align">
+                          Module Icon<span className="required">*</span>
+                        </label>
+                        <div className="col-md-6 col-sm-6">
+                          <input
+                            className="form-control"
+                            data-validate-length-range={6}
+                            data-validate-words={2}
+                            name="name"
+                            placeholder="ex. fa fa-edit"
                             required="required"
                           />
                         </div>
@@ -244,4 +259,4 @@ RoleRegistered.map((Role , index)=>{
   );
 };
 
-export default AddRole;
+export default AddModule;

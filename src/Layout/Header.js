@@ -7,38 +7,31 @@ const Header = () => {
  
   var setContentHeight = function () {
     // reset height
-    $('.right_col').css('min-height', $(window).height());
+    // $('.right_col').css('min-height', $(window).height());
 
-    var bodyHeight = $('body').outerHeight(),
-        footerHeight = $('body').hasClass('footer_fixed') ? -10 : $('footer').height(),
-        leftColHeight = $('.left_col').eq(1).height() + $('.sidebar-footer').height(),
-        contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight;
+    // var bodyHeight = $('body').outerHeight(),
+    //     footerHeight = $('body').hasClass('footer_fixed') ? -10 : $('footer').height(),
+    //     leftColHeight = $('.left_col').eq(1).height() + $('.sidebar-footer').height(),
+    //     contentHeight = bodyHeight < leftColHeight ? leftColHeight : bodyHeight; //pure
 
-    // normalize content
-    contentHeight -=$('.nav_menu').height() + footerHeight;
+    // // normalize content
+    // contentHeight -=$('.nav_menu').height() + footerHeight;
 
-    $('.right_col').css('min-height', contentHeight);
+    // $('.right_col').css('min-height', contentHeight);
 };
 
   const newFunc = ()=> {
   
     if (document.querySelector('body').classList.contains('nav-md')) {
-              $('.sidebar-menu').find('li.active ul').hide(); 
-              // document.getElementByClassName("sidebar-menu").find('li.active ul').style.display = "none";
-              // console.log("jQuery" ,  $('.sidebar-menu').find('li.active ul'))
-              // console.log( "pure " ,document.getElementsByClassName("li.active ul"))
-
+              $('.sidebar-menu').find('li.active ul').hide();  
               $('.sidebar-menu').find('li.active').addClass('active-sm').removeClass('active');
           } else {
               $('.sidebar-menu').find('li.active-sm ul').show();
               $('.sidebar-menu').find('li.active-sm').addClass('active').removeClass('active-sm');
           }
-  
           $('body').toggleClass('nav-md nav-sm'); 
-  
-          setContentHeight();
-  
-          $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
+          // setContentHeight();
+          // $('.dataTable').each(function () { $(this).dataTable().fnDraw(); });
       
   
    }
@@ -72,7 +65,7 @@ const Header = () => {
           </div>
         </li>
         {/* Notification */}
-        <li role="presentation" className="nav-item dropdown open">
+        {/* <li role="presentation" className="nav-item dropdown open">
           <a href="javascript:;" className="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-envelope-o" /><span className="badge bg-green">6</span></a>
           <ul className="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
             <li className="nav-item"><a className="dropdown-item">
@@ -114,7 +107,7 @@ const Header = () => {
                 </a></div>
             </li>
           </ul>
-        </li>
+        </li> */}
       </ul>
     </nav>
   </div>

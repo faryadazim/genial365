@@ -10,15 +10,28 @@ import AddRole from "./Pages/Role/AddRole";
 import AddUser from "./Pages/Role/AddUser";
 import AddPages from "./Pages/Role/AddPages";
 import AddModules from "./Pages/Role/AddModules";
-import Permission from "./Pages/Role/Permission.js";
+import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
  
 
 function App() {
   const [isLogin, setisLogin] = useState(false);
   return (
     <>
+    {/* <ToastContainer /> */}
+    <ToastContainer
+position="top-right"
+autoClose={2500}
+hideProgressBar
+newestOnTop={false}
+closeOnClick
+rtl={false}
+pauseOnFocusLoss
+draggable
+pauseOnHover
+/>
       {isLogin ? (
         <div className="container body">
           <div className="main_container">
@@ -30,7 +43,7 @@ function App() {
               <Route path="UserAccess" element={<AddUser />} />
               <Route path="PagesAccess" element={<AddPages />} />
               <Route path="ModuleAccess" element={<AddModules />} />
-              <Route path="PermissionAccess" element={<Permission />} />
+              <Route path="PermissionAccess" element={<RolePermission />} />
             </Routes>
 
             <Footer />

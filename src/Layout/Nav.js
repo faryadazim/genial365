@@ -265,7 +265,7 @@ const Nav = () => {
                       <NavLink to="ModuleAccess">Add Modules</NavLink>
                     </li>
                     <li>
-                      <NavLink to="PermissionAccess">Permissions</NavLink>
+                      <NavLink to="PermissionAccess">Role Permission</NavLink>
                     </li>
                   </ul>
                 </li>

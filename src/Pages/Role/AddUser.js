@@ -3,17 +3,17 @@ import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
 const AddUser = () => {
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
-  const [modalShow, setModalShow] = React.useState(false);
   const [UserRegistered, setUserRegistered] = useState([{}]);
-  const [currentEditId, setcurrentEditId] = useState('')
-  //   model
+
+  const [currentEditUser, setcurrentEditUser] = useState("");
+  //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-  //   model
 
   useEffect(() => {
     fetch("https://api.github.com/users/faryadazim/repos")
@@ -42,7 +42,7 @@ const AddUser = () => {
                 {" "}
                 <div className="x_panel">
                   <div className="x_title">
-                    <h2>User Registration</h2>
+                    <h2 className="pl-2 pt-2">User Registration</h2>
                     <ul className="nav navbar-right panel_toolbox">
                       <li className="dropdown invisible">
                         <a
@@ -158,6 +158,19 @@ const AddUser = () => {
                           />
                         </div>
                       </div>
+                      <div className="field item form-group">
+                        <label className="col-form-label col-md-3 col-sm-3  label-align">
+                          Select Role<span className="required">*</span>
+                        </label>
+                        <div className="col-md-6 col-sm-6">
+                          <Form.Select aria-label="Default select example" className="form-control text-center w-50">
+                            <option>--- Select Role ---</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </Form.Select>
+                        </div>
+                      </div>
 
                       {/* <div className="ln_solid"> */}
                       <div className="form-group">
@@ -173,8 +186,8 @@ const AddUser = () => {
                             className="btn btn-success btn-sm ml-2 px-3"
                           >
                             Reset
-                          </button>  
-                            
+                          </button>
+
                           {/* </div> */}
                         </div>
                       </div>
@@ -194,50 +207,81 @@ const AddUser = () => {
               backdrop="static"
               keyboard={false}
             >
-              <Modal.Header >
+              <Modal.Header>
                 <Modal.Title>Update User</Modal.Title>
                 <i className="fa fa-close"></i>
               </Modal.Header>
               <Modal.Body>
-              <div className="field item form-group">
-                        <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          Username<span className="required">*</span>
-                        </label>
-                        <div className="col-md-6 col-sm-6">
-                          <input
-                            className="form-control"
-                            data-validate-length-range={6}
-                            data-validate-words={2}
-                            name="name"
-                            placeholder="ex. Ali A.Khan"
-                            required="required"
-                          />
-                        </div>
-                      </div>
-                      <div className="field item form-group">
-                        <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          email<span className="required">*</span>
-                        </label>
-                        <div className="col-md-6 col-sm-6">
-                          <input
-                            className="form-control"
-                            name="email"
-                            required="required"
-                            type="email"
-                          />
-                        </div>
-                      </div>
-                      
+                <div className="field item form-group">
+                  <label className="col-form-label col-md-3 col-sm-3  label-align">
+                    Username<span className="required">*</span>
+                  </label>
+                  <div className="col-md-9 col-sm-9">
+                    <input
+                      className="form-control"
+                      data-validate-length-range={6}
+                      data-validate-words={2}
+                      name="name"
+                      placeholder="ex. Ali A.Khan"
+                      required="required"
+                      value={
+                        currentEditUser == "" ? "  " : currentEditUser.name
+                      }
+                      // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
+                    />
+                  </div>
+                </div>
+                <div className="field item form-group">
+                  <label className="col-form-label col-md-3 col-sm-3  label-align">
+                    email<span className="required">*</span>
+                  </label>
+                  <div className="col-md-9 col-sm-9">
+                    <input
+                      className="form-control"
+                      name="email"
+                      required="required"
+                      type="email"
+                      value={
+                        currentEditUser == ""
+                          ? "  "
+                          : `${currentEditUser.full_name
+                              .slice(11)
+                              .toLowerCase()}@gmail.com`
+                      }
+                      //   onChange={(e)=>setcurrentEditUser({...currentEditUser ,full_name:e.target.value}) }
+                    />
+                  </div>
+                </div>
+                <div className="field item form-group">
+                  <label className="col-form-label col-md-3 col-sm-3  label-align">
+                    email<span className="required">*</span>
+                  </label>
+                  <div className="col-md-6 col-sm-6">
+                  <Form.Select aria-label="Default select example" className="form-control text-center">
+                            <option>--- Select Role ---</option>
+                            <option value="1">One</option>
+                            <option value="2">Two</option>
+                            <option value="3">Three</option>
+                          </Form.Select>
+                     </div>
+                </div>
+
               </Modal.Body>
               <Modal.Footer>
-                
-                <Button variant="primary" className="btn-sm px-3" onClick={handleClose}>
+                <Button
+                  variant="primary"
+                  className="btn-sm px-3"
+                  onClick={handleClose}
+                >
                   Update
                 </Button>
-                <Button variant="success" className="btn-sm px-3" onClick={handleClose}>
+                <Button
+                  variant="success"
+                  className="btn-sm px-3 ModalButtonPositionAdjectment "
+                  onClick={handleClose}
+                >
                   Clear
                 </Button>
-             
               </Modal.Footer>
             </Modal>
 
@@ -254,10 +298,11 @@ const AddUser = () => {
                         <th className="column-title">Email </th>
                         <th className="column-title">Created Date</th>
                         <th className="column-title">Modified Date </th>
-                        <th className="column-title">Edit </th>
-                        <th className="column-title">Delete </th>
+                        <th className="column-title">Role </th>
+                        <th className="column-title">Action </th>
                       </tr>
                     </thead>
+
                     <tbody>
                       {UserRegistered.map((user, index) => {
                         return (
@@ -270,15 +315,17 @@ const AddUser = () => {
                             <td className=" ">May 23, 2014 11:47:56 PM </td>
                             <td className=" ">May 23, 2022 21:47:56 PM </td>
                             <td className="a-right a-right  text-center">
-                              <i
-                                className="fa fa-edit"
-                                onClick={() => {
-                                   setcurrentEditId(user)
-                                    handleShow()}}
-                              ></i>{" "}
+                   Admin
                             </td>
-                            <td className="a-right a-right  text-center">
-                              <i
+                            <td className="a-right a-right  text-center ">
+                            <i
+                                className="fa fa-edit pr-2"
+                                onClick={() => {
+                                  setcurrentEditUser(user);
+                                  handleShow();
+                                }}
+                              ></i>
+                               <i
                                 className="fa fa-trash-o"
                                 onClick={() => {
                                   console.log("click icon");
