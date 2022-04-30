@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react"; 
-
+import { NavLink } from "react-router-dom";
 const Nav = ({showNavMenu}) => { 
   const [currentBlock, setCurrentBlock] = useState(1);
   const [noOfModule, setnoOfModule] = useState(
@@ -58,16 +58,24 @@ const Nav = ({showNavMenu}) => {
                        currentBlock === index + 1 ? "d-block" : " d-none"
                         }`}
                       >
-                        <li className="current-page">
-                          <a href="#">Dashboard</a>
-                        </li>
-                        <li>
-                          <a href="#">Dashboard2</a>
-                        </li>
-                        <li>
-                          <a href="#">Dashboard3</a>
-                        </li>
-                      </ul>
+                     
+                    <li>
+                      <NavLink to="RoleAccess">Add Role</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="UserAccess">Add User</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="PagesAccess">Add Pages</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="ModuleAccess">Add Modules</NavLink>
+                    </li>
+                    <li>
+                      <NavLink to="PermissionAccess">Role Permission</NavLink>
+                    </li>
+                  </ul>
+                     
                     </li>
                   );
                 })}
