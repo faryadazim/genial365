@@ -17,7 +17,8 @@ import 'react-toastify/dist/ReactToastify.css';
  
 
 function App() {
-  const [isLogin, setisLogin] = useState(false);
+  const [showNavMenu, setshowNavMenu] = useState(true)
+  const [isLogin, setisLogin] = useState(true);
   return (
     <>
     {/* <ToastContainer /> */}
@@ -35,10 +36,10 @@ pauseOnHover
       {isLogin ? (
         <div className="container body">
           <div className="main_container">
-            <Nav />
-            <Header />
+            <Nav showNavMenu={showNavMenu} />
+            <Header setshowNavMenu={setshowNavMenu} showNavMenu={showNavMenu} />
             <Routes>
-              <Route path="/" element={<Loader />} />
+              <Route path="/" element={<Loader showNavMenu={showNavMenu}/>} />
               <Route path="RoleAccess" element={<AddRole />} />
               <Route path="UserAccess" element={<AddUser />} />
               <Route path="PagesAccess" element={<AddPages />} />
@@ -46,7 +47,7 @@ pauseOnHover
               <Route path="PermissionAccess" element={<RolePermission />} />
             </Routes>
 
-            <Footer />
+            <Footer  showNavMenu={showNavMenu}/>
           </div>
         </div>
       ) : (

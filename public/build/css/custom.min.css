@@ -1067,9 +1067,9 @@ body .container.body .right_col {
 	width: 100%;
 	margin: 0
 }
-.nav-md .container.body .col-md-3.left_col {
+/* .nav-md .container.body .col-md-3.left_col {
 	display: none
-}
+} */
 .nav-md .container.body .right_col {
 	width: 100%;
 	/*padding-right: 0*/
@@ -2463,7 +2463,7 @@ span.right {
 }
 
 @media (min-width: 992px) {
-	footer {
+	.footer {
 		margin-left: 230px
 	}
 }
@@ -4250,7 +4250,7 @@ a.hiddenanchor {
 	display: block;
 	height: 0;
 	clear: both;
-	visibility: hidden
+	visibility:visible
 }
 .login_content {
 	margin: 0 auto;

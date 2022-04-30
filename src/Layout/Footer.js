@@ -1,9 +1,12 @@
 import React from 'react'
 
-const Footer = () => {
+const Footer = ({showNavMenu}) => {
   return (
     <>
-  <footer>
+    
+  <footer 
+   className={`footer   ${ showNavMenu === false ? "footer-margin-remove" : " "}  `}
+   >
   <div className="pull-right">
     Weaving - Management System by <a href="www.technupur.com">Technupur</a>
   </div>

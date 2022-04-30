@@ -1,9 +1,13 @@
 import React from 'react'
 
-const Content = () => {
+const Content = ({showNavMenu}) => {
   return (
-    <>
-    <div className="right_col  h-100" role="main">
+    <> 
+    <div   role="main"
+   className={`top_nav   ${ showNavMenu === false ? "right_col-margin-remove" : " "}  `}
+               
+    
+    >
   <div className="page-title ">
     <div className="title_left">
       <h1>Main Heading LOREMDFDFSD</h1>

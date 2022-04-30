@@ -1,48 +1,23 @@
-import React, { useEffect } from "react";
-import $ from "jquery";
-import "jquery";
-import { NavLink } from "react-router-dom";
-const Nav = () => {
-  var openUpMenu = function () {
-    $(".sidebar-menu").find("li").removeClass("active active-sm");
-    $(".sidebar-menu").find("li ul").slideUp();
-  };
-  const newFunc = (ev) => {
-    console.log("Click using jQuery ");
-    var $li = $(ev.target).parent();
+import React, { useEffect, useState, useRef } from "react"; 
 
-    if ($li.is(".active")) {
-      $li.removeClass("active active-sm");
-      $("ul:first", $li).slideUp(function () {});
-    } else {
-      if (!$li.parent().is(".child_menu")) {
-        openUpMenu();
-      } else {
-        if ($("body").is("nav-sm")) {
-          if (!$li.parent().is("child_menu")) {
-            openUpMenu();
-          }
-        }
-      }
-
-      $li.addClass("active");
-
-      $("ul:first", $li).slideDown(function () {
-        // setContentHeight();
-      });
-    }
-  };
-  useEffect(() => {
-    return () => {
-      $('.sidebar-menu').on('click', (e)=>newFunc (e)   )   
-      // $(".sidebar-menu")
-      //   .find("a")
-      //   .on("click", (ev) => newFunc(ev));
-    };
-  }, []);
-
-  return (
-    <>
+const Nav = ({showNavMenu}) => { 
+  const [currentBlock, setCurrentBlock] = useState(1);
+  const [noOfModule, setnoOfModule] = useState(
+    [
+      { moduleName: "Home", icon: "fa fa-home" },
+      { moduleName: "Forms", icon: "fa fa-edit" },
+      { moduleName: "UI Elements ", icon: "fa fa-desktop" },
+      { moduleName: "Tables", icon: "fa fa-table" },
+      { moduleName: "Data Presentation", icon: "fa fa-bar-chart-o" },
+      { moduleName: "Layouts", icon: "fa fa-clone" },
+      { moduleName: "Extras", icon: "fa fa-windows" },
+      { moduleName: "Multilevel Menu", icon: "fa fa-sitemap" },
+      { moduleName: " User Control", icon: "fa fa-bug" },
+    ],
+  );
+  
+  return (<>    {
+      showNavMenu==true ? <>
       <div className="col-md-3 left_col">
         <div className="left_col scroll-view">
           {/* Logo */}
@@ -59,224 +34,43 @@ const Nav = () => {
             <div className="menu_section">
               {/*<h3>General</h3>*/}
               <ul className="nav side-menu">
-                <li className="active">
-                  <a>
-                    <i className="fa fa-home" /> Home{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu" style={{ display: "block" }}>
-                    <li className="current-page">
-                      <a href="#">Dashboard</a>
-                    </li>
-                    <li>
-                      <a href="#">Dashboard2</a>
-                    </li>
-                    <li>
-                      <a href="#">Dashboard3</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-edit" /> Forms{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">General Form</a>
-                    </li>
-                    <li>
-                      <a href="#">Advanced Components</a>
-                    </li>
-                    <li>
-                      <a href="#">Form Validation</a>
-                    </li>
-                    <li>
-                      <a href="#">Form Wizard</a>
-                    </li>
-                    <li>
-                      <a href="#">Form Upload</a>
-                    </li>
-                    <li>
-                      <a href="#">Form Buttons</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-desktop" /> UI Elements{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">General Elements</a>
-                    </li>
-                    <li>
-                      <a href="#">Media Gallery</a>
-                    </li>
-                    <li>
-                      <a href="#">Typography</a>
-                    </li>
-                    <li>
-                      <a href="#">Icons</a>
-                    </li>
-                    <li>
-                      <a href="#">Glyphicons</a>
-                    </li>
-                    <li>
-                      <a href="#">Widgets</a>
-                    </li>
-                    <li>
-                      <a href="#">Invoice</a>
-                    </li>
-                    <li>
-                      <a href="#">Inbox</a>
-                    </li>
-                    <li>
-                      <a href="#">Calendar</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-table" /> Tables{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">Tables</a>
-                    </li>
-                    <li>
-                      <a href="#">Table Dynamic</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-bar-chart-o" /> Data Presentation{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">Chart JS</a>
-                    </li>
-                    <li>
-                      <a href="#">Chart JS2</a>
-                    </li>
-                    <li>
-                      <a href="#">Moris JS</a>
-                    </li>
-                    <li>
-                      <a href="#">ECharts</a>
-                    </li>
-                    <li>
-                      <a href="#">Other Charts</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-clone" />
-                    Layouts <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">Fixed Sidebar</a>
-                    </li>
-                    <li>
-                      <a href="#">Fixed Footer</a>
-                    </li>
-                  </ul>
-                </li>
-
-                <li>
-                  <a>
-                    <i className="fa fa-windows" /> Extras{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">403 Error</a>
-                    </li>
-                    <li>
-                      <a href="#">404 Error</a>
-                    </li>
-                    <li>
-                      <a href="#">500 Error</a>
-                    </li>
-                    <li>
-                      <a href="#">Plain Page</a>
-                    </li>
-                    <li>
-                      <a href="#">Login Page</a>
-                    </li>
-                    <li>
-                      <a href="#">Pricing Tables</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-sitemap" /> Multilevel Menu{" "}
-                    <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <a href="#">Level One</a>
-                    </li>
-                    <li>
-                      <a>
-                        Level One
+                {noOfModule.map((module, index) => {
+                  return (
+                    <li  
+                    //  className={`list-header ${currentBlock==(index+1?"happy" : console.log("null"))}`}
+                    className={`   ${ currentBlock === index + 1 ? "active" : " "}  `}
+                     
+                     >
+                      <a
+                        onClick={(e) => {
+                          if (currentBlock === index + 1) {
+                            setCurrentBlock("0");
+                          } else {
+                            setCurrentBlock(index + 1);
+                          }
+                        }}
+                      >
+                        <i className={`${module.icon}`} /> {module.moduleName}
                         <span className="fa fa-chevron-down" />
                       </a>
-                      <ul className="nav child_menu">
-                        <li className="sub_menu">
-                          <a href="#">Level Two</a>
+                      <ul
+                        className={`nav child_menu ${
+                       currentBlock === index + 1 ? "d-block" : " d-none"
+                        }`}
+                      >
+                        <li className="current-page">
+                          <a href="#">Dashboard</a>
                         </li>
                         <li>
-                          <a href="#">Level Two</a>
+                          <a href="#">Dashboard2</a>
                         </li>
                         <li>
-                          <a href="#">Level Two</a>
+                          <a href="#">Dashboard3</a>
                         </li>
                       </ul>
                     </li>
-                    <li>
-                      <a href="#">Level One</a>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a>
-                    <i className="fa fa-bug" />
-                    User Control <span className="fa fa-chevron-down" />
-                  </a>
-                  <ul className="nav child_menu">
-                    <li>
-                      <NavLink to="RoleAccess">Add Role</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="UserAccess">Add User</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="PagesAccess">Add Pages</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="ModuleAccess">Add Modules</NavLink>
-                    </li>
-                    <li>
-                      <NavLink to="PermissionAccess">Role Permission</NavLink>
-                    </li>
-                  </ul>
-                </li>
-                <li>
-                  <a href="javascript:void(0)">
-                    <i className="fa fa-laptop" /> Landing Page{" "}
-                    <span className="label label-success pull-right">
-                      Coming Soon
-                    </span>
-                  </a>
-                </li>
+                  );
+                })}
               </ul>
             </div>
           </div>
@@ -310,7 +104,9 @@ const Nav = () => {
           {/* /menu footer buttons */}
         </div>
       </div>
-    </>
+    </>:<></>
+    }</>
+   
   );
 };
 

@@ -28,3 +28,21 @@ height: 100% !important;
  .btn{
 	 border-radius: 0px !important;
  }
+
+ .top_nav-margin-remove { 
+    margin-left: 0px !important;
+}
+
+   .right_col-margin-remove{ 
+    margin-left:  0px !important;
+}
+
+.footer-margin-remove {
+	margin-left:  0px !important;
+}
+
+@media (max-width: 992px) {
+	.toggle-to-Add-margin {
+		margin-left: 230px !important;
+	}
+}
