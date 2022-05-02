@@ -12,42 +12,41 @@ import AddPages from "./Pages/Role/AddPages";
 import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
- 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [showNavMenu, setshowNavMenu] = useState(true)
-  const [isLogin, setisLogin] = useState(true);
+  const [showNavMenu, setshowNavMenu] = useState(true);
+  const [isLogin, setisLogin] = useState(false);
   return (
     <>
-    {/* <ToastContainer /> */}
-    <ToastContainer
-position="top-right"
-autoClose={2500}
-hideProgressBar
-newestOnTop={false}
-closeOnClick
-rtl={false}
-pauseOnFocusLoss
-draggable
-pauseOnHover
-/>
+      {/* <ToastContainer /> */}
+      <ToastContainer
+        position="top-right"
+        autoClose={88500}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       {isLogin ? (
         <div className="container body">
           <div className="main_container">
             <Nav showNavMenu={showNavMenu} />
             <Header setshowNavMenu={setshowNavMenu} showNavMenu={showNavMenu} />
             <Routes>
-              <Route path="/" element={<Loader showNavMenu={showNavMenu}/>} />
+              <Route path="/" element={<Loader showNavMenu={showNavMenu} />} />
               <Route path="RoleAccess" element={<AddRole />} />
               <Route path="UserAccess" element={<AddUser />} />
               <Route path="PagesAccess" element={<AddPages />} />
-              <Route path="ModuleAccess" element={<AddModules />} />
+              <Route path="ModuleAccess" element={<AddModules showNavMenu={showNavMenu}/>} />
               <Route path="PermissionAccess" element={<RolePermission />} />
             </Routes>
 
-            <Footer  showNavMenu={showNavMenu}/>
+            <Footer showNavMenu={showNavMenu} />
           </div>
         </div>
       ) : (

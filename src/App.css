@@ -46,3 +46,19 @@ height: 100% !important;
 		margin-left: 230px !important;
 	}
 }
+
+
+.Toastify__toast-body{
+	color: #fff !important;
+	background-color: #003a4d ;
+	margin: 0px !important;
+}
+.Toastify__toast-theme--light{
+	background-color: #003a4d !important ;
+
+}
+
+
+.Toastify__close-button > svg{
+	color: white !important;
+}

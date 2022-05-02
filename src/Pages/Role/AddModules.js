@@ -2,18 +2,17 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
+import { Modal } from "react-bootstrap"; 
 
-import { ToastContainer, toast } from 'react-toastify';
-const AddModules = () => { 
+import { toast } from 'react-toastify';
+const AddModules = ({showNavMenu}) => { 
     
   const [isLoading, setisLoading] = useState(false); 
   
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   
   const [RoleRegistered , setRoleRegistered] = useState([{} , {} , {} , {}]);
-  const notify = () => toast("Wow so easy!");
+  const notify = () => toast("Module added Successfully!");
  
   //   Edit Model
   const [show, setShow] = useState(false);
@@ -33,7 +32,7 @@ const AddModules = () => {
       ) : (
         <>
           {" "}
-          <div className="right_col  h-100" role="main">
+          <div className={`right_col  h-100 ${ showNavMenu === false ? "right_col-margin-remove" : "lorem "}   `} role="main">
           
 
 
@@ -41,7 +40,7 @@ const AddModules = () => {
           {displayUserRegBox ? (
               <>
                 {" "}
-                <div className="x_panel">
+                <div className={`x_panel `} >
                   <div className="x_title">
                     <h2 className="pl-2 pt-2">Add Module</h2>
                     <ul className="nav navbar-right panel_toolbox">
@@ -88,8 +87,7 @@ const AddModules = () => {
                       onSubmit={(e) => {
 
                         e.preventDefault();
-                        console.log("aszdazsd");
-                        console.log("adsasdfadsads");
+                        console.log("aszdazsd"); 
                         notify();
                       }}
                     >
@@ -132,7 +130,7 @@ const AddModules = () => {
                         <div className="col-md-6 offset-md-3 pb-2">
                           <button
                             type="submit"
-                            className="btn btn-primary btn-sm px-3"onClick={notify}
+                            className="btn btn-primary btn-sm px-3" 
                           >
                             Submit
                           </button> 
@@ -165,7 +163,7 @@ const AddModules = () => {
             >
               <Modal.Header>
                 <Modal.Title>Update Role</Modal.Title>
-                <i className="fa fa-close"></i>
+                <i className="fa fa-close" onClick={()=>handleClose()}></i>
               </Modal.Header>
               <Modal.Body>
                 <div className="field item form-group">
@@ -178,7 +176,7 @@ const AddModules = () => {
                       data-validate-length-range={6}
                       data-validate-words={2}
                       name="name"
-                      placeholder="ex. Admin"
+                      placeholder="ex. Sales"
                       required="required"
                       
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
@@ -195,7 +193,7 @@ const AddModules = () => {
                       data-validate-length-range={6}
                       data-validate-words={2}
                       name="name"
-                      placeholder="ex. Admin"
+                      placeholder="ex. fa fa-facebook"
                       required="required"
                       
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }

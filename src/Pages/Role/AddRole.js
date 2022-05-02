@@ -103,7 +103,7 @@ const AddRole = () => {
                             data-validate-length-range={6}
                             data-validate-words={2}
                             name="name"
-                            placeholder="ex. Ali A.Khan"
+                            placeholder="ex. Saleman"
                             required="required"
                           />
                         </div>
