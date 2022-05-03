@@ -234,6 +234,38 @@ RoleRegistered.map((Role , index)=>{
                  
                     </tbody>
                   </table>
+                     {/* Pagination  */}
+                     <div className="  d-flex justify-content-end pr-3 pt-2">
+                  <nav aria-label="Page navigation example  bg-danger">
+                    <ul className="pagination border-radius-none">
+                      <li className="page-item paginate_button previous border-radius-none">
+                        <a className="page-link border-radius-none height-page-link"  >
+                          Previous
+                        </a>
+                      </li>
+                      <li className="page-item paginate_button border-radius-none">
+                        <a className="page-link height-page-link" href="#">
+                          1
+                        </a>
+                      </li>
+                      <li className="page-item paginate_button ">
+                        <a className="page-link height-page-link" href="#">
+                          2
+                        </a>
+                      </li>
+                      <li className="page-item paginate_button ">
+                        <a className="page-link height-page-link" href="#">
+                          3
+                        </a>
+                      </li>
+                      <li className="page-item paginate_button next  ">
+                        <a className="page-link border-radius-none height-page-link" href="#">
+                          Next
+                        </a>
+                      </li>
+                    </ul>
+                  </nav></div>
+                  {/* Pagination  */}
                 </div>
               </div>
             </div>

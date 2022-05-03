@@ -62,3 +62,16 @@ height: 100% !important;
 .Toastify__close-button > svg{
 	color: white !important;
 }
+
+.page-link:focus, .page-link:active {
+	outline: 0px !important ; 
+	box-shadow: 0px !important;
+	}
+	/* .page-link{
+		color: #f79c74 !important;
+	} */
+
+
+	.active-pagination{
+		color: #003a4d !important;
+	}

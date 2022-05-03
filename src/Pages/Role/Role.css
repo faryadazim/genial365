@@ -63,3 +63,22 @@ table.jambo_table thead {
 .ModalButtonPositionAdjectment{
     margin-right: 22px !important;
 }
+
+
+
+.page-link{
+  background-color:   #ddd !important;
+  color:  	#f79c74;
+}
+
+.border-radius-none{
+    border-radius: 0px !important;
+}
+.height-page-link{
+height: 30px !important;
+}
+
+
+.wisthOfOtions{
+    width: 100px;
+}

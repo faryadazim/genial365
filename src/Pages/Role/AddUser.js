@@ -4,16 +4,33 @@ import "./Role.css";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
+import Pagination from "./Pagination";
+
 const AddUser = () => {
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
+  const [currentPage, setCurrentPage] = useState(1);
+  // const [showUserEntity, setshowUserEntity] = useState(5)
+  const [postsPerPage ,setpostsPerPage ] = useState(5);
 
   const [currentEditUser, setcurrentEditUser] = useState("");
+  
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+ 
+
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
+
+
+  console.log(indexOfLastPost ,indexOfFirstPost , currentPosts );
 
   useEffect(() => {
     fetch("https://api.github.com/users/faryadazim/repos")
@@ -304,7 +321,7 @@ const AddUser = () => {
                     </thead>
 
                     <tbody>
-                      {UserRegistered.map((user, index) => {
+                      {currentPosts.map((user, index) => {
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
@@ -337,6 +354,30 @@ const AddUser = () => {
                       })}
                     </tbody>
                   </table>
+                  
+<div className="  d-flex justify-content-between pr-3 pt-2">
+         <div className="d-flex  ml-3"> 
+         <span className="pt-1 pr-2">Show</span>  
+          <div className="wisthOfOtions"> <Form.Select onChange={(e)=>postsPerPage(parseInt(e.target.value))} aria-label="Default select example" className="form-control  wisthOfOtions">
+                           
+                            <option value="5"   >5</option>
+                            <option value="10"  >10</option>
+                            <option value="20" >20</option>
+                            <option value="25" >25</option>
+                         
+                          </Form.Select></div>
+           <span className="pt-1 pl-2">Entities</span> 
+         </div>
+            <Pagination
+        postsPerPage={postsPerPage}
+        totalPosts={UserRegistered.length}
+        paginate={paginate}
+      />
+</div>
+        
+                     {/* Pagination  */}
+                    
+                  {/* Pagination  */}
                 </div>
               </div>
             </div>
