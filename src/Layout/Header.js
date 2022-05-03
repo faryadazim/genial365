@@ -1,52 +1,86 @@
-import React , {useEffect , useState} from 'react' 
-import  'jquery'
-import $ from 'jquery';
-// import "vendor/chosen.jquery";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-const Header = ({setshowNavMenu , showNavMenu}) => { 
-  const [ScreenWidth, setScreenWidth] = useState()
-  const { innerWidth: width, innerHeight: height } = window;
+import { setNavSm, setNavMd } from "../actions/NavState";
+const Header = () => {
+  const dispatch = useDispatch();
+  const showNavMenu = useSelector((state) => state.NavState);
+  const [ScreenWidth, setScreenWidth] = useState();
+  const { innerWidth: width } = window;
+  const toggleNav = () => {
+    if (showNavMenu == true) {
+      dispatch(setNavSm());
+    } else {
+      dispatch(setNavMd());
+    }
+  };
 
   useEffect(() => {
-setScreenWidth(width)
-console.log(typeof width);
-  }, [ ])
-  
+    setScreenWidth(width);
+  }, []);
+
   return (
     <>
-<div  
- className={`top_nav   ${ showNavMenu === false ? "top_nav-margin-remove" : " "}  `}
-                   
->
-  <div className="nav_menu">
-    <div  
-    className={`nav toggle  ${ showNavMenu === true ? "toggle-to-Add-margin" : " "}  `}
- 
-    ><a className="menu_toggle"
-    onClick={()=>setshowNavMenu(!showNavMenu)}
-    ><i className="fa fa-bars" /></a></div>
-    <nav className="nav navbar-nav">
-      <ul className=" navbar-right">
-        {/* User Profile */}
-{
-   width>=484?  <li className="nav-item dropdown open" style={{paddingLeft: 15}}>
-   <a href="javascript:;" className="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false"><img src="images/img.jpg" alt />Super Admin</a>
-   <div className="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-     <a className="dropdown-item" href="javascript:;"> Profile</a>
-     <a className="dropdown-item" href="javascript:;">
-       <span className="badge bg-red pull-right">50%</span>
-       <span>Settings</span>
-     </a>
-     <a className="dropdown-item" href="javascript:;">Help</a>
-     <a className="dropdown-item" href="login.html"><i className="fa fa-sign-out pull-right" /> Log Out</a>
-   </div>
- </li>:<></>
-}
+      <div
+        className={`top_nav   ${
+          showNavMenu === false ? "top_nav-margin-remove" : " "
+        }  `}
+      >
+        <div className="nav_menu">
+          <div
+            className={`nav toggle  ${
+              showNavMenu === true ? "toggle-to-Add-margin" : " "
+            }  `}
+          >
+            <a className="menu_toggle" onClick={() => toggleNav()}>
+              <i className="fa fa-bars" />
+            </a>
+          </div>
+          <nav className="nav navbar-nav">
+            <ul className=" navbar-right">
+              {/* User Profile */}
+              {width >= 484 ? (
+                <li
+                  className="nav-item dropdown open"
+                  style={{ paddingLeft: 15 }}
+                >
+                  <a
+                    href="javascript:;"
+                    className="user-profile dropdown-toggle"
+                    aria-haspopup="true"
+                    id="navbarDropdown"
+                    data-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <img src="images/img.jpg" alt />
+                    Super Admin
+                  </a>
+                  <div
+                    className="dropdown-menu dropdown-usermenu pull-right"
+                    aria-labelledby="navbarDropdown"
+                  >
+                    <a className="dropdown-item" href="javascript:;">
+                      {" "}
+                      Profile
+                    </a>
+                    <a className="dropdown-item" href="javascript:;">
+                      <span className="badge bg-red pull-right">50%</span>
+                      <span>Settings</span>
+                    </a>
+                    <a className="dropdown-item" href="javascript:;">
+                      Help
+                    </a>
+                    <a className="dropdown-item" href="login.html">
+                      <i className="fa fa-sign-out pull-right" /> Log Out
+                    </a>
+                  </div>
+                </li>
+              ) : (
+                <></>
+              )}
 
-
-       
-        {/* Notification */}
-        {/* <li role="presentation" className="nav-item dropdown open">
+              {/* Notification */}
+              {/* <li role="presentation" className="nav-item dropdown open">
           <a href="javascript:;" className="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-envelope-o" /><span className="badge bg-green">6</span></a>
           <ul className="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
             <li className="nav-item"><a className="dropdown-item">
@@ -89,13 +123,12 @@ console.log(typeof width);
             </li>
           </ul>
         </li> */}
-      </ul>
-    </nav>
-  </div>
-</div>
-
+            </ul>
+          </nav>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

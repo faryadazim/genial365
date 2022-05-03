@@ -1,4 +1,4 @@
-import { ShowNavTrue  ,  ShowNavFalse } from '../constants/actionTypes.js';
+import { ShowNavTrue, ShowNavFalse } from "../constants/actionTypes.js";
 
 export default (NavState = true, action) => {
   switch (action.type) {
@@ -10,4 +10,3 @@ export default (NavState = true, action) => {
       return NavState;
   }
 };
-

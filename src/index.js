@@ -1,22 +1,25 @@
-import "jquery";
+// React Import
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-
+// Redux Import
 import { Provider } from "react-redux";
-import { legacy_createStore as createStore, applyMiddleware, compose } from "redux";
+import {
+  legacy_createStore as createStore,
+  applyMiddleware,
+  compose,
+} from "redux";
 import thunk from "redux-thunk";
-
-import { reducers } from "./reducers"; 
-
+import { reducers } from "./reducers";
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
+// Component Import
+import App from "./App";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-    <Provider store={store}>
-      <App />
+      <Provider store={store}>
+        <App />
       </Provider>
     </BrowserRouter>
   </React.StrictMode>

@@ -5,23 +5,21 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 
-import { ToastContainer, toast } from 'react-toastify';
-const AddRole = () => { 
-  const [isLoading, setisLoading] = useState(false); 
-  
+import { ToastContainer, toast } from "react-toastify";
+const AddRole = () => {
+  const [isLoading, setisLoading] = useState(false);
+
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
-  
-  const [RoleRegistered , setRoleRegistered] = useState([{} , {} , {} , {}]);
+
+  const [RoleRegistered, setRoleRegistered] = useState([{}, {}, {}, {}]);
   const notify = () => toast("Wow so easy!");
- 
+
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  useEffect(() => {
-     
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <>
@@ -33,11 +31,7 @@ const AddRole = () => {
         <>
           {" "}
           <div className="right_col  h-100" role="main">
-          
-
-
-          
-          {displayUserRegBox ? (
+            {displayUserRegBox ? (
               <>
                 {" "}
                 <div className="x_panel">
@@ -85,7 +79,6 @@ const AddRole = () => {
                   <div className="x_content">
                     <form
                       onSubmit={(e) => {
-
                         e.preventDefault();
                         console.log("aszdazsd");
                         console.log("adsasdfadsads");
@@ -109,17 +102,16 @@ const AddRole = () => {
                         </div>
                       </div>
 
-                  
-
                       {/* <div className="ln_solid"> */}
                       <div className="form-group">
                         <div className="col-md-6 offset-md-3 pb-2">
                           <button
                             type="submit"
-                            className="btn btn-primary btn-sm px-3"onClick={notify}
+                            className="btn btn-primary btn-sm px-3"
+                            onClick={notify}
                           >
                             Submit
-                          </button> 
+                          </button>
                           <button
                             type="reset"
                             className="btn btn-success btn-sm ml-2 px-3"
@@ -137,7 +129,6 @@ const AddRole = () => {
             ) : (
               <></>
             )}
-          
 
             {/* Model  */}
 
@@ -164,19 +155,20 @@ const AddRole = () => {
                       name="name"
                       placeholder="ex. Admin"
                       required="required"
-                      
+
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
                     />
                   </div>
-                </div> 
+                </div>
               </Modal.Body>
               <Modal.Footer>
                 <Button
                   variant="primary"
                   className="btn-sm px-3"
-                  onClick={()=>{
-                    handleClose()
-                     notify()} }
+                  onClick={() => {
+                    handleClose();
+                    notify();
+                  }}
                 >
                   Update
                 </Button>
@@ -199,72 +191,77 @@ const AddRole = () => {
                     <thead>
                       <tr className="headings">
                         <th className="column-title"> Sr. </th>
-                        <th className="column-title">Type Name</th> 
-                        <th className="column-title text-center"  width="20%" >Action </th> 
+                        <th className="column-title">Type Name</th>
+                        <th className="column-title text-center" width="20%">
+                          Action{" "}
+                        </th>
                       </tr>
                     </thead>
 
                     <tbody>
-                     {
-RoleRegistered.map((Role , index)=>{
-  return <tr className="even pointer">
-  <td className=" ">{index+1}</td>
-  <td className=" "> Admin </td>
-  
-  <td width="20%" className="a-right a-right     text-center">
-    <i
-      className="fa fa-edit"
-      onClick={() => { 
-        handleShow();
-      }}
-    ></i>{" "}
-     <i
-      className="fa fa-trash-o pl-3"
-      onClick={() => {
-        console.log("click icon");
-      }}
-    ></i>{" "}
-  </td>
- 
-</tr>
-})
+                      {RoleRegistered.map((Role, index) => {
+                        return (
+                          <tr className="even pointer">
+                            <td className=" ">{index + 1}</td>
+                            <td className=" "> Admin </td>
 
-                     }
-                          
-                 
+                            <td
+                              width="20%"
+                              className="a-right a-right     text-center"
+                            >
+                              <i
+                                className="fa fa-edit"
+                                onClick={() => {
+                                  handleShow();
+                                }}
+                              ></i>{" "}
+                              <i
+                                className="fa fa-trash-o pl-3"
+                                onClick={() => {
+                                  console.log("click icon");
+                                }}
+                              ></i>{" "}
+                            </td>
+                          </tr>
+                        );
+                      })}
                     </tbody>
                   </table>
-                     {/* Pagination  */}
-                     <div className="  d-flex justify-content-end pr-3 pt-2">
-                  <nav aria-label="Page navigation example  bg-danger">
-                    <ul className="pagination border-radius-none">
-                      <li className="page-item paginate_button previous border-radius-none">
-                        <a className="page-link border-radius-none height-page-link"  >
-                          Previous
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button border-radius-none">
-                        <a className="page-link height-page-link" href="#">
-                          1
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button ">
-                        <a className="page-link height-page-link" href="#">
-                          2
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button ">
-                        <a className="page-link height-page-link" href="#">
-                          3
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button next  ">
-                        <a className="page-link border-radius-none height-page-link" href="#">
-                          Next
-                        </a>
-                      </li>
-                    </ul>
-                  </nav></div>
+                  {/* Pagination  */}
+                  <div className="  d-flex justify-content-end pr-3 pt-2">
+                    <nav aria-label="Page navigation example  bg-danger">
+                      <ul className="pagination border-radius-none">
+                        <li className="page-item paginate_button previous border-radius-none">
+                          <a className="page-link border-radius-none height-page-link">
+                            Previous
+                          </a>
+                        </li>
+                        <li className="page-item paginate_button border-radius-none">
+                          <a className="page-link height-page-link" href="#">
+                            1
+                          </a>
+                        </li>
+                        <li className="page-item paginate_button ">
+                          <a className="page-link height-page-link" href="#">
+                            2
+                          </a>
+                        </li>
+                        <li className="page-item paginate_button ">
+                          <a className="page-link height-page-link" href="#">
+                            3
+                          </a>
+                        </li>
+                        <li className="page-item paginate_button next  ">
+                          <a
+                            className="page-link border-radius-none height-page-link"
+                            href="#"
+                          >
+                            Next
+                          </a>
+                        </li>
+                      </ul>
+                    </nav>
+                  </div>
                   {/* Pagination  */}
                 </div>
               </div>

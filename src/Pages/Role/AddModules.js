@@ -1,24 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+// Component Import
 import Loader from "../../Layout/Loader/Loader";
-import "./Role.css";
+// Boostraps Import
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-
+// Notifier Import
 import { toast } from "react-toastify";
-const AddModules = ({ showNavMenu }) => {
+// style Import
+import "./Role.css";
+
+import { useSelector } from "react-redux";
+const AddModules = () => {
   const [isLoading, setisLoading] = useState(false);
+  // Nav Toggle State
+  const showNavMenu = useSelector((state) => state.NavState);
 
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
-
+  // User Data in State
   const [RoleRegistered, setRoleRegistered] = useState([{}, {}, {}, {}]);
+  // Notifier Function
   const notify = () => toast("Module added Successfully!");
 
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  useEffect(() => {}, []);
 
   return (
     <>
@@ -263,38 +269,6 @@ const AddModules = ({ showNavMenu }) => {
                       })}
                     </tbody>
                   </table>
-                  {/* Pagination  */}
-                  <div className="  d-flex justify-content-end pr-3 pt-2">
-                  <nav aria-label="Page navigation example  bg-danger">
-                    <ul className="pagination border-radius-none">
-                      <li className="page-item paginate_button previous border-radius-none">
-                        <a className="page-link border-radius-none height-page-link"  >
-                          Previous
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button border-radius-none">
-                        <a className="page-link height-page-link" href="#">
-                          1
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button ">
-                        <a className="page-link height-page-link" href="#">
-                          2
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button ">
-                        <a className="page-link height-page-link" href="#">
-                          3
-                        </a>
-                      </li>
-                      <li className="page-item paginate_button next  ">
-                        <a className="page-link border-radius-none height-page-link" href="#">
-                          Next
-                        </a>
-                      </li>
-                    </ul>
-                  </nav></div>
-                  {/* Pagination  */}
                 </div>
               </div>
             </div>

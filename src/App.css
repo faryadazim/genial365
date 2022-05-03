@@ -1,44 +1,46 @@
 /* @import "~bootstrap/scss/bootstrap"; */
-.main_container{
+.main_container {
 	background-color: #003a4d;
 }
-.btn-official{
-	background-color: 	#f79c74 ;
+
+.btn-official {
+	background-color: #f79c74;
 	color: #003a4d;
 	border: none !important;
 	text-shadow: none !important;
-	
-}
-.h-100{
-height: 100% !important;
+
 }
 
-
- .sm-logo-in-Login{
-	 background-color: #003a4d;
-	 display: inline !important;
-	 width: 35px;
-	 border-radius: 50%;
-	 padding: 2px;
- }
-
-
-
-
- .btn{
-	 border-radius: 0px !important;
- }
-
- .top_nav-margin-remove { 
-    margin-left: 0px !important;
+.h-100 {
+	height: 100% !important;
 }
 
-   .right_col-margin-remove{ 
-    margin-left:  0px !important;
+
+.sm-logo-in-Login {
+	background-color: #003a4d;
+	display: inline !important;
+	width: 35px;
+	border-radius: 50%;
+	padding: 2px;
+}
+
+
+
+
+.btn {
+	border-radius: 0px !important;
+}
+
+.top_nav-margin-remove {
+	margin-left: 0px !important;
+}
+
+.right_col-margin-remove {
+	margin-left: 0px !important;
 }
 
 .footer-margin-remove {
-	margin-left:  0px !important;
+	margin-left: 0px !important;
 }
 
 @media (max-width: 992px) {
@@ -48,30 +50,33 @@ height: 100% !important;
 }
 
 
-.Toastify__toast-body{
+.Toastify__toast-body {
 	color: #fff !important;
-	background-color: #003a4d ;
+	background-color: #003a4d;
 	margin: 0px !important;
 }
-.Toastify__toast-theme--light{
-	background-color: #003a4d !important ;
+
+.Toastify__toast-theme--light {
+	background-color: #003a4d !important;
 
 }
 
 
-.Toastify__close-button > svg{
+.Toastify__close-button>svg {
 	color: white !important;
 }
 
-.page-link:focus, .page-link:active {
-	outline: 0px !important ; 
+.page-link:focus,
+.page-link:active {
+	outline: 0px !important;
 	box-shadow: 0px !important;
-	}
-	/* .page-link{
+}
+
+/* .page-link{
 		color: #f79c74 !important;
 	} */
 
 
-	.active-pagination{
-		color: #003a4d !important;
-	}
+.active-pagination {
+	color: #003a4d !important;
+}
