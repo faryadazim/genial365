@@ -37,7 +37,7 @@ const AddModules = () => {
           {" "}
           <div
             className={`right_col  h-100 ${
-              showNavMenu === false ? "right_col-margin-remove" : "lorem "
+              showNavMenu == false ? "right_col-margin-remove" : "lorem "
             }   `}
             role="main"
           >

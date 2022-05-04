@@ -11,9 +11,10 @@ import {
 } from "redux";
 import thunk from "redux-thunk";
 import { reducers } from "./reducers";
+import App from "./App";
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 // Component Import
-import App from "./App";
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>

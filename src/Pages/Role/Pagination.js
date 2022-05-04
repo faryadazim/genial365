@@ -7,7 +7,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
   for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
     pageNumbers.push(i);
   }
-
+   
   return (
     <div>
       <nav aria-label="Page navigation example  bg-danger">
@@ -25,11 +25,11 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
             >
               <a
                 className={`page-link height-page-link  border-radius-none  ${
-                  activeClass == true && index == 0 ? "active-pagination" : " "
+                  activeClass === true && index === 0 ? "active-pagination" : " "
                 }`}
                 href="#!"
                 onClick={() => {
-                  if (index == 0) {
+                  if (index === 0) {
                     setactiveClass(true);
                   } else {
                     setactiveClass(false);

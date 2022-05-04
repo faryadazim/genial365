@@ -6,7 +6,7 @@ const Content = ({ showNavMenu }) => {
       <div
         role="main"
         className={`top_nav   ${
-          showNavMenu === false ? "right_col-margin-remove" : " "
+          showNavMenu == false ? "right_col-margin-remove" : " "
         }  `}
       >
         <div className="page-title ">

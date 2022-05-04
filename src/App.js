@@ -1,5 +1,7 @@
 // React Import
 import { useEffect, useState } from "react";
+//  Style Module Import
+import "./App.css";
 // Router Import
 import { Routes, Route } from "react-router-dom";
 
@@ -17,8 +19,7 @@ import AddPages from "./Pages/Role/AddPages";
 import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
-//  Style Module Import
-import "./App.css";
+
 function App() {
   const [isLogin, setisLogin] = useState(true);
 

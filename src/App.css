@@ -66,6 +66,11 @@
 	color: white !important;
 }
 
+.Toastify__toast-container{
+margin-right: 15px !important;
+}
+
+
 .page-link:focus,
 .page-link:active {
 	outline: 0px !important;

@@ -37,7 +37,6 @@ const AddUser = () => {
         setUserRegistered(json);
         setisLoading(false);
       });
-    console.log(UserRegistered);
   }, []);
 
   return (
@@ -243,7 +242,7 @@ const AddUser = () => {
                       placeholder="ex. Ali A.Khan"
                       required="required"
                       value={
-                        currentEditUser == "" ? "  " : currentEditUser.name
+                        currentEditUser === "" ? "  " : currentEditUser.name
                       }
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
                     />
@@ -260,7 +259,7 @@ const AddUser = () => {
                       required="required"
                       type="email"
                       value={
-                        currentEditUser == ""
+                        currentEditUser === ""
                           ? "  "
                           : `${currentEditUser.full_name
                               .slice(11)
