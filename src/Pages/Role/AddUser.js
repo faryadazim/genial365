@@ -5,8 +5,14 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
+import { ToastContainer, toast } from "react-toastify";
 
 const AddUser = () => {
+  const updatedData = {
+    Email: "SabaNadeem1@gmail.com",
+    Password: "5@7B2s6d2k6$8",
+    ConfirmPassword: "5@7B2s6d2k6$8"
+  }
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
@@ -15,6 +21,18 @@ const AddUser = () => {
   const [postsPerPage, setpostsPerPage] = useState(5);
 
   const [currentEditUser, setcurrentEditUser] = useState("");
+  // const [userData , setUserData] = {
+  //   Email: "", 
+  //   "PasswordHash": "AD8vH35ujnt0np2k03qVMTgCgDlQPQgEMMNQnB5b/IcVgH8MPh1S1rhqn6nIrfz0+A==",
+  //   "SecurityStamp": "259b86f8-aee5-4b4e-b687-ce383434ce74",
+  //   "PhoneNumber": "03045726268",
+  //   "PhoneNumberConfirmed": false,
+  //   "TwoFactorEnabled": false,
+  //   "LockoutEndDateUtc": null,
+  //   "LockoutEnabled": false,
+  //   "AccessFailedCount": 0,
+  //   "UserName": "genial365@gmail.com"
+  // }
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -27,16 +45,72 @@ const AddUser = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
-
-  console.log(indexOfLastPost, indexOfFirstPost, currentPosts);
-
-  useEffect(() => {
-    fetch("https://api.github.com/users/faryadazim/repos")
+  
+  const notifyDelete = () => toast("Deleted Successfully!");
+ 
+const fetchAllData = ()=>{
+     fetch("http://localhost:63145/api/Users")
       .then((response) => response.json())
       .then((json) => {
+        console.log(json);
         setUserRegistered(json);
         setisLoading(false);
       });
+} 
+ 
+const deleteUser = (e)=>{
+   console.log(e , "Delte this one");
+  //  
+  
+  fetch( 
+      `http://localhost:63145/api/Users/${e}`,
+    {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    }
+  )
+    .then((response) => {
+
+     fetchAllData();
+     notifyDelete();
+    })
+    .catch((error) => console.log("error", error));
+ 
+
+} 
+const AddUserRegistered =  ()=>{
+   console.log(  "Submit this one");
+  //   "http://localhost:63145/Api/User/Register", 
+
+  var requestOptions = {
+    method: "POST", 
+    body:   updatedData,
+    redirect: "follow",
+  };
+  //   ///api/Employees/attach-files
+    fetch("http://localhost:63145/Api/User/Register", requestOptions)
+    .then((response) => response)
+    .then((result) => {
+     console.log("add successfully");
+    })
+    .catch((error) => console.log("error", error));
+
+} 
+
+  useEffect(() => {
+ 
+
+      // Fetching data 
+      fetchAllData();
+ 
+
+
   }, []);
 
   return (
@@ -57,34 +131,8 @@ const AddUser = () => {
                 <div className="x_panel">
                   <div className="x_title">
                     <h2 className="pl-2 pt-2">User Registration</h2>
-                    <ul className="nav navbar-right panel_toolbox">
-                      <li className="dropdown invisible">
-                        <a
-                          href="#"
-                          className="dropdown-toggle"
-                          data-toggle="dropdown"
-                          role="button"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-wrench" />
-                        </a>
-                        <div
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a className="dropdown-item" href="#">
-                            Settings 1
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            Settings 2
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <a className="collapse-link invisible">
-                          <i className="fa fa-chevron-up" />
-                        </a>
-                      </li>
+                    <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+                      
                       <li>
                         <a
                           className="close-link"
@@ -100,8 +148,7 @@ const AddUser = () => {
                     <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        console.log("aszdazsd");
-                        console.log("adsasdfadsads");
+                        AddUserRegistered();
                       }}
                     >
                       {/* <span className="section">Personal Info</span> */}
@@ -116,7 +163,7 @@ const AddUser = () => {
                             data-validate-words={2}
                             name="name"
                             placeholder="ex. Ali A.Khan"
-                            required="required"
+                            // required="required"
                           />
                         </div>
                       </div>
@@ -129,7 +176,7 @@ const AddUser = () => {
                           <input
                             className="form-control"
                             name="email"
-                            required="required"
+                            // required="required"
                             type="email"
                           />
                         </div>
@@ -147,7 +194,7 @@ const AddUser = () => {
                             name="password"
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
                             title="Minimum 8 Characters Including An Upper And Lower Case Letter, A Number And A Unique Character"
-                            required
+                            // required
                           />
                           <span
                             style={{ position: "absolute", right: 15, top: 7 }}
@@ -203,8 +250,7 @@ const AddUser = () => {
                             className="btn btn-success btn-sm ml-2 px-3"
                           >
                             Reset
-                          </button>
-
+                          </button> 
                           {/* </div> */}
                         </div>
                       </div>
@@ -315,10 +361,9 @@ const AddUser = () => {
                         <th className="column-title"> # </th>
                         <th className="column-title">User Name </th>
                         <th className="column-title">Email </th>
-                        <th className="column-title">Created Date</th>
-                        <th className="column-title">Modified Date </th>
+                        <th className="column-title">Phone</th> 
                         <th className="column-title">Role </th>
-                        <th className="column-title">Action </th>
+                        <th className="column-title text-center">Action </th>
                       </tr>
                     </thead>
 
@@ -327,13 +372,12 @@ const AddUser = () => {
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
-                            <td className=" "> {user.name} </td>
+                            <td className=" "> {user.UserName} </td>
                             <td className=" ">
-                              {user.full_name.slice(11).toLowerCase()}@gmail.com
+                              {user.Email}
                             </td>
-                            <td className=" ">May 23, 2014 11:47:56 PM </td>
-                            <td className=" ">May 23, 2022 21:47:56 PM </td>
-                            <td className="a-right a-right  text-center">
+                            <td className=" ">{user.PhoneNumber==null? "No Available": user.PhoneNumber}</td> 
+                            <td className="a-right a-right  ">
                               Admin
                             </td>
                             <td className="a-right a-right  text-center ">
@@ -347,7 +391,7 @@ const AddUser = () => {
                               <i
                                 className="fa fa-trash-o"
                                 onClick={() => {
-                                  console.log("click icon");
+                                  deleteUser(user.Id)
                                 }}
                               ></i>{" "}
                             </td>
@@ -358,7 +402,7 @@ const AddUser = () => {
                   </table>
 
                   <div className="  d-flex justify-content-between pr-3 pt-2">
-                    <div className="d-flex  ml-3">
+                    <div className="d-flex  ml-3 mb-3">
                       <span className="pt-1 pr-2">Show</span>
                       <div className="wisthOfOtions">
                         {" "}
@@ -395,6 +439,7 @@ const AddUser = () => {
       )}
     </>
   );
+  
 };
 
 export default AddUser;

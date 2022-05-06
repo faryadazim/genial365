@@ -18,8 +18,14 @@ const AddRole = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
-  useEffect(() => {}, []);
+ 
+  useEffect(() => {
+    fetch("http://localhost:63145/api/Roles")
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json);
+      });
+  }, []);
 
   return (
     <>
