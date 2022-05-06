@@ -7,8 +7,6 @@ import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
-
-
 const AddUser = () => {
   
   const showNavMenu = useSelector((state) => state.NavState);
@@ -111,9 +109,7 @@ const AddUser = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userRegisteredAdd),
     };
-
-    // http://weaving-dev.genial365.com/api/UserRoles
-
+ 
     fetch("http://localhost:63145/api/Users", requestOptions)
       .then((response) => response.json())
       .then((data) => {
@@ -138,12 +134,16 @@ const AddUser = () => {
               password: "",
               phoneNumber: "",
               email: "",
-            });
+            })
             fetchAllData();
             setRepeatPassword("");
             notifyAdd();
-          });
-      });
+          }).catch((err)=>{
+            console.log("err" , err);
+          })
+      }).catch((err)=>{
+        console.log("err" , err);
+      })
   };
 
   useEffect(() => {
@@ -161,8 +161,8 @@ const AddUser = () => {
         <>
           {" "}
           <div className={`right_col  h-100  ${
-          showNavMenu == false ? "right_col-margin-remove" : " "
-        }`}  role="main">
+          showNavMenu === false ? "footer-margin-remove" : " "
+        } `}  role="main">
             {/* Registration Form  */}
 
             {displayUserRegBox ? (
@@ -451,7 +451,7 @@ const AddUser = () => {
                             <td className=" ">
                               {user.phoneNumber == null
                                 ? "No Available"
-                                : user.PhoneNumber}
+                                : user.phoneNumber}
                             </td>
                             <td className="a-right a-right  ">
                               {user.roleName}
