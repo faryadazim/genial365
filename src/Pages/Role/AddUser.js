@@ -6,23 +6,39 @@ import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
+
 
 const AddUser = () => {
-  const updatedData = {
-    Email: "SabaNadeem1@gmail.com",
-    Password: "5@7B2s6d2k6$8",
-    ConfirmPassword: "5@7B2s6d2k6$8"
-  }
+  
+  const showNavMenu = useSelector((state) => state.NavState);
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
   // const [showUserEntity, setshowUserEntity] = useState(5)
   const [postsPerPage, setpostsPerPage] = useState(5);
+  const [repeatPassword, setRepeatPassword] = useState("");
 
-  const [currentEditUser, setcurrentEditUser] = useState("");
+  const [currentEditUser, setcurrentEditUser] = useState({
+    email: "",
+    id: "",
+    passwordHash: "",
+    phoneNumber: "",
+    role: "",
+    roleName: "",
+    userName: "",
+  });
+  const [userRegisteredAdd, setuserRegisteredAdd] = useState({
+    userName: "",
+    password: "",
+    phoneNumber: "",
+    email: "",
+  });
+  const [Roles, setRoles] = useState([]);
+  const [selectedRole, setSelectedRole] = useState("");
   // const [userData , setUserData] = {
-  //   Email: "", 
+  //   Email: "",
   //   "PasswordHash": "AD8vH35ujnt0np2k03qVMTgCgDlQPQgEMMNQnB5b/IcVgH8MPh1S1rhqn6nIrfz0+A==",
   //   "SecurityStamp": "259b86f8-aee5-4b4e-b687-ce383434ce74",
   //   "PhoneNumber": "03045726268",
@@ -45,26 +61,34 @@ const AddUser = () => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
-  
+
   const notifyDelete = () => toast("Deleted Successfully!");
- 
-const fetchAllData = ()=>{
-     fetch("http://localhost:63145/api/Users")
+  const notifyAdd = () => toast("User Created Successfully!");
+
+  const fetchAllData = () => {
+    // fetchUser
+    fetch("http://weaving-dev.genial365.com/api/Users")
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         setUserRegistered(json);
-        setisLoading(false);
+
+        fetch("http://weaving-dev.genial365.com/api/Roles")
+          .then((response) => response.json())
+          .then((role) => {
+            setRoles(role);
+            setisLoading(false);
+          });
       });
-} 
- 
-const deleteUser = (e)=>{
-   console.log(e , "Delte this one");
-  //  
-  
-  fetch( 
-      `http://localhost:63145/api/Users/${e}`,
-    {
+
+    // fetch Role
+  };
+
+  const deleteUser = (e) => {
+    console.log(e, "Delte this one");
+    //
+
+    fetch(`http://weaving-dev.genial365.com/api/Users/${e}`, {
       method: "DELETE",
       // headers: {
       //   Authorization:
@@ -73,44 +97,58 @@ const deleteUser = (e)=>{
       //     JSON.parse(localStorage.getItem("authUser")).access_token,
       //   "Content-Type": "application/x-www-form-urlencoded",
       // },
-    }
-  )
-    .then((response) => {
-
-     fetchAllData();
-     notifyDelete();
     })
-    .catch((error) => console.log("error", error));
- 
-
-} 
-const AddUserRegistered =  ()=>{
-   console.log(  "Submit this one");
-  //   "http://localhost:63145/Api/User/Register", 
-
-  var requestOptions = {
-    method: "POST", 
-    body:   updatedData,
-    redirect: "follow",
+      .then((response) => {
+        fetchAllData();
+        notifyDelete();
+      })
+      .catch((error) => console.log("error", error));
   };
-  //   ///api/Employees/attach-files
-    fetch("http://localhost:63145/Api/User/Register", requestOptions)
-    .then((response) => response)
-    .then((result) => {
-     console.log("add successfully");
-    })
-    .catch((error) => console.log("error", error));
+  const AddUserRegistered = () => {
+    console.log("Submit this one");
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(userRegisteredAdd),
+    };
 
-} 
+    // http://weaving-dev.genial365.com/api/UserRoles
+
+    fetch("http://localhost:63145/api/Users", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("success", data.Id);
+        const requestOptionsForRole = {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            UserId: data.Id,
+            RoleId: selectedRole,
+          }),
+        };
+        fetch(
+          "http://weaving-dev.genial365.com/api/UserRoles",
+          requestOptionsForRole
+        )
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("success", data);
+            setuserRegisteredAdd({
+              userName: "",
+              password: "",
+              phoneNumber: "",
+              email: "",
+            });
+            fetchAllData();
+            setRepeatPassword("");
+            notifyAdd();
+          });
+      });
+  };
 
   useEffect(() => {
- 
-
-      // Fetching data 
-      fetchAllData();
- 
-
-
+    // Fetching data
+    fetchAllData();
   }, []);
 
   return (
@@ -122,7 +160,9 @@ const AddUserRegistered =  ()=>{
       ) : (
         <>
           {" "}
-          <div className="right_col  h-100" role="main">
+          <div className={`right_col  h-100  ${
+          showNavMenu == false ? "right_col-margin-remove" : " "
+        }`}  role="main">
             {/* Registration Form  */}
 
             {displayUserRegBox ? (
@@ -132,7 +172,6 @@ const AddUserRegistered =  ()=>{
                   <div className="x_title">
                     <h2 className="pl-2 pt-2">User Registration</h2>
                     <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                      
                       <li>
                         <a
                           className="close-link"
@@ -163,6 +202,13 @@ const AddUserRegistered =  ()=>{
                             data-validate-words={2}
                             name="name"
                             placeholder="ex. Ali A.Khan"
+                            value={userRegisteredAdd.userName}
+                            onChange={(e) =>
+                              setuserRegisteredAdd({
+                                ...userRegisteredAdd,
+                                userName: e.target.value,
+                              })
+                            }
                             // required="required"
                           />
                         </div>
@@ -178,6 +224,13 @@ const AddUserRegistered =  ()=>{
                             name="email"
                             // required="required"
                             type="email"
+                            value={userRegisteredAdd.email}
+                            onChange={(e) =>
+                              setuserRegisteredAdd({
+                                ...userRegisteredAdd,
+                                email: e.target.value,
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -195,6 +248,14 @@ const AddUserRegistered =  ()=>{
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
                             title="Minimum 8 Characters Including An Upper And Lower Case Letter, A Number And A Unique Character"
                             // required
+
+                            value={userRegisteredAdd.password}
+                            onChange={(e) =>
+                              setuserRegisteredAdd({
+                                ...userRegisteredAdd,
+                                password: e.target.value,
+                              })
+                            }
                           />
                           <span
                             style={{ position: "absolute", right: 15, top: 7 }}
@@ -216,6 +277,27 @@ const AddUserRegistered =  ()=>{
                             name="password2"
                             data-validate-linked="password"
                             required="required"
+                            value={repeatPassword}
+                            onChange={(e) => setRepeatPassword(e.target.value)}
+                          />
+                        </div>
+                      </div>
+                      <div className="field item form-group">
+                        <label className="col-form-label col-md-3 col-sm-3  label-align">
+                          Phone Number
+                        </label>
+                        <div className="col-md-6 col-sm-6">
+                          <input
+                            className="form-control"
+                            type="text"
+                            name="phoneNumber"
+                            value={userRegisteredAdd.phoneNumber}
+                            onChange={(e) =>
+                              setuserRegisteredAdd({
+                                ...userRegisteredAdd,
+                                phoneNumber: e.target.value,
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -227,11 +309,13 @@ const AddUserRegistered =  ()=>{
                           <Form.Select
                             aria-label="Default select example"
                             className="form-control text-center w-50"
+                            onChange={(e) => setSelectedRole(e.target.value)}
                           >
-                            <option>--- Select Role ---</option>
-                            <option value="1">One</option>
-                            <option value="2">Two</option>
-                            <option value="3">Three</option>
+                            {Roles.map((item) => {
+                              return (
+                                <option value={item.Id}>{item.Name}</option>
+                              );
+                            })}
                           </Form.Select>
                         </div>
                       </div>
@@ -250,7 +334,7 @@ const AddUserRegistered =  ()=>{
                             className="btn btn-success btn-sm ml-2 px-3"
                           >
                             Reset
-                          </button> 
+                          </button>
                           {/* </div> */}
                         </div>
                       </div>
@@ -287,10 +371,8 @@ const AddUserRegistered =  ()=>{
                       name="name"
                       placeholder="ex. Ali A.Khan"
                       required="required"
-                      value={
-                        currentEditUser === "" ? "  " : currentEditUser.name
-                      }
-                      // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
+                      value={currentEditUser}
+                      onChange={(e) => setcurrentEditUser()}
                     />
                   </div>
                 </div>
@@ -304,30 +386,22 @@ const AddUserRegistered =  ()=>{
                       name="email"
                       required="required"
                       type="email"
-                      value={
-                        currentEditUser === ""
-                          ? "  "
-                          : `${currentEditUser.full_name
-                              .slice(11)
-                              .toLowerCase()}@gmail.com`
-                      }
-                      //   onChange={(e)=>setcurrentEditUser({...currentEditUser ,full_name:e.target.value}) }
                     />
                   </div>
                 </div>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-3 col-sm-3  label-align">
-                    email<span className="required">*</span>
+                    Select Role<span className="required">*</span>
                   </label>
                   <div className="col-md-6 col-sm-6">
                     <Form.Select
                       aria-label="Default select example"
-                      className="form-control text-center"
+                      className="form-control text-center w-75"
+                      onChange={(e) => setSelectedRole(e.target.value)}
                     >
-                      <option>--- Select Role ---</option>
-                      <option value="1">One</option>
-                      <option value="2">Two</option>
-                      <option value="3">Three</option>
+                      {Roles.map((item) => {
+                        return <option value={item.Id}>{item.Name}</option>;
+                      })}
                     </Form.Select>
                   </div>
                 </div>
@@ -361,7 +435,7 @@ const AddUserRegistered =  ()=>{
                         <th className="column-title"> # </th>
                         <th className="column-title">User Name </th>
                         <th className="column-title">Email </th>
-                        <th className="column-title">Phone</th> 
+                        <th className="column-title">Phone</th>
                         <th className="column-title">Role </th>
                         <th className="column-title text-center">Action </th>
                       </tr>
@@ -372,13 +446,15 @@ const AddUserRegistered =  ()=>{
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
-                            <td className=" "> {user.UserName} </td>
+                            <td className=" "> {user.userName} </td>
+                            <td className=" ">{user.email}</td>
                             <td className=" ">
-                              {user.Email}
+                              {user.phoneNumber == null
+                                ? "No Available"
+                                : user.PhoneNumber}
                             </td>
-                            <td className=" ">{user.PhoneNumber==null? "No Available": user.PhoneNumber}</td> 
                             <td className="a-right a-right  ">
-                              Admin
+                              {user.roleName}
                             </td>
                             <td className="a-right a-right  text-center ">
                               <i
@@ -391,7 +467,7 @@ const AddUserRegistered =  ()=>{
                               <i
                                 className="fa fa-trash-o"
                                 onClick={() => {
-                                  deleteUser(user.Id)
+                                  deleteUser(user.id);
                                 }}
                               ></i>{" "}
                             </td>
@@ -439,7 +515,6 @@ const AddUserRegistered =  ()=>{
       )}
     </>
   );
-  
 };
 
 export default AddUser;
