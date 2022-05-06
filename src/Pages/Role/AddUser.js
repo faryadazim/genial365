@@ -8,7 +8,7 @@ import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 const AddUser = () => {
-  
+  const url = "http://weaving-dev.genial365.com"
   const showNavMenu = useSelector((state) => state.NavState);
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
@@ -65,13 +65,13 @@ const AddUser = () => {
 
   const fetchAllData = () => {
     // fetchUser
-    fetch("http://weaving-dev.genial365.com/api/Users")
+    fetch(url + "/api/Users")
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         setUserRegistered(json);
 
-        fetch("http://weaving-dev.genial365.com/api/Roles")
+        fetch(url +"/api/Roles")
           .then((response) => response.json())
           .then((role) => {
             setRoles(role);
@@ -86,7 +86,7 @@ const AddUser = () => {
     console.log(e, "Delte this one");
     //
 
-    fetch(`http://weaving-dev.genial365.com/api/Users/${e}`, {
+    fetch(`${url}/api/Users/${e}`, {
       method: "DELETE",
       // headers: {
       //   Authorization:
@@ -110,10 +110,10 @@ const AddUser = () => {
       body: JSON.stringify(userRegisteredAdd),
     };
  
-    fetch("http://localhost:63145/api/Users", requestOptions)
+    fetch(url + "/api/Users", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log("success", data.Id);
+        
         const requestOptionsForRole = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -123,7 +123,7 @@ const AddUser = () => {
           }),
         };
         fetch(
-          "http://weaving-dev.genial365.com/api/UserRoles",
+          url +"/api/UserRoles",
           requestOptionsForRole
         )
           .then((response) => response.json())
@@ -216,7 +216,7 @@ const AddUser = () => {
 
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          email<span className="required">*</span>
+                          Email<span className="required">*</span>
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <input
@@ -268,7 +268,7 @@ const AddUser = () => {
                       </div>
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          Repeat password<span className="required">*</span>
+                          Repeat Password<span className="required">*</span>
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <input
@@ -330,7 +330,14 @@ const AddUser = () => {
                             Submit
                           </button>
                           <button
-                            type="reset"
+                          onClick={()=>{ setuserRegisteredAdd({
+                            userName: "",
+                            password: "",
+                            phoneNumber: "",
+                            email: "",
+                          })
+                          setRepeatPassword("")}
+                        }
                             className="btn btn-success btn-sm ml-2 px-3"
                           >
                             Reset

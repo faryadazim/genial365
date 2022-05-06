@@ -45,9 +45,9 @@ function App() {
             <Nav />
             <Header />
             <Routes>
-              <Route path="/" element={<Loader />} />
+              <Route path="UserAccess" element={<Loader />} />
               <Route path="RoleAccess" element={<AddRole />} />
-              <Route path="UserAccess" element={<AddUser />} />
+              <Route path="/" element={<AddUser />} />
               <Route path="PagesAccess" element={<AddPages />} />
               <Route path="ModuleAccess" element={<AddModules />} />
               <Route path="PermissionAccess" element={<RolePermission />} />
