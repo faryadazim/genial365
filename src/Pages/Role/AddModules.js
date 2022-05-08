@@ -28,6 +28,7 @@ const AddModules = () => {
   // Notifier Function
   const notifyAdd = () => toast("Module added Successfully!");
   const notifyDelete = () => toast("Module Deleted Successfully!");
+  const notifyUpdate = () => toast("Module Updated Successfully!");
 
   //   Edit Model
   const [show, setShow] = useState(false);
@@ -78,14 +79,19 @@ const AddModules = () => {
 
     fetch(URL + "/api/Modules", requestOptions)
       .then((response) => response)
-      .then((data) => {
-       console.log("added" , data);
-       fetchAllData()
+      .then((data) => { 
+       fetchAllData();
+       notifyUpdate();
+       setCurrentEditUser({
+        module_name: "",
+        module_icon: "",
+      });
 
       })
       .catch((err) => {
         console.log("err", err);
       });
+      fetchAllData()
   };
   // Delete
   const deleteModule = (e) => {

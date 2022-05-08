@@ -81,7 +81,6 @@ const URL =  localStorage.getItem("authUser")
   }
   // Update 
 const  UpdateRoleRegistered = ()=>{
-  console.log(currentEditUser);
   fetch(
     URL +
       `/api/Roles/${currentEditUser.id}?roleName=${currentEditUser.name}'`,
