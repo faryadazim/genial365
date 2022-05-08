@@ -4,28 +4,114 @@ import "./Role.css";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
-
 import { ToastContainer, toast } from "react-toastify";
+import { useSelector } from "react-redux";
 const AddRole = () => {
-  const [isLoading, setisLoading] = useState(false);
+  
+  const showNavMenu = useSelector((state) => state.NavState);
+const URL =  localStorage.getItem("authUser")
+  const [isLoading, setisLoading] = useState(true);
 
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
+  const [currentEditUser , setCurrentEditUser] = useState({name:"" , id:""})
 
-  const [RoleRegistered, setRoleRegistered] = useState([{}, {}, {}, {}]);
-  const notify = () => toast("Wow so easy!");
+  const [RoleRegistered, setRoleRegistered] = useState([]);
+  const [roleRegisteredAdd ,setRoleRegisteredAdd ] = useState("")
+  const notifyAdd = () => toast("Role Added Successfully!");
 
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
- 
+
+  const notifyDelete = () => toast("Deleted Successfully!");
+  // Create 
+  const AddRoleRegistered = (e)=>{
+    e.preventDefault(e);  
+    notifyAdd(); 
+    fetch(
+      URL +
+        `/api/Roles?InputPageName=${roleRegisteredAdd}`,
+      {
+        method: "POST",
+        // headers: {
+        //   Authorization:
+        //     JSON.parse(localStorage.getItem("authUser")).token_type +
+        //     " " +
+        //     JSON.parse(localStorage.getItem("authUser")).access_token,
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
+      }
+    )
+      .then((response) => {
+        console.log(response);
+       fetchAllData();
+       setRoleRegisteredAdd("")
+      })
+      .catch((error) => console.log("error", error));
+    }
+    //  Read 
+    const fetchAllData = ()=>{
+    fetch(URL +"/api/Roles")
+    .then((response) => response.json())
+    .then((json) => {
+      setRoleRegistered(json);
+      setisLoading(false)
+    });
+  }
+  // Delete 
+  const deleteRoleRigistered = (idToBeDelete)=>{
+    // /api/Roles/d06b464573f741058849c9899d10a6b1'
+    fetch(`${URL}/api/Roles/${idToBeDelete}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
+      .then((response) => {
+        // deleteing Role for this Id
+
+        fetchAllData();
+        notifyDelete();
+      })
+      .catch((error) => console.log("error", error));
+  }
+
+  // Update 
+const  UpdateRoleRegistered = ()=>{
+  console.log(currentEditUser);
+  fetch(
+    URL +
+      `/api/Roles/${currentEditUser.id}?roleName=${currentEditUser.name}'`,
+    {
+      method: "PUT",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    }
+  )
+    .then((response) => {
+      console.log(response);
+     fetchAllData();
+    })
+    .catch((error) => console.log("error", error));
+
+
+
+
+}
   useEffect(() => {
-    fetch("http://localhost:63145/api/Roles")
-      .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
-      });
+    fetchAllData();
   }, []);
+
 
   return (
     <>
@@ -36,42 +122,17 @@ const AddRole = () => {
       ) : (
         <>
           {" "}
-          <div className="right_col  h-100" role="main">
+          <div className={`right_col  h-100  ${
+          showNavMenu == false ? "right_col-margin-remove" : " "
+        } `}  role="main">
             {displayUserRegBox ? (
               <>
                 {" "}
                 <div className="x_panel">
                   <div className="x_title">
                     <h2 className="pl-2 pt-2">Role Creation</h2>
-                    <ul className="nav navbar-right panel_toolbox">
-                      <li className="dropdown invisible">
-                        <a
-                          href="#"
-                          className="dropdown-toggle"
-                          data-toggle="dropdown"
-                          role="button"
-                          aria-expanded="false"
-                        >
-                          <i className="fa fa-wrench" />
-                        </a>
-                        <div
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuButton"
-                        >
-                          <a className="dropdown-item" href="#">
-                            Settings 1
-                          </a>
-                          <a className="dropdown-item" href="#">
-                            Settings 2
-                          </a>
-                        </div>
-                      </li>
-                      <li>
-                        <a className="collapse-link invisible">
-                          <i className="fa fa-chevron-up" />
-                        </a>
-                      </li>
-                      <li>
+                    <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+                    <li>
                         <a
                           className="close-link"
                           onClick={() => setdisplayUserRegBox(false)}
@@ -84,12 +145,7 @@ const AddRole = () => {
                   </div>
                   <div className="x_content">
                     <form
-                      onSubmit={(e) => {
-                        e.preventDefault();
-                        console.log("aszdazsd");
-                        console.log("adsasdfadsads");
-                        notify();
-                      }}
+                      
                     >
                       {/* <span className="section">Personal Info</span> */}
                       <div className="field item form-group">
@@ -103,7 +159,9 @@ const AddRole = () => {
                             data-validate-words={2}
                             name="name"
                             placeholder="ex. Saleman"
-                            required="required"
+                            required="true"
+                            value={roleRegisteredAdd}
+                            onChange={(e)=>setRoleRegisteredAdd(e.target.value)}
                           />
                         </div>
                       </div>
@@ -114,7 +172,9 @@ const AddRole = () => {
                           <button
                             type="submit"
                             className="btn btn-primary btn-sm px-3"
-                            onClick={notify}
+                            onClick={(e)=>{
+                              AddRoleRegistered(e)
+                            }}
                           >
                             Submit
                           </button>
@@ -146,12 +206,12 @@ const AddRole = () => {
             >
               <Modal.Header>
                 <Modal.Title>Update Role</Modal.Title>
-                <i className="fa fa-close"></i>
+                <i  onClick={handleClose} className="fa fa-close"></i>
               </Modal.Header>
               <Modal.Body>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4  label-align">
-                    Enter Type Name<span className="required">*</span>
+                    Type Role Name<span className="required">*</span>
                   </label>
                   <div className="col-md-8 col-sm-8">
                     <input
@@ -161,6 +221,8 @@ const AddRole = () => {
                       name="name"
                       placeholder="ex. Admin"
                       required="required"
+                      value={currentEditUser.name}
+                      onChange={(e)=>{setCurrentEditUser({...currentEditUser , name:e.target.value})}}
 
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
                     />
@@ -168,22 +230,14 @@ const AddRole = () => {
                 </div>
               </Modal.Body>
               <Modal.Footer>
-                <Button
-                  variant="primary"
-                  className="btn-sm px-3"
-                  onClick={() => {
-                    handleClose();
-                    notify();
-                  }}
-                >
-                  Update
-                </Button>
+               
                 <Button
                   variant="success"
                   className="btn-sm px-3 ModalButtonPositionAdjectment"
-                  onClick={handleClose}
+                  onClick={()=>{UpdateRoleRegistered()
+                  handleClose()}}
                 >
-                  Clear
+                  Update
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -197,7 +251,7 @@ const AddRole = () => {
                     <thead>
                       <tr className="headings">
                         <th className="column-title"> Sr. </th>
-                        <th className="column-title">Type Name</th>
+                        <th className="column-title">Role Name</th>
                         <th className="column-title text-center" width="20%">
                           Action{" "}
                         </th>
@@ -209,7 +263,7 @@ const AddRole = () => {
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
-                            <td className=" "> Admin </td>
+                            <td className=" "> {Role.Name} </td>
 
                             <td
                               width="20%"
@@ -219,12 +273,13 @@ const AddRole = () => {
                                 className="fa fa-edit"
                                 onClick={() => {
                                   handleShow();
+                                  setCurrentEditUser({id:Role.Id , name:Role.Name})
                                 }}
                               ></i>{" "}
                               <i
                                 className="fa fa-trash-o pl-3"
                                 onClick={() => {
-                                  console.log("click icon");
+                                deleteRoleRigistered(Role.Id)
                                 }}
                               ></i>{" "}
                             </td>
@@ -233,42 +288,7 @@ const AddRole = () => {
                       })}
                     </tbody>
                   </table>
-                  {/* Pagination  */}
-                  <div className="  d-flex justify-content-end pr-3 pt-2">
-                    <nav aria-label="Page navigation example  bg-danger">
-                      <ul className="pagination border-radius-none">
-                        <li className="page-item paginate_button previous border-radius-none">
-                          <a className="page-link border-radius-none height-page-link">
-                            Previous
-                          </a>
-                        </li>
-                        <li className="page-item paginate_button border-radius-none">
-                          <a className="page-link height-page-link" href="#">
-                            1
-                          </a>
-                        </li>
-                        <li className="page-item paginate_button ">
-                          <a className="page-link height-page-link" href="#">
-                            2
-                          </a>
-                        </li>
-                        <li className="page-item paginate_button ">
-                          <a className="page-link height-page-link" href="#">
-                            3
-                          </a>
-                        </li>
-                        <li className="page-item paginate_button next  ">
-                          <a
-                            className="page-link border-radius-none height-page-link"
-                            href="#"
-                          >
-                            Next
-                          </a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-                  {/* Pagination  */}
+                
                 </div>
               </div>
             </div>

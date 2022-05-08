@@ -8,33 +8,28 @@ import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 const AddUser = () => {
-  const url = "http://weaving-dev.genial365.com"
+  const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
-  // const [showUserEntity, setshowUserEntity] = useState(5)
   const [postsPerPage, setpostsPerPage] = useState(5);
   const [repeatPassword, setRepeatPassword] = useState("");
-
-  const [currentEditUser, setcurrentEditUser] = useState({
-    email: "",
-    id: "",
-    passwordHash: "",
-    phoneNumber: "",
-    role: "",
-    roleName: "",
-    userName: "",
-  });
   const [userRegisteredAdd, setuserRegisteredAdd] = useState({
     userName: "",
     password: "",
-    phoneNumber: "",
     email: "",
   });
+  const [currentEditUser, setcurrentEditUser] = useState({
+    email: "",
+    id: "",
+    userName: "",
+  });
+
   const [Roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState("1");
+
   // const [userData , setUserData] = {
   //   Email: "",
   //   "PasswordHash": "AD8vH35ujnt0np2k03qVMTgCgDlQPQgEMMNQnB5b/IcVgH8MPh1S1rhqn6nIrfz0+A==",
@@ -71,7 +66,7 @@ const AddUser = () => {
         console.log(json);
         setUserRegistered(json);
 
-        fetch(url +"/api/Roles")
+        fetch(url + "/api/Roles")
           .then((response) => response.json())
           .then((role) => {
             setRoles(role);
@@ -97,23 +92,24 @@ const AddUser = () => {
       // },
     })
       .then((response) => {
+        // deleteing Role for this Id
+
         fetchAllData();
         notifyDelete();
       })
       .catch((error) => console.log("error", error));
   };
   const AddUserRegistered = () => {
-    console.log("Submit this one");
+    console.log("user", selectedRole, userRegisteredAdd);
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(userRegisteredAdd),
     };
- 
+
     fetch(url + "/api/Users", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        
         const requestOptionsForRole = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -122,10 +118,7 @@ const AddUser = () => {
             RoleId: selectedRole,
           }),
         };
-        fetch(
-          url +"/api/UserRoles",
-          requestOptionsForRole
-        )
+        fetch(url + "/api/UserRoles", requestOptionsForRole)
           .then((response) => response.json())
           .then((data) => {
             console.log("success", data);
@@ -134,20 +127,55 @@ const AddUser = () => {
               password: "",
               phoneNumber: "",
               email: "",
-            })
+            });
             fetchAllData();
             setRepeatPassword("");
             notifyAdd();
-          }).catch((err)=>{
-            console.log("err" , err);
           })
-      }).catch((err)=>{
-        console.log("err" , err);
+          .catch((err) => {
+            console.log("err", err);
+          });
       })
+      .catch((err) => {
+        console.log("err", err);
+      });
+  };
+  const UpdateUserRegistered = () => {
+// --  http://localhost:63145
+    console.log("Update DAta", currentEditUser, selectedRole);
+
+    
+
+    fetch(
+      url +
+        `/api/Users?InputId=${currentEditUser.id}&InputuserName=${currentEditUser.userName}&Inputemail=${currentEditUser.email}`,
+      {
+        method: "PUT",
+        // headers: {
+        //   Authorization:
+        //     JSON.parse(localStorage.getItem("authUser")).token_type +
+        //     " " +
+        //     JSON.parse(localStorage.getItem("authUser")).access_token,
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
+      }
+    )
+      .then((response) => {
+        console.log(response);
+       fetchAllData();
+      })
+      .catch((error) => console.log("error", error));
+
+
+
+
+
+
+
+  
   };
 
   useEffect(() => {
-    // Fetching data
     fetchAllData();
   }, []);
 
@@ -160,9 +188,12 @@ const AddUser = () => {
       ) : (
         <>
           {" "}
-          <div className={`right_col  h-100  ${
-          showNavMenu === false ? "footer-margin-remove" : " "
-        } `}  role="main">
+          <div
+            className={`right_col  h-100  ${
+              showNavMenu === false ? "footer-margin-remove" : " "
+            } `}
+            role="main"
+          >
             {/* Registration Form  */}
 
             {displayUserRegBox ? (
@@ -282,25 +313,7 @@ const AddUser = () => {
                           />
                         </div>
                       </div>
-                      <div className="field item form-group">
-                        <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          Phone Number
-                        </label>
-                        <div className="col-md-6 col-sm-6">
-                          <input
-                            className="form-control"
-                            type="text"
-                            name="phoneNumber"
-                            value={userRegisteredAdd.phoneNumber}
-                            onChange={(e) =>
-                              setuserRegisteredAdd({
-                                ...userRegisteredAdd,
-                                phoneNumber: e.target.value,
-                              })
-                            }
-                          />
-                        </div>
-                      </div>
+
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
                           Select Role<span className="required">*</span>
@@ -330,14 +343,14 @@ const AddUser = () => {
                             Submit
                           </button>
                           <button
-                          onClick={()=>{ setuserRegisteredAdd({
-                            userName: "",
-                            password: "",
-                            phoneNumber: "",
-                            email: "",
-                          })
-                          setRepeatPassword("")}
-                        }
+                            onClick={() => {
+                              setuserRegisteredAdd({
+                                userName: "",
+                                password: "",
+                                email: "",
+                              });
+                              setRepeatPassword("");
+                            }}
                             className="btn btn-success btn-sm ml-2 px-3"
                           >
                             Reset
@@ -363,7 +376,7 @@ const AddUser = () => {
             >
               <Modal.Header>
                 <Modal.Title>Update User</Modal.Title>
-                <i className="fa fa-close"></i>
+                <i onClick={handleClose} className="fa fa-close"></i>
               </Modal.Header>
               <Modal.Body>
                 <div className="field item form-group">
@@ -378,8 +391,13 @@ const AddUser = () => {
                       name="name"
                       placeholder="ex. Ali A.Khan"
                       required="required"
-                      value={currentEditUser}
-                      onChange={(e) => setcurrentEditUser()}
+                      value={currentEditUser.userName}
+                      onChange={(e) =>
+                        setcurrentEditUser({
+                          ...currentEditUser,
+                          userName: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
@@ -393,10 +411,17 @@ const AddUser = () => {
                       name="email"
                       required="required"
                       type="email"
+                      value={currentEditUser.email}
+                      onChange={(e) =>
+                        setcurrentEditUser({
+                          ...currentEditUser,
+                          email: e.target.value,
+                        })
+                      }
                     />
                   </div>
                 </div>
-                <div className="field item form-group">
+                {/* <div className="field item form-group">
                   <label className="col-form-label col-md-3 col-sm-3  label-align">
                     Select Role<span className="required">*</span>
                   </label>
@@ -404,6 +429,7 @@ const AddUser = () => {
                     <Form.Select
                       aria-label="Default select example"
                       className="form-control text-center w-75"
+                      value={selectedRole}
                       onChange={(e) => setSelectedRole(e.target.value)}
                     >
                       {Roles.map((item) => {
@@ -411,22 +437,26 @@ const AddUser = () => {
                       })}
                     </Form.Select>
                   </div>
-                </div>
+                </div> */}
               </Modal.Body>
               <Modal.Footer>
-                <Button
+                {/* <Button
                   variant="primary"
                   className="btn-sm px-3"
                   onClick={handleClose}
                 >
                   Update
-                </Button>
+                </Button> */}
                 <Button
-                  variant="success"
-                  className="btn-sm px-3 ModalButtonPositionAdjectment "
-                  onClick={handleClose}
+                  variant="primary"
+                  className="btn-sm px-3 ModalButtonPositionAdjectment 
+                  "
+                  onClick={() => {
+                    UpdateUserRegistered();
+                    handleClose();
+                  }}
                 >
-                  Clear
+                  Update
                 </Button>
               </Modal.Footer>
             </Modal>
@@ -442,7 +472,6 @@ const AddUser = () => {
                         <th className="column-title"> # </th>
                         <th className="column-title">User Name </th>
                         <th className="column-title">Email </th>
-                        <th className="column-title">Phone</th>
                         <th className="column-title">Role </th>
                         <th className="column-title text-center">Action </th>
                       </tr>
@@ -455,11 +484,7 @@ const AddUser = () => {
                             <td className=" ">{index + 1}</td>
                             <td className=" "> {user.userName} </td>
                             <td className=" ">{user.email}</td>
-                            <td className=" ">
-                              {user.phoneNumber == null
-                                ? "No Available"
-                                : user.phoneNumber}
-                            </td>
+
                             <td className="a-right a-right  ">
                               {user.roleName}
                             </td>
@@ -468,6 +493,7 @@ const AddUser = () => {
                                 className="fa fa-edit pr-2"
                                 onClick={() => {
                                   setcurrentEditUser(user);
+                                  setSelectedRole(user.role);
                                   handleShow();
                                 }}
                               ></i>

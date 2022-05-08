@@ -21,7 +21,7 @@ import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 
 function App() {
-  const [isLogin, setisLogin] = useState(true);
+  const [isLogin, setisLogin] = useState(false);
 
   useEffect(() => {}, []);
 
@@ -45,9 +45,9 @@ function App() {
             <Nav />
             <Header />
             <Routes>
-              <Route path="UserAccess" element={<Loader />} />
+              <Route path="/" element={<Loader />} />
               <Route path="RoleAccess" element={<AddRole />} />
-              <Route path="/" element={<AddUser />} />
+              <Route path="UserAccess" element={<AddUser />} />
               <Route path="PagesAccess" element={<AddPages />} />
               <Route path="ModuleAccess" element={<AddModules />} />
               <Route path="PermissionAccess" element={<RolePermission />} />

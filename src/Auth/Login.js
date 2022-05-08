@@ -4,6 +4,11 @@ import React from "react";
 
 const Login = ({setisLogin , isLogin}) => {
   
+const onLogin  = ()=>{
+  localStorage.setItem(
+    "authUser","http://localhost:63145/"
+  );
+}
   const notify = () => toast("Login SuccessFully!");
   
   return (
@@ -36,7 +41,8 @@ const Login = ({setisLogin , isLogin}) => {
                  onClick={
                    (e)=>{e.preventDefault()
                     setisLogin(!isLogin)
-                    notify()}
+                    notify()
+                    onLogin()}
                    
                  }>
                     Log in
