@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
-import { Modal } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import { ToastContainer, toast } from "react-toastify";
+import { Modal } from "react-bootstrap"; 
+import {  toast } from "react-toastify";
 import { useSelector } from "react-redux";
 const AddRole = () => {
   
@@ -80,7 +79,6 @@ const URL =  localStorage.getItem("authUser")
       })
       .catch((error) => console.log("error", error));
   }
-
   // Update 
 const  UpdateRoleRegistered = ()=>{
   console.log(currentEditUser);
