@@ -23,6 +23,7 @@ const AddPages = () => {
     page_link: "",
     module_id: "",
   });
+  
 
   const [currentEditPage, setCurrentEditPage] = useState({
     page_id: "",
@@ -54,7 +55,18 @@ const AddPages = () => {
         fetch(url + "/api/Modules")
           .then((response) => response.json())
           .then((ModuleList) => {
+
+
             setModule(ModuleList);
+
+            setPageRegisteredAdd({
+              ...pageRegisteredAdd,
+              module_id: ModuleList[0].module_id,
+            })
+
+
+
+
             setisLoading(false);
           });
       });
@@ -80,6 +92,12 @@ const AddPages = () => {
       })
       .catch((err) => {
         console.log("err", err);
+      });
+      
+      setPageRegisteredAdd({
+        page_name: "",
+        page_link: "",
+        module_id: "",
       });
   };
   const deletePage = (e) => {
@@ -125,6 +143,7 @@ const AddPages = () => {
 
   useEffect(() => {
     fetchAllData();
+
   }, []);
 
   return (
@@ -217,6 +236,7 @@ const AddPages = () => {
                           <Form.Select
                             aria-label="Default select example"
                             className="form-control text-center w-50"
+                      
                             onChange={(e) =>
                               setPageRegisteredAdd({
                                 ...pageRegisteredAdd,
