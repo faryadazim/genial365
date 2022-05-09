@@ -49,8 +49,7 @@ const AddPages = () => {
   const fetchAllData = () => {
     fetch(url + "/api/Pages")
       .then((response) => response.json())
-      .then((json) => {
-        console.log(json);
+      .then((json) => { 
         setUserRegistered(json);
         fetch(url + "/api/Modules")
           .then((response) => response.json())
@@ -59,10 +58,10 @@ const AddPages = () => {
 
             setModule(ModuleList);
 
-            setPageRegisteredAdd({
-              ...pageRegisteredAdd,
-              module_id: ModuleList[0].module_id,
-            })
+            // setPageRegisteredAdd({
+            //   ...pageRegisteredAdd,
+            //   // module_id: ModuleList[0].module_id,
+            // })
 
 
 
@@ -72,6 +71,8 @@ const AddPages = () => {
       });
   };
   const AddPageRegistered = () => {
+console.log(pageRegisteredAdd , "added to be data");
+
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -126,7 +127,7 @@ const AddPages = () => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentEditPage),
     };
-    console.log(requestOptions.body);
+    
     fetch(url + "/api/Pages", requestOptions)
       .then((response) => response)
       .then((data) => {
@@ -230,7 +231,7 @@ const AddPages = () => {
 
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
-                          Select Role<span className="required">*</span>
+                          Select Module<span className="required">*</span>
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <Form.Select
@@ -346,7 +347,7 @@ const AddPages = () => {
                 </div>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-3 col-sm-3  label-align">
-                    Select Role<span className="required">*</span>
+                    Select Module<span className="required">*</span>
                   </label>
                   <div className="col-md-6 col-sm-6">
                     <Form.Select

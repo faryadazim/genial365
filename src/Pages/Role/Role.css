@@ -86,3 +86,40 @@ table.jambo_table thead {
 .wisthOfOtions {
     width: 100px;
 }
+
+
+.btn-sm{
+    padding-top: 1.75px;
+    padding-bottom: 1.75px;
+}
+
+
+.removePaddingModuleName{
+    padding: -2px auto !important;
+}
+.moduleBgColor{
+    background:#fac4ac !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
