@@ -78,7 +78,7 @@ const Nav = () => {
                             </li>
                             <li>
                               <NavLink to="PermissionAccess">
-                                Role Permission
+                                Pages Permission
                               </NavLink>
                             </li>
                           </ul>
