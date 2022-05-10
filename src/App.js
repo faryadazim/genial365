@@ -21,7 +21,9 @@ import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 
 function App() {
-  const [isLogin, setisLogin] = useState(false);
+  const [isLogin, setisLogin] = useState(true);
+  // const [userRole ,setUserRole ] = useState("")
+  const [userId, setUserId] = useState("")
 
   useEffect(() => {}, []);
 
@@ -57,7 +59,7 @@ function App() {
           </div>
         </div>
       ) : (
-        <Login setisLogin={setisLogin} isLogin={isLogin} />
+        <Login setisLogin={setisLogin} isLogin={isLogin}   />
       )}
     </>
   );
