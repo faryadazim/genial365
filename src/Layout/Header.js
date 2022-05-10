@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setNavSm, setNavMd } from "../actions/NavState";
-const Header = () => {
+const Header = ({roleName}) => {
   const dispatch = useDispatch();
   const showNavMenu = useSelector((state) => state.NavState);
   const [ScreenWidth, setScreenWidth] = useState();
@@ -53,7 +53,7 @@ const Header = () => {
                     aria-expanded="false"
                   >
                     <img src="images/img.jpg" alt />
-                    Super Admin
+                   {roleName}
                   </a>
                   <div
                     className="dropdown-menu dropdown-usermenu pull-right"

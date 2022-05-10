@@ -1,7 +1,7 @@
 import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 
-const Login = ({ setisLogin, isLogin  , setUserRole}) => {
+const Login = ({ setisLogin, isLogin  ,setNavigationData}) => {
   const [logInAuth, setlogInAuth] = useState({
     username: "",
     password: "",
@@ -11,6 +11,32 @@ const Login = ({ setisLogin, isLogin  , setUserRole}) => {
     localStorage.setItem("authUser", "http://localhost:63145/");
   };
   const notify = () => toast("Login SuccessFully!");
+const fetchNavigation = (e)=>{
+
+  fetch("http://localhost:63145/api/navigation",
+  {
+    method: "GET",
+    headers: {
+      Authorization:
+      "bearer" +
+        " " +
+     e,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  }
+)
+.then((response) => {
+  response.json().then((data) => {
+    console.log(data, "success");
+    setNavigationData(data)
+    // setemployeeSalaryResult(data);
+     
+    setisLogin(true);
+  });
+})
+  .catch((error) => console.log("error", error));
+}
+
 
   return (
     <div>
@@ -103,12 +129,14 @@ const Login = ({ setisLogin, isLogin  , setUserRole}) => {
                             if (result.status === 200) {
                               // localStorage.setItem(
                                 console.log(response , "Login ");
+                                fetchNavigation(response.access_token)
                               //   "authUser",
                               //   JSON.stringify(response)
                               // );
                               // window.location.reload(false);
                               notify();
-                              setisLogin(true);
+                           
+                            
                             } else {
                               // setisCredentials(false);
                               console.log("false");

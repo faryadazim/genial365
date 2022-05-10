@@ -21,11 +21,11 @@ import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 
 function App() {
-  const [isLogin, setisLogin] = useState(true);
-  // const [userRole ,setUserRole ] = useState("")
-  const [userId, setUserId] = useState("")
-
-  useEffect(() => {}, []);
+  const [isLogin, setisLogin] = useState(false); 
+const [navigationData , setNavigationData] = useState("")
+  useEffect(() => {
+   
+  }, []);
 
   return (
     <>
@@ -41,11 +41,11 @@ function App() {
         draggable
         pauseOnHover
       />
-      {isLogin ? (
+      {isLogin  ? (
         <div className="container body">
           <div className="main_container">
-            <Nav />
-            <Header />
+            <Nav  navigationResult ={navigationData} isLogin={isLogin} />
+            <Header roleName = {navigationData.RoleName} />
             <Routes>
               <Route path="/" element={<Loader />} />
               <Route path="RoleAccess" element={<AddRole />} />
@@ -59,7 +59,7 @@ function App() {
           </div>
         </div>
       ) : (
-        <Login setisLogin={setisLogin} isLogin={isLogin}   />
+        <Login setisLogin={setisLogin} isLogin={isLogin}   setNavigationData={setNavigationData}  />
       )}
     </>
   );

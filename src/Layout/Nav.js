@@ -2,23 +2,27 @@ import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-const Nav = () => {
+const Nav = ({navigationResult , isLogin  }) => {
   const showNavMenu = useSelector((state) => state.NavState);
   const [currentBlock, setCurrentBlock] = useState(1);
-  const [noOfModule, setnoOfModule] = useState([
-    { moduleName: "Home", icon: "fa fa-home" },
-    { moduleName: "Forms", icon: "fa fa-edit" },
-    { moduleName: "UI Elements ", icon: "fa fa-desktop" },
-    { moduleName: "Tables", icon: "fa fa-table" },
-    { moduleName: "Data Presentation", icon: "fa fa-bar-chart-o" },
-    { moduleName: "Layouts", icon: "fa fa-clone" },
-    { moduleName: "Extras", icon: "fa fa-windows" },
-    { moduleName: "Multilevel Menu", icon: "fa fa-sitemap" },
-    { moduleName: " User Control", icon: "fa fa-bug" },
-  ]);
+
+ 
+
+useEffect(() => {
+ console.log( navigationResult.navigationResult);
+ 
+ 
+}, [])
+
+
 
   return (
-    <>
+    
+  <>
+  
+  {
+    isLogin?  <>
+      <>
       {" "}
       {showNavMenu == true ? (
         <>
@@ -38,7 +42,13 @@ const Nav = () => {
                 <div className="menu_section">
                   {/*<h3>General</h3>*/}
                   <ul className="nav side-menu">
-                    {noOfModule.map((module, index) => {
+                  
+
+
+
+
+
+                  {navigationResult.navigationResult.map((module, index) => {
                       return (
                         <li
                           //  className={`list-header ${currentBlock==(index+1?"happy" : console.log("null"))}`}
@@ -55,8 +65,8 @@ const Nav = () => {
                               }
                             }}
                           >
-                            <i className={`${module.icon}`} />{" "}
-                            {module.moduleName}
+                            <i className="{`${module.icon}`} fa fa-windows" />{" "}
+                            {module.module_name}
                             <span className="fa fa-chevron-down" />
                           </a>
                           <ul
@@ -64,10 +74,16 @@ const Nav = () => {
                               currentBlock === index + 1 ? "d-block" : " d-none"
                             }`}
                           >
-                            <li>
-                              <NavLink to="RoleAccess">Add Role</NavLink>
+                            {
+                              module.pages.map((page)=>{
+                                return <li>
+                              <NavLink to="RoleAccess">{page.pageName}</NavLink>
                             </li>
-                            <li>
+                              })
+                            }
+                            {/* 5@7B2s6d2k6$8 */}
+                          
+                            {/* <li>
                               <NavLink to="UserAccess">Add User</NavLink>
                             </li>
                             <li>
@@ -80,12 +96,26 @@ const Nav = () => {
                               <NavLink to="PermissionAccess">
                                 Pages Permission
                               </NavLink>
-                            </li>
+                            </li> */}
+                        
                           </ul>
+                          
                         </li>
                       );
                     })}
-                  </ul>
+
+
+
+
+
+
+
+
+
+
+
+
+   </ul>
                 </div>
               </div>
               {/* /sidebar menu */}
@@ -133,6 +163,14 @@ const Nav = () => {
         <></>
       )}
     </>
+    
+    </> :  <>
+    not load yet
+    
+    </>
+  }
+  
+  </>
   );
 };
 
