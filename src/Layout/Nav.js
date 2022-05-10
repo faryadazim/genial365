@@ -65,7 +65,7 @@ useEffect(() => {
                               }
                             }}
                           >
-                            <i className="{`${module.icon}`} fa fa-windows" />{" "}
+                            <i className= {`${module.module_icon}`}  />{" "}
                             {module.module_name}
                             <span className="fa fa-chevron-down" />
                           </a>
@@ -108,7 +108,44 @@ useEffect(() => {
 
 
 
-
+ 
+                        <li
+                          //  className=  "active"
+                        >
+                          <a>
+                            <i className= "fa fa-windows"  />{" "}
+                          Role Management
+                            <span className="fa fa-chevron-down" />
+                          </a>
+                          <ul
+                            className={`nav child_menu d-block`}
+                          >
+                             
+                            {/* 5@7B2s6d2k6$8 */}
+                            <li>
+                              <NavLink to="RoleAccess">Add Role </NavLink>
+                            </li>
+                           <li>
+                              <NavLink to="UserAccess">Add User</NavLink>
+                            </li>
+                            <li>
+                              <NavLink to="ModuleAccess">Add Modules</NavLink>
+                            </li>
+                            <li>
+                              <NavLink to="PagesAccess">Add Pages</NavLink>
+                            </li>
+                           
+                            <li>
+                              <NavLink to="PermissionAccess">
+                                Add Permission
+                              </NavLink>
+                            </li>  
+                           
+                        
+                          </ul>
+                          
+                        </li>
+                 
 
 
 
