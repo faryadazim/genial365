@@ -70,7 +70,7 @@ const Nav = ({ navigationResult, isLogin }) => {
                                     {module.pages.map((page) => {
                                       return (
                                         <li>
-                                          <NavLink to="RoleAccess">
+                                          <NavLink to={page.pageURL}>
                                             {page.pageName}
                                           </NavLink>
                                         </li>

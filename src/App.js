@@ -19,6 +19,7 @@ import AddPages from "./Pages/Role/AddPages";
 import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
+import EmployeeList from "./Pages/Configuration/EmployeeList/EmployeeList";
 
 function App() {
   const [isLogin, setisLogin] = useState(false); 
@@ -53,6 +54,7 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="PagesAccess" element={<AddPages />} />
               <Route path="ModuleAccess" element={<AddModules />} />
               <Route path="PermissionAccess" element={<RolePermission />} />
+              <Route path="EmployeesList" element={<EmployeeList/>} />
             </Routes>
 
             <Footer />
