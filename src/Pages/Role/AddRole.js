@@ -2,65 +2,64 @@ import React, { useEffect, useState } from "react";
 import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
-import { Modal } from "react-bootstrap"; 
-import {  toast } from "react-toastify";
+import { Modal } from "react-bootstrap";
+import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 const AddRole = () => {
-  
   const showNavMenu = useSelector((state) => state.NavState);
-const URL =  localStorage.getItem("authUser")
+  const URL = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
 
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
-  const [currentEditUser , setCurrentEditUser] = useState({name:"" , id:""})
+  const [currentEditUser, setCurrentEditUser] = useState({ name: "", id: "" });
 
   const [RoleRegistered, setRoleRegistered] = useState([]);
-  const [roleRegisteredAdd ,setRoleRegisteredAdd ] = useState("")
+  const [roleRegisteredAdd, setRoleRegisteredAdd] = useState("");
   const notifyAdd = () => toast("Role Added Successfully!");
+  const notifyErr = () => toast("Somthing wrong try again!");
+  const notifyDelete = () => toast("Deleted Successfully!");
+  const notifyUpdate = () => toast("Updated Successfully!");
 
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const notifyDelete = () => toast("Deleted Successfully!");
-  // Create 
-  const AddRoleRegistered = (e)=>{
-    e.preventDefault(e);  
-    notifyAdd(); 
-    fetch(
-      URL +
-        `/api/Roles?InputPageName=${roleRegisteredAdd}`,
-      {
-        method: "POST",
-        // headers: {
-        //   Authorization:
-        //     JSON.parse(localStorage.getItem("authUser")).token_type +
-        //     " " +
-        //     JSON.parse(localStorage.getItem("authUser")).access_token,
-        //   "Content-Type": "application/x-www-form-urlencoded",
-        // },
-      }
-    )
+  // Create
+  const AddRoleRegistered = (e) => {
+    e.preventDefault(e);
+
+    fetch(URL + `/api/Roles?InputPageName=${roleRegisteredAdd}`, {
+      method: "POST",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
       .then((response) => {
-        console.log(response);
-       fetchAllData();
-       setRoleRegisteredAdd("")
+        fetchAllData();
+        setRoleRegisteredAdd("");
+        notifyAdd();
       })
-      .catch((error) => console.log("error", error));
-    }
-    //  Read 
-    const fetchAllData = ()=>{
-    fetch(URL +"/api/Roles")
-    .then((response) => response.json())
-    .then((json) => {
-      setRoleRegistered(json);
-      setisLoading(false)
-    });
-  }
-  // Delete 
-  const deleteRoleRigistered = (idToBeDelete)=>{
-    // /api/Roles/d06b464573f741058849c9899d10a6b1'
+      .catch((error) => {
+        console.log("error", error);
+        notifyErr();
+      });
+  };
+  //  Read
+  const fetchAllData = () => {
+    fetch(URL + "/api/Roles")
+      .then((response) => response.json())
+      .then((json) => {
+        setRoleRegistered(json);
+        setisLoading(false);
+      });
+  };
+  // Delete
+  const deleteRoleRigistered = (idToBeDelete) => {
     fetch(`${URL}/api/Roles/${idToBeDelete}`, {
       method: "DELETE",
       // headers: {
@@ -77,38 +76,39 @@ const URL =  localStorage.getItem("authUser")
         fetchAllData();
         notifyDelete();
       })
-      .catch((error) => console.log("error", error));
-  }
-  // Update 
-const  UpdateRoleRegistered = ()=>{
-  fetch(
-    URL +
-      `/api/Roles/${currentEditUser.id}?roleName=${currentEditUser.name}'`,
-    {
-      method: "PUT",
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
-    }
-  )
-    .then((response) => {
-      console.log(response);
-     fetchAllData();
-    })
-    .catch((error) => console.log("error", error));
-
-
-
-
-}
+      .catch((error) => {
+        console.log("error", error);
+        notifyErr();
+      });
+  };
+  // Update
+  const UpdateRoleRegistered = () => {
+    fetch(
+      URL +
+        `/api/Roles/${currentEditUser.id}?roleName=${currentEditUser.name}'`,
+      {
+        method: "PUT",
+        // headers: {
+        //   Authorization:
+        //     JSON.parse(localStorage.getItem("authUser")).token_type +
+        //     " " +
+        //     JSON.parse(localStorage.getItem("authUser")).access_token,
+        //   "Content-Type": "application/x-www-form-urlencoded",
+        // },
+      }
+    )
+      .then((response) => {
+        notifyUpdate();
+        fetchAllData();
+      })
+      .catch((error) => {
+        console.log("error", error);
+        notifyErr();
+      });
+  };
   useEffect(() => {
     fetchAllData();
   }, []);
-
 
   return (
     <>
@@ -119,9 +119,12 @@ const  UpdateRoleRegistered = ()=>{
       ) : (
         <>
           {" "}
-          <div className={`right_col  h-100  ${
-          showNavMenu == false ? "right_col-margin-remove" : " "
-        } `}  role="main">
+          <div
+            className={`right_col  h-100  ${
+              showNavMenu == false ? "right_col-margin-remove" : " "
+            } `}
+            role="main"
+          >
             {displayUserRegBox ? (
               <>
                 {" "}
@@ -129,7 +132,7 @@ const  UpdateRoleRegistered = ()=>{
                   <div className="x_title">
                     <h2 className="pl-2 pt-2">Role Creation</h2>
                     <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                    <li>
+                      <li>
                         <a
                           className="close-link"
                           onClick={() => setdisplayUserRegBox(false)}
@@ -141,9 +144,7 @@ const  UpdateRoleRegistered = ()=>{
                     <div className="clearfix" />
                   </div>
                   <div className="x_content">
-                    <form
-                      
-                    >
+                    <form>
                       {/* <span className="section">Personal Info</span> */}
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
@@ -158,7 +159,9 @@ const  UpdateRoleRegistered = ()=>{
                             placeholder="ex. Saleman"
                             required="true"
                             value={roleRegisteredAdd}
-                            onChange={(e)=>setRoleRegisteredAdd(e.target.value)}
+                            onChange={(e) =>
+                              setRoleRegisteredAdd(e.target.value)
+                            }
                           />
                         </div>
                       </div>
@@ -169,15 +172,31 @@ const  UpdateRoleRegistered = ()=>{
                           <button
                             type="submit"
                             className="btn btn-primary btn-sm px-3"
-                            onClick={(e)=>{
-                              AddRoleRegistered(e)
+                            onClick={(e) => {
+                              AddRoleRegistered(e);
                             }}
+                            disabled={
+                              roleRegisteredAdd == "" ||
+                              roleRegisteredAdd == undefined ||
+                              roleRegisteredAdd == null ||
+                              roleRegisteredAdd == " "
+                                ? true
+                                : false
+                            }
                           >
                             Submit
                           </button>
                           <button
                             type="reset"
                             className="btn btn-success btn-sm ml-2 px-3"
+                            disabled={
+                              roleRegisteredAdd == "" ||
+                              roleRegisteredAdd == undefined ||
+                              roleRegisteredAdd == null ||
+                              roleRegisteredAdd == " "
+                                ? true
+                                : false
+                            }
                           >
                             Reset
                           </button>
@@ -203,7 +222,7 @@ const  UpdateRoleRegistered = ()=>{
             >
               <Modal.Header>
                 <Modal.Title>Update Role</Modal.Title>
-                <i  onClick={handleClose} className="fa fa-close"></i>
+                <i onClick={handleClose} className="fa fa-close"></i>
               </Modal.Header>
               <Modal.Body>
                 <div className="field item form-group">
@@ -219,7 +238,12 @@ const  UpdateRoleRegistered = ()=>{
                       placeholder="ex. Admin"
                       required="required"
                       value={currentEditUser.name}
-                      onChange={(e)=>{setCurrentEditUser({...currentEditUser , name:e.target.value})}}
+                      onChange={(e) => {
+                        setCurrentEditUser({
+                          ...currentEditUser,
+                          name: e.target.value,
+                        });
+                      }}
 
                       // onChange={(e)=>setcurrentEditUser({...currentEditUser ,name:e.target.value}) }
                     />
@@ -227,12 +251,13 @@ const  UpdateRoleRegistered = ()=>{
                 </div>
               </Modal.Body>
               <Modal.Footer>
-               
                 <Button
                   variant="success"
                   className="btn-sm px-3 ModalButtonPositionAdjectment"
-                  onClick={()=>{UpdateRoleRegistered()
-                  handleClose()}}
+                  onClick={() => {
+                    UpdateRoleRegistered();
+                    handleClose();
+                  }}
                 >
                   Update
                 </Button>
@@ -270,13 +295,16 @@ const  UpdateRoleRegistered = ()=>{
                                 className="fa fa-edit"
                                 onClick={() => {
                                   handleShow();
-                                  setCurrentEditUser({id:Role.Id , name:Role.Name})
+                                  setCurrentEditUser({
+                                    id: Role.Id,
+                                    name: Role.Name,
+                                  });
                                 }}
                               ></i>{" "}
                               <i
                                 className="fa fa-trash-o pl-3"
                                 onClick={() => {
-                                deleteRoleRigistered(Role.Id)
+                                  deleteRoleRigistered(Role.Id);
                                 }}
                               ></i>{" "}
                             </td>
@@ -285,7 +313,6 @@ const  UpdateRoleRegistered = ()=>{
                       })}
                     </tbody>
                   </table>
-                
                 </div>
               </div>
             </div>

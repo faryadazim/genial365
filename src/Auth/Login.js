@@ -1,42 +1,35 @@
 import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 
-const Login = ({ setisLogin, isLogin  ,setNavigationData}) => {
+const Login = ({ setisLogin, isLogin, setNavigationData }) => {
   const [logInAuth, setlogInAuth] = useState({
     username: "",
-    password: "",
+    password: "5@7B2s6d2k6$8",
     grant_type: "password",
   });
   const onLogin = () => {
     localStorage.setItem("authUser", "http://localhost:63145/");
   };
   const notify = () => toast("Login SuccessFully!");
-const fetchNavigation = (e)=>{
+  const fetchNavigation = (e) => {
+    fetch("http://localhost:63145/api/navigation", {
+      method: "GET",
+      headers: {
+        Authorization: "bearer" + " " + e,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+      .then((response) => {
+        response.json().then((data) => {
+          console.log(data, "success");
+          setNavigationData(data);
+          // setemployeeSalaryResult(data);
 
-  fetch("http://localhost:63145/api/navigation",
-  {
-    method: "GET",
-    headers: {
-      Authorization:
-      "bearer" +
-        " " +
-     e,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  }
-)
-.then((response) => {
-  response.json().then((data) => {
-    console.log(data, "success");
-    setNavigationData(data)
-    // setemployeeSalaryResult(data);
-     
-    setisLogin(true);
-  });
-})
-  .catch((error) => console.log("error", error));
-}
-
+          setisLogin(true);
+        });
+      })
+      .catch((error) => console.log("error", error));
+  };
 
   return (
     <div>
@@ -78,32 +71,26 @@ const fetchNavigation = (e)=>{
                     onClick={(e) => {
                       e.preventDefault();
 
-
-
                       // var myHeaders = new Headers();
                       // myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
                       // myHeaders.append("Cookie", ".AspNet.Cookies=j8weul8CZYMGpWMK6COQfs0ETbEwIb4sUoUhk_klWvwv7Ye3vondyjnRd7eR6iIwfSNYs7rZ5HBF-U3iX1AmCOq2jLI_5diq_zMxlJFh_Kn9K2QMUGa2sUWFjYHRnghFqIT4LS3u7ABqOIkjW8BFsxtj3wVwTELIFlVTJ1pZ8KMF3anPQzlaOwF-tea0GC9_HuJ9i9VnbAK_BBiCSaE5kzOZ3cmleiw_lNPLT9QnxAkhHmdHfJkt9TYh6vmGko5hthWu0h4GXsiX3xyzeOhti38cuxQiL0gz5MhNXG973MWSCqFKVS8V7jOkB1ck4tAT5d78on92TAxIcchvwjomgNeqk5oxVJDCZMobk6lSPamHWQJl1rKPBZ5P3249ixn36QTj9PvLWrroMmi7VMsoUhaGUdgqwmEwou5384vL5KHhYlKRHz3Eu6itgTJb9HOatj_ryrGIgtxpgS2XJWjnVCZ24uCpcmmaiARk4IhN6ECV5rOt0CPH4GpzKEI4f6Qf");
-                      
+
                       // var urlencoded = new URLSearchParams();
                       // urlencoded.append("username", "user1");
                       // urlencoded.append("password", "5@7B2s6d2k6$8");
                       // urlencoded.append("grant_type", "password");
-                      
+
                       // var requestOptions = {
                       //   method: 'POST',
                       //   headers: myHeaders,
                       //   body: urlencoded,
                       //   redirect: 'follow'
                       // };
-                      
+
                       // fetch("http://localhost:63145/token", requestOptions)
                       //   .then(response => response.text())
                       //   .then(result => console.log(result))
                       //   .catch(error => console.log('error', error));
-
-
-
-
 
                       // setisLogin(!isLogin)
 
@@ -116,7 +103,7 @@ const fetchNavigation = (e)=>{
                       urlencoded.append("username", logInAuth.username);
                       urlencoded.append("password", logInAuth.password);
                       urlencoded.append("grant_type", "password");
-    
+
                       fetch("http://localhost:63145/token", {
                         method: "POST",
                         headers: {
@@ -128,15 +115,13 @@ const fetchNavigation = (e)=>{
                           result.json().then((response) => {
                             if (result.status === 200) {
                               // localStorage.setItem(
-                                console.log(response , "Login ");
-                                fetchNavigation(response.access_token)
+                              console.log(response, "Login ");
+                              fetchNavigation(response.access_token);
                               //   "authUser",
                               //   JSON.stringify(response)
                               // );
                               // window.location.reload(false);
                               notify();
-                           
-                            
                             } else {
                               // setisCredentials(false);
                               console.log("false");
@@ -144,8 +129,8 @@ const fetchNavigation = (e)=>{
                           });
                         })
                         .catch((error) => console.log("error", error));
-                
-                        // notify();
+
+                      // notify();
                       onLogin();
                     }}
                   >

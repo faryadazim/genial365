@@ -28,7 +28,7 @@ const AddUser = () => {
   });
 
   const [Roles, setRoles] = useState([]);
-  const [selectedRole, setSelectedRole] = useState("1");
+  const [selectedRole, setSelectedRole] = useState();
 
   // const [userData , setUserData] = {
   //   Email: "",
@@ -70,6 +70,7 @@ const AddUser = () => {
           .then((response) => response.json())
           .then((role) => {
             setRoles(role);
+            setSelectedRole(role[0].Id)
             setisLoading(false);
           });
       });
@@ -240,7 +241,7 @@ const AddUser = () => {
                                 userName: e.target.value,
                               })
                             }
-                            // required="required"
+                             required="required"
                           />
                         </div>
                       </div>
@@ -253,7 +254,7 @@ const AddUser = () => {
                           <input
                             className="form-control"
                             name="email"
-                            // required="required"
+                             required="required"
                             type="email"
                             value={userRegisteredAdd.email}
                             onChange={(e) =>
@@ -278,7 +279,7 @@ const AddUser = () => {
                             name="password"
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
                             title="Minimum 8 Characters Including An Upper And Lower Case Letter, A Number And A Unique Character"
-                            // required
+                            required
 
                             value={userRegisteredAdd.password}
                             onChange={(e) =>
