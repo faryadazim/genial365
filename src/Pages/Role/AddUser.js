@@ -7,9 +7,12 @@ import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { useDispatch } from 'react-redux';
+import { getUsers } from "../../actions/Role/user";
 const AddUser = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
+// const userData = useSelector((state)=>state)
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
@@ -29,19 +32,8 @@ const AddUser = () => {
 
   const [Roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
-
-  // const [userData , setUserData] = {
-  //   Email: "",
-  //   "PasswordHash": "AD8vH35ujnt0np2k03qVMTgCgDlQPQgEMMNQnB5b/IcVgH8MPh1S1rhqn6nIrfz0+A==",
-  //   "SecurityStamp": "259b86f8-aee5-4b4e-b687-ce383434ce74",
-  //   "PhoneNumber": "03045726268",
-  //   "PhoneNumberConfirmed": false,
-  //   "TwoFactorEnabled": false,
-  //   "LockoutEndDateUtc": null,
-  //   "LockoutEnabled": false,
-  //   "AccessFailedCount": 0,
-  //   "UserName": "genial365@gmail.com"
-  // }
+  const dispatch = useDispatch();
+ 
 
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
@@ -95,7 +87,7 @@ const AddUser = () => {
       .then((response) => {
         // deleteing Role for this Id
 
-        fetchAllData();
+     fetchAllData();
         notifyDelete();
       })
       .catch((error) => console.log("error", error));
@@ -163,7 +155,8 @@ const AddUser = () => {
     )
       .then((response) => {
         console.log(response);
-       fetchAllData();
+        fetchAllData();
+       
       })
       .catch((error) => console.log("error", error));
 
@@ -177,7 +170,10 @@ const AddUser = () => {
   };
 
   useEffect(() => {
-    fetchAllData();
+    fetchAllData(); 
+    // dispatch(getUsers(setisLoading)) 
+
+   
   }, []);
 
   return (

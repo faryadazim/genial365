@@ -19,7 +19,7 @@ import AddPages from "./Pages/Role/AddPages";
 import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
-import EmployeeList from "./Pages/Setting/EmployeeList/EmployeeList";
+import EmployeeList from './Pages/Setting/EmployeeList/EmployeeList'
 
 function App() {
   const [isLogin, setisLogin] = useState(false); 
