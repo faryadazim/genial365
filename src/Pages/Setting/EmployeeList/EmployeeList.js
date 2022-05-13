@@ -62,37 +62,38 @@ const EmployeeList = () => {
           className={`right_col  h-100  ${showNavMenu == false ? "right_col-margin-remove" : " "
             } `}
         >
-          {/* <Button variant="primary" onClick={() => setModalShow(true)}>
-      Launch vertically centered modal
-    </Button> */}
 
           <MyVerticallyCenteredModal
             show={modalShow}
             onHide={() => setModalShow(false)}
           />
-            <MyVerticallyCenteredModal2
+          <MyVerticallyCenteredModal2
             show={modalShowDesignation}
+            keyboard={ false }
             onHide={() => setModalShowDesignation(false)}
           />
           <div className="col-md-6">
-          <button className="btn btn-light  btn-sm   px-2" >
-            Searchable Selector
-            <i className="ml-2 fa fa-plus-square"></i>
-          </button>
+            <div className="form-group row  w-50">
+              <select className="form-control">
+
+                <option>All</option>
+                <option>Single</option>
+              </select>
+            </div>
+
           </div>
           <div className="col-md-6 text-right">
-            
+
             <button className="btn btn-success  btn-sm   px-2" onClick={() => setModalShow(true)}>
-            Add New Employee
-            <i className="ml-2 fa fa-plus-square"></i>
-          </button>
-           
+              Add New Employee
+              <i className="ml-2 fa fa-plus-square"></i>
+            </button>
           </div>
-          
-        
 
 
-          
+
+
+
 
 
 
@@ -134,7 +135,8 @@ const EmployeeList = () => {
               </div>
             </div>
           </div>
-        </div></>
+        </div>
+        </>
       }
 
     </>
@@ -177,7 +179,7 @@ function MyVerticallyCenteredModal(props) {
             </ul>
             <div className="clearfix" />
           </div>
-          <div className="x_content">
+          <div className="x_content mb-2 mt-2">
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -227,7 +229,7 @@ function MyVerticallyCenteredModal(props) {
                   />
                 </div>
               </div>
-          
+
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Phone Numbers<span className="required">*</span>
@@ -320,7 +322,7 @@ function MyVerticallyCenteredModal(props) {
                 <div className="col-md-3 col-sm-8">
                   <div className="form-group row ml-1-2">
                     <select className="form-control">
-                     
+
                       <option>Active</option>
                       <option>Left</option>
                     </select>
@@ -331,14 +333,14 @@ function MyVerticallyCenteredModal(props) {
                 </label>
                 <div className="col-md-3 col-sm-8">
 
-                <select className="form-control">
-                       
-                <option>Select option</option>
-                     <option>Clerk</option>
-                     <option>Manager</option>
-                     <option>Cashier</option>
-                     <option>Accountant</option>
-                   </select>
+                  <select className="form-control">
+
+                    <option>Select option</option>
+                    <option>Clerk</option>
+                    <option>Manager</option>
+                    <option>Cashier</option>
+                    <option>Accountant</option>
+                  </select>
                 </div>
               </div>
               <div className="field item form-group">
@@ -347,10 +349,14 @@ function MyVerticallyCenteredModal(props) {
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div className="form-group row ml-1-2">
-                    <select className="form-control">
-                      <option>Choose option</option>
-                      <option>Option one</option>
-                      <option>Option two</option>
+                    <select className="form-control"  >
+                      <option value="1">Choose option</option>
+                      <option value="2">Option one</option>
+                      <option onSelect={() => console.log("Ad new Designation")}>
+
+                        Add New Designation
+
+                      </option>
                     </select>
                   </div>
                 </div>
@@ -421,7 +427,7 @@ function MyVerticallyCenteredModal(props) {
                 </div>
 
               </div>
-    
+
               <div className="form-group mt-2 ">
                 <div className="col-md-6 offset-md-3 pb-2  ">
                   <button
@@ -436,17 +442,13 @@ function MyVerticallyCenteredModal(props) {
                   >
                     Reset
                   </button>
-           
+
                 </div>
               </div>
             </form>
           </div>
         </div>
       </>
-      {/* </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide} variant="btn btn-success btn-sm ml-2 px-3">Save</Button>
-        </Modal.Footer> */}
     </Modal>
   );
 }
@@ -525,7 +527,7 @@ function MyVerticallyCenteredModal2(props) {
                   />
                 </div>
               </div>
-          
+
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Phone Numbers<span className="required">*</span>
@@ -618,7 +620,7 @@ function MyVerticallyCenteredModal2(props) {
                 <div className="col-md-3 col-sm-8">
                   <div className="form-group row ml-1-2">
                     <select className="form-control">
-                     
+
                       <option>Active</option>
                       <option>Left</option>
                     </select>
@@ -629,26 +631,26 @@ function MyVerticallyCenteredModal2(props) {
                 </label>
                 <div className="col-md-3 col-sm-8">
 
-                <select className="form-control">
-                       
-                <option>Select option</option>
-                     <option>Clerk</option>
-                     <option>Manager</option>
-                     <option>Cashier</option>
-                     <option>Accountant</option>
-                   </select>
+                  <select className="form-control">
+
+                    <option>Select option</option>
+                    <option>Clerk</option>
+                    <option>Manager</option>
+                    <option>Cashier</option>
+                    <option>Accountant</option>
+                  </select>
                 </div>
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Select Reqruitment Type <span className="required">*</span>
+                  Select Reqruitment rrr <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div className="form-group row ml-1-2">
                     <select className="form-control">
                       <option>Choose option</option>
                       <option>Option one</option>
-                      <option>Option two</option>
+                      <option> <button className="btn btn-sm w-100">  Add New</button> </option>
                     </select>
                   </div>
                 </div>
@@ -719,7 +721,7 @@ function MyVerticallyCenteredModal2(props) {
                 </div>
 
               </div>
-    
+
               <div className="form-group mt-2 ">
                 <div className="col-md-6 offset-md-3 pb-2  ">
                   <button
@@ -734,17 +736,13 @@ function MyVerticallyCenteredModal2(props) {
                   >
                     Reset
                   </button>
-           
+
                 </div>
               </div>
             </form>
           </div>
         </div>
       </>
-      {/* </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={props.onHide} variant="btn btn-success btn-sm ml-2 px-3">Save</Button>
-        </Modal.Footer> */}
     </Modal>
   );
 }

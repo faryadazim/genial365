@@ -342,3 +342,49 @@ body {
   
 
 /* Select  */
+
+
+.headings-for-Gray-Product-Table{
+	height: 88px !important;
+}
+
+ 
+
+
+.removeLeftBorder{
+	border-left: none !important;
+}
+.removeRightBorder{
+	border-right: none !important;
+}
+.removeTopBorder{
+	border-top: none !important;
+}
+.removeBottomBorder{
+	border-bottom: none !important;
+}
+.removePadding{
+	padding: 0px !important;
+}
+
+.border-bottom-color{
+	border-bottom-color:#003a4d !important ;
+}
+
+
+.paddingYaxisTable{
+	padding-top: 13px !important;
+	padding-bottom: 13px !important;
+}
+
+.paddingXaxisTable{
+	padding-left:  4px !important;
+	padding-right:  4px !important;
+}
+
+.text-common{
+color: #003a4d !important;
+}
+.w-10{
+	width: 10%;
+}

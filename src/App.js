@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 // Notifier Import
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import GrayProductList from './Pages/WeavingProduction/GrayProductList/GrayProductList'
 // Component Import
 import Nav from "./Layout/Nav";
 import Header from "./Layout/Header";
@@ -55,6 +56,7 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="ModuleAccess" element={<AddModules />} />
               <Route path="PermissionAccess" element={<RolePermission />} />
               <Route path="EmployeesList" element={<EmployeeList/>} />
+              <Route path="GrayProductList" element={<GrayProductList/>} />
             </Routes>
 
             <Footer />
