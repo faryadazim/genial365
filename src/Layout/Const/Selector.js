@@ -11,7 +11,7 @@ const customStyles = {
   }),
 };
 
-const Selector = ({ fetchEmployeeByDemand }) => {
+const Selector = ({ fetchEmployeeByDemand  , setStateUpdater , stateUpdater , setSingleUserId}) => {
   const [roleValue, setRoleValue] = useState("");
   const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -21,15 +21,16 @@ const Selector = ({ fetchEmployeeByDemand }) => {
     switch (field) {
       case "roles":
         setRoleValue(value);
-        // console.log("selected", value);
+        // console.log("selected", value.value);
+        setSingleUserId( value.value)
         // console.log("selected" , value.__isNew__==true?"its new":"old");
         break;
       default:
         break;
     }
+    setStateUpdater(!stateUpdater)
   };
-
-  useEffect(() => {
+  const fetchData=()=>{
     fetch("http://localhost:63145/api/employeeListsName", {
       method: "GET",
       headers: {
@@ -49,6 +50,10 @@ const Selector = ({ fetchEmployeeByDemand }) => {
         });
       })
       .catch((error) => console.log("error", error));
+  }
+
+  useEffect(() => {
+    fetchData()
     // ----- Setting Employee List ------
   }, []);
 
@@ -61,7 +66,9 @@ const Selector = ({ fetchEmployeeByDemand }) => {
    
           <Creatable
             isClearable={false}
-            onChange={(value) => handleChange("roles", value, roleValue)}
+            onChange={(value) =>{
+               
+                handleChange("roles", value, roleValue)}}
             options={roles}
             value={roleValue}
             styles={customStyles}

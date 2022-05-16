@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../../Layout/Loader/Loader";
-const ShowSingleEmployee = ({ singleUserId , setShowSingleUSer }) => {
+const ShowSingleEmployee = ({ singleUserId , setShowSingleUSer , fetchAllData }) => {
     const [showFormControlClass, setShowFormControlClass] = useState(true)
     const [isDisableFormControl, setIsDisableFormControl] = useState(true)
+    
  
     const [isLoading, setisLoading] = useState(true);
     const [EmployeeData, setEmployeeData] = useState({
@@ -26,11 +27,7 @@ const ShowSingleEmployee = ({ singleUserId , setShowSingleUSer }) => {
         weeklySalary: "",
         monthlySalary: "",
     });
-
-
-
-
-
+ 
 
     const EditUser = () => {
         setIsDisableFormControl(false)
@@ -140,6 +137,7 @@ const ShowSingleEmployee = ({ singleUserId , setShowSingleUSer }) => {
         fetch("http://localhost:63145/api/employeeLists", requestOptions)
             .then((response) => response.json())
             .then((data) => { // notifyAdd();
+                fetchAllData()
             })
             .catch((err) => {
                 console.log("err", err);
@@ -162,6 +160,7 @@ const DeleteUser = ()=>{
         .then((response) => {
           // deleteing Role for this Id
           setShowSingleUSer(false)
+          fetchAllData()
    
         })
         .catch((error) => {
@@ -177,7 +176,8 @@ const DeleteUser = ()=>{
                 setisLoading(false)
 
             });
-    }, [])
+            console.log("id-----" ,singleUserId);
+    }, [singleUserId])
 
 
 

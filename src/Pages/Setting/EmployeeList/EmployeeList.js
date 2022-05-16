@@ -30,6 +30,7 @@ const EmployeeList = () => {
   const [showSingleUser, setShowSingleUSer] = useState(false);
   const [singleUserId, setSingleUserId] = useState("");
   const [roleValue, setRoleVAlue] = useState("Active");
+  const [stateUpdater ,setStateUpdater] = useState(true)
   const [addNewEmployee, setAddNewEmployee] = useState({
     name: "",
     fatherName: "",
@@ -51,6 +52,8 @@ const EmployeeList = () => {
     weeklySalary: "",
     monthlySalary: "",
   });
+ 
+
   const jobStatus = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
@@ -335,8 +338,11 @@ const EmployeeList = () => {
               <div className="w-50 mb-2">
                 {" "}
                 <Selector
+                setStateUpdater={setStateUpdater} stateUpdater={stateUpdater}
                   listOfEmployeeName={listOfEmployeeName}
                   fetchEmployeeByDemand={fetchEmployeeByDemand}
+                  setSingleUserId={setSingleUserId}
+                      
                 />
               </div>
               {/* </div> */}
@@ -352,6 +358,7 @@ const EmployeeList = () => {
             </div>
             {showSingleUser ? (
               <ShowSingleEmployee
+              fetchAllData={fetchAllData}
                 singleUserId={singleUserId}
                 setShowSingleUSer={setShowSingleUSer}
               />
@@ -439,7 +446,7 @@ function MyVerticallyCenteredModal(props) {
                     className="form-control"
                     name="nanr"
                     placeholder="ex. Ali A.Khan"
-                    required="required"
+                    required
                     value={props.addNewEmployee.name}
                     onChange={(e) =>
                       props.setAddNewEmployee({
