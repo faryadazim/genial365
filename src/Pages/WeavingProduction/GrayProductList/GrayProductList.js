@@ -374,7 +374,7 @@ function MyVerticallyCenteredModal(props) {
               <div className="container">
                 <div className="row ">
                   <div className="col-md-12 text-center ">
-                    <h4 >
+                    <h4 className="text-danger font-weight-bolder">
                       Loom No 76
                     </h4>
 
@@ -382,15 +382,15 @@ function MyVerticallyCenteredModal(props) {
 
                   <div className="col-md-12">
                     <div className="field item form-group">
-                      <label className="col-form-label col-md-3 col-sm-3  label-align">
+                      <label className="col-form-label col-md-3  col-sm-3  label-align "   >
                         No of Piece in one border<span className="required">*</span>
                       </label>
                       <div className="col-md-8 col-sm-8">
                         <div class="row">
                           <input
-                            className="form-control"
+                            className="form-control mx-2"
                             name="number"
-                            placeholder="Width"
+                            placeholder="Ex. Grams"
                           />
                         </div>
                       </div>
@@ -420,13 +420,12 @@ function MyVerticallyCenteredModal(props) {
                       </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div className="container">
                 <div className="row ">
                   <div className="col-md-12 text-center ">
-                    <h4  >
+                    <h4  className="text-danger font-weight-bolder" >
                       Loom No 96
                     </h4>
 
@@ -440,7 +439,7 @@ function MyVerticallyCenteredModal(props) {
                       <div className="col-md-8 col-sm-8">
                         <div class="row">
                           <input
-                            className="form-control"
+                            className="form-control mx-2"
                             name="number"
                             placeholder="Width"
                           />
@@ -493,12 +492,10 @@ function MyVerticallyCenteredModal(props) {
               </div>
               <div className="form-group mt-2 ">
                 <div className="col-md-6 offset-md-3 pb-2  ">
-                  <button type="submit" className="btn btn-primary btn-sm px-4">
+                  <button  className="btn btn-primary btn-sm px-4">
                     Submit
                   </button>
-                  <button className="btn btn-success btn-sm ml-2 px-3">
-                    Reset
-                  </button>
+                
                 </div>
               </div>
             </form>

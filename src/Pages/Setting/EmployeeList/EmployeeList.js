@@ -1,18 +1,35 @@
 import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 // import {  Button } from "bootstrap";
+import Creatable from "react-select/creatable";
 
+import Select from "react-select";
 import { useSelector } from "react-redux";
+import Selector from "../../../Layout/Const/Selector";
 import Loader from "../../../Layout/Loader/Loader";
-import ShowSingleEmployee from './ShowSingleEmployee'
-const EmployeeList = () => {
-  const [modalShow, setModalShow] = useState(false); 
-  const [ListOfEmployee, setListOfEmployee] = useState([]);
+import ShowSingleEmployee from "./ShowSingleEmployee";
 
+const customStyles = {
+  option: (provided, state) => ({
+    ...provided,
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    padding: 8,
+
+    backgroundColor: "white",
+  }),
+};
+
+const EmployeeList = () => {
+  const [designationValue, setDesignationValue] = useState("Helper");
+  const [designation, setDesignation] = useState([]);
+  const [modalShow, setModalShow] = useState(false);
+  const [ListOfEmployee, setListOfEmployee] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
   const [showSingleUser, setShowSingleUSer] = useState(false);
-  const [singleUserId , setSingleUserId] = useState("")
+  const [singleUserId, setSingleUserId] = useState("");
+  const [roleValue, setRoleVAlue] = useState("Active");
   const [addNewEmployee, setAddNewEmployee] = useState({
     name: "",
     fatherName: "",
@@ -24,8 +41,8 @@ const EmployeeList = () => {
     address: "",
     referenceName: "",
     referencePhoneNum: "",
-    jobStatus: "",
-    designation: "",
+    jobStatus: roleValue,
+    designation: designationValue,
     employeePic1: "",
     employeePic2: "",
     employeeCnicFront: "",
@@ -34,6 +51,10 @@ const EmployeeList = () => {
     weeklySalary: "",
     monthlySalary: "",
   });
+  const jobStatus = [
+    { label: "Active", value: "Active" },
+    { label: "Left", value: "Left" },
+  ];
   const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
   const fileHandle1 = (e) => {
     var myHeaders = new Headers();
@@ -133,21 +154,28 @@ const EmployeeList = () => {
           setListOfEmployee(data);
 
           // ----- Setting Employee List ------
-          fetch("http://localhost:63145/api/employeeListsName", {
+          fetch("http://localhost:63145/api/employeeDesignations", {
             method: "GET",
             headers: {
               // Authorization: "bearer" + " " + e,
               "Content-Type": "application/x-www-form-urlencoded",
             },
           })
-            .then((response) => {
-              response.json().then((data) => {
-                setListOfEmployeeName(data);
-                console.log(data, "select option");
+            .then((response) => response.json())
+            .then((data) => {
+              var arr = [];
+              data.map((item) => {
+                arr.push({
+                  label: item.designationName,
+                  value: item.designation_id,
+                });
               });
-            })
-            .catch((error) => console.log("error", error));
-          // ----- Setting Employee List ------
+
+              setDesignation(arr);
+
+              // notifyAdd();
+            });
+          // // ----- Setting Employee List ------
 
           setisLoading(false);
         });
@@ -155,7 +183,10 @@ const EmployeeList = () => {
       .catch((error) => console.log("error", error));
   };
 
-  const AddNewEmployeeServer = () => {
+  const AddNewEmployeeServer = (e) => {
+    e.preventDefault(); 
+    console.log(addNewEmployee);
+    
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -164,8 +195,7 @@ const EmployeeList = () => {
     console.log(requestOptions.body);
     fetch("http://localhost:63145/api/employeeLists", requestOptions)
       .then((response) => response.json())
-      .then((data) => {
-        console.log(data, "succcccccccccccccccess user");
+      .then((data) => {  
         fetchAllData();
         setAddNewEmployee({
           name: "",
@@ -191,7 +221,7 @@ const EmployeeList = () => {
         // notifyAdd();
       })
       .catch((err) => {
-        console.log("err", err);
+        console.log("err front End", err);
       });
 
     setAddNewEmployee({
@@ -219,20 +249,34 @@ const EmployeeList = () => {
   };
 
   const fetchEmployeeByDemand = (e) => {
-    setShowSingleUSer(false)
-    
-    if(e=="-1"){
-      setShowSingleUSer(false)
-      setSingleUserId("")
-    }else{
-      setShowSingleUSer(true)
-      setSingleUserId(e)
+    console.log(e);
+    // setShowSingleUSer(false);
+    setShowSingleUSer(false);
+
+    setSingleUserId("");
+    if (e.value === -1) {
+      setShowSingleUSer(false);
+      console.log("show All");
+      setSingleUserId("");
+    } else {
+      setSingleUserId(e.value);
+      setShowSingleUSer(true);
     }
-  
+  };
+
+  const handleChange = (field, value) => {
+    console.log(value.value);
+    switch (field) {
+      case "Designation":
+        setDesignationValue(value.value);
+
+        break;
+      default:
+        break;
+    }
   };
   useEffect(() => {
     fetchAllData();
-
   }, []);
 
   return (
@@ -261,16 +305,22 @@ const EmployeeList = () => {
               fileHandle3={fileHandle3}
               fileHandle4={fileHandle4}
               onHide={() => setModalShow(false)}
+              jobStatus={jobStatus}
+              setRoleVAlue={setRoleVAlue}
+              designationValue={designationValue}
+              designation={designation}
+              handleChange={handleChange}
             />
 
-            <div className="col-md-6">
+            {/* <div className="col-md-3">
               <div className="form-group row  w-50">
                 <select
                   className="form-control"
-                  onChange={(e) =>{ 
-                    fetchEmployeeByDemand(e.target.value)}}
+                  onChange={(e) => {
+                    fetchEmployeeByDemand(e.target.value);
+                  }}
                 >
-                   <option value={"-1"}>All</option>
+                  <option value={"-1"}>All</option>
                   {listOfEmployeeName.map((item) => {
                     return (
                       <option value={item.employee_Id}>{item.name}</option>
@@ -278,56 +328,74 @@ const EmployeeList = () => {
                   })}
                 </select>
               </div>
+            </div> */}
+
+            <div className="col-md-6 px-0">
+              {/* <div className="form-group row  w-100"> */}
+              <div className="w-50 mb-2">
+                {" "}
+                <Selector
+                  listOfEmployeeName={listOfEmployeeName}
+                  fetchEmployeeByDemand={fetchEmployeeByDemand}
+                />
+              </div>
+              {/* </div> */}
             </div>
             <div className="col-md-6 text-right">
               <button
-                className="btn btn-success  btn-sm   px-2"
+                className="btn btn-success  mt-2 btn-sm   px-2"
                 onClick={() => setModalShow(true)}
               >
                 Add New Employee
                 <i className="ml-2 fa fa-plus-square"></i>
               </button>
             </div>
-            {showSingleUser? <ShowSingleEmployee singleUserId={singleUserId}   setShowSingleUSer={ setShowSingleUSer}/> : <div className="x_panel">
-              <div className="x_content">
-                <div className="table-responsive">
-                  <table className="table table-striped jambo_table bulk_action">
-                    <thead>
-                      <tr className="headings">
-                        <th className="column-title"> Sr. </th>
-                        <th className="column-title">Emp.Name</th>
-                        <th className="column-title">FatherName</th>
-                        <th className="column-title">CNIC</th>
-                        <th className="column-title">Address</th>
-                        <th className="column-title">Designation</th>
-                        <th className="column-title">Job Status</th>
-                        <th className="column-title">Salary</th>
-                        <th className="column-title">Phone</th>
-                      </tr>
-                    </thead>
+            {showSingleUser ? (
+              <ShowSingleEmployee
+                singleUserId={singleUserId}
+                setShowSingleUSer={setShowSingleUSer}
+              />
+            ) : (
+              <div className="x_panel">
+                <div className="x_content">
+                  <div className="table-responsive">
+                    <table className="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr className="headings">
+                          <th className="column-title"> Sr. </th>
+                          <th className="column-title">Emp.Name</th>
+                          <th className="column-title">FatherName</th>
+                          <th className="column-title">CNIC</th>
+                          <th className="column-title">Address</th>
+                          <th className="column-title">Designation</th>
+                          <th className="column-title">Job Status</th>
+                          <th className="column-title">Salary</th>
+                          <th className="column-title">Phone</th>
+                        </tr>
+                      </thead>
 
-                    <tbody>
-                      {ListOfEmployee.map((item, index) => {
-                        return (
-                          <tr className="even pointer" key={item.employee_Id}>
-                            <td className=" ">{index + 1}</td>
-                            <td className=" ">{item.name}</td>
-                            <td className=" ">{item.fatherName}</td>
-                            <td className=" ">{item.cnicNum}</td>
-                            <td className=" ">{item.address}</td>
-                            <td className=" ">{item.address}</td>
-                            <td className=" ">{item.jobStatus}</td>
-                            <td className=" ">{item.monthlySalary}</td>
-                            <td className=" ">{item.phoneNum1}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+                      <tbody>
+                        {ListOfEmployee.map((item, index) => {
+                          return (
+                            <tr className="even pointer" key={item.employee_Id}>
+                              <td className=" ">{index + 1}</td>
+                              <td className=" ">{item.name}</td>
+                              <td className=" ">{item.fatherName}</td>
+                              <td className=" ">{item.cnicNum}</td>
+                              <td className=" ">{item.address}</td>
+                              <td className=" ">{item.designation}</td>
+                              <td className=" ">{item.jobStatus}</td>
+                              <td className=" ">{item.monthlySalary}</td>
+                              <td className=" ">{item.phoneNum1}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </div>}
-           
+            )}
           </div>
         </>
       )}
@@ -360,11 +428,7 @@ function MyVerticallyCenteredModal(props) {
             <div className="clearfix" />
           </div>
           <div className="x_content mb-2 mt-2">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
+            <form>
               {/* <span className="section">Personal Info</span> */}
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
@@ -555,7 +619,30 @@ function MyVerticallyCenteredModal(props) {
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div className="form-group row ml-1-2">
-                    <select
+                    <Select
+                    required
+                      className="basic-single"
+                      classNamePrefix="select"
+                      defaultValue={"Active"}
+                      value={props.roleValue}
+                      onChange={(value) => {
+                        //  props.setRoleVAlue(value.value) ,
+                        props.setAddNewEmployee({
+                          ...props.addNewEmployee,
+                          jobStatus: value.value,
+                        });
+                      }}
+                      // isDisabled={isDisabled}
+                      // isLoading={isLoading}
+                      // isClearable={true}
+                      // isRtl={isRtl}
+                      // onChange={setRoleVAlue()}
+                      isSearchable={true}
+                      name="color"
+                      options={props.jobStatus}
+                      styles={customStyles}
+                    />
+                    {/* <select
                       className="form-control"
                       onChange={(e) =>
                         props.setAddNewEmployee({
@@ -566,14 +653,14 @@ function MyVerticallyCenteredModal(props) {
                     >
                       <option value={"Active"}>Active</option>
                       <option value={"Left"}>Left</option>
-                    </select>
+                    </select> */}
                   </div>
                 </div>
                 <label className="col-form-label col-md-2 col-sm-3  label-align">
                   Designation <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
-                  <select
+                  {/* <select
                     className="form-control"
                     onChange={(e) =>
                       props.setAddNewEmployee({
@@ -587,7 +674,23 @@ function MyVerticallyCenteredModal(props) {
                     <option value={"manager"}>Manager</option>
                     <option value={"Cashier"}>Cashier</option>
                     <option value={"Accountant"}>Accountant</option>
-                  </select>
+                  </select> */}
+
+                  <Creatable
+                    isClearable={false}
+                 
+                    onChange={(value) =>
+                      props.handleChange(
+                        "Designation",
+                        value,
+                        props.designationValue
+                      )
+                    }
+                    defaultValue="Not"
+                    options={props.designation}
+                    value={props.designationValue.value}
+                    styles={customStyles}
+                  />
                 </div>
               </div>
               <div className="field item form-group">
@@ -599,6 +702,7 @@ function MyVerticallyCenteredModal(props) {
                   <div className="form-group row ml-1-2">
                     <select
                       className="form-control"
+
                       onChange={(e) =>
                         props.setAddNewEmployee({
                           ...props.addNewEmployee,
@@ -702,7 +806,7 @@ function MyVerticallyCenteredModal(props) {
                   <button
                     type="submit"
                     className="btn btn-primary btn-sm px-4"
-                    onClick={() => props.AddNewEmployeeServer()}
+                    onClick={(e) => props.AddNewEmployeeServer(e)}
                   >
                     Submit
                   </button>

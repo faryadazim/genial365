@@ -2,6 +2,8 @@ import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 
 const Login = ({ setisLogin, isLogin, setNavigationData }) => {
+  const [disableLoginButton, setdisableLoginButton] = useState(false);
+  const [credientials , setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
     username: "",
     password: "5@7B2s6d2k6$8",
@@ -47,7 +49,8 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                     required
                     value={logInAuth.username}
                     onChange={(e) =>
-                      setlogInAuth({ ...logInAuth, username: e.target.value })
+                     {setCredientials(false)
+                        setlogInAuth({ ...logInAuth, username: e.target.value })}
                     }
                   />
                 </div>
@@ -59,41 +62,26 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                     required
                     value={logInAuth.password}
                     onChange={(e) =>
-                      setlogInAuth({ ...logInAuth, password: e.target.value })
+                    {setCredientials(false)
+                        setlogInAuth({ ...logInAuth, password: e.target.value })}
                     }
                   />
                 </div>
+                <div>
+                  {
+                    credientials?   <code>Wrong credientials</code>:""
+                  }
+               
+                </div>
                 <div className="text-right">
-                  <button
-                    className="btn btn-default submit btn-official px-3 btn-sm"
+                 <button
+                    className="btn btn-default submit btn-official px-3 btn-sm text-light"
                     type="submit"
+                    disabled={disableLoginButton}
                     aria-invalid="true"
                     onClick={(e) => {
-                      e.preventDefault();
-
-                      // var myHeaders = new Headers();
-                      // myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
-                      // myHeaders.append("Cookie", ".AspNet.Cookies=j8weul8CZYMGpWMK6COQfs0ETbEwIb4sUoUhk_klWvwv7Ye3vondyjnRd7eR6iIwfSNYs7rZ5HBF-U3iX1AmCOq2jLI_5diq_zMxlJFh_Kn9K2QMUGa2sUWFjYHRnghFqIT4LS3u7ABqOIkjW8BFsxtj3wVwTELIFlVTJ1pZ8KMF3anPQzlaOwF-tea0GC9_HuJ9i9VnbAK_BBiCSaE5kzOZ3cmleiw_lNPLT9QnxAkhHmdHfJkt9TYh6vmGko5hthWu0h4GXsiX3xyzeOhti38cuxQiL0gz5MhNXG973MWSCqFKVS8V7jOkB1ck4tAT5d78on92TAxIcchvwjomgNeqk5oxVJDCZMobk6lSPamHWQJl1rKPBZ5P3249ixn36QTj9PvLWrroMmi7VMsoUhaGUdgqwmEwou5384vL5KHhYlKRHz3Eu6itgTJb9HOatj_ryrGIgtxpgS2XJWjnVCZ24uCpcmmaiARk4IhN6ECV5rOt0CPH4GpzKEI4f6Qf");
-
-                      // var urlencoded = new URLSearchParams();
-                      // urlencoded.append("username", "user1");
-                      // urlencoded.append("password", "5@7B2s6d2k6$8");
-                      // urlencoded.append("grant_type", "password");
-
-                      // var requestOptions = {
-                      //   method: 'POST',
-                      //   headers: myHeaders,
-                      //   body: urlencoded,
-                      //   redirect: 'follow'
-                      // };
-
-                      // fetch("http://localhost:63145/token", requestOptions)
-                      //   .then(response => response.text())
-                      //   .then(result => console.log(result))
-                      //   .catch(error => console.log('error', error));
-
-                      // setisLogin(!isLogin)
-
+                      e.preventDefault(); 
+                      setdisableLoginButton(true)
                       var urlencoded = new URLSearchParams();
                       urlencoded.append("username", logInAuth.username);
                       urlencoded.append("password", logInAuth.password);
@@ -121,10 +109,11 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                               //   JSON.stringify(response)
                               // );
                               // window.location.reload(false);
-                              notify();
+                              notify(); 
                             } else {
-                              // setisCredentials(false);
-                              console.log("false");
+                         
+                              setCredientials(true)
+                              setdisableLoginButton(false)
                             }
                           });
                         })
