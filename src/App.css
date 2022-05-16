@@ -388,3 +388,8 @@ color: #003a4d !important;
 .w-10{
 	width: 10%;
 }
+
+
+.removeFormControlBorder{
+	border: 0px !important;
+}

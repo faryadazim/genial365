@@ -21,6 +21,7 @@ import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 import EmployeeList from './Pages/Setting/EmployeeList/EmployeeList'
+import LoomManagement from "./Pages/Setting/LoomManagement/LoomManagement";
 
 function App() {
   const [isLogin, setisLogin] = useState(false); 
@@ -57,6 +58,7 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="PermissionAccess" element={<RolePermission />} />
               <Route path="EmployeesList" element={<EmployeeList/>} />
               <Route path="GrayProductList" element={<GrayProductList/>} />
+              <Route path="LoomManagement" element={<LoomManagement/>} />
             </Routes>
 
             <Footer />
