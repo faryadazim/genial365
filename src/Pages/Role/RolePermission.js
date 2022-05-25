@@ -3,42 +3,117 @@ import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import Form from "react-bootstrap/Form";
-import Pagination from "./Pagination";
-import { toast } from "react-toastify";
+import Form from "react-bootstrap/Form"; 
 import { useSelector } from "react-redux";
-const AddUser = () => {
+
+
+import Select from "react-select";
+
+
+
+
+
+
+
+const customStyles = {
+  // control: base => ({
+  //   ...base, 
+  //   // This line disable the blue border
+ 
+  // })
+  control: (provided, state , base) => ({
+    ...provided,
+    background: '#fff',
+    borderColor: '#d9e4e8',
+    borderRadius:"none",
+    minHeight: '30px',
+    height: '30px',
+    // boxShadow: state.isFocused ? null : null,
+    ...base,    boxShadow: 'none'
+  }),
+    option: (provided, state) => ({
+      ...provided,
+      borderBottom: "1px  #003a4d",
+      color: state.isSelected ? "#f79c74" : "#003a4d",
+      background: '#fff',
+   
+    }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+    padding: '0 6px' ,  
+      // background: '#fff',
+    
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: '0px',
+    
+  }),
+  indicatorSeparator: state => ({
+    display: 'none',
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+    
+  }),
+  
+}
+const RolePermission = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [isLoading, setisLoading] = useState(false);
+  const [pagePermissionList , setpagePermissionList] = useState([])
+  
 
-  const [currentPage, setCurrentPage] = useState(1);
+  const [roleValue, setRoleVAlue] = useState(""); 
+  const [roleOptions , setRoleOptions] = useState([]);
 
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-  const [UserRegistered, setUserRegistered] = useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
+const [RoleToBeSearch ,setRoleToBeSearch] = useState("4f9d320b4b9f4d61b2589686b65180f6")
+
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+ 
 
-  const [postsPerPage, setpostsPerPage] = useState(5);
-  const notifyDelete = () => toast("Deleted Successfully!");
-  const notifyAdd = () => toast("User Created Successfully!");
 
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
-
-  useEffect(() => {}, []);
+const fetchAllData = ()=>{
+ 
+  fetch(url +`api/PagePermissions?roleId=${RoleToBeSearch}`, {
+    method: "GET",
+    headers: {
+      // Authorization: "bearer" + " " + e,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  })
+    .then((response) => {
+      response.json().then((data) => {
+   
+        setpagePermissionList(data)
+        fetch(url + "api/Roles"  , {
+          method: "GET",
+          headers: {
+            // Authorization: "bearer" + " " + e,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        }).then((response) => {
+          response.json().then((data) => { 
+          var arr= []
+          data.map((item)=>{
+              arr.push({label:item.Name , value:item.Id})
+          })
+        setRoleOptions(arr)
+          });
+        })
+          
+      });
+    })
+    .catch((error) => console.log("error", error));
+}
+  useEffect(() => {fetchAllData()}, []);
 
   return (
     <>
@@ -57,20 +132,33 @@ const AddUser = () => {
           >
             <div className="field item form-group d-flex justify-content-center ">
               <div className="col-md-6 col-sm-6   d-flex justify-content-around align-items-center">
-                <Form.Select
+                {/* <Form.Select
                   aria-label="Default select example"
-                  className="form-control text-center w-75"
-                  // onChange={(e) => setSelectedRole(e.target.value)}
+                  className="form-control text-center w-75" 
                 >
-                  {/* {Roles.map((item) => {
-                              return ( */}
+                  
                   <option value="1">Admin</option>
                   <option value="3">Cashier</option>
                   <option value="2">USer</option>
-                  {/* );
-                            })} */}
-                </Form.Select>
-                <Button className="btn btn-sm btn-success mt-1">Search</Button>
+              
+                </Form.Select> */}
+                 <Select
+                      required
+                        className="basic-single"
+                        classNamePrefix="select"
+                        defaultValue={"Active"}
+                        value={roleValue.value}
+                        onChange={(value) => { 
+          
+                          setRoleToBeSearch(value.value)
+                          fetchAllData()
+                        }} 
+                        isSearchable={true}
+                        name="color"
+                        options={roleOptions}
+                        styles={customStyles}
+                      />
+       
               </div>
             </div>
             <Modal
@@ -162,61 +250,73 @@ const AddUser = () => {
                     </thead>
 
                     <tbody>
-                      {currentPosts.map((user, index) => {
+                      {pagePermissionList.map((item, index) => {
                         return (
                           <>
+                          
                             <tr className="moduleBgColor">
                               <td colSpan="6" className="py-2">
-                                <div>Module Name</div>
+                                <div>{item.module_name}</div>
                               </td>
                             </tr>
-                            <tr className="even pointer">
-                              <td className=" ">{index + 1}</td>
-                              <td className=" text-center ">
-                                
-                                  <input
-                                    type="checkbox"
-                                    className="flat"
-                                    checked={true}
-                                  />
-                         
-                              </td>
-                              <td className=" text-center ">
-                                
-                                <input
-                                  type="checkbox"
-                                  className="flat"
-                                  checked={true}
-                                />
-                       
-                            </td>
+                            {
 
-                            <td className=" text-center ">
-                                
-                                <input
-                                  type="checkbox"
-                                  className="flat"
-                                  checked={true}
-                                />
-                       
-                            </td><td className=" text-center ">
-                                
-                                <input
-                                  type="checkbox"
-                                  className="flat"
-                                  checked={true}
-                                />
-                       
-                            </td>
-                              <td className="a-right a-right  text-center ">
-                                <i
-                                  className="fa fa-edit pr-2"
-                                  onClick={() => {
-                                    handleShow();
-                                  }}
-                                ></i>
-                              </td>
-                            </tr>
+item.pages.map((arr)=>{
+  return <> 
+  
+   <tr className="even pointer">
+  
+  <td className=" pl-5 ">{arr.pageName}</td>
+  <td className=" text-center ">
+    
+      <input
+        type="checkbox"
+        className="flat"
+        checked={true}
+      />
+
+  </td>
+  <td className=" text-center ">
+    
+    <input
+      type="checkbox"
+      className="flat"
+      checked={true}
+    />
+
+</td>
+
+<td className=" text-center ">
+    
+    <input
+      type="checkbox"
+      className="flat"
+      checked={true}
+    />
+
+</td><td className=" text-center ">
+    
+    <input
+      type="checkbox"
+      className="flat"
+      checked={true}
+    />
+
+</td>
+  <td className="a-right a-right  text-center ">
+    <i
+      className="fa fa-edit pr-2"
+      onClick={() => {
+        handleShow();
+      }}
+    ></i>
+  </td>
+</tr>
+</>
+})
+                            }
+                         
+                        
                           </>
                         );
                       })}
@@ -227,7 +327,11 @@ const AddUser = () => {
                     <div className="d-flex  ml-3 mb-3">
                       <span className="pt-1 pr-2">Show</span>
                       <div className="wisthOfOtions">
-                        {" "}
+
+
+                      ----------
+                        {" "}  
+                              ---------
                         <Form.Select
                           onChange={(e) =>
                             postsPerPage(parseInt(e.target.value))
@@ -263,4 +367,4 @@ const AddUser = () => {
   );
 };
 
-export default AddUser;
+export default RolePermission;

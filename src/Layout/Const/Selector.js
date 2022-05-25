@@ -1,29 +1,78 @@
 import Creatable from "react-select/creatable";
-import React, { useState, useEffect , components } from "react";
+import React, { useState, useEffect ,   } from "react";
 
 const customStyles = {
-  option: (provided, state) => ({
+  // control: base => ({
+  //   ...base, 
+  //   // This line disable the blue border
+ 
+  // })
+  control: (provided, state , base) => ({
     ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    padding: 8,
-    backgroundColor: "white",
+    background: '#fff',
+    borderColor: '#d9e4e8',
+    borderRadius:"none",
+    minHeight: '30px',
+    height: '30px',
+    // boxShadow: state.isFocused ? null : null,
+    ...base,    boxShadow: 'none'
   }),
-};
+    option: (provided, state) => ({
+      ...provided,
+      borderBottom: "1px  #003a4d",
+      color: state.isSelected ? "#f79c74" : "#003a4d",
+      background: '#fff',
+   
+    }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+    padding: '0 6px' ,  
+      // background: '#fff',
+    
+  }),
 
-const Selector = ({ fetchEmployeeByDemand  , setStateUpdater , stateUpdater , setSingleUserId}) => {
+  input: (provided, state) => ({
+    ...provided,
+    margin: '0px',
+    
+  }),
+  indicatorSeparator: state => ({
+    display: 'none',
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+    
+  }),
+  
+}
+
+const Selector = ({ fetchEmployeeByDemand  , setStateUpdater
+   , stateUpdater , setSingleUserId,setModalShow
+}) => {
+  
+  const url = localStorage.getItem("authUser");
   const [roleValue, setRoleValue] = useState("");
   const [roles, setRoles] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const handleChange = (field, value) => {
-    fetchEmployeeByDemand(value)
+
     switch (field) {
       case "roles":
-        setRoleValue(value);
+        if ( value.__isNew__==true) {
+            console.log("create new");
+            setModalShow(true)
+        // console.log("selected" ,?"its new":"old");
+      } else {
+        fetchEmployeeByDemand(value)
+          setRoleValue(value);
+          setSingleUserId( value.value) 
+        }
+       
         // console.log("selected", value.value);
-        setSingleUserId( value.value)
-        // console.log("selected" , value.__isNew__==true?"its new":"old");
+    
         break;
       default:
         break;
@@ -31,7 +80,7 @@ const Selector = ({ fetchEmployeeByDemand  , setStateUpdater , stateUpdater , se
     setStateUpdater(!stateUpdater)
   };
   const fetchData=()=>{
-    fetch("http://localhost:63145/api/employeeListsName", {
+    fetch(url +"api/employeeListsName", {
       method: "GET",
       headers: {
         // Authorization: "bearer" + " " + e,
@@ -51,11 +100,14 @@ const Selector = ({ fetchEmployeeByDemand  , setStateUpdater , stateUpdater , se
       })
       .catch((error) => console.log("error", error));
   }
-
+  
+    
   useEffect(() => {
     fetchData()
+    
     // ----- Setting Employee List ------
   }, []);
+  
 
   return (
     <>

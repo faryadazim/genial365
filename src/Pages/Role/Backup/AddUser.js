@@ -8,20 +8,19 @@ import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-// import {
-//   fetchAllUser,
-//   deleteUser,
-// } from "../../store/actions/RoleManagement/userAction";
+import { fetchAllUser } from "../../store/actions/RoleManagement/userAction";
 const AddUser = () => {
+  const dispatch = useDispatch();
+  const DAta = useSelector((state) => state.users);
+  console.log(DAta, "Data of user in redux in user compoent");
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
-  // const userData = useSelector((state)=>state)
+
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setpostsPerPage] = useState(5);
-const [showPassword, setshowPassword] = useState("password")
   const [repeatPassword, setRepeatPassword] = useState("");
   const [userRegisteredAdd, setuserRegisteredAdd] = useState({
     userName: "",
@@ -36,43 +35,65 @@ const [showPassword, setshowPassword] = useState("password")
 
   const [Roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
-  // const dispatch = useDispatch();
 
-  // const allUserData = useSelector((state) => state.UserReducer);
-  // console.log(allUserData);
   // Change page
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   // Get current posts
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
+  // const indexOfLastPost = currentPage * postsPerPage;
+  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  // const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
 
   const notifyDelete = () => toast("Deleted Successfully!");
   const notifyAdd = () => toast("User Created Successfully!");
 
-  const fetchAllData = () => {
-    fetch(url + "/api/Users")
+  const fetchAllData = async () => {
+    // fetchUser
+    await fetch(url + "/api/Users")
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         setUserRegistered(json);
-
-        fetch(url + "/api/Roles")
-          .then((response) => response.json())
-          .then((role) => {
-            setRoles(role);
-            setSelectedRole(role[0].Id)
-            setisLoading(false);
-          });
+          setisLoading(false);
+      });
+     
+    // fetchingRole List
+    setUserRegistered(DAta);
+    await fetch(url + "/api/Roles")
+      .then((response) => response.json())
+      .then((role) => {
+        setRoles(role);
       });
 
+  
   };
 
+  const deleteUser = (e) => {
+    console.log(e, "Delte this one");
+    //
+
+    fetch(`${url}/api/Users/${e}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
+      .then((response) => {
+        // deleteing Role for this Id
+
+        fetchAllData();
+        notifyDelete();
+      })
+      .catch((error) => console.log("error", error));
+  };
   const AddUserRegistered = () => {
     console.log("user", selectedRole, userRegisteredAdd);
     const requestOptions = {
@@ -84,7 +105,6 @@ const [showPassword, setshowPassword] = useState("password")
     fetch(url + "/api/Users", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log("user created" , data , selectedRole);
         const requestOptionsForRole = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -138,37 +158,13 @@ const [showPassword, setshowPassword] = useState("password")
       })
       .catch((error) => console.log("error", error));
   };
-  const deleteUser = (e) => {
-    console.log(e, "Delte this one");
-    //
 
-    fetch(`${url}/api/Users/${e}`, {
-      method: "DELETE",
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
-    })
-      .then((response) => {
-        // deleteing Role for this Id
-
-     fetchAllData();
-        notifyDelete();
-      })
-      .catch((error) => console.log("error", error));
-  };
   useEffect(() => {
     fetchAllData();
-    // dispatch(getUsers(setisLoading))
-    // dispatch(fetchAllUser(setisLoading))
+    dispatch(fetchAllUser());
+    console.log(UserRegistered , "aAbw");
+    console.log(DAta, "Data of user in redux in user compoent ");
   }, []);
-  // useEffect(() => {
-  //   dispatch(fetchAllUser(setisLoading));
-  //   console.log("stateisRunning");
-  // }, [dispatch]);
 
   return (
     <>
@@ -231,6 +227,7 @@ const [showPassword, setshowPassword] = useState("password")
                                 userName: e.target.value,
                               })
                             }
+                            required="required"
                           />
                         </div>
                       </div>
@@ -243,6 +240,7 @@ const [showPassword, setshowPassword] = useState("password")
                           <input
                             className="form-control"
                             name="email"
+                            required="required"
                             type="email"
                             value={userRegisteredAdd.email}
                             onChange={(e) =>
@@ -262,7 +260,7 @@ const [showPassword, setshowPassword] = useState("password")
                         <div className="col-md-6 col-sm-6">
                           <input
                             className="form-control"
-                            type={showPassword?"password":"text"}
+                            type="password"
                             id="password1"
                             name="password"
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
@@ -278,7 +276,7 @@ const [showPassword, setshowPassword] = useState("password")
                           />
                           <span
                             style={{ position: "absolute", right: 15, top: 7 }}
-                            onClick={()=>{setshowPassword(!showPassword)}}
+                            onClick="hideshow()"
                           >
                             <i id="slash" className="fa fa-eye-slash" />
                             <i id="eye" className="fa fa-eye" />
@@ -295,6 +293,7 @@ const [showPassword, setshowPassword] = useState("password")
                             type="password"
                             name="password2"
                             data-validate-linked="password"
+                            required="required"
                             value={repeatPassword}
                             onChange={(e) => setRepeatPassword(e.target.value)}
                           />
@@ -377,6 +376,7 @@ const [showPassword, setshowPassword] = useState("password")
                       data-validate-words={2}
                       name="name"
                       placeholder="ex. Ali A.Khan"
+                      required="required"
                       value={currentEditUser.userName}
                       onChange={(e) =>
                         setcurrentEditUser({
@@ -395,6 +395,7 @@ const [showPassword, setshowPassword] = useState("password")
                     <input
                       className="form-control"
                       name="email"
+                      required="required"
                       type="email"
                       value={currentEditUser.email}
                       onChange={(e) =>
@@ -463,7 +464,7 @@ const [showPassword, setshowPassword] = useState("password")
                     </thead>
 
                     <tbody>
-                      {currentPosts.map((user, index) => {
+                      {/* {UserRegistered.map((user, index) => {
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
@@ -485,18 +486,17 @@ const [showPassword, setshowPassword] = useState("password")
                               <i
                                 className="fa fa-trash-o"
                                 onClick={() => {
-                                  deleteUser(user.id)
-                                  // dispatch(deleteUser(user.id));
+                                  deleteUser(user.id);
                                 }}
                               ></i>{" "}
                             </td>
                           </tr>
                         );
-                      })}
+                      })} */}
                     </tbody>
                   </table>
 
-                  <div className="  d-flex justify-content-between pr-3 pt-2">
+                  {/* <div className="  d-flex justify-content-between pr-3 pt-2">
                     <div className="d-flex  ml-3 mb-3">
                       <span className="pt-1 pr-2">Show</span>
                       <div className="wisthOfOtions">
@@ -521,7 +521,7 @@ const [showPassword, setshowPassword] = useState("password")
                       totalPosts={UserRegistered.length}
                       paginate={paginate}
                     />
-                  </div>
+                  </div> */}
 
                   {/* Pagination  */}
 

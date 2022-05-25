@@ -1,35 +1,139 @@
 import React, { useState, useEffect } from "react";
+import {endPoint} from '../../../config/Config'
 
-import { Modal, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
+import AddNewGrayProductList from "./AddNewGrayProductList";
 const GrayProductList = () => {
+  const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
-  const [ListOfGrayProduct, setListOfGrayProduct] = useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
+  const [ListOfGrayProduct, setListOfGrayProduct] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [isLoading, setisLoading] = useState(true);
 
+  const [AddNewProduct, setAddNewProduct] = useState({
+    itemName: 0,
+    itemSize: 0,
+    PerPieceGrayWeightGram: "",
+    graySizeppWidth: "",
+    graySizeppLength: "",
+    LoomNumbPieceInBorder76: "",
+    LoomNumbRatePerBorderWithDraw76: "",
+    LoomNumbRatePerBorderWithoutDraw76: "",
+    LoomNumbPieceInBorder96: "",
+    LoomNumbRatePerBorderWithDraw96: "",
+    LoomNumbRatePerBorderWithoutDraw96: "",
+    status: "",
+  });
+
+  const [itemNameValue, setitemNameValue] = useState("Custom");
+  const [itemSizeValue, setitemSizeValue] = useState("Not Decided");
+  const [itemStatusValue, setitemStatusValue] = useState("");
+  const [itemNameOptions, setItemNameOptions] = useState([]);
+  const [itemSizeOptions, setItemSizeOptions] = useState([]);
+ 
+  const itemStatusOptions =  [ 
+    { label: "Activate", value: "Activate" },
+    { label: "Deactivate", value: "Deactivate" }, 
+  ] ;
+
   const fetchAllData = () => {
-    fetch("http://localhost:63145/api/grayProductLists")
+    fetch(url + "api/grayProductLists")
       .then((response) => response.json())
       .then((json) => {
-        console.log("uuuuuu", json);
+
+
+        // Fetching selector data for Border/itemName 
+      
+        fetch(url + "api/BorderQuality", {
+          method: "GET",
+          headers: {
+            // Authorization: "bearer" + " " + e,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            console.log(data);
+            var arr = [];
+            data.map((item) => {
+              console.log(item);
+              arr.push({
+                label: item.borderQuality1,
+                value: item.borderQuality_id,
+              });
+            });
+
+            setItemNameOptions(arr);
+          
+          });
+            // Fetching selector data for Border/itemName 
+            fetch(url + "api/BorderSizes", {
+              method: "GET",
+              headers: {
+                // Authorization: "bearer" + " " + e,
+                "Content-Type": "application/x-www-form-urlencoded",
+              },
+            })
+              .then((response) => response.json())
+              .then((data) => {
+                console.log(data);
+                var arr2 = [];
+                data.map((item) => {
+                  console.log(item);
+                  arr2.push({
+                    label: item.borderSize1,
+                    value: item.borderSize_id,
+                  });
+                });
+    
+                setItemSizeOptions(arr2);
+                setisLoading(false);
+              });
         setListOfGrayProduct(json);
-        // setListOfGrayProduct()
-        setisLoading(false);
       });
   };
 
+  const AddNewProductFunc = ()=>{
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(AddNewProduct),
+    };
+    
+    console.log("Its new Product Func" , AddNewProduct );
+    fetch(url +"api/grayProductLists", requestOptions)
+    .then((response) => response.json())
+    .then((data) => {   
+      fetchAllData()
+ setModalShow(false);
+    
+    })
+    .catch((err) => {
+      console.log("err front End", err);
+    });
+  }
+  const deleteGrayProduct = (e)=>{
+  
+    // http://localhost:63145/api/grayProductLists/13
+    fetch(`${endPoint}/api/grayProductLists/${e}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
+      .then((response) => {
+        // deleteing Role for this Id
+
+        fetchAllData();
+     
+      })
+      .catch((error) => console.log("error", error));
+  }
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -41,12 +145,24 @@ const GrayProductList = () => {
       ) : (
         <div
           role="main"
-          className={`right_col  h-100  ${showNavMenu == false ? "right_col-margin-remove" : " "
-            } `}
+          className={`right_col  h-100  ${
+            showNavMenu == false ? "right_col-margin-remove" : " "
+          } `}
         >
-          <MyVerticallyCenteredModal
+          <AddNewGrayProductList
             show={modalShow}
+            itemNameOptions={itemNameOptions}
+            itemNameValue={itemNameValue}
+            setitemNameValue={setitemNameValue}
+            AddNewProduct={AddNewProduct}
+            setAddNewProduct={setAddNewProduct}
             onHide={() => setModalShow(false)}
+            AddNewProductFunc={AddNewProductFunc}   
+            itemStatusOptions={itemStatusOptions} setitemStatusValue={setitemStatusValue} itemStatusValue={itemStatusOptions}
+
+            // Selector of size item 
+            setItemSizeOptions={setItemSizeOptions}   itemSizeOptions={itemSizeOptions}   
+            itemSizeValue={itemSizeValue}    setitemSizeValue={setitemSizeValue}
           />
 
           <div className="page-title mb-2  ">
@@ -87,9 +203,16 @@ const GrayProductList = () => {
                           Sr.
                         </div>
                       </th>
+
                       <th
                         className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "6%" }}
+                        style={{ width: "3%" }}
+                      >
+                        <div className=" py-1">Name </div>
+                      </th>
+                      <th
+                        className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                        style={{ width: "3%" }}
                       >
                         <div className=" py-1">Size </div>
                       </th>
@@ -103,7 +226,7 @@ const GrayProductList = () => {
                       </th>
                       <th
                         className="column-title pileSize  border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "16%" }}
+                        style={{ width: "12%" }}
                       >
                         <div>
                           <div className="col-md-12 py-1">
@@ -198,6 +321,12 @@ const GrayProductList = () => {
                             className="column-title   paddingYaxisTable   removePadding      text-center"
                             style={{ width: "6%" }}
                           >
+                            <div className="  ">{item.itemName} </div>
+                          </td>
+                          <td
+                            className="column-title   paddingYaxisTable   removePadding      text-center"
+                            style={{ width: "6%" }}
+                          >
                             <div className="  ">{item.itemSize} </div>
                           </td>
                           <td
@@ -273,6 +402,9 @@ const GrayProductList = () => {
                             style={{ width: "2%" }}
                           >
                             <i className="fa fa-edit text-common"></i>
+                            <i className="fa fa-trash ml-2 pb-1 text-danger"
+                            
+                            onClick={()=>deleteGrayProduct(item.grayProduct_id)}></i>
                           </td>
                         </tr>
                       );
@@ -289,219 +421,3 @@ const GrayProductList = () => {
 };
 
 export default GrayProductList;
-
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <>
-        {" "}
-        <div className="x_panel mb-0">
-          <div className="x_title">
-            <h2 className="pl-2 pt-2">Add Employee</h2>
-            <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-              <li>
-                <a className="close-link">
-                  <i className="fa fa-close" onClick={props.onHide} />
-                </a>
-              </li>
-            </ul>
-            <div className="clearfix" />
-          </div>
-          <div className="x_content mb-2 mt-2">
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-              }}
-            >
-              {/* <span className="section">Personal Info</span> */}
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Size<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="nanr"
-                    placeholder="ex. Ali A.Khan"
-                    required="required"
-                  />
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Per Piece Gray Wright in Grams
-                  <span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="nanr"
-                    placeholder="ex. 33103-4578234-5"
-                    required="required"
-                  />
-                </div>
-              </div>
-
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  GraySize Pile to Pile<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <div class="row">
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Width"
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Length"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="container">
-                <div className="row ">
-                  <div className="col-md-12 text-center ">
-                    <h4 className="text-danger font-weight-bolder">
-                      Loom No 76
-                    </h4>
-
-                  </div>
-
-                  <div className="col-md-12">
-                    <div className="field item form-group">
-                      <label className="col-form-label col-md-3  col-sm-3  label-align "   >
-                        No of Piece in one border<span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <div class="row">
-                          <input
-                            className="form-control mx-2"
-                            name="number"
-                            placeholder="Ex. Grams"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="field item form-group  ">
-
-                      <label className="col-form-label col-md-3 col-sm-3  label-align">
-                        Rate Per Border<span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <div class="row">
-                          <div className="col-md-6">
-                            <input
-                              className="form-control"
-                              name="number"
-                              placeholder="With Draw"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <input
-                              className="form-control"
-                              name="number"
-                              placeholder="Without Draw"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="container">
-                <div className="row ">
-                  <div className="col-md-12 text-center ">
-                    <h4  className="text-danger font-weight-bolder" >
-                      Loom No 96
-                    </h4>
-
-                  </div>
-
-                  <div className="col-md-12">
-                    <div className="field item form-group">
-                      <label className="col-form-label col-md-3 col-sm-3  label-align">
-                        No of Piece in one border<span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <div class="row">
-                          <input
-                            className="form-control mx-2"
-                            name="number"
-                            placeholder="Width"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="field item form-group  ">
-
-                      <label className="col-form-label col-md-3 col-sm-3  label-align">
-                        Rate Per Border<span className="required">*</span>
-                      </label>
-                      <div className="col-md-8 col-sm-8">
-                        <div class="row">
-                          <div className="col-md-6">
-                            <input
-                              className="form-control"
-                              name="number"
-                              placeholder="With Draw"
-                            />
-                          </div>
-                          <div className="col-md-6">
-                            <input
-                              className="form-control"
-                              name="number"
-                              placeholder="Without Draw"
-                            />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
-
-
-
-
-
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Status<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <select className="form-control">
-                    <option value="Active">Active</option>
-                    <option value="Deactivated">De-Activate</option>
-                  </select>
-                </div>
-              </div>
-              <div className="form-group mt-2 ">
-                <div className="col-md-6 offset-md-3 pb-2  ">
-                  <button  className="btn btn-primary btn-sm px-4">
-                    Submit
-                  </button>
-                
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </>
-    </Modal>
-  );
-}

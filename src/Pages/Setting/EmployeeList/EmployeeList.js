@@ -1,26 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
 // import {  Button } from "bootstrap";
-import Creatable from "react-select/creatable";
+import Loader from "../../../Layout/Loader/Loader";
 
-import Select from "react-select";
+import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
-import Loader from "../../../Layout/Loader/Loader";
-import ShowSingleEmployee from "./ShowSingleEmployee";
+import MyVerticallyCenteredModal from './MyVerticallyCenteredModal'
+// import { Modal, Button } from "react-bootstrap";
+// import Creatable from "react-select/creatable";
+// import Select from "react-select";
 
-const customStyles = {
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    padding: 8,
+// const customStyles = {
+//   option: (provided, state) => ({
+//     ...provided,
+//     borderBottom: "1px  #003a4d",
+//     color: state.isSelected ? "#f79c74" : "#003a4d",
+//     padding: 8,
 
-    backgroundColor: "white",
-  }),
-};
+//     backgroundColor: "white",
+//   }),
+// };
 
 const EmployeeList = () => {
+  const [isDisableSubmitButton , setIsDisableSubmitButton] = useState(false)
   const [designationValue, setDesignationValue] = useState("Helper");
   const [designation, setDesignation] = useState([]);
   const [modalShow, setModalShow] = useState(false);
@@ -29,7 +31,8 @@ const EmployeeList = () => {
   const showNavMenu = useSelector((state) => state.NavState);
   const [showSingleUser, setShowSingleUSer] = useState(false);
   const [singleUserId, setSingleUserId] = useState("");
-  const [roleValue, setRoleVAlue] = useState("Active");
+  const [roleValue, setRoleVAlue] = useState("Active"); 
+  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState("Monthly");
   const [stateUpdater ,setStateUpdater] = useState(true)
   const [addNewEmployee, setAddNewEmployee] = useState({
     name: "",
@@ -42,24 +45,30 @@ const EmployeeList = () => {
     address: "",
     referenceName: "",
     referencePhoneNum: "",
-    jobStatus: roleValue,
-    designation: designationValue,
+    jobStatus: "",
+    designation: 0,
     employeePic1: "",
     employeePic2: "",
     employeeCnicFront: "",
     employeeCnicBsck: "",
     recruitmentType: "",
-    weeklySalary: "",
-    monthlySalary: "",
+    weeklySalary: 0,
+    monthlySalary: 0,
   });
- 
-
+ const [componentUpdater , setComponentUpdater] = useState(true)
+ const url = localStorage.getItem("authUser");
+const recruitmentType = [
+  { label: "Weekly", value: "Weekly" },
+  { label: "Monthly", value: "Monthly" },
+  { label: "Contract", value: "Contract" },
+]
   const jobStatus = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
   ];
   const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
   const fileHandle1 = (e) => {
+  
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -72,15 +81,17 @@ const EmployeeList = () => {
       redirect: "follow",
     };
     //   ///api/Employees/attach-files
-    fetch("http://localhost:63145/api/FileUpload", requestOptions)
+    fetch(url + "api/FileUpload", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
         setAddNewEmployee({ ...addNewEmployee, employeePic1: result });
+        // setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle2 = (e) => {
+    
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -93,7 +104,7 @@ const EmployeeList = () => {
       redirect: "follow",
     };
     //   ///api/Employees/attach-files
-    fetch("http://localhost:63145/api/FileUpload", requestOptions)
+    fetch(url+"api/FileUpload", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
@@ -102,6 +113,8 @@ const EmployeeList = () => {
       .catch((error) => console.log("error", error));
   };
   const fileHandle3 = (e) => {
+
+    console.log( e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -113,16 +126,18 @@ const EmployeeList = () => {
       body: formdata,
       redirect: "follow",
     };
-    //   ///api/Employees/attach-files
-    fetch("http://localhost:63145/api/FileUpload", requestOptions)
+    console.log(requestOptions );
+    fetch(url+"api/FileUpload", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
-        setAddNewEmployee({ ...addNewEmployee, employeeCnicFront: result });
+  
+ setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle4 = (e) => {
+    console.log( e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -134,17 +149,19 @@ const EmployeeList = () => {
       body: formdata,
       redirect: "follow",
     };
-    //   ///api/Employees/attach-files
-    fetch("http://localhost:63145/api/FileUpload", requestOptions)
+    console.log(requestOptions );
+
+    fetch(url+"api/FileUpload", requestOptions)
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
-        setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
+  
+ setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
       })
       .catch((error) => console.log("error", error));
   };
   const fetchAllData = () => {
-    fetch("http://localhost:63145/api/employeeLists", {
+    fetch(url +"api/employeeLists", {
       method: "GET",
       headers: {
         // Authorization: "bearer" + " " + e,
@@ -157,7 +174,7 @@ const EmployeeList = () => {
           setListOfEmployee(data);
 
           // ----- Setting Employee List ------
-          fetch("http://localhost:63145/api/employeeDesignations", {
+          fetch(url +"api/employeeDesignations", {
             method: "GET",
             headers: {
               // Authorization: "bearer" + " " + e,
@@ -188,76 +205,62 @@ const EmployeeList = () => {
 
   const AddNewEmployeeServer = (e) => {
     e.preventDefault(); 
-    console.log(addNewEmployee);
-    
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(addNewEmployee),
-    };
-    console.log(requestOptions.body);
-    fetch("http://localhost:63145/api/employeeLists", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {  
-        fetchAllData();
-        setAddNewEmployee({
-          name: "",
-          fatherName: "",
-          phoneNum1: "",
-          phoneNum2: "",
-          phoneNum3: "",
-          homePhoneNum: "",
-          cnicNum: "",
-          address: "",
-          referenceName: "",
-          referencePhoneNum: "",
-          jobStatus: "",
-          designation: "",
-          employeePic1: "",
-          employeePic2: "",
-          employeeCnicFront: "",
-          employeeCnicBsck: "",
-          recruitmentType: "",
-          weeklySalary: "",
-          monthlySalary: "",
+   console.log(addNewEmployee);
+if (
+  addNewEmployee.name==='' 
+  // || addNewEmployee.address==='' || addNewEmployee.fatherName==='' || addNewEmployee.cnicNum==='' ||
+  // addNewEmployee.designation==='' || addNewEmployee.employeeCnicBsck==='' || addNewEmployee.employeeCnicFront==='' || addNewEmployee.phoneNum1==='' ||
+  //  addNewEmployee.employeePic2==='' || addNewEmployee.homePhoneNum==='' || addNewEmployee.jobStatus==='' ||
+  //  addNewEmployee.monthlySalary==='' || addNewEmployee.recruitmentType==='' || addNewEmployee.phoneNum2==='' ||   addNewEmployee.phoneNum3==='' || addNewEmployee.recruitmentType===''   || addNewEmployee.referenceName===''
+) {
+  console.log("empty");
+} else {
+   const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(addNewEmployee),
+      };
+      
+      fetch(url +"api/employeeLists", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {  
+          setModalShow(false);
+          fetchAllData();
+          setAddNewEmployee({
+            name: "",
+            fatherName: "",
+            phoneNum1: "",
+            phoneNum2: "",
+            phoneNum3: "",
+            homePhoneNum: "",
+            cnicNum: "",
+            address: "",
+            referenceName: "",
+            referencePhoneNum: "",
+            jobStatus: "",
+            designation: "",
+            employeePic1: "",
+            employeePic2: "",
+            employeeCnicFront: "",
+            employeeCnicBsck: "",
+            recruitmentType: "",
+            weeklySalary: "",
+            monthlySalary: "",
+          }); 
+          setIsDisableSubmitButton(false)
+        })
+        .catch((err) => {
+          console.log("err front End", err);
         });
-        // notifyAdd();
-      })
-      .catch((err) => {
-        console.log("err front End", err);
-      });
-
-    setAddNewEmployee({
-      name: "",
-      fatherName: "",
-      phoneNum1: "",
-      phoneNum2: "",
-      phoneNum3: "",
-      homePhoneNum: "",
-      cnicNum: "",
-      address: "",
-      referenceName: "",
-      referencePhoneNum: "",
-      jobStatus: "",
-      designation: "",
-      employeePic1: "",
-      employeePic2: "",
-      employeeCnicFront: "",
-      employeeCnicBsck: "",
-      recruitmentType: "",
-      weeklySalary: "",
-      monthlySalary: "",
-    });
-    setModalShow(false);
+   
+}     
   };
 
-  const fetchEmployeeByDemand = (e) => {
-    console.log(e);
-    // setShowSingleUSer(false);
+  const fetchEmployeeByDemand = (e) => { 
     setShowSingleUSer(false);
 
     setSingleUserId("");
-    if (e.value === -1) {
+    if (e.value == -1) {
       setShowSingleUSer(false);
       console.log("show All");
       setSingleUserId("");
@@ -268,18 +271,45 @@ const EmployeeList = () => {
   };
 
   const handleChange = (field, value) => {
-    console.log(value.value);
-    switch (field) {
-      case "Designation":
-        setDesignationValue(value.value);
-
-        break;
-      default:
-        break;
-    }
+    if ( value.__isNew__==true) { 
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          designationName: value.value
+        }),
+      };
+      
+      fetch(url +"api/employeeDesignations", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {   
+          console.log(data , "new Designation Created");
+          setDesignationValue(data.designation_id);
+          setAddNewEmployee({...addNewEmployee , designation:data.designation_id})
+        })
+        .catch((err) => {
+          console.log("err front End", err);
+        });
+        console.log("new Created Not Saved");
+}  else{
+  setDesignationValue(value.value);
+  setAddNewEmployee({...addNewEmployee , designation:value.value})
+}
+console.log(value.value);
+//     switch (field) {
+//       case "Designation":
+//         setDesignationValue(value.value);
+//         setAddNewEmployee({...addNewEmployee , designation:value.value})
+// // if new call api and create A  new designation
+//         break;
+//       default:
+//         break;
+//     }
   };
+  
   useEffect(() => {
     fetchAllData();
+ 
   }, []);
 
   return (
@@ -295,7 +325,7 @@ const EmployeeList = () => {
           <div
             role="main"
             className={`right_col  h-100  ${
-              showNavMenu == false ? "right_col-margin-remove" : " "
+              showNavMenu === false ? "right_col-margin-remove" : " "
             } `}
           >
             <MyVerticallyCenteredModal
@@ -309,10 +339,14 @@ const EmployeeList = () => {
               fileHandle4={fileHandle4}
               onHide={() => setModalShow(false)}
               jobStatus={jobStatus}
+              recruitmentType={recruitmentType}
               setRoleVAlue={setRoleVAlue}
+              recruitmentTypeValue={recruitmentTypeValue}
               designationValue={designationValue}
               designation={designation}
               handleChange={handleChange}
+              isDisableSubmitButton={isDisableSubmitButton}
+          
             />
 
             {/* <div className="col-md-3">
@@ -342,6 +376,8 @@ const EmployeeList = () => {
                   listOfEmployeeName={listOfEmployeeName}
                   fetchEmployeeByDemand={fetchEmployeeByDemand}
                   setSingleUserId={setSingleUserId}
+                  setModalShow={setModalShow}
+                  componentUpdater={componentUpdater}
                       
                 />
               </div>
@@ -358,6 +394,7 @@ const EmployeeList = () => {
             </div>
             {showSingleUser ? (
               <ShowSingleEmployee
+              componentUpdater={componentUpdater} setComponentUpdater={setComponentUpdater}
               fetchAllData={fetchAllData}
                 singleUserId={singleUserId}
                 setShowSingleUSer={setShowSingleUSer}
@@ -390,7 +427,7 @@ const EmployeeList = () => {
                               <td className=" ">{item.fatherName}</td>
                               <td className=" ">{item.cnicNum}</td>
                               <td className=" ">{item.address}</td>
-                              <td className=" ">{item.designation}</td>
+                              <td className=" ">{item.designationName}</td>
                               <td className=" ">{item.jobStatus}</td>
                               <td className=" ">{item.monthlySalary}</td>
                               <td className=" ">{item.phoneNum1}</td>
@@ -412,423 +449,423 @@ const EmployeeList = () => {
 
 export default EmployeeList;
 
-function MyVerticallyCenteredModal(props) {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <>
-        {" "}
-        <div className="x_panel mb-0">
-          <div className="x_title">
-            <h2 className="pl-2 pt-2">Add Employee</h2>
-            <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-              <li>
-                <a className="close-link">
-                  <i className="fa fa-close" onClick={props.onHide} />
-                </a>
-              </li>
-            </ul>
-            <div className="clearfix" />
-          </div>
-          <div className="x_content mb-2 mt-2">
-            <form>
-              {/* <span className="section">Personal Info</span> */}
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Name<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="nanr"
-                    placeholder="ex. Ali A.Khan"
-                    required
-                    value={props.addNewEmployee.name}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        name: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  CNIC<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="nanr"
-                    placeholder="ex. 33103-4578234-5"
-                    required="required"
-                    value={props.addNewEmployee.cnicNum}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        cnicNum: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Father Name<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="f-Name"
-                    placeholder="ex. Abubakar A.Khan"
-                    required="required"
-                    value={props.addNewEmployee.fatherName}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        fatherName: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
+// function MyVerticallyCenteredModal(props) {
+//   return (
+//     <Modal
+//       {...props}
+//       size="lg"
+//       aria-labelledby="contained-modal-title-vcenter"
+//       centered
+//     >
+//       <>
+//         {" "}
+//         <div className="x_panel mb-0">
+//           <div className="x_title">
+//             <h2 className="pl-2 pt-2">Add Employee</h2>
+//             <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+//               <li>
+//                 <a className="close-link">
+//                   <i className="fa fa-close" onClick={props.onHide} />
+//                 </a>
+//               </li>
+//             </ul>
+//             <div className="clearfix" />
+//           </div>
+//           <div className="x_content mb-2 mt-2">
+//             <form>
+//               {/* <span className="section">Personal Info</span> */}
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Name<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-8 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="nanr"
+//                     placeholder="ex. Ali A.Khan"
+//                     required
+//                     value={props.addNewEmployee.name}
+//                     onChange={
+                    
+//                       (e) => 
+//                      {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         name: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   CNIC<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-8 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="nanr"
+//                     placeholder="ex. 33103-4578234-5"
+//                     required="required"
+//                     value={props.addNewEmployee.cnicNum}
+//                     onChange={(e) =>
+//                      {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         cnicNum: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Father Name<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-8 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="f-Name"
+//                     placeholder="ex. Abubakar A.Khan"
+//                     required="required"
+//                     value={props.addNewEmployee.fatherName}
+//                     onChange={(e) =>
+//                     {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         fatherName: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//               </div>
 
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Phone Numbers<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <div class="row">
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Phone Number 1"
-                        value={props.addNewEmployee.phoneNum1}
-                        onChange={(e) =>
-                          props.setAddNewEmployee({
-                            ...props.addNewEmployee,
-                            phoneNum1: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Phone Number 2 (Optional)"
-                        value={props.addNewEmployee.phoneNum2}
-                        onChange={(e) =>
-                          props.setAddNewEmployee({
-                            ...props.addNewEmployee,
-                            phoneNum2: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div class="row mt-3">
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Phone Number 3 (Optional)"
-                        value={props.addNewEmployee.phoneNum3}
-                        onChange={(e) =>
-                          props.setAddNewEmployee({
-                            ...props.addNewEmployee,
-                            phoneNum3: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                    <div className="col-md-6">
-                      <input
-                        className="form-control"
-                        name="number"
-                        placeholder="Home Phone (Optional)"
-                        value={props.addNewEmployee.homePhoneNum}
-                        onChange={(e) =>
-                          props.setAddNewEmployee({
-                            ...props.addNewEmployee,
-                            homePhoneNum: e.target.value,
-                          })
-                        }
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Address<span className="required">*</span>
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="address"
-                    placeholder="ex. Street 22 ,City Pakistan 39000"
-                    required="required"
-                    value={props.addNewEmployee.address}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        address: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Reference Name<span className="required">*</span>
-                </label>
-                <div className="col-md-4 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="address"
-                    placeholder="ex. Azim Maalic"
-                    required="required"
-                    value={props.addNewEmployee.referenceName}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        referenceName: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-                <div className="col-md-4 col-sm-8">
-                  <input
-                    className="form-control"
-                    name="Phone "
-                    placeholder="Reference Phone "
-                    value={props.addNewEmployee.referencePhoneNum}
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        referencePhoneNum: e.target.value,
-                      })
-                    }
-                  />
-                </div>
-              </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Phone Numbers<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-8 col-sm-8">
+//                   <div class="row">
+//                     <div className="col-md-6">
+//                       <input
+//                         className="form-control"
+//                         name="number"
+//                         placeholder="Phone Number 1"
+//                         value={props.addNewEmployee.phoneNum1}
+//                         onChange={(e) =>
+//                          {   props.changeSubmitButtonCondition()
+//                             props.setAddNewEmployee({
+//                             ...props.addNewEmployee,
+//                             phoneNum1: e.target.value,
+//                           })}
+//                         }
+//                       />
+//                     </div>
+//                     <div className="col-md-6">
+//                       <input
+//                         className="form-control"
+//                         name="number"
+//                         placeholder="Phone Number 2 (Optional)"
+//                         value={props.addNewEmployee.phoneNum2}
+//                         onChange={(e) =>
+//                           props.setAddNewEmployee({
+//                             ...props.addNewEmployee,
+//                             phoneNum2: e.target.value,
+//                           })
+//                         }
+//                       />
+//                     </div>
+//                   </div>
+//                   <div class="row mt-3">
+//                     <div className="col-md-6">
+//                       <input
+//                         className="form-control"
+//                         name="number"
+//                         placeholder="Phone Number 3 (Optional)"
+//                         value={props.addNewEmployee.phoneNum3}
+//                         onChange={(e) =>
+//                          {   props.changeSubmitButtonCondition()
+//                             props.setAddNewEmployee({
+//                             ...props.addNewEmployee,
+//                             phoneNum3: e.target.value,
+//                           })}
+//                         }
+//                       />
+//                     </div>
+//                     <div className="col-md-6">
+//                       <input
+//                         className="form-control"
+//                         name="number"
+//                         placeholder="Home Phone (Optional)"
+//                         value={props.addNewEmployee.homePhoneNum}
+//                         onChange={(e) =>
+//                          {   props.changeSubmitButtonCondition()
+//                             props.setAddNewEmployee({
+//                             ...props.addNewEmployee,
+//                             homePhoneNum: e.target.value,
+//                           })}
+//                         }
+//                       />
+//                     </div>
+//                   </div>
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Address<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-8 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="address"
+//                     placeholder="ex. Street 22 ,City Pakistan 39000"
+//                     required="required"
+//                     value={props.addNewEmployee.address}
+//                     onChange={(e) =>
+//                      {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         address: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Reference Name<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-4 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="address"
+//                     placeholder="ex. Azim Maalic"
+//                     required="required"
+//                     value={props.addNewEmployee.referenceName}
+//                     onChange={(e) =>
+//                      {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         referenceName: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//                 <div className="col-md-4 col-sm-8">
+//                   <input
+//                     className="form-control"
+//                     name="Phone "
+//                     placeholder="Reference Phone "
+//                     value={props.addNewEmployee.referencePhoneNum}
+//                     onChange={(e) =>
+//                     {   props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                         ...props.addNewEmployee,
+//                         referencePhoneNum: e.target.value,
+//                       })}
+//                     }
+//                   />
+//                 </div>
+//               </div>
 
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Job Status<span className="required">*</span>
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div className="form-group row ml-1-2">
-                    <Select
-                    required
-                      className="basic-single"
-                      classNamePrefix="select"
-                      defaultValue={"Active"}
-                      value={props.roleValue}
-                      onChange={(value) => {
-                        //  props.setRoleVAlue(value.value) ,
-                        props.setAddNewEmployee({
-                          ...props.addNewEmployee,
-                          jobStatus: value.value,
-                        });
-                      }}
-                      // isDisabled={isDisabled}
-                      // isLoading={isLoading}
-                      // isClearable={true}
-                      // isRtl={isRtl}
-                      // onChange={setRoleVAlue()}
-                      isSearchable={true}
-                      name="color"
-                      options={props.jobStatus}
-                      styles={customStyles}
-                    />
-                    {/* <select
-                      className="form-control"
-                      onChange={(e) =>
-                        props.setAddNewEmployee({
-                          ...props.addNewEmployee,
-                          jobStatus: e.target.value,
-                        })
-                      }
-                    >
-                      <option value={"Active"}>Active</option>
-                      <option value={"Left"}>Left</option>
-                    </select> */}
-                  </div>
-                </div>
-                <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  Designation <span className="required">*</span>
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  {/* <select
-                    className="form-control"
-                    onChange={(e) =>
-                      props.setAddNewEmployee({
-                        ...props.addNewEmployee,
-                        designation: e.target.value,
-                      })
-                    }
-                  >
-                    <option>Select option</option>
-                    <option value={"clerk"}>Clerk</option>
-                    <option value={"manager"}>Manager</option>
-                    <option value={"Cashier"}>Cashier</option>
-                    <option value={"Accountant"}>Accountant</option>
-                  </select> */}
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Job Status<span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div className="form-group row ml-1-2">
+//                     <Select
+//                     required
+//                       className="basic-single"
+//                       classNamePrefix="select"
+//                       defaultValue={"Active"}
+//                       value={props.roleValue}
+//                       onChange={(value) => {
+//                         //  props.setRoleVAlue(value.value) ,
+//                         props.changeSubmitButtonCondition()
+//                         props.setAddNewEmployee({
+//                           ...props.addNewEmployee,
+//                           jobStatus: value.value,
+//                         });
+//                       }}
+//                       // isDisabled={isDisabled}
+//                       // isLoading={isLoading}
+//                       // isClearable={true}
+//                       // isRtl={isRtl}
+//                       // onChange={setRoleVAlue()}
+//                       isSearchable={true}
+//                       name="color"
+//                       options={props.jobStatus}
+//                       styles={customStyles}
+//                     />
+//                     {/* <select
+//                       className="form-control"
+//                       onChange={(e) =>
+//                         props.setAddNewEmployee({
+//                           ...props.addNewEmployee,
+//                           jobStatus: e.target.value,
+//                         })
+//                       }
+//                     >
+//                       <option value={"Active"}>Active</option>
+//                       <option value={"Left"}>Left</option>
+//                     </select> */}
+//                   </div>
+//                 </div>
+//                 <label className="col-form-label col-md-2 col-sm-3  label-align">
+//                   Designation <span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+          
 
-                  <Creatable
-                    isClearable={false}
+//                   <Creatable
+//                     isClearable={false}
                  
-                    onChange={(value) =>
-                      props.handleChange(
-                        "Designation",
-                        value,
-                        props.designationValue
-                      )
-                    }
-                    defaultValue="Not"
-                    options={props.designation}
-                    value={props.designationValue.value}
-                    styles={customStyles}
-                  />
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Select RecruitmentType Type{" "}
-                  <span className="required">*</span>
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div className="form-group row ml-1-2">
-                    <select
-                      className="form-control"
+//                     onChange={(value) =>
+//                      {   
+//                         props.handleChange(
+//                         "Designation",
+//                         value,
+//                         props.designationValue
+//                       )}
+//                     }
+//                     defaultValue="Not"
+//                     options={props.designation}
+//                     value={props.designationValue.value}
+//                     styles={customStyles}
+//                   />
 
-                      onChange={(e) =>
-                        props.setAddNewEmployee({
-                          ...props.addNewEmployee,
-                          recruitmentType: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="Monthly">Monthly</option>
-                      <option value="Weekly">Weekly</option>
-                      <option value="Contractor">Contractor</option>
-                    </select>
-                  </div>
-                </div>
-                <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  Monthly Salary <span className="required">*</span>
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div>
-                    <input
-                      className="form-control"
-                      name="nanr"
-                      placeholder="ex. 20000"
-                      required="required"
-                      value={props.addNewEmployee.monthlySalary}
-                      onChange={(e) =>
-                        props.setAddNewEmployee({
-                          ...props.addNewEmployee,
-                          monthlySalary: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Picture 1
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div>
-                    <input
-                      className="form-control form-control-sm"
-                      id="formFileSm"
-                      name="employeePic1"
-                      type="file"
-                      style={{ height: "33px" }}
-                      onChange={props.fileHandle1}
-                    />
-                  </div>
-                </div>
+ 
 
-                <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  Picture 2
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div>
-                    <input
-                      className="form-control form-control-sm"
-                      id="formFileSm"
-                      type="file"
-                      style={{ height: "33px" }}
-                      onChange={props.fileHandle2}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="field item form-group">
-                <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  CNIC Front
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div>
-                    <input
-                      className="form-control form-control-sm"
-                      id="formFileSm"
-                      type="file"
-                      style={{ height: "33px" }}
-                      onChange={props.fileHandle3}
-                    />
-                  </div>
-                </div>
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Select RecruitmentType Type{" "}
+//                   <span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div className="form-group row ml-1-2">
+//                     <select
+//                       className="form-control"
 
-                <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  CNIC Back
-                </label>
-                <div className="col-md-3 col-sm-8">
-                  <div>
-                    <input
-                      className="form-control form-control-sm"
-                      id="formFileSm"
-                      type="file"
-                      style={{ height: "33px" }}
-                      onChange={props.fileHandle4}
-                    />
-                  </div>
-                </div>
-              </div>
+//                       onChange={(e) =>
+//                       {   props.changeSubmitButtonCondition()
+//                           props.setAddNewEmployee({
+//                           ...props.addNewEmployee,
+//                           recruitmentType: e.target.value,
+//                         })}
+//                       }
+//                     >
+//                       <option value="Monthly">Monthly</option>
+//                       <option value="Weekly">Weekly</option>
+//                       <option value="Contractor">Contractor</option>
+//                     </select>
+//                   </div>
+//                 </div>
+//                 <label className="col-form-label col-md-2 col-sm-3  label-align">
+//                   Monthly Salary <span className="required">*</span>
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div>
+//                     <input
+//                       className="form-control"
+//                       name="nanr"
+//                       placeholder="ex. 20000"
+//                       required="required"
+//                       value={props.addNewEmployee.monthlySalary}
+//                       onChange={(e) =>
+//                         {   props.changeSubmitButtonCondition()
+//                           props.setAddNewEmployee({
+//                           ...props.addNewEmployee,
+//                           monthlySalary: e.target.value,
+//                         })}
+//                       }
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   Picture 1
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div>
+//                     <input
+//                       className="form-control form-control-sm"
+//                       id="formFileSm"
+//                       name="employeePic1"
+//                       type="file"
+//                       style={{ height: "33px" }}
+//                       onChange={ props.fileHandle1 }
+//                     />
+//                   </div>
+//                 </div>
 
-              <div className="form-group mt-2 ">
-                <div className="col-md-6 offset-md-3 pb-2  ">
-                  <button
-                    type="submit"
-                    className="btn btn-primary btn-sm px-4"
-                    onClick={(e) => props.AddNewEmployeeServer(e)}
-                  >
-                    Submit
-                  </button>
-                  {/* <button
+//                 <label className="col-form-label col-md-2 col-sm-3  label-align">
+//                   Picture 2
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div>
+//                     <input
+//                       className="form-control form-control-sm"
+//                       id="formFileSm"
+//                       type="file"
+//                       style={{ height: "33px" }}
+//                       onChange={ props.fileHandle2}
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+//               <div className="field item form-group">
+//                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+//                   CNIC Front
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div>
+//                     <input
+//                       className="form-control form-control-sm"
+//                       id="formFileSm"
+//                       type="file"
+//                       style={{ height: "33px" }}
+//                       onChange={ props.fileHandle3 }
+//                     />
+//                   </div>
+//                 </div>
 
-                    className="btn btn-success btn-sm ml-2 px-3"
-                  >
-                    Reset
-                  </button> */}
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </>
-    </Modal>
-  );
-}
+//                 <label className="col-form-label col-md-2 col-sm-3  label-align">
+//                   CNIC Back
+//                 </label>
+//                 <div className="col-md-3 col-sm-8">
+//                   <div>
+//                     <input
+//                       className="form-control form-control-sm"
+//                       id="formFileSm"
+//                       type="file"
+//                       style={{ height: "33px" }}
+//                       onChange={ props.fileHandle4}
+//                     />
+//                   </div>
+//                 </div>
+//               </div>
+
+//               <div className="form-group mt-2 ">
+//                 <div className="col-md-6 offset-md-3 pb-2  ">
+//                   <button
+//                     type="submit"
+//                     disabled={props.isDisableSubmitButton}
+//                     className="btn btn-primary btn-sm px-4"
+//                     onClick={(e) => props.AddNewEmployeeServer(e)}
+//                   >
+//                     Submit
+//                   </button>
+                
+//                 </div>
+//               </div>
+//             </form>
+//           </div>
+//         </div>
+//       </>
+//     </Modal>
+//   );
+// }

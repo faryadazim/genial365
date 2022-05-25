@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux"; 
 
-import { setNavSm, setNavMd } from "../actions/NavState";
+// import { setNavSm, setNavMd } from "../actions/NavState";
+import { setNavSm, setNavMd } from "../store/actions/NavState";
 const Header = ({roleName}) => {
   const dispatch = useDispatch();
   const showNavMenu = useSelector((state) => state.NavState);

@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 //  Style Module Import
 import "./App.css";
 // Router Import
+import WeavingProductionForm from './Pages/WeavingProduction/WeavingProduction/WeavingProductionForm'
 import { Routes, Route } from "react-router-dom";
-
+import BorderManagement from "./Pages/Setting/borderManagemrnt/BorderManagement";
 // Notifier Import
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -59,6 +60,9 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="EmployeesList" element={<EmployeeList/>} />
               <Route path="GrayProductList" element={<GrayProductList/>} />
               <Route path="LoomManagement" element={<LoomManagement/>} />
+              <Route path="BorderManagement" element={<BorderManagement/>} />
+              <Route path="WeavingProductionForm" element={<WeavingProductionForm/>} />
+            
             </Routes>
 
             <Footer />

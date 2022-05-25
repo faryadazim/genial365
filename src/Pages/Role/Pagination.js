@@ -12,13 +12,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
     <div>
       <nav aria-label="Page navigation example  bg-danger">
         <ul className="pagination border-radius-none">
-          {pageNumbers.map((number, index) => (
-            //   <li key={number} className='page-item'>
-            //     <a onClick={() => paginate(number)} href='#' className='page-link'>
-            //       {number}
-            //     </a>
-            //   </li>
-
+          {pageNumbers.map((number, index) => ( 
             <li
               key={number}
               className={`page-item paginate_button border-radius-none`}

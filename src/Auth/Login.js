@@ -5,16 +5,18 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
   const [disableLoginButton, setdisableLoginButton] = useState(false);
   const [credientials , setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
-    username: "",
+    username: "faryadazim",
     password: "5@7B2s6d2k6$8",
     grant_type: "password",
   });
+   
+    const url = localStorage.getItem("authUser");
   const onLogin = () => {
     localStorage.setItem("authUser", "http://localhost:63145/");
   };
   const notify = () => toast("Login SuccessFully!");
   const fetchNavigation = (e) => {
-    fetch("http://localhost:63145/api/navigation", {
+    fetch(url+"api/navigation", {
       method: "GET",
       headers: {
         Authorization: "bearer" + " " + e,
@@ -92,7 +94,7 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                       urlencoded.append("password", logInAuth.password);
                       urlencoded.append("grant_type", "password");
 
-                      fetch("http://localhost:63145/token", {
+                      fetch(url+"token", {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/x-www-form-urlencoded",
