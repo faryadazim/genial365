@@ -62,7 +62,9 @@ const WeavingProductionFormStepTwo = ({
       ratePerBorder: parseInt(ratePerBorderTempState),
       extraAmount: { desc: "", amount: 0 },
       totalAmount: 0,
+      knownFaultsIds:"",
       nativing: "",
+    
     },
   ]);
 
@@ -148,11 +150,33 @@ const WeavingProductionFormStepTwo = ({
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
+  function updateFaults(i , arrayOfSelectOftions){
+    var commaSplitStringOfFaults="";
+    arrayOfSelectOftions.map((item)=>{
+            commaSplitStringOfFaults=item.value + "," +commaSplitStringOfFaults;
+    })
+      
+    
+
+//
+   var arr_data = shiftTotalState;
+  arr_data[i].knownFaultsIds =commaSplitStringOfFaults;
+    
+   setShiftTotalState(arr_data);
+    
+      setReRender(!reRender);
+  }
+
   function updateGrandTotalValue(){
-    let totalNumberofBorders=grandFinalTotal.totalBorders;
-    let totalPiece=grandFinalTotal.totalPiece;
-    let totalBGrade=grandFinalTotal.totalBorders;
-    let totalAGrade=grandFinalTotal.totalAGrade;
+    // let totalNumberofBorders=grandFinalTotal.totalBorders;
+    // let totalPiece=grandFinalTotal.totalPiece;
+    // let totalBGrade=grandFinalTotal.totalBorders;
+    // let totalAGrade=grandFinalTotal.totalAGrade;
+
+    let totalNumberofBorders=0;
+    let totalPiece=0;
+    let totalBGrade=0;
+    let totalAGrade=0;
 
     shiftTotalState.map((eachShift, index)=>{
         totalNumberofBorders=totalNumberofBorders + eachShift.noOfBorder;
@@ -161,15 +185,15 @@ const WeavingProductionFormStepTwo = ({
         totalAGrade=totalAGrade + eachShift.aGradePieces;
 
     })  
-    console.log("---------pp-----------",totalNumberofBorders ,totalPiece , totalBGrade ,totalAGrade );
+     
   setGrandFinalTotal({
      totalBorders:totalNumberofBorders, totalPiece:totalPiece ,
       totalBGrade:totalBGrade , totalAGrade:totalAGrade
    })
   }
   useEffect(() => {
-    updateGrandTotalValue()
-    console.log(grandFinalTotal);
+    updateGrandTotalValue();
+   
   }, [reRender])
   
 
@@ -236,7 +260,7 @@ const WeavingProductionFormStepTwo = ({
                       </th>
                       <th
                         className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
-                        style={{ width: "13%" }}
+                        style={{ width: "4%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
                           Rate/Border
@@ -244,14 +268,14 @@ const WeavingProductionFormStepTwo = ({
                       </th>
                       <th
                         className="column-title pileSize  border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "18%" }}
+                        style={{ width: "23%" }}
                       >
                         <div>
                           <div className="col-md-12 py-1">Extra Amount</div>
-                          <div className="col-md-8 border border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
+                          <div className="col-md-7 border border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
                             Description
                           </div>
-                          <div className="col-md-4 border  border-primary removeRightBorder removeBottomBorder py-1">
+                          <div className="col-md-5 border  border-primary removeRightBorder removeBottomBorder py-1">
                             Amount
                           </div>
                         </div>
@@ -267,7 +291,7 @@ const WeavingProductionFormStepTwo = ({
                       <th
                         className="column-title  text-center  border border-primary 
                                         removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
-                        style={{ width: "4%" }}
+                        style={{ width: "8%" }}
                       >
                         Nativing
                       </th>
@@ -325,7 +349,7 @@ const WeavingProductionFormStepTwo = ({
                       </td>
                       <td
                         className="column-title     text-center"
-                        style={{ width: "10%" }}
+                        style={{ width: "10%" , paddingRight:"2px" , paddingLeft:"2px" }}
                       >
                         <div className=" py-1">
                           <input
@@ -353,7 +377,7 @@ const WeavingProductionFormStepTwo = ({
                       </td>
                       <td
                         className="column-title  text-center    "
-                        style={{ width: "8%" }}
+                   style={{ width: "8%" , paddingRight:"2px" , paddingLeft:"2px" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
                           <input
@@ -362,6 +386,7 @@ const WeavingProductionFormStepTwo = ({
                             onChange={(e) =>
                               updateBGradePiece(i, e.target.value)
                             }
+                            placeholder="ex. 34.."
                           />
                         </div>{" "}
                       </td>
@@ -390,7 +415,7 @@ const WeavingProductionFormStepTwo = ({
                         style={{ width: "18%" }}
                       >
                         <div>
-                          <div className="col-md-8    py-1 ">
+                          <div className="col-md-7    py-1 px-0 pr-1">
                             <input
                               type="text"
                               className="form-control"
@@ -399,7 +424,7 @@ const WeavingProductionFormStepTwo = ({
                               }
                             />
                           </div>
-                          <div className="col-md-4  py-1">
+                          <div className="col-md-5  py-1 px-0 pl-1">
                             <input
                               type="number"
                               className="form-control"
@@ -441,14 +466,8 @@ const WeavingProductionFormStepTwo = ({
                             placeholder={<div>Add Fault (Create Fault)</div>}
                             className="w-100 text-left   "
                             isClearable={false}
-                            // onChange={(value) =>
-                            //  {
-                            //     props.handleChange(
-                            //     "Designation",
-                            //     value,
-                            //     props.designationValue
-                            //   )}
-                            // }
+                            onChange={(value) => updateFaults(i,value)
+                            }
                             isMulti={true}
                             defaultValue="Not"
                             options={faultOptions}

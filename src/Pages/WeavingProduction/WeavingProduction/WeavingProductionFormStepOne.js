@@ -53,169 +53,9 @@ const WeavingProductionFormStepOne = ({
   updateLoomDetails ,borderQualityOptions ,  setUpdateNumberOfPieceOneBorderInput ,
   updateNumberOfPieceOneBorderInput ,borderSizeOptions
 }) => {
-  // const url = localStorage.getItem("authUser");
-  // var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
-  // var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
-  // var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
-  // const dateToday = `${year}-${month}-${day}`;
-  // const [isLoading, setisLoading] = useState(true);
-  //state that will further modified and used in loomTable
-  // const [allLoomLists, setAllLoomLists] = useState([]);
-  //state for DropDownSearchableSelector
-  // const [loomListOptions, setLoomListOptions] = useState([]);
-  // const [borderQualityOptions, setBorderQualityOptions] = useState([]);
-  // const [borderSizeOptions, setBorderSizeOptions] = useState([]);
-  // // state to store form data in database
-  // const [rollDetail, setrollDetail] = useState({
-  //   rollNo: "",
-  //   date: dateToday,
-  //   rollWeight: "",
-  //   loomNumber: "",
-  //   Quality: "",
-  //   Size: "",
-  //   programNumber: "",
-  // });
-
-  // const [loomDetailsUpdate, setLoomDetailsUpdate] = useState(false);
-
-  // // state to show data in loom detail table
-  // const [loomDetail, setLoomDetail] = useState({
-  //   loomSize: "Auto Define",
-  //   jacquard: "Auto Define",
-  //   drawBox: "Auto Define",
-  //   NumOfPieceOneBorder: "Auto Define",
-  // });
-  // //  state for update Function Number of Border in Loom Detail table
-  // const [
-  //   updateNumberOfPieceOneBorderInput,
-  //   setUpdateNumberOfPieceOneBorderInput,
-  // ] = useState({ QualityId: "", BorderSizeId: "", LoomSize: "" });
-
-  // const FetchListSelector = () => {
-  //   // Fetching loom list number
-  //   fetch(url + "api/LoomListsCore", {
-  //     method: "GET",
-  //     headers: {
-  //       // Authorization: "bearer" + " " + e,
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       console.log(data);
-  //       setAllLoomLists(data);
-  //       var arrForLoom = [];
-  //       data.map((item) => {
-  //         arrForLoom.push({
-  //           label: item.loomNumber,
-  //           value: item.loom_id,
-  //         });
-  //       });
-
-  //       setLoomListOptions(arrForLoom);
-  //     });
-  //   // fetching BorderSize
-
-  //   fetch(url + "api/BorderQuality", {
-  //     method: "GET",
-  //     headers: {
-  //       // Authorization: "bearer" + " " + e,
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       var arrForBorderQuality = [];
-  //       data.map((item) => {
-  //         arrForBorderQuality.push({
-  //           label: item.borderQuality1,
-  //           value: item.borderQuality_id,
-  //         });
-  //       });
-
-  //       setBorderQualityOptions(arrForBorderQuality);
-  //     });
-  //   fetch(url + "api/BorderSizes", {
-  //     method: "GET",
-  //     headers: {
-  //       // Authorization: "bearer" + " " + e,
-  //       "Content-Type": "application/x-www-form-urlencoded",
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       var arrForBorderSize = [];
-  //       data.map((item) => {
-  //         arrForBorderSize.push({
-  //           label: item.borderSize1,
-  //           value: item.borderSize_id,
-  //         });
-  //       });
-  //       console.log("done fetch apisfsdfsdfdsfsdf");
-  //       setBorderSizeOptions(arrForBorderSize);
-  //       setisLoading(false);
-  //     });
-  // };
-  // const updateLoomDetails = (loomNumber) => {
-  //   var loomFinder = allLoomLists.filter((eachLoom) => {
-  //     return eachLoom.loom_id == loomNumber;
-  //   });
-  //   const selectedLoom = loomFinder[0];
-
-  //   setLoomDetail({
-  //     ...loomDetail,
-  //     loomSize: selectedLoom.loomSize,
-  //     jacquard: selectedLoom.jacquard,
-  //     drawBox: selectedLoom.drawBox,
-  //   });
-  //   setUpdateNumberOfPieceOneBorderInput({
-  //     ...updateNumberOfPieceOneBorderInput,
-  //     LoomSize: selectedLoom.loomSize,
-  //   });
-  // };
-  // const updateNumbOfPieceInBorderFunc = (QualityId, BorderSizeId, LoomSize) => {
-  //   if (
-  //     updateNumberOfPieceOneBorderInput.BorderSizeId == "" ||
-  //     updateNumberOfPieceOneBorderInput.QualityId == "" ||
-  //     updateNumberOfPieceOneBorderInput.LoomSize == ""
-  //   ) {
-  //     console.log(
-  //       "unable to fetch rate of border due to unavailability of required credientials"
-  //     );
-  //   } else { 
-  //     fetch(
-  //       `${url}api/loomDetailWPF?LoomSize=${updateNumberOfPieceOneBorderInput.LoomSize}&BorderSizeId=${updateNumberOfPieceOneBorderInput.BorderSizeId}&BorderQualityId=${updateNumberOfPieceOneBorderInput.QualityId}`,
-  //       {
-  //         method: "GET",
-  //         // headers: {
-  //         //   Authorization:
-  //         //     JSON.parse(localStorage.getItem("authUser")).token_type +
-  //         //     " " +
-  //         //     JSON.parse(localStorage.getItem("authUser")).access_token,
-  //         //   "Content-Type": "application/x-www-form-urlencoded",
-  //         // },
-  //       }
-  //     )
-  //       .then((response) => response.json())
-  //       .then((noOfPieceInOneBorder) => {
-  //         console.log(noOfPieceInOneBorder);
-  //         if (
-  //           noOfPieceInOneBorder == null ||
-  //           noOfPieceInOneBorder == "" ||
-  //           noOfPieceInOneBorder == undefined
-  //         ) {
-  //           console.log("not available");
-  //           setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
-  //         } else {
-  //           setLoomDetail({
-  //             ...loomDetail,
-  //             NumOfPieceOneBorder: noOfPieceInOneBorder.noOfPieceInOneBorder,
-  //           });
-  //         }
-  //       })
-  //       .catch((error) => console.log("error", error));
-  //   }
-  // };
+  
+ 
+  let rollNumberAutoGenerated =`RL-${new Date().toLocaleDateString(undefined, { year: "numeric" })}-1` 
   useEffect(() => {
     FetchListSelector();
     console.log(rollDetail);
@@ -251,14 +91,15 @@ const WeavingProductionFormStepOne = ({
                         className="form-control"
                         name="name"
                         type="number"
-                        placeholder="ex. 45/67  "
-                        value={rollDetail.rollNo}
-                        onChange={(e) =>
-                          setrollDetail({
-                            ...rollDetail,
-                            rollNo: e.target.value,
-                          })
-                        }
+                        placeholder={rollNumberAutoGenerated}
+                        disabled={true}
+                        // value={rollDetail.rollNo}
+                        // onChange={(e) =>
+                        //   setrollDetail({
+                        //     ...rollDetail,
+                        //     rollNo: e.target.value,
+                        //   })
+                        // }
                       />
                     </div>
                   </div>
