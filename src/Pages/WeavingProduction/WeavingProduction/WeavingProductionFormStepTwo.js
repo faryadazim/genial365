@@ -49,148 +49,20 @@ const WeavingProductionFormStepTwo = ({
   weaverEmployeeOptions,
   nativingEmployeeOptions,
   loomDetail,
-  ratePerBorderTempState,
+  ratePerBorderTempState, 
+  // ........
+  updateGrandTotalValue,
+  reRender , 
+  shiftTotalState,
+  updateShift ,updateWeaverNAme , updateNoOfBorders , updateBGradePiece
+  ,updateExtraAmountDesc ,updateExtraAmountAmount ,updateNativingName , 
+  updateFaults ,faultOptions ,grandFinalTotal ,setShiftTotalState ,
+  isLoadingStepTwo
 }) => {
-  const [shiftTotalState, setShiftTotalState] = useState([
-    {
-      shiftName: "",
-      weaverName: "",
-      noOfBorder: 0,
-      totalPiece: 0,
-      bGradePiece: 0,
-      aGradePieces: 0,
-      ratePerBorder: parseInt(ratePerBorderTempState),
-      extraAmount: { desc: "", amount: 0 },
-      totalAmount: 0,
-      knownFaultsIds:"",
-      nativing: "",
-    
-    },
-  ]);
+ 
 
-  const [reRender, setReRender] = useState(false); 
-  const [grandFinalTotal, setGrandFinalTotal] = useState({
-    totalBorders:0, totalPiece:0 , totalBGrade:0 , totalAGrade:0
-  })
-  const faultOptions = [
-    {
-      label: "Machine Header Break",
-      value: 1,
-    },
-    {
-      label: "Wires Brokes",
-      value: 2,
-    },
-    {
-      label: "Shift Issue",
-      value: 3,
-    },
-  ];
 
-  function updateNoOfBorders(i, value) {
-    console.log("border test");
 
-    var arr_data = shiftTotalState;
-    arr_data[i].noOfBorder = parseInt(value);
-    arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
-    arr_data[i].totalAmount = parseInt(
-      shiftTotalState[i].ratePerBorder * shiftTotalState[i].noOfBorder +
-        shiftTotalState[i].extraAmount.amount
-    );
-    setShiftTotalState(arr_data);
-
-    setReRender(!reRender);
-  }
-  function updateWeaverNAme(i, value) {
-    console.log("weaver test");
-
-    var arr_data = shiftTotalState;
-    arr_data[i].weaverName = value;
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-  function updateNativingName(i, value) {
-    console.log("nativing test");
-
-    var arr_data = shiftTotalState;
-    arr_data[i].nativing = value;
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-  function updateShift(i, value) {
-    console.log("shift test");
-
-    var arr_data = shiftTotalState;
-    arr_data[i].shiftName = value;
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-  function updateBGradePiece(i, value) {
-    console.log("b garade testing");
-    var arr_data = shiftTotalState;
-    arr_data[i].bGradePiece = parseInt(value);
-    arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - value);
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-
-  function updateExtraAmountDesc(i, value) {
-    var arr_data = shiftTotalState;
-    arr_data[i].extraAmount.desc = value;
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-  function updateExtraAmountAmount(i, value) {
-    var arr_data = shiftTotalState;
-    arr_data[i].extraAmount.amount = parseInt(value);
-    arr_data[i].totalAmount = parseInt(
-      shiftTotalState[i].ratePerBorder * shiftTotalState[i].noOfBorder +
-        shiftTotalState[i].extraAmount.amount
-    );
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
-  }
-  function updateFaults(i , arrayOfSelectOftions){
-    var commaSplitStringOfFaults="";
-    arrayOfSelectOftions.map((item)=>{
-            commaSplitStringOfFaults=item.value + "," +commaSplitStringOfFaults;
-    })
-      
-    
-
-//
-   var arr_data = shiftTotalState;
-  arr_data[i].knownFaultsIds =commaSplitStringOfFaults;
-    
-   setShiftTotalState(arr_data);
-    
-      setReRender(!reRender);
-  }
-
-  function updateGrandTotalValue(){
-    // let totalNumberofBorders=grandFinalTotal.totalBorders;
-    // let totalPiece=grandFinalTotal.totalPiece;
-    // let totalBGrade=grandFinalTotal.totalBorders;
-    // let totalAGrade=grandFinalTotal.totalAGrade;
-
-    let totalNumberofBorders=0;
-    let totalPiece=0;
-    let totalBGrade=0;
-    let totalAGrade=0;
-
-    shiftTotalState.map((eachShift, index)=>{
-        totalNumberofBorders=totalNumberofBorders + eachShift.noOfBorder;
-        totalPiece=totalPiece + eachShift.totalPiece;
-        totalBGrade=totalBGrade + eachShift.bGradePiece;
-        totalAGrade=totalAGrade + eachShift.aGradePieces;
-
-    })  
-     
-  setGrandFinalTotal({
-     totalBorders:totalNumberofBorders, totalPiece:totalPiece ,
-      totalBGrade:totalBGrade , totalAGrade:totalAGrade
-   })
-  }
   useEffect(() => {
     updateGrandTotalValue();
    
@@ -198,15 +70,18 @@ const WeavingProductionFormStepTwo = ({
   
 
   return (
-    <div>
-      {shiftTotalState.map((shiftTable, i) => {
+    <>
+
+{
+  isLoadingStepTwo? <div>loading</div>:<>
+   {shiftTotalState.map((shiftTable, i) => {
         return (
           <div className="x_panel" key={i}>
             <div className="x_content">
               <div className="table-responsive" style={{overflowX: "unset"}}>
                 <table
                   className="table   jambo_table bulk_action "
-                  style={{ height: "195px" }}
+                  style={{ height: "175px" }}
                 >
                   <thead>
                     {/* */}
@@ -291,7 +166,7 @@ const WeavingProductionFormStepTwo = ({
                       <th
                         className="column-title  text-center  border border-primary 
                                         removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
-                        style={{ width: "8%" }}
+                        style={{ width: "12%" }}
                       >
                         Nativing
                       </th>
@@ -301,7 +176,7 @@ const WeavingProductionFormStepTwo = ({
                     <tr className="headings-for-Production-Form-Shif ">
                       <td
                         className="column-title   
-                                     text-center"
+                                     text-center p-0 px-1"
                         style={{ width: "11%" }}
                       >
                         <div className=" py-1 d-flex justify-content-center ">
@@ -321,7 +196,7 @@ const WeavingProductionFormStepTwo = ({
                       </td>
 
                       <td
-                        className="column-title      text-center"
+                        className="column-title      text-center  p-0 px-1"
                         style={{ width: "14%" }}
                       >
                         {/* <div className=" py-1"> weaverEmployeeOptions</div> */}
@@ -348,7 +223,7 @@ const WeavingProductionFormStepTwo = ({
                         </div>
                       </td>
                       <td
-                        className="column-title     text-center"
+                        className="column-title     text-center  p-0 px-1"
                         style={{ width: "10%" , paddingRight:"2px" , paddingLeft:"2px" }}
                       >
                         <div className=" py-1">
@@ -364,7 +239,7 @@ const WeavingProductionFormStepTwo = ({
                         </div>
                       </td>
                       <td
-                        className="column-title  text-center    removeTopBorder"
+                        className="column-title  text-center    removeTopBorder  p-0 px-1 "
                         style={{ width: "12%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
@@ -376,13 +251,14 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </td>
                       <td
-                        className="column-title  text-center    "
+                        className="column-title  text-center    p-0 px-1 "
                    style={{ width: "8%" , paddingRight:"2px" , paddingLeft:"2px" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
                           <input
                             type="number"
                             className="form-control"
+                            value={shiftTotalState[i].bGradePiece}
                             onChange={(e) =>
                               updateBGradePiece(i, e.target.value)
                             }
@@ -391,7 +267,7 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </td>
                       <td
-                        className="column-title  text-center   "
+                        className="column-title  text-center   p-0 px-1 "
                         style={{ width: "8%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
@@ -403,7 +279,7 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </td>
                       <td
-                        className="column-title  text-center    "
+                        className="column-title  text-center    p-0 px-1 "
                         style={{ width: "13%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
@@ -411,23 +287,31 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </td>
                       <td
-                        className="column-title pileSize   text-center"
-                        style={{ width: "18%" }}
+                        className="column-title pileSize   text-center  p-0 px-1"
+                        style={{ width: "8%" }}
                       >
                         <div>
                           <div className="col-md-7    py-1 px-0 pr-1">
-                            <input
+                            {/* <input
                               type="text"
                               className="form-control"
-                              onChange={(e) =>
-                                updateExtraAmountDesc(i, e.target.value)
-                              }
-                            />
+                              placeholder="Ex. Plug Issue Resolved"
+                          
+                            /> */}
+                     <textarea className="form-control" placeholder="Ex. Plug Issue Resolved" 
+                     rows={1} id="floatingTextarea2"   defaultValue={""} 
+                         value={shiftTotalState[i].extraAmount.desc}
+                         onChange={(e) =>
+                           updateExtraAmountDesc(i, e.target.value)
+                         }/>
+
                           </div>
                           <div className="col-md-5  py-1 px-0 pl-1">
                             <input
                               type="number"
                               className="form-control"
+                              placeholder="ex. 500/- RS"
+                              value={shiftTotalState[i].extraAmount.amount}
                               onChange={(e) =>
                                 updateExtraAmountAmount(i, e.target.value)
                               }
@@ -437,14 +321,14 @@ const WeavingProductionFormStepTwo = ({
                       </td>
 
                       <td
-                        className="column-title  text-center   "
+                        className="column-title  text-center    p-0 px-1"
                         style={{ width: "4%" }}
                       >
                         {shiftTotalState[i].totalAmount}
                       </td>
                       <td
-                        className="column-title  text-center   "
-                        style={{ width: "4%" }}
+                        className="column-title  text-center   p-0 px-1 "
+                        style={{ width: "8%" }}
                       >
                         <Select
                           required
@@ -460,10 +344,13 @@ const WeavingProductionFormStepTwo = ({
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="10">
-                        <div className=" d-flex w-100   ">
+                 
+                      <td colspan="10" className="p-0 px-1">
+                        <div className="text-left mx-2 text-secondary my-1 mt-2">
+                      Add Fault (Creatable) </div>
+                        <div className=" d-flex customAutoWidth ">
                           <Creatable
-                            placeholder={<div>Add Fault (Create Fault)</div>}
+                            placeholder={<div>Ex. plug issue, machine header fault</div>}
                             className="w-100 text-left   "
                             isClearable={false}
                             onChange={(value) => updateFaults(i,value)
@@ -503,7 +390,7 @@ const WeavingProductionFormStepTwo = ({
 
                   <tbody>
                     <tr className="even pointer">
-                      <td style={{ backgroundColor: "#003a4d", color: "#fff" }}>
+                      <td style={{ backgroundColor: "#f79c74", color: "#fff" }}>
                         {" "}
                         . . .{" "}
                       </td>
@@ -531,7 +418,7 @@ const WeavingProductionFormStepTwo = ({
                   totalPiece: 0,
                   bGradePiece: 0,
                   aGradePieces: 0,
-                  ratePerBorder: ratePerBorderTempState,
+                  ratePerBorder:  parseInt(ratePerBorderTempState),
                   extraAmount: { desc: "", amount: 0 },
                   totalAmount: 0,
                   nativing: "",
@@ -550,8 +437,16 @@ const WeavingProductionFormStepTwo = ({
             Console Data
           </button>
         </div>
-      </div>
-    </div>
+      </div> </>
+}
+
+     
+
+
+
+
+
+    </>
   );
 };
 

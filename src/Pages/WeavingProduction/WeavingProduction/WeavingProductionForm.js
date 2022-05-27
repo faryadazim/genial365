@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
 const WeavingProductionForm = () => {
-  const url = localStorage.getItem("authUser");
+  const url = localStorage.getItem("authUser"); 
   // Parent Personal State 
   const showNavMenu = useSelector((state) => state.NavState);
   const [firstStep, setFirstStep] = useState("active");
@@ -51,7 +51,7 @@ const WeavingProductionForm = () => {
   const [borderSizeOptions, setBorderSizeOptions] = useState([]);
   // state to store form data in database
   const [rollDetail, setrollDetail] = useState({
-    rollNo: "",
+    // rollNo: "",
     date: dateToday,
     rollWeight: "",
     loomNumber: "",
@@ -136,7 +136,7 @@ const WeavingProductionForm = () => {
         });
         console.log("done fetch apisfsdfsdfdsfsdf");
         setBorderSizeOptions(arrForBorderSize);
-      
+
       });
 
     // Step Two Dropdown List fetching from api/backend 
@@ -158,7 +158,7 @@ const WeavingProductionForm = () => {
         });
         console.log("done fetch apisfsdfsdfdsfsdf");
         setWeaverEmployeeOptions(arrForWeaverEmployee);
-     
+
       });
     fetch(url + "api/employeeNativingListWithName", {
       method: "GET",
@@ -198,9 +198,9 @@ const WeavingProductionForm = () => {
       ...updateNumberOfPieceOneBorderInput,
       LoomSize: selectedLoom.loomSize,
     });
-     
- 
-     
+
+
+
   };
   const updateNumbOfPieceInBorderFunc = (QualityId, BorderSizeId, LoomSize) => {
     if (
@@ -228,7 +228,7 @@ const WeavingProductionForm = () => {
         .then((response) => response.json())
         .then((result) => {
           console.log(result);
-          
+
           if (
             result == null ||
             result == "" ||
@@ -241,19 +241,54 @@ const WeavingProductionForm = () => {
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
             });
-            console.log("number odf pieceec dup akisdfaf" , loomDetail);
-           if (loomDetail.drawBox=="Yes") {
-           setratePerBorderTempState(result.rateDrawBox)
-            //   console.log("with draw box" , result.rateDrawBox);
-            console.log("yesss draw box available");
-         } else if(loomDetail.drawBox==="No") {
+            console.log(result, "its for testing in wpf");
+            console.log("number odf pieceec dup akisdfaf", loomDetail);
+            if (loomDetail.drawBox == "Yes") {
+              setratePerBorderTempState(result.rateDrawBox)
+
+
+              // setting required value of config table for step3
+              setfinalStepRequired({
+                requireLengthpp: parseInt(result.pileToPileLength),
+                requireWidthpp: parseInt(result.pileToPileWidth),
+                requirePerPieceWeight: parseInt(result.perPieceWeightInGrams)
+              })
+
+
+
+
+              var arrDataForAllState = shiftTotalState;
+              shiftTotalState.map((eachShiftState, i) => {
+                arrDataForAllState[i].ratePerBorder = parseInt(result.rateDrawBox);
+              })
+              setShiftTotalState(arrDataForAllState);
+              setReRender(!reRender);
+
+
+              //   console.log("with draw box" , result.rateDrawBox);
+              console.log("yesss draw box available");
+            } else if (loomDetail.drawBox === "No") {
               console.log("no draw box");
-           setratePerBorderTempState(result.rateWithoutDrawBox)
-            //   console.log("nooooooooooooooo draw box" , result.rateWithoutDrawBox);
-         }else{
-console.log("nothing value in draw box");
-         }
-           
+              setratePerBorderTempState(result.rateWithoutDrawBox)
+
+
+
+              var arrDataForAllState = shiftTotalState;
+              shiftTotalState.map((eachShiftState, i) => {
+                arrDataForAllState[i].ratePerBorder = parseInt(result.rateWithoutDrawBox);
+              })
+              setShiftTotalState(arrDataForAllState);
+              setReRender(!reRender);
+
+
+
+
+
+              //   console.log("nooooooooooooooo draw box" , result.rateWithoutDrawBox);
+            } else {
+              console.log("nothing value in draw box");
+            }
+            setisLoadingStepTwo(false)
           }
         })
         .catch((error) => console.log("error", error));
@@ -268,9 +303,170 @@ console.log("nothing value in draw box");
   ];
   const [weaverEmployeeOptions, setWeaverEmployeeOptions] = useState([]);
   const [nativingEmployeeOptions, setNativingEmployeeOptions] = useState([]);
- const [ratePerBorderTempState, setratePerBorderTempState] = useState("")
+  const [ratePerBorderTempState, setratePerBorderTempState] = useState("")
+  const [isLoadingStepTwo, setisLoadingStepTwo] = useState(true); 
+  const [shiftTotalState, setShiftTotalState] = useState([
+    {
+      shiftName: "",
+      weaverName: "",
+      noOfBorder: 0,
+      totalPiece: 0,
+      bGradePiece: 0,
+      aGradePieces: 0,
+      ratePerBorder: parseInt(ratePerBorderTempState),
+      extraAmount: { desc: "", amount: 0 },
+      totalAmount: 0,
+      knownFaultsIds: "",
+      nativing: "",
+
+    },
+  ]);
+
+  const [reRender, setReRender] = useState(false);
+  const [grandFinalTotal, setGrandFinalTotal] = useState({
+    totalBorders: 0, totalPiece: 0, totalBGrade: 0, totalAGrade: 0
+  })
+
+
+
+  const faultOptions = [
+    {
+      label: "Machine Header Break",
+      value: 1,
+    },
+    {
+      label: "Wires Brokes",
+      value: 2,
+    },
+    {
+      label: "Shift Issue",
+      value: 3,
+    },
+  ];
+
+
+
+  // step two functions 
+
+  function updateNoOfBorders(i, value) {
+    console.log("border test");
+
+    var arr_data = shiftTotalState;
+    arr_data[i].noOfBorder = parseInt(value);
+    arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
+
+    setShiftTotalState(arr_data);
+
+    setReRender(!reRender);
+  }
+  function updateWeaverNAme(i, value) {
+    console.log("weaver test");
+
+    var arr_data = shiftTotalState;
+    arr_data[i].weaverName = value;
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+  function updateNativingName(i, value) {
+    console.log("nativing test");
+
+    var arr_data = shiftTotalState;
+    arr_data[i].nativing = value;
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+  function updateShift(i, value) {
+    console.log("shift test");
+
+    var arr_data = shiftTotalState;
+    arr_data[i].shiftName = value;
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+  function updateBGradePiece(i, value) {
+    console.log("b garade testing");
+    var arr_data = shiftTotalState;
+    arr_data[i].bGradePiece = parseInt(value);
+    arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - value);
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+
+  function updateExtraAmountDesc(i, value) {
+    var arr_data = shiftTotalState;
+    arr_data[i].extraAmount.desc = value;
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+  function updateExtraAmountAmount(i, value) {
+    var arr_data = shiftTotalState;
+    arr_data[i].extraAmount.amount = parseInt(value);
+    arr_data[i].totalAmount = parseInt(
+      (shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value)
+
+      // shiftTotalState[i].ratePerBorder * shiftTotalState[i].noOfBorder +
+      //   shiftTotalState[i].extraAmount.amount
+    );
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
+  }
+  function updateFaults(i, arrayOfSelectOftions) {
+    var commaSplitStringOfFaults = "";
+    arrayOfSelectOftions.map((item) => {
+      commaSplitStringOfFaults = item.value + "," + commaSplitStringOfFaults;
+    })
+
+
+
+    //
+    var arr_data = shiftTotalState;
+    arr_data[i].knownFaultsIds = commaSplitStringOfFaults;
+
+    setShiftTotalState(arr_data);
+
+    setReRender(!reRender);
+  }
+
+  function updateGrandTotalValue() {
+    // let totalNumberofBorders=grandFinalTotal.totalBorders;
+    // let totalPiece=grandFinalTotal.totalPiece;
+    // let totalBGrade=grandFinalTotal.totalBorders;
+    // let totalAGrade=grandFinalTotal.totalAGrade;
+
+    let totalNumberofBorders = 0;
+    let totalPiece = 0;
+    let totalBGrade = 0;
+    let totalAGrade = 0;
+
+    shiftTotalState.map((eachShift, index) => {
+      totalNumberofBorders = totalNumberofBorders + eachShift.noOfBorder;
+      totalPiece = totalPiece + eachShift.totalPiece;
+      totalBGrade = totalBGrade + eachShift.bGradePiece;
+      totalAGrade = totalAGrade + eachShift.aGradePieces;
+
+    })
+
+    setGrandFinalTotal({
+      totalBorders: totalNumberofBorders, totalPiece: totalPiece,
+      totalBGrade: totalBGrade, totalAGrade: totalAGrade
+    })
+  }
 
   // Step Three State
+
+  const [finalStepRequired, setfinalStepRequired] = useState({
+    requireLengthpp: 0,
+    requireWidthpp: 0,
+    requirePerPieceWeight: 0
+  })
+  // Step Three Functions 
+
+
+  useEffect(() => {
+
+  }, [finalStepRequired])
+
+
 
   return (
     <>
@@ -378,14 +574,28 @@ console.log("nothing value in draw box");
                 ) : (
                   ""
                 )}
-                       {/* Second Step Of Production Form ----------- */}
+                {/* Second Step Of Production Form ----------- */}
                 {secondStep == "active" ? (
                   <div className="container text-center px-2 mt-5">
                     <div className=" ">
-                      <WeavingProductionFormStepTwo 
-                      shiftOptions={shiftOptions} weaverEmployeeOptions={weaverEmployeeOptions}
-                      loomDetail={loomDetail}   ratePerBorderTempState={ratePerBorderTempState}
-                      nativingEmployeeOptions={nativingEmployeeOptions}
+                      <WeavingProductionFormStepTwo
+                        shiftOptions={shiftOptions} weaverEmployeeOptions={weaverEmployeeOptions}
+                        loomDetail={loomDetail} ratePerBorderTempState={ratePerBorderTempState}
+                        nativingEmployeeOptions={nativingEmployeeOptions}
+                        updateGrandTotalValue={updateGrandTotalValue} reRender={reRender}
+                        shiftTotalState={shiftTotalState}
+                        isLoadingStepTwo={isLoadingStepTwo}
+                        updateShift={updateShift}
+                        updateWeaverNAme={updateWeaverNAme}
+                        updateNoOfBorders={updateNoOfBorders}
+                        updateBGradePiece={updateBGradePiece}
+                        updateExtraAmountDesc={updateExtraAmountDesc}
+                        updateExtraAmountAmount={updateExtraAmountAmount}
+                        updateNativingName={updateNativingName}
+                        updateFaults={updateFaults}
+                        faultOptions={faultOptions}
+                        grandFinalTotal={grandFinalTotal}
+                        setShiftTotalState={setShiftTotalState}
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
@@ -414,11 +624,14 @@ console.log("nothing value in draw box");
                 ) : (
                   ""
                 )}
-                       {/* Third Step Of Production Form ----------- */}
+                {/* Third Step Of Production Form ----------- */}
                 {thirdStep == "active" ? (
                   <div className="container text-center px-2   my-5  ">
                     <div className=" ">
-                      <WeavingProductionFormStepThird />
+                      <WeavingProductionFormStepThird
+                        finalStepRequired={finalStepRequired}
+                        grandFinalTotal={grandFinalTotal}
+                      />
                     </div>
                     <div className="text-right px-2 pt-3 ">
                       <button

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState  , } from "react";
 import Creatable from "react-select/creatable";
 import Select from "react-select";
 
@@ -45,10 +45,37 @@ const customStyles = {
     height: "30px",
   }),
 };
-const WeavingProductionFormStepThird = () => {
-    const [perPieceDetails, setperPieceDetails] = useState({
-        pileToPileLength:"" ,  pileToPileWidth:"" ,  cutPieceSize:"" ,  cutPieceWeight:"" , 
-})
+const WeavingProductionFormStepThird = ({
+  finalStepRequired, grandFinalTotal
+}) => {
+
+  // const [reRenderedState, setreRenderedState] = useState(false)
+  const [finalStepInput, setfinalStepInput] = useState({
+    pileToPileLength: "",
+    pileToPileWidth: "",
+    cutPieceSize: "",
+    cutPieceWeight: "",
+    remarks: ""
+  });
+
+  // const [finalStepDifference, setFinalStepDifference] = useState({
+  //   totalWeightCutPiece: "", pileToPileWidth: "", pileToPileLength: "", bGradePercentage: ""
+
+  // })
+
+  // const differenceFinder = () => {
+  //   setFinalStepDifference({
+
+  //     totalWeightCutPiece: finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade) - 0  , //here zero will be replace with current value of input /cuurent     
+  //     pileToPileWidth: finalStepInput.pileToPileWidth   ,   
+  //     pileToPileLength: finalStepRequired.requireLengthpp - finalStepInput.pileToPileLength  ,    
+  //     bGradePercentage: "2%"
+  //   })
+  //   setreRenderedState(!reRenderedState)
+  // }
+ 
+  
+
   return (
     <>
       <div className="row">
@@ -57,15 +84,18 @@ const WeavingProductionFormStepThird = () => {
             <form>
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                Pile To Pile Length <span className="required">*</span>
+                  Pile To Pile Length <span className="required">*</span>
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
                     className="form-control"
                     name="name"
                     type="number"
-                    value={perPieceDetails.pileToPileLength}
-                    onChange={(e)=>setperPieceDetails({...perPieceDetails ,pileToPileLength:e.target.value })}
+                    value={finalStepInput.pileToPileLength}
+                    onChange={(e) => {
+                      setfinalStepInput({ ...finalStepInput, pileToPileLength: parseInt(e.target.value) })
+                      // differenceFinder()
+                    }}
                     placeholder="Define By User"
                   />
                 </div>
@@ -73,14 +103,17 @@ const WeavingProductionFormStepThird = () => {
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-               Pile To Pile width<span className="required">*</span>
+                  Pile To Pile width<span className="required">*</span>
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
                     className="form-control"
                     type="number"
-                    name="name"    value={perPieceDetails.pileToPileWidth}
-                    onChange={(e)=>setperPieceDetails({...perPieceDetails ,pileToPileWidth:e.target.value })}
+                    value={finalStepInput.pileToPileWidth}
+                    onChange={(e) => {
+                      setfinalStepInput({ ...finalStepInput, pileToPileWidth: parseInt(e.target.value) })
+                      // differenceFinder()
+                    }}
                     placeholder="ex. 45/67  "
                   />
                 </div>
@@ -88,7 +121,7 @@ const WeavingProductionFormStepThird = () => {
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                Cut Piece Size<span className="required">*</span>
+                  Cut Piece Size<span className="required">*</span>
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
@@ -96,15 +129,18 @@ const WeavingProductionFormStepThird = () => {
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
-                    value={perPieceDetails.cutPieceSize}
-                    onChange={(e)=>setperPieceDetails({...perPieceDetails ,cutPieceSize:e.target.value })}
+                    value={finalStepInput.cutPieceSize}
+                    onChange={(e) => {
+                      setfinalStepInput({ ...finalStepInput, cutPieceSize: parseInt(e.target.value) })
+                      // differenceFinder()
+                    }}
                   />
                 </div>
               </div>
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-              Cut Piece Weight<span className="required">*</span>
+                  Cut Piece Weight<span className="required">*</span>
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
@@ -112,15 +148,18 @@ const WeavingProductionFormStepThird = () => {
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
-                    value={perPieceDetails.cutPieceWeight}
-                    onChange={(e)=>setperPieceDetails({...perPieceDetails ,cutPieceWeight:e.target.value })}
+                    value={finalStepInput.cutPieceWeight}
+                    onChange={(e) => {
+                      setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseInt(e.target.value) })
+                      // differenceFinder()
+                    }}
                   />
                 </div>
               </div>
             </form>
           </div>
         </div>
-        <div className="col-md-7">
+        <div className="col-md-7 pr-5">
           <div className="x_panel ">
             <div className="x_content">
               <div className="table-responsive">
@@ -129,12 +168,13 @@ const WeavingProductionFormStepThird = () => {
                     <tr className="headings">
                       <th className="column-title">
                         <div className="row mb-2 borderBottomForTableHeader">
-                          <div className="col-md-12 pb-2">Per PieceDetail</div>
+                          <div className="col-md-12 pb-2">Per Piece Detail</div>
                         </div>
                         <div className="row">
-                          <div className="col-md-4">Current</div>
-                          <div className="col-md-4">Reuried</div>
-                          <div className="col-md-4">Difference</div>
+                          <div className="col-md-3">Label</div>
+                          <div className="col-md-3">Current</div>
+                          <div className="col-md-3">Requried</div>
+                          <div className="col-md-3">Difference</div>
                         </div>
                       </th>
                     </tr>
@@ -142,31 +182,69 @@ const WeavingProductionFormStepThird = () => {
 
                   <tbody>
                     <tr className="even pointer">
-                      <td>
-                        <div className="col-md-4">Total Weight-Cut Piece</div>
-                        <div className="col-md-4">Define By PC</div>
-                        <div className="col-md-4">Auto</div>
+                      <td className="p-0">
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Total Weight - Cut Piece</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          
+{
+
+grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight
+
+}
+
+                        </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
+                          {finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {/* {finalStepDifference.totalWeightCutPiece} */}
+                          {
+                          
+                          grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight - 
+                          
+                          finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade) }
+
+                        </div>
                       </td>
                     </tr>
                     <tr className="even pointer">
-                      <td>
-                        <div className="col-md-4">Length Pile to Pile</div>
-                        <div className="col-md-4">{perPieceDetails.pileToPileLength}</div>
-                        <div className="col-md-4">Auto</div>
+                      <td className="p-0">
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Length Pile to Pile</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right" >
+                          {finalStepInput.pileToPileLength}
+
+                        </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {finalStepRequired.requireLengthpp}</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {/* {finalStepDifference.pileToPileLength} */}
+                          { finalStepRequired.requireLengthpp-   finalStepInput.pileToPileLength}
+                       
+                        </div>
                       </td>
                     </tr>
                     <tr className="even pointer">
-                      <td>
-                        <div className="col-md-4">Width Pile to Pile</div>
-                        <div className="col-md-4">{perPieceDetails.pileToPileWidth}</div>
-                        <div className="col-md-4">Auto</div>
+                      <td className="p-0">
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree  text-left colorManagement"  >Width Pile to Pile</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {finalStepInput.pileToPileWidth}
+                        </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {finalStepRequired.requireWidthpp}
+                        </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
+                          {/* {finalStepDifference.pileToPileWidth} */}
+                          { finalStepRequired.requireWidthpp -finalStepInput.pileToPileWidth}
+                        </div>
                       </td>
                     </tr>
                     <tr className="even pointer">
-                      <td>
-                        <div className="col-md-4">B Grade %</div>
-                        <div className="col-md-4">Null</div>
-                        <div className="col-md-4">--</div>
+                      <td className="p-0">
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >B Grade %</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade ).toFixed(10)}%</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">     </div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree">
+                          
+                        </div>
                       </td>
                     </tr>
                   </tbody>
@@ -177,14 +255,15 @@ const WeavingProductionFormStepThird = () => {
         </div>
       </div>
 
-      <div className="row  customPaddingForRemarks my-1">
+      <div className="row  customPaddingForRemarks my-1 pt-2">
         <div className="w-100 text-left ">
           {/* <label htmlFor="message" className="pl-2">Message (20 chars min, 100 max) :</label> */}
           <textarea
             id="message"
+
             required="required"
             className="form-control px-2"
-            style={{height:"100px" , fontSize:"15px" , fontWeight:"500"}}
+            style={{ height: "100px", fontSize: "15px", fontWeight: "500" }}
             name="message"
             data-parsley-trigger="keyup"
             data-parsley-minlength={20}
@@ -192,6 +271,8 @@ const WeavingProductionFormStepThird = () => {
             data-parsley-minlength-message="Come on! You need to enter at least a 20 caracters long comment.."
             data-parsley-validation-threshold={100}
             defaultValue={""}
+            value={finalStepInput.remarks}
+            onChange={(e) => setfinalStepInput({ ...finalStepInput, remarks: e.target.value })}
             placeholder="Remarks"
           />
         </div>
