@@ -70,13 +70,12 @@ const Nav = ({ navigationResult, isLogin }) => {
                                     {module.pages.map((page) => {
                                       return (
                                         <li>
-                                          <NavLink to={page.pageURL}>
+                                          <NavLink to={page.pageURL} >
                                             {page.pageName}
                                           </NavLink>
                                         </li>
                                       );
-                                    })}
-                                    {/* 5@7B2s6d2k6$8 */}
+                                    })} 
 
                                     {/* <li>
                               <NavLink to="UserAccess">Add User</NavLink>

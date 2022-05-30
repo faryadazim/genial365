@@ -8,6 +8,7 @@ const ProducctionFaults = () => {
   const showNavMenu = useSelector((state) => state.NavState);
 const [isLoading  , setisLoading] = useState(true)
   const [faultList, setFaultList] = useState([{}]);
+  const [addNewFaultTitle , setAddNewFaultTitle] = useState("")
   const fetchAllData = () => {
     fetch(endPoint + "/api/ShiftFaults")
       .then((response) => response.json())
@@ -16,11 +17,42 @@ const [isLoading  , setisLoading] = useState(true)
         setisLoading(false);
       });
   };
-
-  const deleteFault = (id)=>{
-console.log("delete this one" , id);  }
-// GET /api/ShiftFaults/{id}
-
+const addNewFault = (e)=>{
+    e.preventDefault() 
+    const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({fault_title:addNewFaultTitle}),
+      };
+      console.log(requestOptions);
+  
+      fetch(endPoint + "api/ShiftFaults", requestOptions)
+        .then((response) => response.json())
+        .then((data) => { 
+         setAddNewFaultTitle("")
+          fetchAllData();
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+ 
+    }
+  const deleteFault = (id)=>{  
+fetch(`${endPoint}/api/ShiftFaults/${id}`, {
+    method: "DELETE", 
+    // headers: {
+    //   Authorization:
+    //     JSON.parse(localStorage.getItem("authUser")).token_type +
+    //     " " +
+    //     JSON.parse(localStorage.getItem("authUser")).access_token,
+    //   "Content-Type": "application/x-www-form-urlencoded",
+    // },
+  })
+    .then((response) => {  
+      fetchAllData(); 
+    })
+    .catch((error) => console.log("error", error));
+  }
   useEffect(() => {fetchAllData()}, []);
 
   return (
@@ -29,7 +61,7 @@ console.log("delete this one" , id);  }
     isLoading? <>
     <Loader/>
      </> :<>   <div
-        className={`right_col  h-100 paddingOnContentInBorderManagement  ${
+        className={`right_col  h-10 heightFixForFAult  ${
           showNavMenu == false ? "right_col-margin-remove" : " "
         } `}
         role="main"
@@ -99,25 +131,18 @@ console.log("delete this one" , id);  }
                         name="name"
                         placeholder="ex. Plugin Breakdown  "
 
-                        // value={AddNewSize.borderSize1}
-                        // onChange={(e) =>
-                        //   setAddNewSize({ borderSize1: e.target.value })
-                        // }
+                        value={addNewFaultTitle}
+                        onChange={(e) =>
+                            setAddNewFaultTitle(e.target.value)
+                        }
                       />
                       <button
                         type="submit"
                         className="btn btn-primary btn-sm px-3 mt-2"
-                        // onClick={(e) => {
-                        //   AddNewSizePost(e);
-                        // }}
-                        // disabled={
-                        //   AddNewSize.borderSize1 == "" ||
-                        //     AddNewSize.borderSize1 == undefined ||
-                        //     AddNewSize.borderSize1 == null ||
-                        //     AddNewSize.borderSize1 == " "
-                        //     ? true
-                        //     : false
-                        // }
+                        onClick={(e) => {
+           addNewFault(e)
+                        }}
+                        disabled={addNewFaultTitle==""?true:false}
                       >
                         Submit
                       </button>

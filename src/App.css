@@ -1,6 +1,7 @@
 
 body {
   overflow-x: hidden; /* Hide scrollbars */
+  user-select: none;
 }
 /* @import "~bootstrap/scss/bootstrap"; */
 .main_container {
@@ -497,4 +498,10 @@ color: rgb(0, 0, 0) !important;
 }
 .requiredValidateInput{
   border-color: red !important;
+}
+
+
+
+.heightFixForFAult{
+  min-height: 605px !important;
 }

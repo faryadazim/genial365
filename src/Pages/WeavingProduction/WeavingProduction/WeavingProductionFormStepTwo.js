@@ -424,10 +424,9 @@ const WeavingProductionFormStepTwo = ({
                                 </div>
                               </div>
                               <div className="col-md-2 text-right">
-                                <button className="btn btn-sm btn-success  ">
-                                  {" "}
-                                  Remove <i className="fa fa-close"></i>
-                                </button>
+                              
+                             <i className="fa fa-close mt-1 mr-2"></i>
+                              
                               </div>
                             </div>
                           </td>

@@ -71,6 +71,7 @@ const WeavingProductionForm = () => {
       loomDetail: loomDetail,
       //stepStates
       firstStep, secondStep, thirdStep,
+     
     }
     const object = {
       user_id: userId,
@@ -117,7 +118,7 @@ const WeavingProductionForm = () => {
           totalBGrade: 0,
           totalAGrade: 0,
         });
-
+        setStepOneValidator(stepOneValidatorInitialValue)
 
         setfinalStepRequired({
           requireLengthpp: 0,

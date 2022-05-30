@@ -189,11 +189,12 @@ const WeavingProductionFormStepOne = ({
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <Select
-                        required
+                        // required
                         className="basic-single"
                         classNamePrefix="select"
                         isSearchable={true}
                         name="color"
+                        placeholder="Type to search"
                         options={borderQualityOptions}
                         styles={stepOneValidator.qualityValidate ? customStyles : customStylesDanger}
                         value={borderQualityValue}

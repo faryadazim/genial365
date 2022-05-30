@@ -413,7 +413,7 @@ const GrayProductList = () => {
                                   {item.LoomNumbRatePerBorderWithDraw96}
                                 </div>
                                 <div className="col-md-6 text-center  removePadding    removeLeftBorder">
-                                  {item.LoomNumbRatePerBorderWithoutDraw76}
+                                  {item.LoomNumbRatePerBorderWithoutDraw96}
                                 </div>
                               </div>
                             </div>
