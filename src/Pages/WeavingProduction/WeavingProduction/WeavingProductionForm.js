@@ -12,32 +12,6 @@ const WeavingProductionForm = () => {
   const [secondStep, setSecondStep] = useState("disable");
   const [thirdStep, setThirdStep] = useState("disable");
   const [userDraftBox, setUserDraftBox] = useState([])
-  // const onclickOnSecondStep = () => {
-  //   if (secondStep == "disable") {
-  //     console.log("cannot move ");
-  //   } else if (thirdStep == "disable") {
-  //     setFirstStep("done");
-  //     setSecondStep("active");
-  //   } else {
-  //     setSecondStep("active");
-  //     setFirstStep("done");
-  //     setThirdStep("done");
-  //   }
-  // };
-  // const onclickOnFirstStep = () => {
-  //   if (secondStep !== "disable") {
-  //     setFirstStep("active");
-  //     setSecondStep("done");
-  //   } else if (thirdStep !== "disable") {
-  //     setFirstStep("active");
-  //     setSecondStep("done");
-  //     setThirdStep("done");
-  //   } else {
-  //     setFirstStep("active");
-  //     setSecondStep("done");
-  //     setThirdStep("done");
-  //   }
-  // };
   // Step One State  ------------------------    One   --------------
 
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
@@ -79,11 +53,11 @@ const WeavingProductionForm = () => {
     updateNumberOfPieceOneBorderInput,
     setUpdateNumberOfPieceOneBorderInput,
   ] = useState({ QualityId: "", BorderSizeId: "", LoomSize: "" });
-
-  const [stepOneValidator, setStepOneValidator] = useState({
+  const stepOneValidatorInitialValue = {
     rollWeightValidate: true, loomNumberValidate: true,
     qualityValidate: true, sizeValidate: true, programNumberValidate: true
-  })
+  };
+  const [stepOneValidator, setStepOneValidator] = useState(stepOneValidatorInitialValue)
 
 
   const postUserDraft = () => {
@@ -118,6 +92,7 @@ const WeavingProductionForm = () => {
         setLoomListValue({})
         setborderQualityValue({})
         setBorderSizeValue({})
+        // setStepOneValidator(stepOneValidatorInitialValue)
         setrollDetail({
           // rollNo: "",
           date: dateToday,
@@ -187,8 +162,8 @@ const WeavingProductionForm = () => {
       })
       .catch((error) => console.log("error", error));
   };
-  const setDraftDataIntoForm = (draftData) => {
-    console.log(draftData);
+  const setDraftDataIntoForm = (draftData, draftId) => {
+
     setborderQualityValue(draftData.borderQualityValue) //
     setBorderSizeValue(draftData.borderSizeValue)   //
     setfinalStepInput(draftData.finalStepInput) //
@@ -202,7 +177,8 @@ const WeavingProductionForm = () => {
     setrollDetail(draftData.rollDetail)//
     setShiftTotalState(draftData.shiftTotalState)
     setReRender(!reRender)
-
+    // deleting draft after reading 
+    deleteDraft(draftId)
 
   }
   // Function of First Step
@@ -309,6 +285,26 @@ const WeavingProductionForm = () => {
         setNativingEmployeeOptions(arrForNativingEmployee);
 
       });
+    // /...............
+    fetch(url + "api/ShiftFaults", {
+      method: "GET",
+      headers: {
+        // Authorization: "bearer" + " " + e,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+      .then((response) => response.json())
+      .then((shiftFault) => {
+        var arrForShiftFault = [];
+        shiftFault.map((item) => {
+          arrForShiftFault.push({
+            label: item.fault_title,
+            value: item.fault_id,
+          });
+        });
+        setFaultOptions(arrForShiftFault);
+      });
+    // --------  
     fetch(`${url}/api/userDraft?userId=${userId}`, {
       method: "GET",
       headers: {
@@ -487,20 +483,23 @@ const WeavingProductionForm = () => {
     totalAGrade: 0,
   });
 
-  const faultOptions = [
-    {
-      label: "Machine Header Break",
-      value: 1,
-    },
-    {
-      label: "Wires Brokes",
-      value: 2,
-    },
-    {
-      label: "Shift Issue",
-      value: 3,
-    },
-  ];
+  // const faultOptions = [
+  //   {
+  //     label: "Machine Header Break",
+  //     value: 1,
+  //   },
+  //   {
+  //     label: "Wires Brokes",
+  //     value: 2,
+  //   },
+  //   {
+  //     label: "Shift Issue",
+  //     value: 3,
+  //   },
+  // ];
+
+
+  const [faultOptions, setFaultOptions] = useState({})
 
   // step two functions
 
@@ -569,19 +568,51 @@ const WeavingProductionForm = () => {
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  function updateFaults(i, arrayOfSelectOftions) {
+  const updateFaults = async (i, arrayOfSelectOftions) => {
     var commaSplitStringOfFaults = "";
-    arrayOfSelectOftions.map((item) => {
-      commaSplitStringOfFaults = item.value + "," + commaSplitStringOfFaults;
+
+
+
+ await   arrayOfSelectOftions.map((item) => {
+
+
+      if (item.__isNew__ == true) {
+ 
+      } else {
+        commaSplitStringOfFaults = item.value + "," + commaSplitStringOfFaults;
+      }
     });
 
-    //
-    var arr_data = shiftTotalState;
-    arr_data[i].knownFaultsIds = commaSplitStringOfFaults;
+console.log(commaSplitStringOfFaults);
 
-    setShiftTotalState(arr_data);
+    // const requestOptions = {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({
+    //     fault_title: item.label
+    //   }),
+    // };
 
-    setReRender(!reRender);
+    // fetch(url + "api/ShiftFaults", requestOptions)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+
+    //     console.log(  data.fault_id , "created" ); 
+    //      }) 
+    //   .catch((err) => {
+    //     console.log("err front End", err);
+    //   })
+
+
+
+
+
+    //  console.log(commaSplitStringOfFaults);
+    //   // //
+    //   var arr_data = shiftTotalState;
+    //     arr_data[i].knownFaultsIds = commaSplitStringOfFaults; 
+    //    setShiftTotalState(arr_data); 
+    //  setReRender(!reRender);
   }
 
   function updateGrandTotalValue() {
@@ -942,17 +973,17 @@ const WeavingProductionForm = () => {
           </div>
           <div className="text-left px-2 mb-1">
 
-           
+
 
             {firstStep == "active" ?
-             ( userDraftBox.map((eachDraft) => {
+              (userDraftBox.map((eachDraft) => {
                 return <div key={eachDraft.draft_id} className="btn btn-sm btn-light border-secondary border text-secondary">
-                  <span className="text-secondary mouseHandeMade" onClick={() => setDraftDataIntoForm(JSON.parse(eachDraft.draft_json))}>{eachDraft.draft_name}</span>
+                  <span className="text-secondary mouseHandeMade" onClick={() => { setDraftDataIntoForm(JSON.parse(eachDraft.draft_json), eachDraft.draft_id) }}>{eachDraft.draft_name}</span>
                   <span className="mouseRemoveMade">
                     <i className="fa fa-close ml-2" onClick={() => deleteDraft(eachDraft.draft_id)}></i>
                   </span>
                 </div>
-              })):""
+              })) : ""
             }
           </div>
         </div>

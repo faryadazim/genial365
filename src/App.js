@@ -24,6 +24,7 @@ import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 import EmployeeList from './Pages/Setting/EmployeeList/EmployeeList'
 import LoomManagement from "./Pages/Setting/LoomManagement/LoomManagement";
+import ProductionFaults from './Pages/Setting/ShiftFaults/ProductionFaults'
 
 function App() {
   const [isLogin, setisLogin] = useState(false); 
@@ -64,6 +65,7 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="BorderManagement" element={<BorderManagement/>} />
               <Route path="WeavingProductionForm" element={<WeavingProductionForm/>} />
               <Route path="UserProfile" element={<UserProfile/>} />
+              <Route path="ProductionFaults" element={<ProductionFaults/>} />
               
 
             
