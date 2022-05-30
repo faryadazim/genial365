@@ -27,6 +27,10 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
         response.json().then((data) => {
           console.log(data, "success");
           setNavigationData(data);
+ 
+          localStorage.setItem("userName",data.userName  );
+          localStorage.setItem("roleName",data.RoleName  );
+          localStorage.setItem("loginId",data.LoginName  );
           // setemployeeSalaryResult(data);
 
           setisLogin(true);

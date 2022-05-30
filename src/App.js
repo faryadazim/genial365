@@ -1,6 +1,7 @@
 // React Import
 import { useEffect, useState } from "react";
 //  Style Module Import
+import UserProfile from './Pages/Setting/updateUser/UserProfile'
 import "./App.css";
 // Router Import
 import WeavingProductionForm from './Pages/WeavingProduction/WeavingProduction/WeavingProductionForm'
@@ -62,6 +63,9 @@ const [navigationData , setNavigationData] = useState("")
               <Route path="LoomManagement" element={<LoomManagement/>} />
               <Route path="BorderManagement" element={<BorderManagement/>} />
               <Route path="WeavingProductionForm" element={<WeavingProductionForm/>} />
+              <Route path="UserProfile" element={<UserProfile/>} />
+              
+
             
             </Routes>
 

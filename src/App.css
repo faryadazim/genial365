@@ -337,6 +337,9 @@ body {
 .removeBottomBorder {
   border-bottom: none !important;
 }
+.removeBorder{
+  border: none !important;
+}
 .removePadding {
   padding: 0px !important;
 }
@@ -466,8 +469,8 @@ body {
 
 /* table header changer */
 thead{
-background-color: #f79c74 !important;
-color: rgb(0, 0, 0) !important; 
+background-color:  #003a4d!important;
+color: rgb(255, 254, 254) !important; 
 }
 .colorManagement{
   background-color: #f79c74 !important;
@@ -483,4 +486,15 @@ color: rgb(0, 0, 0) !important;
 .customAutoWidth{
   min-width: 450px !important;
   width:fit-content ;
+}
+
+
+.mouseHandeMade:hover{
+  cursor:pointer;
+}
+.mouseRemoveMade:hover{
+  cursor:alias;
+}
+.requiredValidateInput{
+  border-color: red !important;
 }

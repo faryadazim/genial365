@@ -4,39 +4,40 @@ import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
 const WeavingProductionForm = () => {
-  const url = localStorage.getItem("authUser"); 
-  // Parent Personal State 
+  const url = localStorage.getItem("authUser");
+  const userId = localStorage.getItem("loginId");
+  // Parent Personal State
   const showNavMenu = useSelector((state) => state.NavState);
   const [firstStep, setFirstStep] = useState("active");
   const [secondStep, setSecondStep] = useState("disable");
   const [thirdStep, setThirdStep] = useState("disable");
-
-  const onclickOnSecondStep = () => {
-    if (secondStep == "disable") {
-      console.log("cannot move ");
-    } else if (thirdStep == "disable") {
-      setFirstStep("done");
-      setSecondStep("active");
-    } else {
-      setSecondStep("active");
-      setFirstStep("done");
-      setThirdStep("done");
-    }
-  };
-  const onclickOnFirstStep = () => {
-    if (secondStep !== "disable") {
-      setFirstStep("active");
-      setSecondStep("done");
-    } else if (thirdStep !== "disable") {
-      setFirstStep("active");
-      setSecondStep("done");
-      setThirdStep("done");
-    } else {
-      setFirstStep("active");
-      setSecondStep("done");
-      setThirdStep("done");
-    }
-  };
+  const [userDraftBox, setUserDraftBox] = useState([])
+  // const onclickOnSecondStep = () => {
+  //   if (secondStep == "disable") {
+  //     console.log("cannot move ");
+  //   } else if (thirdStep == "disable") {
+  //     setFirstStep("done");
+  //     setSecondStep("active");
+  //   } else {
+  //     setSecondStep("active");
+  //     setFirstStep("done");
+  //     setThirdStep("done");
+  //   }
+  // };
+  // const onclickOnFirstStep = () => {
+  //   if (secondStep !== "disable") {
+  //     setFirstStep("active");
+  //     setSecondStep("done");
+  //   } else if (thirdStep !== "disable") {
+  //     setFirstStep("active");
+  //     setSecondStep("done");
+  //     setThirdStep("done");
+  //   } else {
+  //     setFirstStep("active");
+  //     setSecondStep("done");
+  //     setThirdStep("done");
+  //   }
+  // };
   // Step One State  ------------------------    One   --------------
 
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
@@ -45,11 +46,17 @@ const WeavingProductionForm = () => {
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
   const [allLoomLists, setAllLoomLists] = useState([]);
+
+
+
   //state for DropDownSearchableSelector
   const [loomListOptions, setLoomListOptions] = useState([]);
+  const [loomListValue, setLoomListValue] = useState({})
   const [borderQualityOptions, setBorderQualityOptions] = useState([]);
+  const [borderQualityValue, setborderQualityValue] = useState({})
   const [borderSizeOptions, setBorderSizeOptions] = useState([]);
-  // state to store form data in database
+  const [borderSizeValue, setBorderSizeValue] = useState({})
+  // state to store form data in database    
   const [rollDetail, setrollDetail] = useState({
     // rollNo: "",
     date: dateToday,
@@ -72,10 +79,136 @@ const WeavingProductionForm = () => {
     updateNumberOfPieceOneBorderInput,
     setUpdateNumberOfPieceOneBorderInput,
   ] = useState({ QualityId: "", BorderSizeId: "", LoomSize: "" });
-  // Function of First Step 
+
+  const [stepOneValidator, setStepOneValidator] = useState({
+    rollWeightValidate: true, loomNumberValidate: true,
+    qualityValidate: true, sizeValidate: true, programNumberValidate: true
+  })
+
+
+  const postUserDraft = () => {
+    const draftActualJson = {
+      rollDetail,
+      loomListValue, borderQualityValue, borderSizeValue,
+      shiftTotalState,
+      grandFinalTotal,
+      finalStepRequired,
+      finalStepInput,
+      loomDetail: loomDetail,
+      //stepStates
+      firstStep, secondStep, thirdStep,
+    }
+    const object = {
+      user_id: userId,
+      page_name: "productionForm",
+      draft_json: JSON.stringify(draftActualJson),
+    }
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(object),
+    };
+    fetch(url + "/api/userDraft", requestOptions)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("draft data added", data);
+        FetchListSelector()
+
+        // .............
+        setLoomListValue({})
+        setborderQualityValue({})
+        setBorderSizeValue({})
+        setrollDetail({
+          // rollNo: "",
+          date: dateToday,
+          rollWeight: "",
+          loomNumber: "",
+          Quality: "",
+          Size: "",
+          programNumber: "",
+        });
+        setLoomDetail({
+          loomSize: "Auto Define",
+          jacquard: "Auto Define",
+          drawBox: "Auto Define",
+          NumOfPieceOneBorder: "Auto Define",
+        });
+        setratePerBorderTempState("");
+        setUpdateNumberOfPieceOneBorderInput({ QualityId: "", BorderSizeId: "", LoomSize: "" });
+        setShiftTotalState(totalShiftInitialState);
+        setGrandFinalTotal({
+          totalBorders: 0,
+          totalPiece: 0,
+          totalBGrade: 0,
+          totalAGrade: 0,
+        });
+
+
+        setfinalStepRequired({
+          requireLengthpp: 0,
+          requireWidthpp: 0,
+          requirePerPieceWeight: 0,
+        });
+        setfinalStepInput({
+          pileToPileLength: "",
+          pileToPileWidth: "",
+          cutPieceSize: "",
+          cutPieceWeight: "",
+          remarks: ""
+        });
+
+
+
+        setFirstStep("active");
+        setSecondStep("disable");
+        setThirdStep("disable");
+        // ..........
+      })
+      .catch((err) => {
+        console.log("err", err);
+      });
+
+  }
+
+  const deleteDraft = (e) => {
+
+    fetch(`${url}api/userDraft?id=${e}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
+      .then((response) => {
+        FetchListSelector()
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const setDraftDataIntoForm = (draftData) => {
+    console.log(draftData);
+    setborderQualityValue(draftData.borderQualityValue) //
+    setBorderSizeValue(draftData.borderSizeValue)   //
+    setfinalStepInput(draftData.finalStepInput) //
+    setfinalStepRequired(draftData.finalStepRequired)   //
+    setFirstStep(draftData.firstStep)  //
+    setSecondStep(draftData.secondStep)//
+    setThirdStep(draftData.thirdStep)//
+    setGrandFinalTotal(draftData.grandFinalTotal) //
+    setLoomDetail(draftData.loomDetail)    //
+    setLoomListValue(draftData.loomListValue)   //
+    setrollDetail(draftData.rollDetail)//
+    setShiftTotalState(draftData.shiftTotalState)
+    setReRender(!reRender)
+
+
+  }
+  // Function of First Step
   const FetchListSelector = () => {
     // Fetching loom list number
-    // Step One Dropdown List fetching from api/backend 
+    // Step One Dropdown List fetching from api/backend
     fetch(url + "api/LoomListsCore", {
       method: "GET",
       headers: {
@@ -134,12 +267,10 @@ const WeavingProductionForm = () => {
             value: item.borderSize_id,
           });
         });
-        console.log("done fetch apisfsdfsdfdsfsdf");
         setBorderSizeOptions(arrForBorderSize);
-
       });
 
-    // Step Two Dropdown List fetching from api/backend 
+    // Step Two Dropdown List fetching from api/backend
     fetch(url + "api/employeeWeaverListWithName", {
       method: "GET",
       headers: {
@@ -156,9 +287,7 @@ const WeavingProductionForm = () => {
             label: item.employeeName,
           });
         });
-        console.log("done fetch apisfsdfsdfdsfsdf");
         setWeaverEmployeeOptions(arrForWeaverEmployee);
-
       });
     fetch(url + "api/employeeNativingListWithName", {
       method: "GET",
@@ -176,11 +305,24 @@ const WeavingProductionForm = () => {
             label: item.employeeName,
           });
         });
-        console.log("done fetch apisfsdfsdfdsfsdf");
-        setNativingEmployeeOptions(arrForNativingEmployee);
-        setisLoading(false);
-      });
 
+        setNativingEmployeeOptions(arrForNativingEmployee);
+
+      });
+    fetch(`${url}/api/userDraft?userId=${userId}`, {
+      method: "GET",
+      headers: {
+        // Authorization: "bearer" + " " + e,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
+      .then((response) => response.json())
+      .then((userDraftTable) => {
+        console.log("draft data --------> ", userDraftTable);
+        setUserDraftBox(userDraftTable)
+        setisLoading(false);
+
+      });
   };
   const updateLoomDetails = (loomNumber) => {
     var loomFinder = allLoomLists.filter((eachLoom) => {
@@ -198,9 +340,6 @@ const WeavingProductionForm = () => {
       ...updateNumberOfPieceOneBorderInput,
       LoomSize: selectedLoom.loomSize,
     });
-
-
-
   };
   const updateNumbOfPieceInBorderFunc = (QualityId, BorderSizeId, LoomSize) => {
     if (
@@ -229,11 +368,7 @@ const WeavingProductionForm = () => {
         .then((result) => {
           console.log(result);
 
-          if (
-            result == null ||
-            result == "" ||
-            result == undefined
-          ) {
+          if (result == null || result == "" || result == undefined) {
             console.log("not available");
             setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
           } else {
@@ -244,57 +379,68 @@ const WeavingProductionForm = () => {
             console.log(result, "its for testing in wpf");
             console.log("number odf pieceec dup akisdfaf", loomDetail);
             if (loomDetail.drawBox == "Yes") {
-              setratePerBorderTempState(result.rateDrawBox)
-
-
+              setratePerBorderTempState(result.rateDrawBox);
+              console.log("testing why result is zero");
               // setting required value of config table for step3
               setfinalStepRequired({
-                requireLengthpp: parseInt(result.pileToPileLength),
-                requireWidthpp: parseInt(result.pileToPileWidth),
-                requirePerPieceWeight: parseInt(result.perPieceWeightInGrams)
-              })
-
-
-
+                requireLengthpp: result.pileToPileLength,
+                requireWidthpp: result.pileToPileWidth,
+                requirePerPieceWeight: result.perPieceWeightInGrams,
+              });
 
               var arrDataForAllState = shiftTotalState;
               shiftTotalState.map((eachShiftState, i) => {
-                arrDataForAllState[i].ratePerBorder = parseInt(result.rateDrawBox);
-              })
+                arrDataForAllState[i].ratePerBorder = parseInt(
+                  result.rateDrawBox
+                );
+              });
               setShiftTotalState(arrDataForAllState);
               setReRender(!reRender);
-
 
               //   console.log("with draw box" , result.rateDrawBox);
               console.log("yesss draw box available");
             } else if (loomDetail.drawBox === "No") {
               console.log("no draw box");
-              setratePerBorderTempState(result.rateWithoutDrawBox)
-
-
+              setratePerBorderTempState(result.rateWithoutDrawBox);
 
               var arrDataForAllState = shiftTotalState;
               shiftTotalState.map((eachShiftState, i) => {
-                arrDataForAllState[i].ratePerBorder = parseInt(result.rateWithoutDrawBox);
-              })
+                arrDataForAllState[i].ratePerBorder = parseInt(
+                  result.rateWithoutDrawBox
+                );
+              });
               setShiftTotalState(arrDataForAllState);
               setReRender(!reRender);
-
-
-
-
 
               //   console.log("nooooooooooooooo draw box" , result.rateWithoutDrawBox);
             } else {
               console.log("nothing value in draw box");
             }
-            setisLoadingStepTwo(false)
+            setisLoadingStepTwo(false);
           }
         })
         .catch((error) => console.log("error", error));
     }
   };
 
+  const stepOneValidationFunct = () => {
+    if (rollDetail.rollWeight == "") {
+      setStepOneValidator({ ...stepOneValidator, rollWeightValidate: false })
+    } else if (rollDetail.loomNumber == "") {
+      setStepOneValidator({ ...stepOneValidator, loomNumberValidate: false })
+    } else if (rollDetail.Quality == "") {
+      setStepOneValidator({ ...stepOneValidator, qualityValidate: false })
+    } else if (rollDetail.Size == "") {
+      setStepOneValidator({ ...stepOneValidator, sizeValidate: false })
+    } else if (rollDetail.programNumber == "") {
+      setStepOneValidator({ ...stepOneValidator, programNumberValidate: false })
+
+    } else {
+      setSecondStep("active");
+      setFirstStep("done");
+    }
+
+  }
   // Step Two State  ------------------------    Two   --------------
   const shiftOptions = [
     { label: "Shift A", value: 1 },
@@ -303,9 +449,9 @@ const WeavingProductionForm = () => {
   ];
   const [weaverEmployeeOptions, setWeaverEmployeeOptions] = useState([]);
   const [nativingEmployeeOptions, setNativingEmployeeOptions] = useState([]);
-  const [ratePerBorderTempState, setratePerBorderTempState] = useState("")
-  const [isLoadingStepTwo, setisLoadingStepTwo] = useState(true); 
-  const [shiftTotalState, setShiftTotalState] = useState([
+  const [ratePerBorderTempState, setratePerBorderTempState] = useState("");
+  const [isLoadingStepTwo, setisLoadingStepTwo] = useState(true);
+  const totalShiftInitialState = [
     {
       shiftName: "",
       weaverName: "",
@@ -319,15 +465,27 @@ const WeavingProductionForm = () => {
       knownFaultsIds: "",
       nativing: "",
 
+      // -------------- Selector Current Value Management 
+      shiftSelectorValue: {},
+      weaverSelectorValue: {},
+      nativingSelectorValue: {},
+      // ----------------ShiftValidation
+      shiftValidation: {
+        shiftNameValidate: true, weaverNameValidate: true, noOfBorderValidate: true,
+        bGradePiece: true, extraAmountDescValidate: true, extraAmountAmountValidate: true,
+        nativingValidate: true
+      }
     },
-  ]);
+  ]
+  const [shiftTotalState, setShiftTotalState] = useState(totalShiftInitialState);
 
   const [reRender, setReRender] = useState(false);
   const [grandFinalTotal, setGrandFinalTotal] = useState({
-    totalBorders: 0, totalPiece: 0, totalBGrade: 0, totalAGrade: 0
-  })
-
-
+    totalBorders: 0,
+    totalPiece: 0,
+    totalBGrade: 0,
+    totalAGrade: 0,
+  });
 
   const faultOptions = [
     {
@@ -344,9 +502,7 @@ const WeavingProductionForm = () => {
     },
   ];
 
-
-
-  // step two functions 
+  // step two functions
 
   function updateNoOfBorders(i, value) {
     console.log("border test");
@@ -359,27 +515,31 @@ const WeavingProductionForm = () => {
 
     setReRender(!reRender);
   }
-  function updateWeaverNAme(i, value) {
+  function updateWeaverNAme(i, value, label) {
     console.log("weaver test");
 
     var arr_data = shiftTotalState;
+
+    arr_data[i].weaverSelectorValue = { label: label, value: value };
     arr_data[i].weaverName = value;
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  function updateNativingName(i, value) {
+  function updateNativingName(i, value, label) {
     console.log("nativing test");
-
     var arr_data = shiftTotalState;
+    arr_data[i].nativingSelectorValue = { label: label, value: value };
     arr_data[i].nativing = value;
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  function updateShift(i, value) {
+  function updateShift(i, value, label) {
     console.log("shift test");
 
     var arr_data = shiftTotalState;
     arr_data[i].shiftName = value;
+    arr_data[i].shiftSelectorValue = { label: label, value: value };
+
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
@@ -402,10 +562,9 @@ const WeavingProductionForm = () => {
     var arr_data = shiftTotalState;
     arr_data[i].extraAmount.amount = parseInt(value);
     arr_data[i].totalAmount = parseInt(
-      (shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value)
-
-      // shiftTotalState[i].ratePerBorder * shiftTotalState[i].noOfBorder +
-      //   shiftTotalState[i].extraAmount.amount
+      (shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) *
+      shiftTotalState[i].aGradePieces +
+      parseInt(value)
     );
     setShiftTotalState(arr_data);
     setReRender(!reRender);
@@ -414,9 +573,7 @@ const WeavingProductionForm = () => {
     var commaSplitStringOfFaults = "";
     arrayOfSelectOftions.map((item) => {
       commaSplitStringOfFaults = item.value + "," + commaSplitStringOfFaults;
-    })
-
-
+    });
 
     //
     var arr_data = shiftTotalState;
@@ -428,11 +585,6 @@ const WeavingProductionForm = () => {
   }
 
   function updateGrandTotalValue() {
-    // let totalNumberofBorders=grandFinalTotal.totalBorders;
-    // let totalPiece=grandFinalTotal.totalPiece;
-    // let totalBGrade=grandFinalTotal.totalBorders;
-    // let totalAGrade=grandFinalTotal.totalAGrade;
-
     let totalNumberofBorders = 0;
     let totalPiece = 0;
     let totalBGrade = 0;
@@ -443,13 +595,128 @@ const WeavingProductionForm = () => {
       totalPiece = totalPiece + eachShift.totalPiece;
       totalBGrade = totalBGrade + eachShift.bGradePiece;
       totalAGrade = totalAGrade + eachShift.aGradePieces;
-
-    })
+    });
 
     setGrandFinalTotal({
-      totalBorders: totalNumberofBorders, totalPiece: totalPiece,
-      totalBGrade: totalBGrade, totalAGrade: totalAGrade
+      totalBorders: totalNumberofBorders,
+      totalPiece: totalPiece,
+      totalBGrade: totalBGrade,
+      totalAGrade: totalAGrade,
+    });
+  }
+
+  const stepTwoValidationFunct = async () => {
+
+    await shiftTotalState.map((eachShift, i) => {
+      var arr_data = shiftTotalState;
+
+      // ShiftName Validation --------- 
+      if (arr_data[i].shiftName == "") {
+        arr_data[i].shiftValidation.shiftNameValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.shiftNameValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // Weaver Validation --------- 
+      if (arr_data[i].weaverName == "") {
+        arr_data[i].shiftValidation.weaverNameValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.weaverNameValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // Nativing Validation --------- 
+      if (arr_data[i].nativing == "") {
+        arr_data[i].shiftValidation.nativingValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.nativingValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // Border no Validation --------- 
+      if (arr_data[i].noOfBorder == "" || arr_data[i].noOfBorder === 0) {
+        arr_data[i].shiftValidation.noOfBorderValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.noOfBorderValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // b rade piece  Validation --------- 
+      if (arr_data[i].bGradePiece == "" || arr_data[i].bGradePiece === 0) {
+        arr_data[i].shiftValidation.bGradePiece = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.bGradePiece = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // extraAmount  Desc   Validate Validation --------- 
+      if (arr_data[i].extraAmount.desc == "") {
+        arr_data[i].shiftValidation.extraAmountDescValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.extraAmountDescValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
+      // extraAmount     Validate Validation --------- 
+      if (arr_data[i].extraAmount.amount == "" || arr_data[i].extraAmount.amount === 0) {
+        arr_data[i].shiftValidation.extraAmountAmountValidate = false;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      } else {
+        arr_data[i].shiftValidation.extraAmountAmountValidate = true;
+        setShiftTotalState(arr_data);
+        setReRender(!reRender);
+      }
     })
+
+    let condition = false;
+    let testVar = true;
+    await shiftTotalState.forEach(SingleState => {
+
+      // ShiftName Validation --------- 
+      if (SingleState.shiftValidation.shiftNameValidate === false ||
+        SingleState.shiftValidation.weaverNameValidate === false ||
+        SingleState.shiftValidation.noOfBorderValidate === false ||
+        SingleState.shiftValidation.bGradePiece === false ||
+        SingleState.shiftValidation.extraAmountDescValidate === false ||
+        SingleState.shiftValidation.extraAmountAmountValidate === false ||
+        SingleState.shiftValidation.nativingValidate === false) {
+        testVar = false;
+        condition = false;
+      } else if (SingleState.shiftValidation.shiftNameValidate === true &&
+        SingleState.shiftValidation.weaverNameValidate === true &&
+        SingleState.shiftValidation.noOfBorderValidate === true &&
+        SingleState.shiftValidation.extraAmountDescValidate === true &&
+        SingleState.shiftValidation.extraAmountAmountValidate === true &&
+        SingleState.shiftValidation.bGradePiece === true &&
+        SingleState.shiftValidation.nativingValidate === true) {
+        condition = true;
+      }
+    });
+    if (condition === true && testVar === true) {
+      console.log("Go Next");
+      setThirdStep("active");
+      setSecondStep("done");
+    } else {
+      console.log("Cannt Go Next ");
+    }
+
+
+
+
   }
 
   // Step Three State
@@ -457,45 +724,57 @@ const WeavingProductionForm = () => {
   const [finalStepRequired, setfinalStepRequired] = useState({
     requireLengthpp: 0,
     requireWidthpp: 0,
-    requirePerPieceWeight: 0
+    requirePerPieceWeight: 0,
+  });
+
+  const [finalStepInput, setfinalStepInput] = useState({
+    pileToPileLength: "",
+    pileToPileWidth: "",
+    cutPieceSize: "",
+    cutPieceWeight: "",
+    remarks: ""
+  });
+
+  const [stepThirdValidator, setStepThirdValidator] = useState({
+    pileToPileLengthValidate: true, pileToPileWidthValidate: true,
+    cutPieceSizeValidate: true, cutPieceWeightValidate: true
   })
   // Step Three Functions 
-
-
-  useEffect(() => {
-
-  }, [finalStepRequired])
-
-
+  const saveWeavingProductionForm = () => {
+    if (finalStepInput.pileToPileLength == "") {
+      setStepThirdValidator({ ...stepThirdValidator, pileToPileLengthValidate: false })
+    } else if (finalStepInput.pileToPileWidth == "") {
+      setStepThirdValidator({ ...stepThirdValidator, pileToPileWidthValidate: false })
+    } else if (finalStepInput.cutPieceSize == "") {
+      setStepThirdValidator({ ...stepThirdValidator, cutPieceSizeValidate: false })
+    } else if (finalStepInput.cutPieceWeight == "") {
+      setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
+    } else {
+      console.log("saved SuccessFully");
+    }
+  }
+  // ----------------------------------
+  useEffect(() => { }, [finalStepRequired]);
 
   return (
     <>
       <div
         role="main"
-        className={`top_nav  bg-light  px-4 py-4 pt-5 ${showNavMenu == false ? "right_col-margin-remove" : " "
-          }  `}
-      >
+        className={`top_nav  bg-light  px-4 py-4 pt-5 ${showNavMenu == false ? "right_col-margin-remove" : " "}  `}   >
         <div className="x_panel mt-2">
-
           <div className="x_title">
             <h2 className="mt-3 ml-2">Weaving Production Form</h2>
-
             <div className="clearfix" />
           </div>
           <div className="x_content mb-3">
-
-
-
             <div id="wizard" className="form_wizard wizard_horizontal">
               {/* ---------   Navigation Of Form Steps ---------- */}
               <ul className="wizard_steps my-4">
                 <li>
                   <a>
                     <span
-                      className={`step_no ${firstStep == "active" ? "bg-customBlue" : "bg"
-                        }   
-          ${firstStep == "done" ? "bg-customOrange" : "bg"} `}
-                      onClick={() => onclickOnFirstStep()}
+                      className={`step_no ${firstStep == "active" ? "bg-customBlue" : "bg"} ${firstStep == "done" ? "bg-customOrange" : "bg"} `}
+                    // onClick={() => onclickOnFirstStep()}
                     >
                       1
                     </span>
@@ -508,12 +787,9 @@ const WeavingProductionForm = () => {
                 <li>
                   <a>
                     <span
-                      className={`step_no ${secondStep == "active" ? "bg-customBlue" : "bg"
-                        } 
-             ${secondStep == "done" ? "bg-customOrange" : "bg"}`}
-                      onClick={() => onclickOnSecondStep()}
-                    >
-                      2
+                      className={`step_no ${secondStep == "active" ? "bg-customBlue" : "bg"}     ${secondStep == "done" ? "bg-customOrange" : "bg"}`}
+                    // onClick={() => onclickOnSecondStep()}
+                    > 2
                     </span>
                     <span className="step_descr ">
                       Step 2<br />
@@ -524,10 +800,7 @@ const WeavingProductionForm = () => {
                 <li>
                   <a>
                     <span
-                      className={`step_no ${thirdStep == "active" ? "bg-customBlue" : "bg"
-                        }
-             ${thirdStep == "done" ? "bg-customOrange" : "bg"} `}
-                    >
+                      className={`step_no ${thirdStep == "active" ? "bg-customBlue" : "bg"}    ${thirdStep == "done" ? "bg-customOrange" : "bg"} `}>
                       3
                     </span>
                     <span className="step_descr">
@@ -537,36 +810,39 @@ const WeavingProductionForm = () => {
                   </a>
                 </li>
               </ul>
-
-
-              {/* drop drilling approuach is using here due redux unavalibility  */}
               <div>
-
-                {/* First Step Of Production Form ----------- */}
                 {firstStep == "active" ? (
                   <div className="container text-center px-5 mt-5  ">
                     <div className=" ">
                       <WeavingProductionFormStepOne
-                        isLoading={isLoading} loomDetail={loomDetail} FetchListSelector={FetchListSelector}
-                        updateNumbOfPieceInBorderFunc={updateNumbOfPieceInBorderFunc} rollDetail={rollDetail}
-                        loomDetailsUpdate={loomDetailsUpdate} setrollDetail={setrollDetail}
+                        isLoading={isLoading}
+                        loomDetail={loomDetail}
+                        FetchListSelector={FetchListSelector}
+                        updateNumbOfPieceInBorderFunc={updateNumbOfPieceInBorderFunc}
+                        rollDetail={rollDetail}
+                        loomDetailsUpdate={loomDetailsUpdate}
+                        setrollDetail={setrollDetail}
                         loomListOptions={loomListOptions}
-                        setLoomDetailsUpdate={setLoomDetailsUpdate} updateLoomDetails={updateLoomDetails}
-                        borderQualityOptions={borderQualityOptions} setUpdateNumberOfPieceOneBorderInput={setUpdateNumberOfPieceOneBorderInput}
+                        setLoomDetailsUpdate={setLoomDetailsUpdate}
+                        updateLoomDetails={updateLoomDetails}
+                        borderQualityOptions={borderQualityOptions}
+                        setUpdateNumberOfPieceOneBorderInput={setUpdateNumberOfPieceOneBorderInput}
                         updateNumberOfPieceOneBorderInput={updateNumberOfPieceOneBorderInput}
                         borderSizeOptions={borderSizeOptions}
-
+                        loomListValue={loomListValue} setLoomListValue={setLoomListValue}
+                        borderQualityValue={borderQualityValue} setborderQualityValue={setborderQualityValue}
+                        borderSizeValue={borderSizeValue} setBorderSizeValue={setBorderSizeValue}
+                        stepOneValidator={stepOneValidator}
                       />
                     </div>
-
                     <div className="text-right   pt-2  ">
+                      <button className="btn btn-secondary btn-sm  text-light px-4 mb-0"
+                        onClick={() => { postUserDraft() }}>
+                        Draft <i className="fa fa-stack-exchange pl-2"> </i>
+                      </button>
                       <button
                         className="btn btn-success btn-sm m-0 px-4"
-                        onClick={() => {
-                          setSecondStep("active");
-                          setFirstStep("done");
-                        }}
-                      >
+                        onClick={() => stepOneValidationFunct()}   >
                         Next
                       </button>
                     </div>
@@ -574,15 +850,17 @@ const WeavingProductionForm = () => {
                 ) : (
                   ""
                 )}
-                {/* Second Step Of Production Form ----------- */}
                 {secondStep == "active" ? (
                   <div className="container text-center px-2 mt-5">
                     <div className=" ">
                       <WeavingProductionFormStepTwo
-                        shiftOptions={shiftOptions} weaverEmployeeOptions={weaverEmployeeOptions}
-                        loomDetail={loomDetail} ratePerBorderTempState={ratePerBorderTempState}
+                        shiftOptions={shiftOptions}
+                        weaverEmployeeOptions={weaverEmployeeOptions}
+                        loomDetail={loomDetail}
+                        ratePerBorderTempState={ratePerBorderTempState}
                         nativingEmployeeOptions={nativingEmployeeOptions}
-                        updateGrandTotalValue={updateGrandTotalValue} reRender={reRender}
+                        updateGrandTotalValue={updateGrandTotalValue}
+                        reRender={reRender}
                         shiftTotalState={shiftTotalState}
                         isLoadingStepTwo={isLoadingStepTwo}
                         updateShift={updateShift}
@@ -606,67 +884,76 @@ const WeavingProductionForm = () => {
                           setFirstStep("active");
                         }}
                       >
-                        {" "}
-                        Prev{" "}
+                        Prev
+                      </button>
+                      <button className="btn btn-secondary btn-sm  text-light px-4 "
+                        onClick={() => { postUserDraft() }}>
+                        Draft <i className="fa fa-stack-exchange pl-2"> </i>
                       </button>
                       <button
                         className="btn btn-success btn-sm  px-4"
-                        onClick={() => {
-                          setThirdStep("active");
-                          setSecondStep("done");
-                        }}
-                      >
-                        {" "}
-                        Next{" "}
+                        onClick={() => stepTwoValidationFunct()} >
+                        Next
                       </button>
                     </div>
                   </div>
                 ) : (
                   ""
-                )}
-                {/* Third Step Of Production Form ----------- */}
-                {thirdStep == "active" ? (
+                )}  {thirdStep == "active" ? (
                   <div className="container text-center px-2   my-5  ">
                     <div className=" ">
                       <WeavingProductionFormStepThird
                         finalStepRequired={finalStepRequired}
                         grandFinalTotal={grandFinalTotal}
+                        finalStepInput={finalStepInput} setfinalStepInput={setfinalStepInput}
+                        stepThirdValidator={stepThirdValidator}
                       />
                     </div>
                     <div className="text-right px-2 pt-3 ">
                       <button
-                        className="btn btn-primary btn-sm  px-4 py-1"
+                        className="btn btn-primary btn-sm  px-4 "
                         onClick={() => {
                           setThirdStep("done");
                           setSecondStep("active");
                         }}
                       >
-                        {" "}
                         <i className="fa fa-backward pr-2"></i>
                         Prev
                       </button>
 
-                      <button className="btn btn-success btn-sm  px-4 py-1">
-                        {" "}
+                      <button className="btn btn-secondary btn-sm  text-light px-4 "
+                        onClick={() => { postUserDraft() }}>
                         Draft <i className="fa fa-stack-exchange pl-2"> </i>
                       </button>
-                      <button className="btn btn-success btn-sm  px-4 py-1">
-                        {" "}
-                        Print <i className="fa fa-print pl-2"> </i>
-                      </button>
-                      <button className="btn btn-danger btn-sm  px-4 py-1">
-                        {" "}
+                      <button className="btn btn-success btn-sm  px-4   " onClick={() => saveWeavingProductionForm()}>
+
                         Save <i className="fa fa-save pl-2 "> </i>
                       </button>
+                      <button className="btn btn-danger btn-sm  px-4  ">
+                        Print <i className="fa fa-print pl-2"> </i>
+                      </button>
                     </div>
-
-                    {/*  */}
                   </div>
                 ) : (
                   ""
                 )}
               </div>
             </div>
+          </div>
+          <div className="text-left px-2 mb-1">
+
+           
+
+            {firstStep == "active" ?
+             ( userDraftBox.map((eachDraft) => {
+                return <div key={eachDraft.draft_id} className="btn btn-sm btn-light border-secondary border text-secondary">
+                  <span className="text-secondary mouseHandeMade" onClick={() => setDraftDataIntoForm(JSON.parse(eachDraft.draft_json))}>{eachDraft.draft_name}</span>
+                  <span className="mouseRemoveMade">
+                    <i className="fa fa-close ml-2" onClick={() => deleteDraft(eachDraft.draft_id)}></i>
+                  </span>
+                </div>
+              })):""
+            }
           </div>
         </div>
       </div>

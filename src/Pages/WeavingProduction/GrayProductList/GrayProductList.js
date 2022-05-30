@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {endPoint} from '../../../config/Config'
+import { endPoint } from '../../../config/Config'
 
 import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
@@ -10,10 +10,25 @@ const GrayProductList = () => {
   const [ListOfGrayProduct, setListOfGrayProduct] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [isLoading, setisLoading] = useState(true);
+  const addNewGrayProductValidatorInitialState = {
+    itemName: true,
+    itemSize: true,
+    PerPieceGrayWeightGram: true,
+    graySizeppWidth: true,
+    graySizeppLength: true,
+    LoomNumbPieceInBorder76: true,
+    LoomNumbRatePerBorderWithDraw76: true,
+    LoomNumbRatePerBorderWithoutDraw76: true,
+    LoomNumbPieceInBorder96: true,
+    LoomNumbRatePerBorderWithDraw96: true,
+    LoomNumbRatePerBorderWithoutDraw96: true,
+    status: true
+  }
+  const [addNewGrayProductValidator, setaddNewGrayProductValidator] = useState(addNewGrayProductValidatorInitialState)
 
-  const [AddNewProduct, setAddNewProduct] = useState({
-    itemName: 0,
-    itemSize: 0,
+  const newProductInitialState = {
+    itemName: "",
+    itemSize: "",
     PerPieceGrayWeightGram: "",
     graySizeppWidth: "",
     graySizeppLength: "",
@@ -24,27 +39,20 @@ const GrayProductList = () => {
     LoomNumbRatePerBorderWithDraw96: "",
     LoomNumbRatePerBorderWithoutDraw96: "",
     status: "",
-  });
-
-  const [itemNameValue, setitemNameValue] = useState("Custom");
-  const [itemSizeValue, setitemSizeValue] = useState("Not Decided");
-  const [itemStatusValue, setitemStatusValue] = useState("");
+  }
+  const [AddNewProduct, setAddNewProduct] = useState(newProductInitialState);
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const [itemSizeOptions, setItemSizeOptions] = useState([]);
- 
-  const itemStatusOptions =  [ 
+
+  const itemStatusOptions = [
     { label: "Activate", value: "Activate" },
-    { label: "Deactivate", value: "Deactivate" }, 
-  ] ;
+    { label: "Deactivate", value: "Deactivate" },
+  ];
 
   const fetchAllData = () => {
     fetch(url + "api/grayProductLists")
       .then((response) => response.json())
       .then((json) => {
-
-
-        // Fetching selector data for Border/itemName 
-      
         fetch(url + "api/BorderQuality", {
           method: "GET",
           headers: {
@@ -65,56 +73,82 @@ const GrayProductList = () => {
             });
 
             setItemNameOptions(arr);
-          
+
           });
-            // Fetching selector data for Border/itemName 
-            fetch(url + "api/BorderSizes", {
-              method: "GET",
-              headers: {
-                // Authorization: "bearer" + " " + e,
-                "Content-Type": "application/x-www-form-urlencoded",
-              },
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                console.log(data);
-                var arr2 = [];
-                data.map((item) => {
-                  console.log(item);
-                  arr2.push({
-                    label: item.borderSize1,
-                    value: item.borderSize_id,
-                  });
-                });
-    
-                setItemSizeOptions(arr2);
-                setisLoading(false);
+        fetch(url + "api/BorderSizes", {
+          method: "GET",
+          headers: {
+            // Authorization: "bearer" + " " + e,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => { 
+            var arr2 = [];
+            data.map((item) => { 
+              arr2.push({
+                label: item.borderSize1,
+                value: item.borderSize_id,
               });
+            });
+
+            setItemSizeOptions(arr2);
+            setisLoading(false);
+          });
         setListOfGrayProduct(json);
       });
   };
 
-  const AddNewProductFunc = ()=>{
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(AddNewProduct),
-    };
-    
-    console.log("Its new Product Func" , AddNewProduct );
-    fetch(url +"api/grayProductLists", requestOptions)
-    .then((response) => response.json())
-    .then((data) => {   
-      fetchAllData()
- setModalShow(false);
-    
-    })
-    .catch((err) => {
-      console.log("err front End", err);
-    });
+
+
+  const AddNewProductFunc = () => {
+    if (AddNewProduct.itemName == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, itemName: false })
+    } else if (AddNewProduct.itemSize == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, itemSize: false })
+    } else if (AddNewProduct.PerPieceGrayWeightGram == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, PerPieceGrayWeightGram: false })
+    } else if (AddNewProduct.graySizeppWidth == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, graySizeppWidth: false })
+    } else if (AddNewProduct.graySizeppLength == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, graySizeppLength: false })
+    } else if (AddNewProduct.LoomNumbPieceInBorder76 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbPieceInBorder76: false })
+    } else if (AddNewProduct.LoomNumbRatePerBorderWithDraw76 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithDraw76: false })
+    } else if (AddNewProduct.LoomNumbRatePerBorderWithoutDraw76 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithoutDraw76: false })
+    } else if (AddNewProduct.LoomNumbPieceInBorder96 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbPieceInBorder96: false })
+    } else if (AddNewProduct.LoomNumbRatePerBorderWithDraw96 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithDraw96: false })
+    } else if (AddNewProduct.LoomNumbRatePerBorderWithoutDraw96 == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithoutDraw96: false })
+    } else if (AddNewProduct.status == "") {
+      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, status: false })
+    } else {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(AddNewProduct),
+      };
+
+      console.log("Its new Product Func", AddNewProduct);
+      fetch(url + "api/grayProductLists", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          fetchAllData()
+          setModalShow(false);
+          setAddNewProduct(newProductInitialState)
+          setaddNewGrayProductValidator(addNewGrayProductValidatorInitialState)
+        })
+        .catch((err) => {
+          console.log("err front End", err);
+        });
+    }
   }
-  const deleteGrayProduct = (e)=>{
-  
+  const deleteGrayProduct = (e) => {
+
     // http://localhost:63145/api/grayProductLists/13
     fetch(`${endPoint}/api/grayProductLists/${e}`, {
       method: "DELETE",
@@ -130,7 +164,7 @@ const GrayProductList = () => {
         // deleteing Role for this Id
 
         fetchAllData();
-     
+
       })
       .catch((error) => console.log("error", error));
   }
@@ -145,24 +179,19 @@ const GrayProductList = () => {
       ) : (
         <div
           role="main"
-          className={`right_col  h-100  ${
-            showNavMenu == false ? "right_col-margin-remove" : " "
-          } `}
+          className={`right_col  h-100  ${showNavMenu == false ? "right_col-margin-remove" : " "
+            } `}
         >
           <AddNewGrayProductList
             show={modalShow}
             itemNameOptions={itemNameOptions}
-            itemNameValue={itemNameValue}
-            setitemNameValue={setitemNameValue}
             AddNewProduct={AddNewProduct}
             setAddNewProduct={setAddNewProduct}
             onHide={() => setModalShow(false)}
-            AddNewProductFunc={AddNewProductFunc}   
-            itemStatusOptions={itemStatusOptions} setitemStatusValue={setitemStatusValue} itemStatusValue={itemStatusOptions}
-
-            // Selector of size item 
-            setItemSizeOptions={setItemSizeOptions}   itemSizeOptions={itemSizeOptions}   
-            itemSizeValue={itemSizeValue}    setitemSizeValue={setitemSizeValue}
+            AddNewProductFunc={AddNewProductFunc}
+            itemStatusOptions={itemStatusOptions}
+            setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
+            addNewGrayProductValidator={addNewGrayProductValidator}
           />
 
           <div className="page-title mb-2  ">
@@ -403,8 +432,8 @@ const GrayProductList = () => {
                           >
                             <i className="fa fa-edit text-common"></i>
                             <i className="fa fa-trash ml-2 pb-1 text-danger"
-                            
-                            onClick={()=>deleteGrayProduct(item.grayProduct_id)}></i>
+
+                              onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>
                           </td>
                         </tr>
                       );

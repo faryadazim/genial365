@@ -1,80 +1,9 @@
-import React, { useState  , } from "react";
-import Creatable from "react-select/creatable";
-import Select from "react-select";
+import React, { useState, } from "react";
 
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
-    border: "none",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
 const WeavingProductionFormStepThird = ({
-  finalStepRequired, grandFinalTotal
+  finalStepRequired, grandFinalTotal,
+  finalStepInput, setfinalStepInput ,stepThirdValidator
 }) => {
-
-  // const [reRenderedState, setreRenderedState] = useState(false)
-  const [finalStepInput, setfinalStepInput] = useState({
-    pileToPileLength: "",
-    pileToPileWidth: "",
-    cutPieceSize: "",
-    cutPieceWeight: "",
-    remarks: ""
-  });
-
-  // const [finalStepDifference, setFinalStepDifference] = useState({
-  //   totalWeightCutPiece: "", pileToPileWidth: "", pileToPileLength: "", bGradePercentage: ""
-
-  // })
-
-  // const differenceFinder = () => {
-  //   setFinalStepDifference({
-
-  //     totalWeightCutPiece: finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade) - 0  , //here zero will be replace with current value of input /cuurent     
-  //     pileToPileWidth: finalStepInput.pileToPileWidth   ,   
-  //     pileToPileLength: finalStepRequired.requireLengthpp - finalStepInput.pileToPileLength  ,    
-  //     bGradePercentage: "2%"
-  //   })
-  //   setreRenderedState(!reRenderedState)
-  // }
- 
-  
 
   return (
     <>
@@ -88,13 +17,12 @@ const WeavingProductionFormStepThird = ({
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                    className="form-control"
+                    className={stepThirdValidator.pileToPileLengthValidate?"form-control":"form-control requiredValidateInput"}
                     name="name"
                     type="number"
                     value={finalStepInput.pileToPileLength}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileLength: parseInt(e.target.value) })
-                      // differenceFinder()
                     }}
                     placeholder="Define By User"
                   />
@@ -107,12 +35,11 @@ const WeavingProductionFormStepThird = ({
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                    className="form-control"
-                    type="number"
+                       className={stepThirdValidator.pileToPileWidthValidate?"form-control":"form-control requiredValidateInput"}
+                       type="number"
                     value={finalStepInput.pileToPileWidth}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileWidth: parseInt(e.target.value) })
-                      // differenceFinder()
                     }}
                     placeholder="ex. 45/67  "
                   />
@@ -125,14 +52,13 @@ const WeavingProductionFormStepThird = ({
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                    className="form-control"
+               className={stepThirdValidator.cutPieceSizeValidate?"form-control":"form-control requiredValidateInput"}
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
                     value={finalStepInput.cutPieceSize}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceSize: parseInt(e.target.value) })
-                      // differenceFinder()
                     }}
                   />
                 </div>
@@ -144,14 +70,14 @@ const WeavingProductionFormStepThird = ({
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                    className="form-control"
+               className={stepThirdValidator.cutPieceWeightValidate?"form-control":"form-control requiredValidateInput"}
+                   
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
                     value={finalStepInput.cutPieceWeight}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseInt(e.target.value) })
-                      // differenceFinder()
                     }}
                   />
                 </div>
@@ -179,30 +105,18 @@ const WeavingProductionFormStepThird = ({
                       </th>
                     </tr>
                   </thead>
-
                   <tbody>
                     <tr className="even pointer">
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          
-{
-
-grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight
-
-}
-
+                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
                           {finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {/* {finalStepDifference.totalWeightCutPiece} */}
-                          {
-                          
-                          grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight - 
-                          
-                          finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade) }
-
+                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight -
+                            finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)}
                         </div>
                       </td>
                     </tr>
@@ -216,9 +130,8 @@ grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
                           {finalStepRequired.requireLengthpp}</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {/* {finalStepDifference.pileToPileLength} */}
-                          { finalStepRequired.requireLengthpp-   finalStepInput.pileToPileLength}
-                       
+                          {finalStepRequired.requireLengthpp - finalStepInput.pileToPileLength}
+
                         </div>
                       </td>
                     </tr>
@@ -232,18 +145,16 @@ grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight
                           {finalStepRequired.requireWidthpp}
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {/* {finalStepDifference.pileToPileWidth} */}
-                          { finalStepRequired.requireWidthpp -finalStepInput.pileToPileWidth}
+                          {finalStepRequired.requireWidthpp - finalStepInput.pileToPileWidth}
                         </div>
                       </td>
                     </tr>
                     <tr className="even pointer">
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >B Grade %</div>
-                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade ).toFixed(10)}%</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade).toFixed(10)}%</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">     </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree">
-                          
                         </div>
                       </td>
                     </tr>
@@ -254,13 +165,10 @@ grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight
           </div>
         </div>
       </div>
-
       <div className="row  customPaddingForRemarks my-1 pt-2">
         <div className="w-100 text-left ">
-          {/* <label htmlFor="message" className="pl-2">Message (20 chars min, 100 max) :</label> */}
           <textarea
             id="message"
-
             required="required"
             className="form-control px-2"
             style={{ height: "100px", fontSize: "15px", fontWeight: "500" }}

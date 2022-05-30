@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
-
-import { Modal } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import Loader from "../../../Layout/Loader/Loader"; 
+import Loader from "../../../Layout/Loader/Loader";
 import LoomListUpdate from "./LoomListUpdate";
+import AddNewLoomModel from './AddNewLoomModel'
 
- import AddNewLoomModel from './AddNewLoomModel'
 const LoomManagement = () => {
+  let defaultValueForLoomValidator = { loomSize: true, drawBox: true, jacquard: true, weavingUnit: true }
+  const [loomValidator, setloomValidator] = useState(defaultValueForLoomValidator)
+  const [loomValidatorUpdate, setLoomValidatorUpdate] = useState(true)
   const showNavMenu = useSelector((state) => state.NavState);
   const [loomList, setLoomList] = useState([]);
-
   const url = localStorage.getItem("authUser");
-
   const [modalShow, setModalShow] = useState(false);
   const [modalShowForUpdate, setModalShowForUpdate] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -23,7 +22,7 @@ const LoomManagement = () => {
   };
   const [AddNewLoom, setAddNewLoom] = useState(initialStateLoom);
   const [UpdateLoomList, setUpdateLoomList] = useState(initialStateLoom);
-  const [inCompleteInput , setInCompleteInput] = useState(false)
+
   const [DropBoxValue, setDropBoxValue] = useState("");
   const [JacquardValue, setJacquardValue] = useState("");
   const [weavingUnitValue, setWeavingUnitValue] = useState("");
@@ -62,64 +61,65 @@ const LoomManagement = () => {
       });
   };
   const UpdateLoomListFunc = (e) => {
-    e.preventDefault();
-    if(UpdateLoomList.loomNumber ==""|| UpdateLoomList.size=="" || UpdateLoomList.drawBox==""  || UpdateLoomList.jacquard=="" || UpdateLoomList.weavingUnitId==""  || UpdateLoomList.weavingUnitId==undefined ){
-      console.log("empty" , );
-      setInCompleteInput(true)
-      
-      
-            }else{
-   console.log(UpdateLoomList);
+    if (UpdateLoomList.loomSize == "") {
+      setLoomValidatorUpdate(false)
+    } else {
+      e.preventDefault();
+      console.log(UpdateLoomList);
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(UpdateLoomList),
+      };
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(UpdateLoomList),
-    };
-
-    fetch(url + "api/LoomLists", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        // notifyAdd();
-        setModalShowForUpdate(false);
-        fetchAllData();
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });}
+      fetch(url + "api/LoomLists", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          // notifyAdd();
+          setModalShowForUpdate(false);
+          fetchAllData();
+          setLoomValidatorUpdate(true)
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
   };
 
   const addNewLoomFunc = (e) => {
-    console.log(AddNewLoom);
-      if( AddNewLoom.loomSize=="" || AddNewLoom.drawBox==""  || AddNewLoom.jacquard=="" || AddNewLoom.weavingUnitId=="" ){
-console.log("empty");
-setInCompleteInput(true)
 
-
-      }else{
-        const requestOptions = {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(AddNewLoom),
-          };
-          console.log(requestOptions.body);
-          fetch(url + "api/LoomLists", requestOptions)
-            .then((response) => response.json())
-            .then((data) => {
-              fetchAllData();
-      
-              setModalShow(false);
-              setDropBoxValue("")
-              setJacquardValue("")
-              setWeavingUnitValue("")
-              setAddNewLoom(initialStateLoom)
-            })
-            .catch((err) => {
-              console.log("err", err);
-            });
-      }
+    if (AddNewLoom.loomSize == "") {
+      setloomValidator({ ...loomValidator, loomSize: false })
+    } else if (AddNewLoom.drawBox == "") {
+      setloomValidator({ ...loomValidator, drawBox: false })
+    } else if (AddNewLoom.jacquard == "") {
+      setloomValidator({ ...loomValidator, jacquard: false })
+    } else if (AddNewLoom.weavingUnitId == "") {
+      setloomValidator({ ...loomValidator, weavingUnit: false })
+    } else {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(AddNewLoom),
+      };
+      console.log(requestOptions.body);
+      fetch(url + "api/LoomLists", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          fetchAllData();
+          setloomValidator(defaultValueForLoomValidator)
+          setModalShow(false);
+          setDropBoxValue("")
+          setJacquardValue("")
+          setWeavingUnitValue("")
+          setAddNewLoom(initialStateLoom)
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+    }
     e.preventDefault(e);
-   
+
   };
   const fetchAllData = () => {
     fetch(url + "api/LoomLists")
@@ -137,19 +137,21 @@ setInCompleteInput(true)
     <>
       <div
         role="main"
-        className={`right_col  h-100  ${
-          showNavMenu == false ? "right_col-margin-remove" : " "
-        } `}
+        className={`right_col  h-100  ${showNavMenu == false ? "right_col-margin-remove" : " "
+          } `}
       >
         <AddNewLoomModel
           show={modalShow}
           AddNewLoom={AddNewLoom}
           setAddNewLoom={setAddNewLoom}
           addNewLoomFunc={addNewLoomFunc}
-          onHide={() => setModalShow(false)}    inCompleteInput={inCompleteInput}  setInCompleteInput={setInCompleteInput}
+          onHide={() => {
+            setModalShow(false)
+            setloomValidator(defaultValueForLoomValidator)
+          }}
           DropBoxValue={DropBoxValue} setDropBoxValue={setDropBoxValue} DropBox={DropBox}
-          JacquardValue={JacquardValue}  setJacquardValue={setJacquardValue}  Jacquard={Jacquard}
-          weavingUnitOption={weavingUnitOption} weavingUnitValue={weavingUnitValue} setWeavingUnitValue={setWeavingUnitValue}
+          JacquardValue={JacquardValue} setJacquardValue={setJacquardValue} Jacquard={Jacquard}
+          weavingUnitOption={weavingUnitOption} weavingUnitValue={weavingUnitValue} setWeavingUnitValue={setWeavingUnitValue} loomValidator={loomValidator}
         />
         <LoomListUpdate
           show={modalShowForUpdate}
@@ -157,10 +159,13 @@ setInCompleteInput(true)
           setUpdateLoomList={setUpdateLoomList}
           UpdateLoomListFunc={UpdateLoomListFunc}
           DropBoxValue={DropBoxValue} setDropBoxValue={setDropBoxValue} DropBox={DropBox}
-          JacquardValue={JacquardValue}  setJacquardValue={setJacquardValue}  Jacquard={Jacquard}
-           weavingUnitOption={weavingUnitOption} weavingUnitValue={weavingUnitValue} 
-           inCompleteInput={inCompleteInput}  setInCompleteInput={setInCompleteInput}
-          onHide={() => setModalShowForUpdate(false)}
+          JacquardValue={JacquardValue} setJacquardValue={setJacquardValue} Jacquard={Jacquard}
+          weavingUnitOption={weavingUnitOption} weavingUnitValue={weavingUnitValue}
+          onHide={() => {
+            setModalShowForUpdate(false)
+            setLoomValidatorUpdate(true)
+          }}
+          loomValidatorUpdate={loomValidatorUpdate}
         />
         <div className="row">
           <div className="col-md-6 text-left">
@@ -220,7 +225,7 @@ setInCompleteInput(true)
                                   <td className=" text-center ">
                                     {innerItem.loomSize}{" "}
                                   </td>
-                              
+
                                   <td className=" text-center ">
                                     {innerItem.drawBox}{" "}
                                   </td>
@@ -239,9 +244,12 @@ setInCompleteInput(true)
                                           loomSize: innerItem.loomSize,
                                           drawBox: innerItem.drawBox,
                                           jacquard: innerItem.jacquard,
-                                          weavingUnitId: item.weavingUnitId,
+                                          weavingUnitId: item.weavingUnit_id,
                                         });
-                                        // console.log(UpdateLoomList , "loom list updated clicked");
+                                        console.log("lorememrm", item.weavingUnit_id);
+                                        setDropBoxValue({ label: innerItem.drawBox, value: innerItem.drawBox })
+                                        setJacquardValue({ label: innerItem.jacquard, value: innerItem.jacquard })
+                                        setWeavingUnitValue({ label: item.weavingUnit_id, value: item.weavingUnit_id })
                                       }}
                                     ></i>
                                     <i

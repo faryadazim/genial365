@@ -1,11 +1,13 @@
-import React , {useState}from 'react'
+import React, { useState , useEffect } from 'react'
 import { Modal, Button } from "react-bootstrap";
 
 const EditBorderSize = (props) => {
-    const [isDisabledSubmitButton , setISDisableButton] = useState(false)
+ 
+
+  const [isValidateBorderSize, setisValidateBorderSize] = useState(true)
   return (
-    
- <div className='marginForModel'>  <Modal
+
+    <div className='marginForModel'>  <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -22,12 +24,9 @@ const EditBorderSize = (props) => {
             <div className="clearfix" />
             <div className="x_content"></div>
           </div>
-        
+
           <p className="text-center">
-         {
-            isDisabledSubmitButton  &&    <div className='mb-2'>     
-              <code >  Make Sure to Fill All Values</code></div>
-         }
+
 
             <div className="field item form-group">
               <label className="col-form-label col-md-4 col-sm-4  label-align">
@@ -35,50 +34,51 @@ const EditBorderSize = (props) => {
               </label>
               <div className="col-md-5 col-sm-5">
                 <input
-                  className="form-control"
+                  className={isValidateBorderSize ? "form-control" : "form-control requiredValidateInput"}
                   data-validate-length-range={6}
                   data-validate-words={2}
                   name="name"
-                  placeholder="ex. Phool"
-                  required="true"
-                 value={props.EditBorderSizeState.borderSize1}
-                  onChange={(e) =>
-                   {
-            
-                    setISDisableButton(false)
-                    props.setEditBorderSizeState({...props.EditBorderSizeState ,  borderSize1: e.target.value })}
+                  placeholder="ex. 20/34"
+
+                  value={props.EditBorderSizeState.borderSize1}
+                  onChange={(e) => {
+
+
+                    props.setEditBorderSizeState({ ...props.EditBorderSizeState, borderSize1: e.target.value })
+                  }
                   }
                 />
               </div>
               <div className="col-md-3">
-              <button
-                type="submit"
-                className="btn btn-primary btn-sm px-3 "
-                onClick={(e) => {
-                    setISDisableButton(false)
-              
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm px-3 "
+                  onClick={(e) => {
                     if (props.EditBorderSizeState.borderSize1=="") {
-                        setISDisableButton(true)
-                    }else{
+                      setisValidateBorderSize(false)
+                    } else {
+                      setisValidateBorderSize(true)
                       props.updateBorderSize()
                     }
+                
+                  }}
 
-                }}
-    
-              >
-                Submit
-              </button>
-              <button type="submit" className="btn btn-danger btn-sm px-3 "
-               onClick={()=>{props.setModalShow(false)
-                setISDisableButton(false) }}>
-                Cancel
-              </button>
+                >
+                  Submit
+                </button>
+                <button type="submit" className="btn btn-danger btn-sm px-3 "
+                  onClick={() => {
+                    props.setModalShow(false)
+                    setisValidateBorderSize(true)
+                  }}>
+                  Cancel
+                </button>
               </div>
             </div>
           </p>
         </div>
       </>
-    </Modal></div> 
+    </Modal></div>
   );
 };
 

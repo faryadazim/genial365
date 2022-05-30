@@ -138,9 +138,9 @@ const BorderSize = ({ setisLoadBorderSize }) => {
                     }}
                     disabled={
                       AddNewSize.borderSize1 == "" ||
-                      AddNewSize.borderSize1 == undefined ||
-                      AddNewSize.borderSize1 == null ||
-                      AddNewSize.borderSize1 == " "
+                        AddNewSize.borderSize1 == undefined ||
+                        AddNewSize.borderSize1 == null ||
+                        AddNewSize.borderSize1 == " "
                         ? true
                         : false
                     }
@@ -154,7 +154,6 @@ const BorderSize = ({ setisLoadBorderSize }) => {
         </div>
       </>
 
-      {/* Model  */}
       <div className="x_panel">
         <div className="x_content">
           <div className="table-responsive">
@@ -168,29 +167,17 @@ const BorderSize = ({ setisLoadBorderSize }) => {
                   </th>
                 </tr>
               </thead>
-
               <tbody>
-                {/* {RoleRegistered.map((Role, index) => {
-                        return ( */}
                 {borderSize.map((item, index) => {
                   return (
                     <tr className="even pointer" key={item.borderSize_id}>
                       <td className=" ">{index + 1}</td>
                       <td className=" "> {item.borderSize1} </td>
-
-                      <td
-                        width="20%"
-                        className="a-right a-right     text-center"
-                      >
-                        <i
-                          className="fa fa-edit"
+                      <td width="20%" className="a-right a-right     text-center"    >
+                        <i className="fa fa-edit"
                           onClick={() => {
                             setModalShow(true);
-                            //   handleShow();
-                            //   setCurrentEditUser({
-                            //     id: Role.Id,
-                            //     name: Role.Name,
-                            //   });
+
                             setEditBorderSizeState({
                               borderSize_id: item.borderSize_id,
                               borderSize1: item.borderSize1,

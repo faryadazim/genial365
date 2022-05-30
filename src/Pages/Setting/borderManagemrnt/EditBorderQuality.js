@@ -1,11 +1,15 @@
-import React , {useState}from 'react'
+import React, { useState , useEffect } from 'react'
 import { Modal, Button } from "react-bootstrap";
 
 const EditBorderQuality = (props) => {
-    const [isDisabledSubmitButton , setISDisableButton] = useState(false)
+ 
+const [isValidateBorderQuality, setisValidateBorderQuality] = useState(true)
+
+ 
+  
   return (
-    
- <div className='marginForModel'>  <Modal
+
+    <div className='marginForModel'>  <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
@@ -22,62 +26,62 @@ const EditBorderQuality = (props) => {
             <div className="clearfix" />
             <div className="x_content"></div>
           </div>
-        
-          <p className="text-center">
-         {
-            isDisabledSubmitButton  &&    <div className='mb-2'>       <code >  Make Sure to Fill All Values</code></div>
-         }
 
+          <p className="text-center pr-5 my-5"> 
             <div className="field item form-group">
               <label className="col-form-label col-md-4 col-sm-4  label-align">
                 Enter Quality Name<span className="required">*</span>
               </label>
               <div className="col-md-5 col-sm-5">
                 <input
-                  className="form-control"
+                  className={isValidateBorderQuality? "form-control" : "form-control requiredValidateInput"}
                   data-validate-length-range={6}
                   data-validate-words={2}
                   name="name"
                   placeholder="ex. Phool"
                   required="true"
-                 value={props.EditBorderQualityState.borderQuality1}
-                  onChange={(e) =>
-                   {
-            
-                    setISDisableButton(false)
-                    props.setEditBorderQualityState({...props.EditBorderQualityState ,  borderQuality1: e.target.value })}
+                  value={props.EditBorderQualityState.borderQuality1}
+                  onChange={(e) => {
+                 
+                    props.setEditBorderQualityState({ ...props.EditBorderQualityState, borderQuality1: e.target.value })
+                  
+                  }
                   }
                 />
               </div>
               <div className="col-md-3">
-              <button
-                type="submit"
-                className="btn btn-primary btn-sm px-3 "
-                onClick={(e) => {
-                    setISDisableButton(false)
-              
-                    if (props.EditBorderQualityState.borderQuality1=="") {
-                        setISDisableButton(true)
-                    }else{
-                      props.updateBorderQuality()
-                    }
+                <button
+                  type="submit"
+                  className="btn btn-primary btn-sm px-3 "
+               
+                  onClick={(e) => { 
 
-                }}
-    
-              >
-                Submit
-              </button>
-              <button type="submit" className="btn btn-danger btn-sm px-3 "
-               onClick={()=>{props.setModalShow(false)
-                setISDisableButton(false) }}>
-                Cancel
-              </button>
+                    if (props.EditBorderQualityState.borderQuality1=="") {
+                      setisValidateBorderQuality(false)
+                    } else {
+                      props.updateBorderQuality() 
+                      setisValidateBorderQuality(true)
+                    } 
+                  
+            
+
+                  }}
+
+                >
+                  Submit
+                </button>
+                <button type="submit" className="btn btn-danger btn-sm px-3 "
+                  onClick={() => {
+                    props.setModalShow(false) 
+                  }}>
+                  Cancel
+                </button>
               </div>
             </div>
           </p>
         </div>
       </>
-    </Modal></div> 
+    </Modal></div>
   );
 };
 

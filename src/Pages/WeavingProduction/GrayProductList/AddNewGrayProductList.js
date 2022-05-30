@@ -5,38 +5,38 @@ const customStyles = {
   // control: base => ({
   //   ...base, 
   //   // This line disable the blue border
- 
+
   // })
-  control: (provided, state , base) => ({
+  control: (provided, state, base) => ({
     ...provided,
     background: '#fff',
     borderColor: '#d9e4e8',
-    borderRadius:"none",
+    borderRadius: "none",
     minHeight: '30px',
     height: '30px',
-    // boxShadow: state.isFocused ? null : null,
-    ...base,    boxShadow: 'none'
+
+    ...base, boxShadow: 'none'
   }),
-    option: (provided, state) => ({
-      ...provided,
- 
-      borderBottom: "1px  #003a4d",
-      color: state.isSelected ? "#f79c74" : "#003a4d",
-      background: '#fff',
-   
-    }),
+  option: (provided, state) => ({
+    ...provided,
+
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    background: '#fff',
+
+  }),
   valueContainer: (provided, state) => ({
-    ...provided,     fontSize :"11px",
+    ...provided, fontSize: "11px",
     height: '30px',
-    padding: '0 6px' ,  
-      // background: '#fff',
-    
+    padding: '0 6px',
+    // background: '#fff',
+
   }),
 
   input: (provided, state) => ({
     ...provided,
     margin: '0px',
-    
+
   }),
   indicatorSeparator: state => ({
     display: 'none',
@@ -44,9 +44,56 @@ const customStyles = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: '30px',
-    
+
   }),
-  
+
+}
+const customStylesDanger = {
+  // control: base => ({
+  //   ...base, 
+  //   // This line disable the blue border
+
+  // })
+  control: (provided, state, base) => ({
+    ...provided,
+    background: '#fff',
+    borderColor: 'red',
+    borderRadius: "none",
+    minHeight: '30px',
+    height: '30px',
+
+    ...base, boxShadow: 'none'
+  }),
+  option: (provided, state) => ({
+    ...provided,
+
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    background: '#fff',
+
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided, fontSize: "11px",
+    height: '30px',
+    padding: '0 6px',
+    // background: '#fff',
+
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: '0px',
+
+  }),
+  indicatorSeparator: state => ({
+    display: 'none',
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+
+  }),
+
 }
 const AddNewGrayProductList = (props) => {
   return (
@@ -83,10 +130,10 @@ const AddNewGrayProductList = (props) => {
                 </label>
                 <div className="col-md-8 col-sm-8">
                   <Select
-                    required
+                    // required
                     className="basic-single"
                     classNamePrefix="select"
-                    value={props.itemNameValue.value}
+                    // value={props.itemNameValue.value}
                     onChange={(value) => {
                       props.setAddNewProduct({
                         ...props.AddNewProduct,
@@ -96,7 +143,7 @@ const AddNewGrayProductList = (props) => {
                     isSearchable={true}
                     name="color"
                     options={props.itemNameOptions}
-                    styles={customStyles}
+                    styles={props.addNewGrayProductValidator.itemName ? customStyles : customStylesDanger}
                   />
                 </div>
               </div>
@@ -106,10 +153,10 @@ const AddNewGrayProductList = (props) => {
                 </label>
                 <div className="col-md-8 col-sm-8">
                   <Select
-                    required
+                    // required
                     className="basic-single"
                     classNamePrefix="select"
-                    value={props.itemSizeValue.value}
+                    // value={props.itemSizeValue.value}
                     onChange={(value) => {
                       props.setAddNewProduct({
                         ...props.AddNewProduct,
@@ -119,21 +166,22 @@ const AddNewGrayProductList = (props) => {
                     isSearchable={true}
                     name="color"
                     options={props.itemSizeOptions}
-                    styles={customStyles}
+                    styles={props.addNewGrayProductValidator.itemSize ? customStyles : customStylesDanger}
                   />
                 </div>
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Per Piece Gray Wright in Grams
+                  Per Piece Weight in Grams
                   <span className="required">*</span>
                 </label>
                 <div className="col-md-8 col-sm-8">
                   <input
-                    className="form-control"
+                    className={props.addNewGrayProductValidator.PerPieceGrayWeightGram ? "form-control" : "form-control requiredValidateInput"}
+                    type="number"
                     name="nanr"
                     placeholder="ex. 459.08 Gram"
-                    required="required"
+                    // required="required"
                     value={props.AddNewProduct.PerPieceGrayWeightGram}
                     onChange={(e) => {
                       props.setAddNewProduct({
@@ -153,8 +201,8 @@ const AddNewGrayProductList = (props) => {
                   <div class="row">
                     <div className="col-md-6">
                       <input
-                        className="form-control"
-                        name="number"
+                        className={props.addNewGrayProductValidator.graySizeppWidth ? "form-control" : "form-control requiredValidateInput"}
+                        type="number"
                         placeholder="Width"
                         value={props.AddNewProduct.graySizeppWidth}
                         onChange={(e) => {
@@ -167,8 +215,9 @@ const AddNewGrayProductList = (props) => {
                     </div>
                     <div className="col-md-6">
                       <input
-                        className="form-control"
+                        className={props.addNewGrayProductValidator.graySizeppLength ? "form-control" : "form-control requiredValidateInput"}
                         name="number"
+                        type="number"
                         placeholder="Length"
                         value={props.AddNewProduct.graySizeppLength}
                         onChange={(e) => {
@@ -200,14 +249,18 @@ const AddNewGrayProductList = (props) => {
                       <div className="col-md-8 col-sm-8">
                         <div class="row">
                           <input
-                            className="form-control mx-2"
+
+                            className={props.addNewGrayProductValidator.LoomNumbPieceInBorder76 ? "form-control  mx-2" : "form-control  mx-2 requiredValidateInput"}
+
+
                             name="number"
+                            type="number"
                             placeholder="Ex. Grams"
-                            value={props.AddNewProduct.LoomNumbPieceInBorder76_}
+                            value={props.AddNewProduct.LoomNumbPieceInBorder76}
                             onChange={(e) => {
                               props.setAddNewProduct({
                                 ...props.AddNewProduct,
-                                LoomNumbPieceInBorder76_: e.target.value,
+                                LoomNumbPieceInBorder76: e.target.value,
                               });
                             }}
                           />
@@ -222,8 +275,9 @@ const AddNewGrayProductList = (props) => {
                         <div class="row">
                           <div className="col-md-6">
                             <input
-                              className="form-control"
+                              className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithDraw76 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
+                              type="number"
                               placeholder="With Draw"
                               value={
                                 props.AddNewProduct
@@ -240,8 +294,9 @@ const AddNewGrayProductList = (props) => {
                           </div>
                           <div className="col-md-6">
                             <input
-                              className="form-control"
+                              className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithoutDraw76 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
+                              type="number"
                               placeholder="Without Draw xx"
                               value={
                                 props.AddNewProduct
@@ -279,8 +334,9 @@ const AddNewGrayProductList = (props) => {
                       <div className="col-md-8 col-sm-8">
                         <div class="row">
                           <input
-                            className="form-control mx-2"
-                            name="number"
+                            className={props.addNewGrayProductValidator.LoomNumbPieceInBorder96 ? "form-control " : "form-control   requiredValidateInput"}
+
+                            type="number"
                             placeholder="Width"
                             value={props.AddNewProduct.LoomNumbPieceInBorder96}
                             onChange={(e) => {
@@ -301,8 +357,9 @@ const AddNewGrayProductList = (props) => {
                         <div class="row">
                           <div className="col-md-6">
                             <input
-                              className="form-control"
+                              className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithDraw96 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
+                              type="number"
                               placeholder="With Draw"
                               value={props.AddNewProduct.LoomNumbRatePerBorderWithDraw96}
                               onChange={(e) => {
@@ -315,8 +372,9 @@ const AddNewGrayProductList = (props) => {
                           </div>
                           <div className="col-md-6">
                             <input
-                              className="form-control"
+                              className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithoutDraw96 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
+                              type="number"
                               placeholder="Without Draw"
                               value={props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw96}
                               onChange={(e) => {
@@ -339,24 +397,24 @@ const AddNewGrayProductList = (props) => {
                   Status<span className="required">*</span>
                 </label>
                 <div className="col-md-8 col-sm-8">
-                  
-                <Select
-                      required
-                        className="basic-single"
-                        classNamePrefix="select"
-                        defaultValue={"Active"}
-                        value={props.itemStatusValue.value}
-                        onChange={(value) => { 
-                          props.setAddNewProduct({
-                            ...props.AddNewProduct,
-                            status: value.value,
-                          });
-                        }} 
-                        isSearchable={true}
-                        name="color"
-                        options={props.itemStatusOptions}
-                        styles={customStyles}
-                      />
+
+                  <Select
+                    // required
+                    className="basic-single"
+                    classNamePrefix="select"
+                    defaultValue={"Active"}
+                    // value={props.itemStatusValue.value}
+                    onChange={(value) => {
+                      props.setAddNewProduct({
+                        ...props.AddNewProduct,
+                        status: value.value,
+                      });
+                    }}
+                    isSearchable={true}
+                    name="color"
+                    options={props.itemStatusOptions}
+                    styles={props.addNewGrayProductValidator.status ? customStyles : customStylesDanger}
+                  />
                 </div>
               </div>
               <div className="form-group mt-2 ">
