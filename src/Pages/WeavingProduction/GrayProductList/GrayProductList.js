@@ -4,11 +4,13 @@ import { endPoint } from '../../../config/Config'
 import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
 import AddNewGrayProductList from "./AddNewGrayProductList";
+import UpdateGrayProduct from "./UpdateGrayProduct";
 const GrayProductList = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [ListOfGrayProduct, setListOfGrayProduct] = useState([]);
   const [modalShow, setModalShow] = useState(false);
+  const [modalShowForUpdate, setModalShowForUpdate] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const addNewGrayProductValidatorInitialState = {
     itemName: true,
@@ -192,6 +194,14 @@ const GrayProductList = () => {
             itemStatusOptions={itemStatusOptions}
             setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
             addNewGrayProductValidator={addNewGrayProductValidator}
+          />
+          <UpdateGrayProduct
+            show={modalShowForUpdate} 
+            itemNameOptions={itemNameOptions} 
+            onHide={() => setModalShowForUpdate(false)} 
+            itemStatusOptions={itemStatusOptions}
+            setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
+         
           />
 
           <div className="page-title mb-2  ">
@@ -430,7 +440,8 @@ const GrayProductList = () => {
                                             "
                             style={{ width: "2%" }}
                           >
-                            <i className="fa fa-edit text-common"></i>
+                            <i className="fa fa-edit text-common"
+                               onClick={() => setModalShowForUpdate(true)}></i>
                             <i className="fa fa-trash ml-2 pb-1 text-danger"
 
                               onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>
