@@ -43,9 +43,10 @@ const GrayProductList = () => {
     status: "",
   }
   const [AddNewProduct, setAddNewProduct] = useState(newProductInitialState);
+  const [updatedGrayProductList , setUpdatedGrayProductList] = useState({})
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const [itemSizeOptions, setItemSizeOptions] = useState([]);
-
+  
   const itemStatusOptions = [
     { label: "Activate", value: "Activate" },
     { label: "Deactivate", value: "Deactivate" },
@@ -170,6 +171,44 @@ const GrayProductList = () => {
       })
       .catch((error) => console.log("error", error));
   }
+  const updateGrayProductList = (e)=>{
+e.preventDefault();
+
+const updatedRefactoredGrayProduct = {
+  grayProduct_id:parseInt(  updatedGrayProductList.grayProduct_id),
+  itemName:parseInt( updatedGrayProductList.itemNameValue.value),
+  itemSize:parseInt( updatedGrayProductList.itemSizeValue.value),
+  PerPieceGrayWeightGram:parseInt( updatedGrayProductList.PerPieceGrayWeightGram),
+  graySizeppWidth:parseInt( updatedGrayProductList.graySizeppWidth),
+  graySizeppLength:parseInt( updatedGrayProductList.graySizeppLength),
+  LoomNumbPieceInBorder76:parseInt( updatedGrayProductList.LoomNumbPieceInBorder76),
+  LoomNumbRatePerBorderWithDraw76:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
+  LoomNumbRatePerBorderWithoutDraw76:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
+  LoomNumbPieceInBorder96:parseInt( updatedGrayProductList.LoomNumbPieceInBorder96),
+  LoomNumbRatePerBorderWithDraw96:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw96),
+  LoomNumbRatePerBorderWithoutDraw96:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96),
+  status: updatedGrayProductList.status.value
+}
+console.log(updatedRefactoredGrayProduct , "data to be updated");
+// 
+
+const requestOptions = {
+  method: "PUT",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(updatedRefactoredGrayProduct),
+};
+
+fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduct_id}`, requestOptions)
+  .then((response) => response)
+  .then((data) => { 
+   fetchAllData();
+   }) 
+  .catch((err) => {
+    console.log("err", err);
+  });
+  setModalShowForUpdate(false)
+  fetchAllData() 
+  }
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -193,7 +232,7 @@ const GrayProductList = () => {
             AddNewProductFunc={AddNewProductFunc}
             itemStatusOptions={itemStatusOptions}
             setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
-            addNewGrayProductValidator={addNewGrayProductValidator}
+            addNewGrayProductValidator={addNewGrayProductValidator} 
           />
           <UpdateGrayProduct
             show={modalShowForUpdate} 
@@ -201,7 +240,8 @@ const GrayProductList = () => {
             onHide={() => setModalShowForUpdate(false)} 
             itemStatusOptions={itemStatusOptions}
             setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
-         
+            updatedGrayProductList={updatedGrayProductList}   setUpdatedGrayProductList={setUpdatedGrayProductList    }
+            updateGrayProductList={updateGrayProductList}
           />
 
           <div className="page-title mb-2  ">
@@ -441,7 +481,27 @@ const GrayProductList = () => {
                             style={{ width: "2%" }}
                           >
                             <i className="fa fa-edit text-common"
-                               onClick={() => setModalShowForUpdate(true)}></i>
+                               onClick={() => {
+                        
+
+                            setUpdatedGrayProductList ({ 
+                                    grayProduct_id: item.grayProduct_id, 
+                                    itemNameValue:{label:item.itemName , value:item.itemNameId},
+                                    itemSizeValue: {label:item.itemSize , value:item.itemSizeId},
+                                    PerPieceGrayWeightGram: item.PerPieceGrayWeightGram,
+                                    graySizeppWidth: item.graySizeppWidth,
+                                    graySizeppLength: item.graySizeppLength,
+                                    LoomNumbPieceInBorder76: item.LoomNumbPieceInBorder76,
+                                    LoomNumbRatePerBorderWithDraw76: item.LoomNumbRatePerBorderWithDraw76,
+                                    LoomNumbRatePerBorderWithoutDraw76: item.LoomNumbRatePerBorderWithoutDraw76,
+                                    LoomNumbPieceInBorder96: item.LoomNumbPieceInBorder96,
+                                    LoomNumbRatePerBorderWithDraw96: item.LoomNumbRatePerBorderWithDraw96,
+                                    LoomNumbRatePerBorderWithoutDraw96: item.LoomNumbRatePerBorderWithoutDraw96,
+                                    status:{label:item.status , value:item.status}, 
+                                 });
+                              setModalShowForUpdate(true)
+                                }}
+                                 ></i>
                             <i className="fa fa-trash ml-2 pb-1 text-danger"
 
                               onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>

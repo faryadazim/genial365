@@ -110,7 +110,7 @@ const WeavingProductionFormStepThird = ({
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}
+                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}  
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
                           {finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} </div>
@@ -152,7 +152,7 @@ const WeavingProductionFormStepThird = ({
                     <tr className="even pointer">
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >B Grade %</div>
-                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade).toFixed(10)}%</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade).toFixed(3)}%</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">     </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree">
                         </div>

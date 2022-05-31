@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux"; 
+import { useDispatch, useSelector } from "react-redux";
+import { NavLink } from "react-router-dom";
+
 
 // import { setNavSm, setNavMd } from "../actions/NavState";
 import { setNavSm, setNavMd } from "../store/actions/NavState";
-const Header = ({roleName}) => {
+const Header = ({ roleName }) => {
   const dispatch = useDispatch();
   const showNavMenu = useSelector((state) => state.NavState);
   const [ScreenWidth, setScreenWidth] = useState();
@@ -23,15 +25,13 @@ const Header = ({roleName}) => {
   return (
     <>
       <div
-        className={`top_nav   ${
-          showNavMenu === false ? "top_nav-margin-remove" : " "
-        }  `}
+        className={`top_nav   ${showNavMenu === false ? "top_nav-margin-remove" : " "
+          }  `}
       >
         <div className="nav_menu">
           <div
-            className={`nav toggle  ${
-              showNavMenu === true ? "toggle-to-Add-margin" : " "
-            }  `}
+            className={`nav toggle  ${showNavMenu === true ? "toggle-to-Add-margin" : " "
+              }  `}
           >
             <a className="menu_toggle" onClick={() => toggleNav()}>
               <i className="fa fa-bars" />
@@ -54,16 +54,16 @@ const Header = ({roleName}) => {
                     aria-expanded="false"
                   >
                     <img src="images/img.jpg" alt />
-                   {roleName}
+                    {roleName}
                   </a>
                   <div
                     className="dropdown-menu dropdown-usermenu pull-right"
                     aria-labelledby="navbarDropdown"
                   >
-                    <a className="dropdown-item" href="javascript:;">
-                      {" "}
-                      Profile
-                    </a>
+
+                    <NavLink className="text-dark" to="UserProfile">
+                      <div className="seeProfileHeader">
+                        Profile         </div>  </NavLink>
                     <a className="dropdown-item" href="javascript:;">
                       <span className="badge bg-red pull-right">50%</span>
                       <span>Settings</span>
@@ -80,50 +80,7 @@ const Header = ({roleName}) => {
                 <></>
               )}
 
-              {/* Notification */}
-              {/* <li role="presentation" className="nav-item dropdown open">
-          <a href="javascript:;" className="dropdown-toggle info-number" id="navbarDropdown1" data-toggle="dropdown" aria-expanded="false"><i className="fa fa-envelope-o" /><span className="badge bg-green">6</span></a>
-          <ul className="dropdown-menu list-unstyled msg_list" role="menu" aria-labelledby="navbarDropdown1">
-            <li className="nav-item"><a className="dropdown-item">
-                <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span className="time">3 mins ago</span>
-                </span>
-                <span className="message">Film festivals used to be do-or-die moments for movie makers. They were where...</span>
-              </a></li>
-            <li className="nav-item"><a className="dropdown-item">
-                <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span className="time">3 mins ago</span>
-                </span>
-                <span className="message">Film festivals used to be do-or-die moments for movie makers. They were where...</span>
-              </a></li>
-            <li className="nav-item"><a className="dropdown-item">
-                <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span className="time">3 mins ago</span>
-                </span>
-                <span className="message">Film festivals used to be do-or-die moments for movie makers. They were where...</span>
-              </a></li>
-            <li className="nav-item"><a className="dropdown-item">
-                <span className="image"><img src="images/img.jpg" alt="Profile Image" /></span>
-                <span>
-                  <span>John Smith</span>
-                  <span className="time">3 mins ago</span>
-                </span>
-                <span className="message">Film festivals used to be do-or-die moments for movie makers. They were where...</span>
-              </a></li>
-            <li className="nav-item">
-              <div className="text-center"><a className="dropdown-item">
-                  <strong>See All Alerts</strong>
-                  <i className="fa fa-angle-right" />
-                </a></div>
-            </li>
-          </ul>
-        </li> */}
+
             </ul>
           </nav>
         </div>

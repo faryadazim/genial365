@@ -505,3 +505,24 @@ color: rgb(0, 0, 0) !important;
 .heightFixForFAult{
   min-height: 605px !important;
 }
+
+
+.customPaddingForGrayProductBorderInput{
+  padding: 0 19px !important;
+}
+
+.seeProfileHeader{
+  padding-top: 8px !important;
+  padding-left: 20px;
+  color: #000 !important;
+  height: 34px !important;
+  /* background-color: #000 !important; */
+
+
+  color: black !important;
+  
+}
+.seeProfileHeader :hover{
+background-color: red !important;
+  
+}

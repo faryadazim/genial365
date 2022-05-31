@@ -82,10 +82,10 @@ const WeavingProductionFormStepOne = ({
   loomDetailsUpdate, setrollDetail, loomListOptions, setLoomDetailsUpdate,
   updateLoomDetails, borderQualityOptions, setUpdateNumberOfPieceOneBorderInput,
   updateNumberOfPieceOneBorderInput, borderSizeOptions, loomListValue, setLoomListValue,
-  borderQualityValue, setborderQualityValue, borderSizeValue, setBorderSizeValue, stepOneValidator
+  borderQualityValue, setborderQualityValue, borderSizeValue, setBorderSizeValue, stepOneValidator ,roleNameBackEnd
 }) => {
 
-  let rollNumberCustomGenerated = `RL-${new Date().toLocaleDateString(undefined, { year: "numeric" })}-1`
+  
   useEffect(() => {
     FetchListSelector();
     console.log(rollDetail);
@@ -118,7 +118,7 @@ const WeavingProductionFormStepOne = ({
                         name="name"
                         type="number"
                         disabled={true}
-                        placeholder={rollNumberCustomGenerated}
+                        placeholder={roleNameBackEnd}
                       />
                     </div>
                   </div>

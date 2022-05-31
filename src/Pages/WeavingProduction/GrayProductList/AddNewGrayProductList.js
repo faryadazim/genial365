@@ -331,7 +331,7 @@ const AddNewGrayProductList = (props) => {
                         No of Piece in one border
                         <span className="required">*</span>
                       </label>
-                      <div className="col-md-8 col-sm-8">
+                      <div className="col-md-8 col-sm-8 customPaddingForGrayProductBorderInput">
                         <div class="row">
                           <input
                             className={props.addNewGrayProductValidator.LoomNumbPieceInBorder96 ? "form-control " : "form-control   requiredValidateInput"}

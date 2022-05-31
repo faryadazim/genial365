@@ -12,8 +12,9 @@ const WeavingProductionForm = () => {
   const [secondStep, setSecondStep] = useState("disable");
   const [thirdStep, setThirdStep] = useState("disable");
   const [userDraftBox, setUserDraftBox] = useState([])
-  // Step One State  ------------------------    One   --------------
 
+  // Step One State  ------------------------    One   --------------
+const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
   var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
   var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
@@ -32,7 +33,7 @@ const WeavingProductionForm = () => {
   const [borderSizeValue, setBorderSizeValue] = useState({})
   // state to store form data in database    
   const [rollDetail, setrollDetail] = useState({
-    // rollNo: "",
+    //rollNo: "85",
     date: dateToday,
     rollWeight: "",
     loomNumber: "",
@@ -47,6 +48,7 @@ const WeavingProductionForm = () => {
     jacquard: "Auto Define",
     drawBox: "Auto Define",
     NumOfPieceOneBorder: "Auto Define",
+    grayProductId: ""
   });
   //  state for update Function Number of Border in Loom Detail table
   const [
@@ -71,7 +73,7 @@ const WeavingProductionForm = () => {
       loomDetail: loomDetail,
       //stepStates
       firstStep, secondStep, thirdStep,
-     
+
     }
     const object = {
       user_id: userId,
@@ -108,6 +110,7 @@ const WeavingProductionForm = () => {
           jacquard: "Auto Define",
           drawBox: "Auto Define",
           NumOfPieceOneBorder: "Auto Define",
+          grayProductId: ""
         });
         setratePerBorderTempState("");
         setUpdateNumberOfPieceOneBorderInput({ QualityId: "", BorderSizeId: "", LoomSize: "" });
@@ -183,13 +186,36 @@ const WeavingProductionForm = () => {
 
   }
   // Function of First Step
-  const FetchListSelector = () => {
+  const fetchNewRoleName = ()=>{
+    fetch(url + "api/RoleName", {
+      method: "GET",
+      headers: {
+        "Authorization":
+          "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
+        "Content-Type": "application/json" },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data , "Role name----------------------");
+        setRoleNameBackEnd(data)
+       
+      });
+
+  }
+  const FetchListSelector =async () => {
     // Fetching loom list number
+    
+
+    // fetching and setting loom name 
+   
+
+   await   fetchNewRoleName()
+
     // Step One Dropdown List fetching from api/backend
     fetch(url + "api/LoomListsCore", {
       method: "GET",
       headers: {
-        // Authorization: "bearer" + " " + e,
+        Authorization: "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
         "Content-Type": "application/x-www-form-urlencoded",
       },
     })
@@ -372,6 +398,7 @@ const WeavingProductionForm = () => {
             setLoomDetail({
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
+              grayProductId: result.grayProductId
             });
             console.log(result, "its for testing in wpf");
             console.log("number odf pieceec dup akisdfaf", loomDetail);
@@ -483,23 +510,6 @@ const WeavingProductionForm = () => {
     totalBGrade: 0,
     totalAGrade: 0,
   });
-
-  // const faultOptions = [
-  //   {
-  //     label: "Machine Header Break",
-  //     value: 1,
-  //   },
-  //   {
-  //     label: "Wires Brokes",
-  //     value: 2,
-  //   },
-  //   {
-  //     label: "Shift Issue",
-  //     value: 3,
-  //   },
-  // ];
-
-
   const [faultOptions, setFaultOptions] = useState({})
 
   // step two functions
@@ -548,6 +558,17 @@ const WeavingProductionForm = () => {
     var arr_data = shiftTotalState;
     arr_data[i].bGradePiece = parseInt(value);
     arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - value);
+
+
+    //  arr_data[i].totalAmount = parseInt((parseInt(shiftTotalState[i].ratePerBorder) / 
+    // parseInt(loomDetail.NumOfPieceOneBorder)) * (parseInt(shiftTotalState[i].totalPiece -(value))) + parseInt(shiftTotalState[i].updateExtraAmountAmount));
+    arr_data[i].totalAmount = (((shiftTotalState[i].ratePerBorder) / (loomDetail.NumOfPieceOneBorder)) * (parseInt(shiftTotalState[i].totalPiece - (value))) + shiftTotalState[i].extraAmount.amount).toFixed(2);
+
+     
+
+
+
+
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
@@ -558,62 +579,26 @@ const WeavingProductionForm = () => {
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
+
   function updateExtraAmountAmount(i, value) {
     var arr_data = shiftTotalState;
     arr_data[i].extraAmount.amount = parseInt(value);
-    arr_data[i].totalAmount = parseInt(
-      (shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) *
-      shiftTotalState[i].aGradePieces +
-      parseInt(value)
+    arr_data[i].totalAmount = parseInt((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value)
     );
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  const updateFaults = async (i, arrayOfSelectOftions) => {
-    var commaSplitStringOfFaults = "";
-
-
-
- await   arrayOfSelectOftions.map((item) => {
-
-
-      if (item.__isNew__ == true) {
- 
-      } else {
-        commaSplitStringOfFaults = item.value + "," + commaSplitStringOfFaults;
-      }
-    });
-
-console.log(commaSplitStringOfFaults);
-
-    // const requestOptions = {
-    //   method: "POST",
-    //   headers: { "Content-Type": "application/json" },
-    //   body: JSON.stringify({
-    //     fault_title: item.label
-    //   }),
-    // };
-
-    // fetch(url + "api/ShiftFaults", requestOptions)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-
-    //     console.log(  data.fault_id , "created" ); 
-    //      }) 
-    //   .catch((err) => {
-    //     console.log("err front End", err);
-    //   })
-
+  const updateFaults = (i, arrayOfSelectOftions) => {
 
 
 
 
     //  console.log(commaSplitStringOfFaults);
     //   // //
-    //   var arr_data = shiftTotalState;
-    //     arr_data[i].knownFaultsIds = commaSplitStringOfFaults; 
-    //    setShiftTotalState(arr_data); 
-    //  setReRender(!reRender);
+    var arr_data = shiftTotalState;
+    arr_data[i].knownFaultsIds = arrayOfSelectOftions;
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
   }
 
   function updateGrandTotalValue() {
@@ -772,19 +757,182 @@ console.log(commaSplitStringOfFaults);
     cutPieceSizeValidate: true, cutPieceWeightValidate: true
   })
   // Step Three Functions 
+
+  const knownFaultsIdsFunction =   (i) => {
+
+    const faultIdsForTotalShiftsArray = shiftTotalState.map((eachShift) => {
+      return eachShift.knownFaultsIds
+    })
+
+
+    let stringArrayForKnownFaults = [];
+      faultIdsForTotalShiftsArray[i].map(( (eachKnownFaultObject) => {
+      if (eachKnownFaultObject.__isNew__ == true) {
+        console.log("new");
+      //   const requestOptions = {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({
+      //       fault_title: eachKnownFaultObject.label
+      //     }),
+      //   };
+
+      //  fetch(url + "api/ShiftFaults", requestOptions)
+      //     .then((response) => response.json())
+      //     .then((data) => {
+      //       console.log(data, "new FAult Created");
+
+
+      //     })
+      //     .catch((err) => {
+      //       console.log("err front End", err);
+      //     });
+
+          stringArrayForKnownFaults.push(`${eachKnownFaultObject.label}-NewCreated`)
+      } else {
+        stringArrayForKnownFaults.push((eachKnownFaultObject.value).toString())
+      }
+
+
+    }))
+
+    return stringArrayForKnownFaults.toString()
+  }
+
   const saveWeavingProductionForm = () => {
-    if (finalStepInput.pileToPileLength == "") {
+    if (finalStepInput.pileToPileLength === "" || finalStepInput.pileToPileLength === 0 || isNaN(finalStepInput.pileToPileLength)) {
       setStepThirdValidator({ ...stepThirdValidator, pileToPileLengthValidate: false })
-    } else if (finalStepInput.pileToPileWidth == "") {
+    } else if (finalStepInput.pileToPileWidth === "" || finalStepInput.pileToPileWidth === 0 || isNaN(finalStepInput.pileToPileWidth)) {
       setStepThirdValidator({ ...stepThirdValidator, pileToPileWidthValidate: false })
-    } else if (finalStepInput.cutPieceSize == "") {
+    } else if (finalStepInput.cutPieceSize === "" || finalStepInput.cutPieceSize === 0 || isNaN(finalStepInput.cutPieceSize)) {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceSizeValidate: false })
-    } else if (finalStepInput.cutPieceWeight == "") {
+    } else if (finalStepInput.cutPieceWeight === "" || finalStepInput.cutPieceWeight === 0 || isNaN(finalStepInput.cutPieceWeight)) {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
     } else {
-      console.log("saved SuccessFully");
+
+
+
+
+
+
+      const objectToBeSentToProductionApi = {
+        roll_no: roleNameBackEnd,
+        production_date: `${rollDetail.date}T00:00:00.005Z`,  //dateFrom   rollDetail.date
+        roll_weight: parseInt(rollDetail.rollWeight),
+        loom_id: rollDetail.loomNumber,
+        borderSize_id: rollDetail.Size,
+        borderQuality_id: rollDetail.Quality,
+        programm_no: parseInt(rollDetail.programNumber),
+        grayProduct_id: loomDetail.grayProductId,
+        pile_to_pile_length: finalStepInput.pileToPileLength,
+        pile_to_pile_width: finalStepInput.pileToPileWidth,
+        cut_piece_size: finalStepInput.cutPieceSize,
+        cut_piece_weight: finalStepInput.cutPieceWeight,
+        remarks: finalStepInput.remarks,
+        total_border: grandFinalTotal.totalBorders,
+        total_pieces: grandFinalTotal.totalPiece,
+        b_grade_pieces: grandFinalTotal.totalBGrade,
+        a_grade_pieces: grandFinalTotal.totalAGrade,
+        current_per_piece_a_weight: grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,   //custom formulaa
+        required_length_p_to_p: finalStepRequired.requireLengthpp,
+        required_width_p_to_p: finalStepRequired.requireWidthpp,
+        required_per_piece_a_weight: finalStepRequired.requirePerPieceWeight,
+        shifts: shiftTotalState.map((eachShift, i) => {
+          return {
+            shift_name: eachShift.shiftSelectorValue.label,
+            weaver_employee_Id: eachShift.weaverSelectorValue.value,
+            no_of_border: eachShift.noOfBorder,
+            total_pieces: eachShift.totalPiece,
+            b_grade_piece: eachShift.bGradePiece,
+            a_grade_piece: eachShift.aGradePieces,
+            rate_per_border: eachShift.ratePerBorder,
+            extra_amt: eachShift.extraAmount.amount,
+            extra_desc: eachShift.extraAmount.desc,
+            total_amt: eachShift.totalAmount,
+            natting_employee_Id: eachShift.nativingSelectorValue.value,
+            known_faults_ids: knownFaultsIdsFunction(i)
+          }
+        })
+      }
+
+
+   
+      const requestOptions = {
+        method: "POST",
+        headers: {
+          "Authorization":
+            "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
+          "Content-Type": "application/json" },
+        body: JSON.stringify(objectToBeSentToProductionApi),
+      };
+  
+      console.log(requestOptions);
+      fetch(url + "/api/Production", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+ 
+          // ----------------- Setting Component To initial State
+          setLoomListValue({})
+          setborderQualityValue({})
+          setBorderSizeValue({})
+          // setStepOneValidator(stepOneValidatorInitialValue)
+          setrollDetail({
+            // rollNo: "",
+            date: dateToday,
+            rollWeight: "",
+            loomNumber: "",
+            Quality: "",
+            Size: "",
+            programNumber: "",
+          });
+          setLoomDetail({
+            loomSize: "Auto Define",
+            jacquard: "Auto Define",
+            drawBox: "Auto Define",
+            NumOfPieceOneBorder: "Auto Define",
+            grayProductId: ""
+          });
+          setratePerBorderTempState("");
+          setUpdateNumberOfPieceOneBorderInput({ QualityId: "", BorderSizeId: "", LoomSize: "" });
+          setShiftTotalState(totalShiftInitialState);
+          setGrandFinalTotal({
+            totalBorders: 0,
+            totalPiece: 0,
+            totalBGrade: 0,
+            totalAGrade: 0,
+          });
+          setStepOneValidator(stepOneValidatorInitialValue)
+  
+          setfinalStepRequired({
+            requireLengthpp: 0,
+            requireWidthpp: 0,
+            requirePerPieceWeight: 0,
+          });
+          setfinalStepInput({
+            pileToPileLength: "",
+            pileToPileWidth: "",
+            cutPieceSize: "",
+            cutPieceWeight: "",
+            remarks: ""
+          });
+  
+  fetchNewRoleName()
+  
+          setFirstStep("active");
+          setSecondStep("disable");
+          setThirdStep("disable");
+
+
+          // ---------
+        })
+        .catch((err) => {
+          console.log("err in appi fettching", err);
+        });
+
     }
   }
+
+
   // ----------------------------------
   useEffect(() => { }, [finalStepRequired]);
 
@@ -864,7 +1012,7 @@ console.log(commaSplitStringOfFaults);
                         loomListValue={loomListValue} setLoomListValue={setLoomListValue}
                         borderQualityValue={borderQualityValue} setborderQualityValue={setborderQualityValue}
                         borderSizeValue={borderSizeValue} setBorderSizeValue={setBorderSizeValue}
-                        stepOneValidator={stepOneValidator}
+                        stepOneValidator={stepOneValidator}    roleNameBackEnd={roleNameBackEnd}
                       />
                     </div>
                     <div className="text-right   pt-2  ">
@@ -906,6 +1054,7 @@ console.log(commaSplitStringOfFaults);
                         faultOptions={faultOptions}
                         grandFinalTotal={grandFinalTotal}
                         setShiftTotalState={setShiftTotalState}
+
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
