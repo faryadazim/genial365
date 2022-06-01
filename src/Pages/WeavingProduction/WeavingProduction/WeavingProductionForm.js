@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { updateCurrentId } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
+
+ 
+
 const WeavingProductionForm = () => {
+  const dispatch = useDispatch();
   const url = localStorage.getItem("authUser");
   const userId = localStorage.getItem("loginId");
   // Parent Personal State
@@ -13,6 +18,7 @@ const WeavingProductionForm = () => {
   const [secondStep, setSecondStep] = useState("disable");
   const [thirdStep, setThirdStep] = useState("disable");
   const [userDraftBox, setUserDraftBox] = useState([])
+  const [idToUpdateProductionTable , setIdToUpdateProductionTable] = useState(null)
 
   // Step One State  ------------------------    One   --------------
 const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
@@ -212,7 +218,9 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
 
    await   fetchNewRoleName()
    if (currentID!==null) {
-   await generateReportOfSpecificId(currentID)
+     setIdToUpdateProductionTable(currentID)
+     await generateReportOfSpecificId(currentID)
+     dispatch(updateCurrentId(null))
    }
   
     // Step One Dropdown List fetching from api/backend
@@ -1044,10 +1052,15 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
                       />
                     </div>
                     <div className="text-right   pt-2  ">
-                      <button className="btn btn-secondary btn-sm  text-light px-4 mb-0"
-                        onClick={() => { postUserDraft() }}>
-                        Draft <i className="fa fa-stack-exchange pl-2"> </i>
-                      </button>
+                  
+                  {
+                    idToUpdateProductionTable==null?<button className="btn btn-secondary btn-sm  text-light px-4 mb-0"
+                    onClick={() => { postUserDraft() }}>
+                    Draft <i className="fa fa-stack-exchange pl-2"> </i>
+                  </button>:<></>
+                  }
+                  
+                      
                       <button
                         className="btn btn-success btn-sm m-0 px-4"
                         onClick={() => stepOneValidationFunct()}   >
