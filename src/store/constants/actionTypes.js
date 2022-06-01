@@ -2,7 +2,9 @@
 export const ShowNavFalse = "ShowNavFalse";
 export const ShowNavTrue = "ShowNavTrue";
 
-
+//
+export const FETCH_CURRENT_ID = "fetchCurrentId";
+export const UPDATE_CURRENT_ID = "updateCurrentId";
 // Role Managemnt 
 //--    User constraints
 export const CREATE_NEW_USER = 'CREATE_NEW_USER';

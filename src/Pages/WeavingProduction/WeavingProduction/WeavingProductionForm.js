@@ -8,6 +8,7 @@ const WeavingProductionForm = () => {
   const userId = localStorage.getItem("loginId");
   // Parent Personal State
   const showNavMenu = useSelector((state) => state.NavState);
+  const currentID = useSelector((state) => state.IdToBeUpdate);
   const [firstStep, setFirstStep] = useState("active");
   const [secondStep, setSecondStep] = useState("disable");
   const [thirdStep, setThirdStep] = useState("disable");
@@ -210,7 +211,10 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
    
 
    await   fetchNewRoleName()
-
+   if (currentID!==null) {
+   await generateReportOfSpecificId(currentID)
+   }
+  
     // Step One Dropdown List fetching from api/backend
     fetch(url + "api/LoomListsCore", {
       method: "GET",
@@ -931,10 +935,34 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
 
     }
   }
+  const generateReportOfSpecificId = (id) => {
+    console.log("babbbb");
+    fetch(`${url}api/GetProductById?id=${id}`, {
+      method: "GET",
+      headers: {
+        Authorization:
+          "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+      
+        console.log(data, "histroy fetch  ----------------------");
 
+ 
+      })
+      .catch((err) => {
+        console.log(err, "err");
+      }); 
+  };
 
   // ----------------------------------
-  useEffect(() => { }, [finalStepRequired]);
+  useEffect(() => {
+    console.log(currentID , "MMMMMM");
+   }, [finalStepRequired]);
 
   return (
     <>
