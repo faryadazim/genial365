@@ -778,35 +778,21 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
 
 
     let stringArrayForKnownFaults = [];
-      faultIdsForTotalShiftsArray[i].map(( (eachKnownFaultObject) => {
+    if (faultIdsForTotalShiftsArray[i]===null ||faultIdsForTotalShiftsArray[i]===undefined) {
+      stringArrayForKnownFaults.push(null)
+    } else {
+         faultIdsForTotalShiftsArray[i].map(( (eachKnownFaultObject) => {
       if (eachKnownFaultObject.__isNew__ == true) {
-        console.log("new");
-      //   const requestOptions = {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //     body: JSON.stringify({
-      //       fault_title: eachKnownFaultObject.label
-      //     }),
-      //   };
-
-      //  fetch(url + "api/ShiftFaults", requestOptions)
-      //     .then((response) => response.json())
-      //     .then((data) => {
-      //       console.log(data, "new FAult Created");
-
-
-      //     })
-      //     .catch((err) => {
-      //       console.log("err front End", err);
-      //     });
-
-          stringArrayForKnownFaults.push(`${eachKnownFaultObject.label}-NewCreated`)
+        console.log("new"); 
+          stringArrayForKnownFaults.push(`${eachKnownFaultObject.label} `)
       } else {
         stringArrayForKnownFaults.push((eachKnownFaultObject.value).toString())
       }
 
 
     }))
+    }
+   
 
     return stringArrayForKnownFaults.toString()
   }
@@ -827,59 +813,101 @@ const [roleNameBackEnd ,setRoleNameBackEnd]=useState("")
 
 
 
-      const objectToBeSentToProductionApi = {
-        roll_no: roleNameBackEnd,
-        production_date: `${rollDetail.date}T00:00:00.005Z`,  //dateFrom   rollDetail.date
-        roll_weight: parseInt(rollDetail.rollWeight),
-        loom_id: rollDetail.loomNumber,
-        borderSize_id: rollDetail.Size,
-        borderQuality_id: rollDetail.Quality,
-        programm_no: parseInt(rollDetail.programNumber),
-        grayProduct_id: loomDetail.grayProductId,
-        pile_to_pile_length: finalStepInput.pileToPileLength,
-        pile_to_pile_width: finalStepInput.pileToPileWidth,
-        cut_piece_size: finalStepInput.cutPieceSize,
-        cut_piece_weight: finalStepInput.cutPieceWeight,
-        remarks: finalStepInput.remarks,
-        total_border: grandFinalTotal.totalBorders,
-        total_pieces: grandFinalTotal.totalPiece,
-        b_grade_pieces: grandFinalTotal.totalBGrade,
-        a_grade_pieces: grandFinalTotal.totalAGrade,
-        current_per_piece_a_weight: grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,   //custom formulaa
-        required_length_p_to_p: finalStepRequired.requireLengthpp,
-        required_width_p_to_p: finalStepRequired.requireWidthpp,
-        required_per_piece_a_weight: finalStepRequired.requirePerPieceWeight,
-        shifts: shiftTotalState.map((eachShift, i) => {
-          return {
-            shift_name: eachShift.shiftSelectorValue.label,
-            weaver_employee_Id: eachShift.weaverSelectorValue.value,
-            no_of_border: eachShift.noOfBorder,
-            total_pieces: eachShift.totalPiece,
-            b_grade_piece: eachShift.bGradePiece,
-            a_grade_piece: eachShift.aGradePieces,
-            rate_per_border: eachShift.ratePerBorder,
-            extra_amt: eachShift.extraAmount.amount,
-            extra_desc: eachShift.extraAmount.desc,
-            total_amt: eachShift.totalAmount,
-            natting_employee_Id: eachShift.nativingSelectorValue.value,
-            known_faults_ids: knownFaultsIdsFunction(i)
-          }
-        })
-      }
+  //     const objectToBeSentToProductionApi = {
+  //       roll_no: roleNameBackEnd,
+  //       production_date: `${rollDetail.date}T00:00:00`,  //dateFrom   rollDetail.date
+  //       roll_weight: parseInt(rollDetail.rollWeight),
+  //       loom_id: rollDetail.loomNumber,
+  //       borderSize_id: rollDetail.Size,
+  //       borderQuality_id: rollDetail.Quality,
+  //       programm_no: (rollDetail.programNumber),
+  //       grayProduct_id: loomDetail.grayProductId,
+  //       pile_to_pile_length: finalStepInput.pileToPileLength,
+  //       pile_to_pile_width: finalStepInput.pileToPileWidth,
+  //       cut_piece_size: finalStepInput.cutPieceSize,
+  //       cut_piece_weight: finalStepInput.cutPieceWeight,
+  //       remarks: finalStepInput.remarks,
+  //       total_border: grandFinalTotal.totalBorders,
+  //       total_pieces: grandFinalTotal.totalPiece,
+  //       b_grade_pieces: grandFinalTotal.totalBGrade,
+  //       a_grade_pieces: grandFinalTotal.totalAGrade,
+  //       current_per_piece_a_weight: grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,   //custom formulaa
+  //       required_length_p_to_p: finalStepRequired.requireLengthpp,
+  //       required_width_p_to_p: finalStepRequired.requireWidthpp,
+  //       required_per_piece_a_weight: finalStepRequired.requirePerPieceWeight,
+  //       shifts: shiftTotalState.map((eachShift, i) => {
+  //         return {
+  //           shift_name: eachShift.shiftSelectorValue.label,
+  //           weaver_employee_Id: eachShift.weaverSelectorValue.value,
+  //           no_of_border: eachShift.noOfBorder,
+  //           total_pieces: eachShift.totalPiece,
+  //           b_grade_piece: eachShift.bGradePiece,
+  //           a_grade_piece: eachShift.aGradePieces,
+  //           rate_per_border: eachShift.ratePerBorder,
+  //           extra_amt: eachShift.extraAmount.amount,
+  //           extra_desc: eachShift.extraAmount.desc,
+  //           total_amt: eachShift.totalAmount,
+  //           natting_employee_Id: eachShift.nativingSelectorValue.value,
+  //           known_faults_ids: knownFaultsIdsFunction(i)
+  //         }
+  //       })
+  //     }
 
 
-   
+  //  console.log("------" ,objectToBeSentToProductionApi );
       const requestOptions = {
         method: "POST",
         headers: {
           "Authorization":
             "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
           "Content-Type": "application/json" },
-        body: JSON.stringify(objectToBeSentToProductionApi),
+        body: JSON.stringify({
+          "roll_no": roleNameBackEnd,
+          "production_date": `${rollDetail.date}T00:00:00.928Z`,
+          "roll_weight": parseFloat(rollDetail.rollWeight),
+          "loom_id": rollDetail.loomNumber,
+          "borderSize_id": rollDetail.Size,
+          "borderQuality_id": rollDetail.Quality,
+          "programm_no": (rollDetail.programNumber),
+          "grayProduct_id": loomDetail.grayProductId,
+          "pile_to_pile_length":  finalStepInput.pileToPileLength,
+          "pile_to_pile_width": finalStepInput.pileToPileWidth,
+          "cut_piece_size": finalStepInput.cutPieceSize,
+          "cut_piece_weight":finalStepInput.cutPieceWeight,
+          "remarks": finalStepInput.remarks,
+          "total_border": grandFinalTotal.totalBorders,
+          "total_pieces":grandFinalTotal.totalPiece,
+          "b_grade_pieces": grandFinalTotal.totalBGrade,
+          "a_grade_pieces": grandFinalTotal.totalAGrade,
+          "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,   //custom formulaa
+          "required_length_p_to_p": finalStepRequired.requireLengthpp,
+          "required_width_p_to_p":finalStepRequired.requireWidthpp,
+          "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
+          "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
+          "shifts": shiftTotalState.map((eachShift , i)=>{
+            return {
+              "shift_name":  eachShift.shiftSelectorValue.label,
+              "weaver_employee_Id":eachShift.weaverSelectorValue.value,
+              "no_of_border": eachShift.noOfBorder,
+              "total_pieces":  eachShift.totalPiece,
+              "b_grade_piece": eachShift.bGradePiece,
+              "a_grade_piece": eachShift.aGradePieces,
+              "rate_per_border":eachShift.ratePerBorder,
+              "extra_amt":  eachShift.extraAmount.amount,
+              "extra_desc":  eachShift.extraAmount.desc,
+              "total_amt": eachShift.totalAmount,
+              "natting_employee_Id": eachShift.nativingSelectorValue.value,
+              "known_faults_ids":  knownFaultsIdsFunction(i),
+              "known_faults_names": "string"
+          }
+          })
+              
+          
+      }),
       };
   
       console.log(requestOptions);
-      fetch(url + "/api/Production", requestOptions)
+      fetch(url + "api/Production", requestOptions)
         .then((response) => response.json())
         .then((data) => {
  

@@ -526,3 +526,14 @@ color: rgb(0, 0, 0) !important;
 background-color: red !important;
   
 }
+
+
+.tableforHistryinProductionReport{
+  height: 280px !important;
+  overflow: scroll;
+  overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+.positionFixed{
+  top: 0px;
+  position: sticky !important;
+}
