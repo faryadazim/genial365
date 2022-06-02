@@ -22,8 +22,8 @@ const ProductionReport = () => {
   const [prdouctionItems, setprdouctionItems] = useState([{}, {}, {}]);
   const [selectedProductionData, setSelectedProductionData] = useState({});
 
-  const fetchHistory = (e) => {
-    e.preventDefault();
+  const fetchHistory = () => {
+     
     let responseStatus;
     fetch(
       `${endPoint}api/ProductionHistory?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -98,6 +98,8 @@ const ProductionReport = () => {
       })
       .then((data) => {
         console.log(data);
+        fetchHistory()
+        setisLoaderSelectedProductionData(true)
       })
       .catch((err) => {
         console.log(err, "err");
@@ -124,7 +126,7 @@ const ProductionReport = () => {
                 <div className="clearfix" />
               </div>
               <div className="x_content  ">
-                <form>
+             
                   {/* <span className="section">Personal Info</span> */}
                   <div className="field item form-group">
                     <label className="col-form-label col-md-4 col-sm-4   label-align">
@@ -165,8 +167,7 @@ const ProductionReport = () => {
                         </button>
                       </div>
                     </div>
-                  </div>
-                </form>
+                  </div> 
               </div>
             </div>
 
@@ -225,7 +226,7 @@ const ProductionReport = () => {
           {isLoaderSelectedProductionData ? (
             <>
               {" "}
-              <div className="col-md-8">loading</div>{" "}
+              <div className="col-md-8">   Product Report Show here</div>{" "}
             </>
           ) : (
             <>
@@ -315,19 +316,19 @@ const ProductionReport = () => {
                           </div>
                           <div className="col-md-12">
                             <div className="col-md-6">Loom Size</div>
-                            <div className="col-md-6 text-right">{selectedProductionData.roll_weight}*</div>
+                            <div className="col-md-6 text-right">{selectedProductionData.loomLabelId.loomSize===null?"--":selectedProductionData.loomLabelId.loomSize}</div>
                           </div>
                           <div className="col-md-12">
                             <div className="col-md-6">Jacquad</div>
-                            <div className="col-md-6 text-right"> true *</div>
+                            <div className="col-md-6 text-right"> {selectedProductionData.loomLabelId.loomJacquard===null?"--":selectedProductionData.loomLabelId.loomJacquard}</div>
                           </div>
                           <div className="col-md-12">
                             <div className="col-md-6">DrawBox</div>
-                            <div className="col-md-6 text-right"> true *</div>
+                            <div className="col-md-6 text-right">  {selectedProductionData.loomLabelId.loomDrawBox===null?"--":selectedProductionData.loomLabelId.loomDrawBox}</div>
                           </div>
                           <div className="col-md-12">
-                            <div className="col-md-6">Piece in a Border *</div>
-                            <div className="col-md-6 text-right"> 2365</div>
+                            <div className="col-md-6">Piece in a Border  </div>
+                            <div className="col-md-6 text-right"> {selectedProductionData.piece_in_one_border===null?"--":selectedProductionData.piece_in_one_border}</div>
                           </div>
                            
                         </div>

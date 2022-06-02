@@ -529,7 +529,7 @@ background-color: red !important;
 
 
 .tableforHistryinProductionReport{
-  height: 280px !important;
+  height: 352px !important;
   overflow: scroll;
   overflow-x: hidden; /* Hide horizontal scrollbar */
 }
