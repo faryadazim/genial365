@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateCurrentId } from "../../../store/actions/NavState";
+import { setNavSm, updateCurrentId } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
@@ -217,11 +217,15 @@ const WeavingProductionForm = () => {
     // fetching and setting loom name 
 
 
-    await fetchNewRoleName()
+
+    if (idToUpdateProductionTable == null) { 
+      await fetchNewRoleName()
+    }
     if (currentID !== null) {
       setIdToUpdateProductionTable(currentID)
       await generateReportOfSpecificId(currentID)
       dispatch(updateCurrentId(null))
+    
     }
 
     // Step One Dropdown List fetching from api/backend
@@ -772,18 +776,18 @@ const WeavingProductionForm = () => {
   const knownFaultsIdsFunction = (i) => {
 
     let noISsue = "Not Any Fault"
-    if (   shiftTotalState[i].knownFaultsIds==="" || shiftTotalState[i].knownFaultsIds===undefined|| shiftTotalState[i].knownFaultsIds===null   ) {
+    if (shiftTotalState[i].knownFaultsIds === "" || shiftTotalState[i].knownFaultsIds === undefined || shiftTotalState[i].knownFaultsIds === null) {
       return noISsue;
-} else {
-  let stringForTotalShift = []
+    } else {
+      let stringForTotalShift = []
       shiftTotalState[i].knownFaultsIds.map((item) => {
-      stringForTotalShift.push(item.label)
-    })
-     return stringForTotalShift.toString();
-}
+        stringForTotalShift.push(item.label)
+      })
+      return stringForTotalShift.toString();
+    }
 
 
-   
+
 
 
   }
@@ -847,24 +851,24 @@ const WeavingProductionForm = () => {
           "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
           "shifts": shiftTotalState.map((eachShift, i) => {
             return {
-              "shift_name":eachShift.shiftSelectorValue.label,
+              "shift_name": eachShift.shiftSelectorValue.label,
               "weaver_employee_Id": eachShift.weaverSelectorValue.value,
-              "no_of_border":eachShift.noOfBorder,
+              "no_of_border": eachShift.noOfBorder,
               "total_pieces": eachShift.totalPiece,
-              "b_grade_piece":eachShift.bGradePiece,
-              "a_grade_piece":eachShift.aGradePieces,
+              "b_grade_piece": eachShift.bGradePiece,
+              "a_grade_piece": eachShift.aGradePieces,
               "rate_per_border": eachShift.ratePerBorder,
               "extra_amt": eachShift.extraAmount.amount,
               "extra_desc": eachShift.extraAmount.desc,
               "total_amt": eachShift.totalAmount,
-              "natting_employee_Id":eachShift.nativingSelectorValue.value,
+              "natting_employee_Id": eachShift.nativingSelectorValue.value,
               "known_faults_ids": knownFaultsIdsFunction(i),
 
             }
           })
         })
       };
- 
+
 
 
 
@@ -940,51 +944,71 @@ const WeavingProductionForm = () => {
     }
   }
   const updateWeavingProductionForm = () => {
-    const object = {
-      "roll_no": roleNameBackEnd,
-      "production_date": `${rollDetail.date}T00:00:00.928Z`,
-      "roll_weight": parseFloat(rollDetail.rollWeight),
-      "loom_id": rollDetail.loomNumber,
-      "borderSize_id": rollDetail.Size,
-      "borderQuality_id": rollDetail.Quality,
-      "programm_no": (rollDetail.programNumber),
-      "grayProduct_id": loomDetail.grayProductId,
-      "pile_to_pile_length": finalStepInput.pileToPileLength,
-      "pile_to_pile_width": finalStepInput.pileToPileWidth,
-      "cut_piece_size": finalStepInput.cutPieceSize,
-      "cut_piece_weight": finalStepInput.cutPieceWeight,
-      "remarks": finalStepInput.remarks,
-      "total_border": grandFinalTotal.totalBorders,
-      "total_pieces": grandFinalTotal.totalPiece,
-      "b_grade_pieces": grandFinalTotal.totalBGrade,
-      "a_grade_pieces": grandFinalTotal.totalAGrade,
-      "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,   //custom formulaa
-      "required_length_p_to_p": finalStepRequired.requireLengthpp,
-      "required_width_p_to_p": finalStepRequired.requireWidthpp,
-      "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
-      "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
-      "shifts": shiftTotalState.map((eachShift, i) => {
-        return {
-          "shift_name": eachShift.shiftSelectorValue.label,
-          "weaver_employee_Id": eachShift.weaverSelectorValue.value,
-          "no_of_border": eachShift.noOfBorder,
-          "total_pieces": eachShift.totalPiece,
-          "b_grade_piece": eachShift.bGradePiece,
-          "a_grade_piece": eachShift.aGradePieces,
-          "rate_per_border": eachShift.ratePerBorder,
-          "extra_amt": eachShift.extraAmount.amount,
-          "extra_desc": eachShift.extraAmount.desc,
-          "total_amt": eachShift.totalAmount,
-          "natting_employee_Id": eachShift.nativingSelectorValue.value,
-          //     "known_faults_ids": knownFaultsIdsFunction(i),
-          "known_faults_names": "string"
-        }
-      })
+   
+    var myHeaders = new Headers();
+myHeaders.append("Authorization", "Bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g");
+myHeaders.append("Content-Type", "application/json");
 
 
+ 
+
+ 
+var raw = JSON.stringify({
+  "roll_no": "sending_butt_didnot_effect",
+  "production_date":`${rollDetail.date}T00:00:00.928Z`,
+  "roll_weight": parseFloat(rollDetail.rollWeight),
+  "loom_id": rollDetail.loomNumber,
+  "borderSize_id": rollDetail.Size,
+  "borderQuality_id":rollDetail.Quality,
+  "programm_no": (rollDetail.programNumber),
+  "grayProduct_id": loomDetail.grayProductId,
+  "pile_to_pile_length": finalStepInput.pileToPileLength,
+  "pile_to_pile_width":  finalStepInput.pileToPileWidth,
+  "cut_piece_size": finalStepInput.cutPieceSize,
+  "cut_piece_weight": finalStepInput.cutPieceWeight,
+  "remarks": finalStepInput.remarks,
+  "total_border":  grandFinalTotal.totalBorders,
+  "total_pieces": grandFinalTotal.totalPiece,
+  "b_grade_pieces":  grandFinalTotal.totalBGrade,
+  "a_grade_pieces":grandFinalTotal.totalAGrade,
+  "current_per_piece_a_weight":  grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
+  "required_length_p_to_p":finalStepRequired.requireLengthpp,
+  "required_width_p_to_p": finalStepRequired.requireWidthpp,
+  "required_per_piece_a_weight":  finalStepRequired.requirePerPieceWeight,
+  "piece_in_one_border":  loomDetail.NumOfPieceOneBorder,
+  "shifts":shiftTotalState.map((eachShift, i) => {
+       return {
+      "shift_name": eachShift.shiftSelectorValue.label,
+      "weaver_employee_Id": eachShift.weaverSelectorValue.value,
+      "no_of_border":eachShift.noOfBorder,
+      "total_pieces":  eachShift.totalPiece,
+      "b_grade_piece":  eachShift.bGradePiece,
+      "a_grade_piece":  eachShift.aGradePieces,
+      "rate_per_border": eachShift.ratePerBorder,
+      "extra_amt":  eachShift.extraAmount.amount,
+      "extra_desc": eachShift.extraAmount.desc,
+      "total_amt": eachShift.totalAmount,
+      "natting_employee_Id": eachShift.nativingSelectorValue.value,
+      "known_faults_ids": knownFaultsIdsFunction(i),
     }
+})
+}); 
 
-    console.log(object);
+
+var requestOptions = {
+  method: 'PUT',
+  headers: myHeaders,
+  body: raw,
+  redirect: 'follow'
+};
+
+fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
+  .then(response => response.text())
+  .then(result => console.log(result))
+  .catch(error => console.log('error', error));
+
+
+
   }
   const generateReportOfSpecificId = (id) => {
 
@@ -1005,9 +1029,9 @@ const WeavingProductionForm = () => {
 
 
         setSecondStep("done")
-        setFirstStep("done")
-        setThirdStep("active")
-
+        setFirstStep("active")
+        setThirdStep("done")
+       setRoleNameBackEnd(data.roll_no)
         setborderQualityValue(data.borderQualityLabelId) //
         setBorderSizeValue(data.borderSizeLabelId)   //
 
@@ -1032,8 +1056,11 @@ const WeavingProductionForm = () => {
           NumOfPieceOneBorder: data.piece_in_one_border,
           grayProductId: data.grayProduct_id
         });
-
+ 
         setShiftTotalState(data.shiftData.map((eachShift, i) => {
+
+
+    
           return {
             shiftName: eachShift.shift_name,
             weaverName: eachShift.weaver_EmployeeDNameId.value,
@@ -1044,7 +1071,11 @@ const WeavingProductionForm = () => {
             ratePerBorder: eachShift.rate_per_border,
             extraAmount: { desc: eachShift.extra_des, amount: eachShift.extra_amt },
             totalAmount: eachShift.total_amt,
-            knownFaultsIds: "",
+            knownFaultsIds: eachShift.known_faults_ids.split(',').map((eachFault) => {
+              return { label: eachFault, value: eachFault }
+            }
+           
+            ),
             nativing: eachShift.natting_EmployeeNameId.value,
 
 
@@ -1057,6 +1088,7 @@ const WeavingProductionForm = () => {
               bGradePiece: true, extraAmountDescValidate: true, extraAmountAmountValidate: true,
               nativingValidate: true
             }
+
           }
         }))
         setratePerBorderTempState(data.shiftData[0].rate_per_border)
@@ -1080,7 +1112,7 @@ const WeavingProductionForm = () => {
         setfinalStepInput({
           pileToPileLength: data.pile_to_pile_length,
           pileToPileWidth: data.pile_to_pile_width,
-          cutPieceSize: 1122233,  //not comming from backend
+          cutPieceSize: data.cut_piece_size,  //not comming from backend
           cutPieceWeight: data.cut_piece_weight,
           remarks: data.remarks
         });
@@ -1108,6 +1140,7 @@ const WeavingProductionForm = () => {
   // ----------------------------------
   useEffect(() => {
     console.log(currentID, "need to updated this one if null mean no one");
+    dispatch(setNavSm());
   }, [finalStepRequired]);
 
   return (
@@ -1315,7 +1348,8 @@ const WeavingProductionForm = () => {
                           </button>   <button className="btn btn-success btn-sm  px-4   " onClick={() => saveWeavingProductionForm()}>
 
                               Save <i className="fa fa-save pl-2 "> </i>
-                            </button> </> : <>  <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
+                            </button> </> : <> 
+                             <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
                       }
 
 
