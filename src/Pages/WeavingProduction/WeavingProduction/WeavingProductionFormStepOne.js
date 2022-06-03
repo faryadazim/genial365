@@ -3,28 +3,33 @@ import Select from "react-select";
 import "./LittleLoader.css";
 
 const customStyles = {
+  // control: base => ({
+  //   ...base,
+  //   // This line disable the blue border
+
+  // })
   control: (provided, state, base) => ({
     ...provided,
     background: "#fff",
     borderColor: "#d9e4e8",
     borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
+    minHeight: "28px",
+    height: "28px",
+    // boxShadow: state.isFocused ? null : null,
     ...base,
     boxShadow: "none",
   }),
   option: (provided, state) => ({
     ...provided,
-
     borderBottom: "1px  #003a4d",
     color: state.isSelected ? "#f79c74" : "#003a4d",
     background: "#fff",
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    fontSize: "11px",
-    height: "30px",
+    height: "28px",
     padding: "0 6px",
+    // background: '#fff',
   }),
 
   input: (provided, state) => ({
@@ -36,32 +41,33 @@ const customStyles = {
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
   }),
 };
+
 const customStylesDanger = {
   control: (provided, state, base) => ({
     ...provided,
     background: "#fff",
     borderColor: "red",
     borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
+    minHeight: "28px",
+    height: "28px",
+    // boxShadow: state.isFocused ? null : null,
     ...base,
     boxShadow: "none",
   }),
   option: (provided, state) => ({
     ...provided,
-
     borderBottom: "1px  #003a4d",
     color: state.isSelected ? "#f79c74" : "#003a4d",
     background: "#fff",
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    fontSize: "11px",
-    height: "30px",
+    height: "28px",
     padding: "0 6px",
+    // background: '#fff',
   }),
 
   input: (provided, state) => ({
@@ -73,7 +79,7 @@ const customStylesDanger = {
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
   }),
 };
 

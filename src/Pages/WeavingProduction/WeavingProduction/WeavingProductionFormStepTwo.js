@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import Creatable from "react-select/creatable";
 import Select from "react-select";
 
+import { useDispatch  } from "react-redux";
+import { setNavSm , setNavMd } from "../../../store/actions/NavState";
+
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -13,8 +16,8 @@ const customStyles = {
     background: "#fff",
     borderColor: "#d9e4e8",
     borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
+    minHeight: "28px",
+    height: "28px",
     // boxShadow: state.isFocused ? null : null,
     ...base,
     boxShadow: "none",
@@ -27,7 +30,7 @@ const customStyles = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
     padding: "0 6px",
     // background: '#fff',
   }),
@@ -41,23 +44,18 @@ const customStyles = {
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
   }),
 };
 
 const customStylesDanger = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
   control: (provided, state, base) => ({
     ...provided,
     background: "#fff",
     borderColor: "red",
     borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
+    minHeight: "28px",
+    height: "28px",
     // boxShadow: state.isFocused ? null : null,
     ...base,
     boxShadow: "none",
@@ -70,7 +68,7 @@ const customStylesDanger = {
   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
     padding: "0 6px",
     // background: '#fff',
   }),
@@ -84,7 +82,7 @@ const customStylesDanger = {
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
-    height: "30px",
+    height: "28px",
   }),
 };
 const WeavingProductionFormStepTwo = ({
@@ -110,8 +108,11 @@ const WeavingProductionFormStepTwo = ({
   setShiftTotalState,
   isLoadingStepTwo,
 }) => {
+  
+  const dispatch = useDispatch();
   useEffect(() => {
     updateGrandTotalValue();
+    // dispatch(setNavSm());
   }, [reRender]);
 
   return (
@@ -127,14 +128,14 @@ const WeavingProductionFormStepTwo = ({
               >
                 <table
                   className="table   jambo_table bulk_action "
-                  style={{ height: "135px" }}
+                  style={{ height: "129px" }}
                 >
                   <thead>
                     {/* */}
                     <tr className="headings-for-Production-Form-Shif ">
                       <th
                         className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
-                                         removeLeftBorder  removeTopBorder text-center"
+                                         removeLeftBorder  removeTopBorder text-center fontWeight300"
                         style={{ width: "8%" }}
                       >
                         <div className=" py-1 d-flex justify-content-center ">
@@ -144,27 +145,27 @@ const WeavingProductionFormStepTwo = ({
                       </th>
 
                       <th
-                        className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "14%" }}
+                        className="column-title     border border-primary removePadding fontWeight300   border-bottom-color removeTopBorder  text-center"
+                        style={{ width: "12%" }}
                       >
                         <div className=" py-1">Weaver Name </div>
                       </th>
                       <th
-                        className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                        className="column-title  fontWeight300   border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
                         style={{ width: "10%" }}
                       >
                         <div className=" py-1">No.of Border </div>
                       </th>
                       <th
-                        className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
-                        style={{ width: "12%" }}
+                        className="column-title  text-center fontWeight300   border border-primary removePadding   border-bottom-color removeTopBorder"
+                        style={{ width: "8%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
                           Total Piece
                         </div>{" "}
                       </th>
                       <th
-                        className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
+                        className="column-title  text-center fontWeight300   border border-primary removePadding   border-bottom-color removeTopBorder"
                         style={{ width: "8%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
@@ -172,7 +173,7 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </th>
                       <th
-                        className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
+                        className="column-title  text-center  fontWeight300  border border-primary removePadding   border-bottom-color removeTopBorder"
                         style={{ width: "8%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
@@ -180,16 +181,16 @@ const WeavingProductionFormStepTwo = ({
                         </div>{" "}
                       </th>
                       <th
-                        className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
+                        className="column-title  text-center fontWeight300  border border-primary removePadding   border-bottom-color removeTopBorder"
                         style={{ width: "4%" }}
                       >
                         <div className=" py-1 paddingXaxisTable">
-                          Rate/Border
+                          Rate Per Border
                         </div>{" "}
                       </th>
                       <th
-                        className="column-title pileSize  border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "23%" }}
+                        className="column-title pileSize  border border-primary removePadding fontWeight300  border-bottom-color removeTopBorder  text-center"
+                        style={{ width: "18%" }}
                       >
                         <div>
                           <div className="col-md-12 py-1">Extra Amount</div>
@@ -203,15 +204,15 @@ const WeavingProductionFormStepTwo = ({
                       </th>
 
                       <th
-                        className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
-                        style={{ width: "4%" }}
+                        className="column-title  text-center  border border-primary fontWeight300
+                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color removePadding "
+                        style={{ width: "8%" }}
                       >
                         Total Amount
                       </th>
                       <th
-                        className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
+                        className="column-title  text-center  border border-primary fontWeight300
+                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color removePadding "
                         style={{ width: "12%" }}
                       >
                         Nativing
@@ -244,7 +245,7 @@ const WeavingProductionFormStepTwo = ({
 
                       <td
                         className="column-title      text-center  p-0 px-1"
-                        style={{ width: "14%" }}
+                        style={{ width: "10%" }}
                       >
                         <div className=" py-1">
                           <Select
@@ -285,9 +286,9 @@ const WeavingProductionFormStepTwo = ({
                       </td>
                       <td
                         className="column-title  text-center    removeTopBorder  p-0 px-1 "
-                        style={{ width: "12%" }}
+                        style={{ width: "8%" }}
                       >
-                        <div className=" py-1 paddingXaxisTable">
+                        <div className=" py-1 paddingXaxisTable mt-1">
                           {shiftTotalState[i].totalPiece === null ||
                             shiftTotalState[i].totalPiece === undefined ||
                             shiftTotalState[i].totalPiece === ""
@@ -329,9 +330,9 @@ const WeavingProductionFormStepTwo = ({
                       </td>
                       <td
                         className="column-title  text-center    p-0 px-1 "
-                        style={{ width: "13%" }}
+                        style={{ width: "5%" }}
                       >
-                        <div className=" py-1 paddingXaxisTable">
+                        <div className=" py-1 paddingXaxisTable mt-1">
                           {shiftTotalState[i].ratePerBorder}
                         </div>{" "}
                       </td>
@@ -369,13 +370,13 @@ const WeavingProductionFormStepTwo = ({
                       </td>
 
                       <td
-                        className="column-title  text-center    p-0 px-1"
+                        className="column-title  text-center    p-0 px-1 pt-2"
                         style={{ width: "4%" }}
                       >
                         {shiftTotalState[i].totalAmount}
                       </td>
                       <td
-                        className="column-title  text-center   p-0 px-1 "
+                        className="column-title  text-center   p-0 px-1 slightPaddingOnNativieSelector "
                         style={{ width: "8%" }}
                       >
                         <Select
@@ -396,7 +397,7 @@ const WeavingProductionFormStepTwo = ({
                     <tr>
                       <td
                         colspan="10"
-                        className="p-0 px-1 ss "
+                        className="p-0 px-1 ss paddingControllOfAddFaultRow"
                         style={{ height: "34px" }}
                       >
                         <div className="row  " style={{ marginTop: "2px" }}>

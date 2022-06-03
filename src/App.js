@@ -26,12 +26,51 @@ import EmployeeList from './Pages/Setting/EmployeeList/EmployeeList'
 import LoomManagement from "./Pages/Setting/LoomManagement/LoomManagement";
 import ProductionFaults from './Pages/Setting/ShiftFaults/ProductionFaults'
 import ProductionReport from "./Pages/WeavingProduction/ProductionReport/ProductionReport";
+import { endPoint } from "./config/Config";
 function App() {
   const [isLogin, setisLogin] = useState(false); 
 const [navigationData , setNavigationData] = useState("")
-  useEffect(() => {
-   
-  }, []);
+const [showMainLoader , setShowMainLoader] = useState(true)
+
+ 
+
+
+const fetchNavigation = (e) => {
+  fetch(endPoint+"api/navigation", {
+    method: "GET",
+    headers: {
+      Authorization: "bearer" + " " +  JSON.parse(localStorage.getItem("access_token")).access_token,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+  })
+    .then((response) => {
+      response.json().then((data) => {
+        console.log(data, "success");
+        setNavigationData(data);
+
+        localStorage.setItem("userName",data.userName  );
+        localStorage.setItem("roleName",data.RoleName  );
+        localStorage.setItem("loginId",data.LoginName  );
+        // setemployeeSalaryResult(data);
+
+        setisLogin(true);
+        setShowMainLoader(false)
+      });
+    })
+    .catch((error) => console.log("error", error));
+};
+
+
+
+
+useEffect(() => {
+  localStorage.setItem("authUser", "http://localhost:63145/");
+  var newRetrived = localStorage.getItem("access_token");
+  if (newRetrived) {
+    setisLogin(true);
+   fetchNavigation()
+  }
+}, []);
 
   return (
     <>
@@ -47,40 +86,71 @@ const [navigationData , setNavigationData] = useState("")
         draggable
         pauseOnHover
       />
-      {isLogin  ? (
-        <div className="container body">
-          <div className="main_container">
-            <Nav  navigationResult ={navigationData} isLogin={isLogin} />
-            <Header roleName = {navigationData.RoleName} />
-            <Routes>
-              <Route path="/" element={<Loader />} />
-              <Route path="RoleAccess" element={<AddRole />} />
-              <Route path="UserAccess" element={<AddUser />} />
-              <Route path="PagesAccess" element={<AddPages />} />
-              <Route path="ModuleAccess" element={<AddModules />} />
-              <Route path="PermissionAccess" element={<RolePermission />} />
-              <Route path="EmployeesList" element={<EmployeeList/>} />
-              <Route path="GrayProductList" element={<GrayProductList/>} />
-              <Route path="LoomManagement" element={<LoomManagement/>} />
-              <Route path="BorderManagement" element={<BorderManagement/>} />
-              <Route path="WeavingProductionForm" element={<WeavingProductionForm/>} />
-              <Route path="UserProfile" element={<UserProfile/>} />
-              <Route path="ProductionFaults" element={<ProductionFaults/>} />
-              <Route path="ProductionReport" element={<ProductionReport/>} />
+     
 
-              
+{
+  
+  !isLogin? <><Login setisLogin={setisLogin} isLogin={isLogin}   fetchNavigation={fetchNavigation} setShowMainLoader={setShowMainLoader}  /></> :<> 
+  
+  
+  {
+  showMainLoader?<>  <div class="lds-dual-ring-ForMain-Page "></div></> :<> 
+  <div className="container body">
+     <div className="main_container">
+      <Nav  navigationResult ={navigationData} isLogin={isLogin} />
+       <Header roleName = {navigationData.RoleName} setisLogin={setisLogin}  />
+      <Routes>
+       <Route path="/" element={<Loader />} />
+        <Route path="RoleAccess" element={<AddRole />} />
+        <Route path="ModuleAccess" element={<AddModules />} />
+          <Route path="UserAccess" element={<AddUser />} />
+        <Route path="PagesAccess" element={<AddPages />} />
+         <Route path="PermissionAccess" element={<RolePermission />} />
+        <Route path="EmployeesList" element={<EmployeeList/>} />
+        <Route path="GrayProductList" element={<GrayProductList/>} />
+       <Route path="LoomManagement" element={<LoomManagement/>} />
+        <Route path="BorderManagement" element={<BorderManagement/>} />
+       <Route path="WeavingProductionForm" element={<WeavingProductionForm/>} />
+         <Route path="UserProfile" element={<UserProfile/>} />
+          <Route path="ProductionFaults" element={<ProductionFaults/>} />
+       <Route path="ProductionReport" element={<ProductionReport/>} /> 
+     </Routes> 
+      <Footer />
+     </div>
+   </div>
+  </>
+  } </> 
+}
 
-            
-            </Routes>
 
-            <Footer />
-          </div>
-        </div>
-      ) : (
-        <Login setisLogin={setisLogin} isLogin={isLogin}   setNavigationData={setNavigationData}  />
-      )}
+
     </>
   );
 }
 
 export default App;
+
+
+
+
+
+
+
+
+
+// {isLogin===true && showMainLoader===false ? (
+//   
+// ) : (
+
+//     <>
+//     {isLogin===false &&  showMainLoader===false && 
+      
+//     }
+//     {
+//       showMainLoader===true && isLogin===true && <>Loader </>
+//     }
+  
+    
+//     </>
+
+// )}

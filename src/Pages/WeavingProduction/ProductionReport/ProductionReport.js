@@ -69,7 +69,7 @@ const ProductionReport = () => {
       })
       .then((data) => {
         setSelectedProductionData(data);
-      
+
         console.log(data, "histroy fetch  ----------------------");
 
         setisLoaderSelectedProductionData(false);
@@ -223,6 +223,8 @@ const ProductionReport = () => {
             )}
           </div>
 
+          {/* Report section  */}
+
           {isLoaderSelectedProductionData ? (
             <>
               {" "}
@@ -258,34 +260,25 @@ const ProductionReport = () => {
                           <i className="fa fa-edit"></i>
                         </button>
                       </li>
-
-                      {/* fully functional delete button but hide bcux no longer need 
-
-                      <li>
-                        <button
-                          className="btn btn-sm btn-danger my-2"
-                          onClick={() => deleteProductionData()}
-                        >
-                          <i className="fa fa-trash"></i>
-                        </button>
-                      </li> */}
                     </ul>
                     <div className="clearfix" />
                   </div>
 
                   <div className="x_content">
-                    <div className="row pl-3">
-                      <div className="col-md-6">
+                    <div className="row my-2 ">
+                      <div className="col-md-6 px-5 text-customBlue font-weight-400 mb-2  bg- ">
                         <div className="row">
-                          <div className="col-md-12 text-center ">
-                            Roll Details
+                          <div className="col-md-12 text-center   font-weight-600">
+                          <div className="my-2 text-center perPieceDetailHeadingProductionReport">Roll Detail</div>
                           </div>
                           <div className="col-md-12">
-                            <div className="col-md-6">Roll Number</div>
-                            <div className="col-md-6 text-right">
-                              {" "}
-                              {selectedProductionData.roll_no}
+                            <div className="col-md-6 font-weight-500">
+                              Roll Number
                             </div>
+                            <div className="col-md-6 text-right">
+                           <b>
+                              {selectedProductionData.roll_no}
+                           </b> </div>
                           </div>
                           <div className="col-md-12">
                             <div className="col-md-6">Date</div>
@@ -332,10 +325,10 @@ const ProductionReport = () => {
                           </div>
                         </div>{" "}
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-md-6  px-5 text-customBlue mb-2  ">
                         <div className="row">
-                          <div className="col-md-12 text-center ">
-                            Loom Detail
+                        <div className="col-md-12 text-center   font-weight-600">
+                          <div className="my-2 text-center perPieceDetailHeadingProductionReport">Loom Detail</div>
                           </div>
                           <div className="col-md-12">
                             <div className="col-md-6">Loom Number</div>
@@ -390,103 +383,237 @@ const ProductionReport = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="row ">
-                      <div className="col-md-1 border border-warning">Sr</div>
-                      <div className="col-md-1 border border-warning">
-                        Shift
+                    <div className="row mx-3  reportTableHead">
+                      <div className="col-md-1 right-border-1 px-0 my-auto">
+                        <div className="col-md-5 px-0 right-border-1 h-100 text-center font-size-12 ">
+                          Sr
+                        </div>
+                        <div className="col-md-7 px-0 text-center font-size-12">
+                          Shift
+                        </div>
                       </div>
-                      <div className="col-md-1 border border-warning">
-                        Weaver
+
+                      <div className="col-md-4 px-0 my-auto">
+                        <div className="col-md-3 right-border-1 h-100 my-1 font-size-12 text-center">
+                          Weaver
+                        </div>
+                        <div className="col-md-3   right-border-1 h-100  my-1 font-size-12 text-center">
+                          No.Border
+                        </div>
+                        <div className="col-md-3   right-border-1 h-100 my-1 font-size-12 text-center">
+                          Total.Piece
+                        </div>
+                        <div className="col-md-3   right-border-1 my-1 font-size-12 text-center">
+                          B.G.Piece
+                        </div>
                       </div>
-                      <div className="col-md-1  border border-warning">
-                        No.Border
+
+                      <div className="col-md-5 px-0">
+                        <div className="col-md-3 px-0  right-border-1 my-1 font-size-12  text-center">
+                          A grade Pieces
+                        </div>
+                        <div className="col-md-3 px-0 right-border-1  my-1 font-size-12  text-center">
+                          Rate/Border
+                        </div>
+                        <div className="col-md-3 px-0  right-border-1  my-1 font-size-12  text-center">
+                          Ex.Amount Desc
+                        </div>
+                        <div className="col-md-3 px-0  right-border-1  my-1 font-size-12  text-center">
+                          Ex. Amount
+                        </div>
                       </div>
-                      <div className="col-md-1  border border-warning">
-                        totalPiece
+
+                      <div className="col-md-1  font-size-12   right-border-1  text-center  my-1">
+                        Total
                       </div>
-                      <div className="col-md-1  border border-warning">
-                        B Grade Piece
-                      </div>
-                      <div className="col-md-1  border border-warning">
-                        A grade Pieces
-                      </div>
-                      <div className="col-md-1  border border-warning">
-                        Rate/Border
-                      </div>
-                      <div className="col-md-1  border border-warning">
-                        Ex.Amount Desc
-                      </div>
-                      <div className="col-md-1  border border-warning">
-                        Ex. Amount
-                      </div>
-                      <div className="col-md-1  border border-warning">
-                        TotalAmount
-                      </div>
-                      <div className="col-md-1  border border-warning">
+                      <div className="col-md-1    font-size-12  text-center  my-1  right-border-2">
                         Nativing
                       </div>
                     </div>
-
                     {selectedProductionData.shiftData.map((item, index) => {
                       return (
-                        <div className="row ">
-                          <div className="col-md-1 border border-warning">
-                            {index + 1}
+                        <>
+                          <div className="row mx-3  reportTableBody bottom-border-2">
+                            <div className="col-md-1 right-border-1 px-0">
+                              <div className="col-md-5 px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
+                                {" "}
+                                {index + 1}
+                              </div>
+                              <div className="col-md-7  text-center font-size-12 right-border-2 py-1 h-100  d-flex justify-content-center align-items-center">
+                                {" "}
+                                {item.shift_name.slice(6)}
+                              </div>
+                            </div>
+
+                            <div className="col-md-4 px-0 py-auto">
+                              <div className="col-md-4 right-border-2 h-100  py-1 font-size-12 text-center d-flex justify-content-center align-items-center">
+                                {item.weaver_EmployeeDNameId.label === null
+                                  ? "--"
+                                  : item.weaver_EmployeeDNameId.label}
+                              </div>
+
+                              <div className="col-md-2   right-border-2 h-100   py-1 font-size-12 text-center    d-flex justify-content-center align-items-center ">
+                                {item.no_of_border}
+                              </div>
+                              <div className="col-md-3   right-border-2 h-100 py-1 font-size-12 text-center   d-flex justify-content-center align-items-center ">
+                                {item.total_pieces}
+                              </div>
+                              <div className="col-md-3   right-border-2   py-1 font-size-12 text-center h-100   d-flex justify-content-center align-items-center ">
+                                {item.b_grade_piece}
+                              </div>
+                            </div>
+
+                            <div className="col-md-5 px-0">
+                              <div className="col-md-3 px-0  right-border-2 h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
+                                {item.a_grade_piece}
+                              </div>
+                              <div className="col-md-3 px-0 right-border-2  h-100  py-1 font-size-12   d-flex justify-content-center align-items-center ">
+                                {item.rate_per_border}
+                              </div>
+                              <div className="col-md-3 px-0  right-border-2 h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
+                                {item.extra_des}
+                              </div>
+                              <div className="col-md-3 px-0  right-border-2  h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
+                                {item.extra_amt}
+                              </div>
+                            </div>
+
+                            <div className="col-md-1  font-size-12     right-border-2  text-center py-1   d-flex justify-content-center align-items-center ">
+                              {item.total_amt}
+                            </div>
+                            <div className="col-md-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
+                              {item.natting_EmployeeNameId.label === null
+                                ? "--"
+                                : item.natting_EmployeeNameId.label}
+                            </div>
                           </div>
-                          <div className="col-md-1 border border-warning">
-                            {item.shift_name}
+
+                          <div className="row mx-3  reportTableBody bottom-border-2">
+                            <div className="col-md-12  font-size-12  left-border-2    right-border-2  text-center py-1   d-flex justify-content-start align-items-center ">
+                              <span className="text-danger pl-4">
+                                {" "}
+                                Shift faults: &nbsp;{" "}
+                              </span>{" "}
+                              {item.known_faults_ids
+                                .split(",")
+                                .map((eachFault) => {
+                                  return <span>{eachFault}, </span>;
+                                })}
+                            </div>
                           </div>
-                          <div className="col-md-1 border border-warning">
-                            {item.weaver_EmployeeDNameId.label === null
-                              ? "--"
-                              : item.weaver_EmployeeDNameId.label}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.no_of_border}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.total_pieces}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.b_grade_piece}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.a_grade_piece}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.rate_per_border}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.extra_des}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.extra_amt}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.total_amt}
-                          </div>
-                          <div className="col-md-1  border border-warning">
-                            {item.natting_EmployeeNameId.label === null
-                              ? "--"
-                              : item.natting_EmployeeNameId.label}
-                          </div>
-                          <div className="col-md-7  border border-danger my-1  ">      known faults here --
-                          {  item.known_faults_ids.split(',').map((eachFault)=>{
-                            return <button className="btn btn-sm btn-warning mt-1"> {eachFault}</button>
-                          })}
-                       </div>
-                        </div>
+                        </>
                       );
                     })}
+                    <div className="px-4 mb-0 mt-3">
+                      <div className="row mb-3 customPaddingForProductionReport bottom-border-2  top-border-2  py-1">
+                        <div className="col-md-3 text-customBlue font-weight-600 py-0123">
+                          Pile To Pile Length:
+                          <span className="font-weight-500 ">
+                            &nbsp;
+                            {selectedProductionData.pile_to_pile_length}
+                          </span>
+                        </div>
+                        <div className="col-md-3 text-customBlue  font-weight-600 py-0123">
+                          Pile to Pile Width:
+                          <span className="font-weight-500 ">
+                            {" "}
+                            &nbsp;
+                            {selectedProductionData.pile_to_pile_width}
+                          </span>
+                        </div>
+                        <div className="col-md-3  text-customBlue font-weight-600  py-0123">
+                          Cut Piece Size:
+                          <span className="font-weight-500 ">
+                            &nbsp;
+                            {selectedProductionData.cut_piece_size}
+                          </span>
+                        </div>
+                        <div className="col-md-3 text-customBlue  font-weight-600  py-0123">
+                          {" "}
+                          Cut Piece Weight:
+                          <span className="font-weight-500 ">
+                            &nbsp;
+                            {selectedProductionData.cut_piece_weight}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="px-4 mb-1">
+                    <div className="my-2 text-center perPieceDetailHeadingProductionReport">Grand Total</div>
+                      <div className="row mb-3 customPaddingForProductionReport bottom-border-2  top-border-2  py-1">
+                        <div className="col-md-3 text-customBlue font-weight-600 py-0123">
+                          Border:&nbsp;
+                          <span className="font-weight-500 ">
+                            {selectedProductionData.total_border}
+                          </span>
+                        </div>
+                        <div className="col-md-3 text-customBlue  font-weight-600 py-0123">
+                          Pieces:&nbsp;
+                          <span className="font-weight-500 ">
+                            {selectedProductionData.total_pieces}
+                          </span>
+                        </div>
+                        <div className="col-md-3  text-customBlue font-weight-600 py-0123">
+                          A Grade Pieces:&nbsp;
+                          <span className="font-weight-500 ">
+                            {selectedProductionData.a_grade_pieces}
+                          </span>
+                        </div>
+                        <div className="col-md-3 text-customBlue  font-weight-600  py-0123">
+                          {" "}
+                          B Grade Pieces:&nbsp;
+                          <span className="font-weight-500 ">
+                            {selectedProductionData.b_grade_pieces}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="my-2 text-center perPieceDetailHeadingProductionReport">Per Piece Detail</div>
+                    <div className="row mx-3  reportTableHead ">
+                      <div className="col-md-3 right-border-1 px-0 my-auto text-center py-1 ">
+                       Label
+                      </div>
+
+                      <div className="col-md-3  font-size-12   right-border-1  text-center  my-1  py-1">
+                     Current
+                      </div>
+                      <div className="col-md-3  font-size-12   right-border-1  text-center  my-1  py-1">
+                      Required
+                      </div>
+                      <div className="col-md-3    font-size-12  text-center  my-1  right-border-2  py-1">
+                     Difference
+                      </div>
+                    </div>
+
+                    <>
+                      <div className="row mx-3  reportTableBody bottom-border-2">
+                        <div className="col-md-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report   px-2 bottom-border-1 top-border-1 py-1">Total Weight/Cut Piece</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">     {selectedProductionData.current_per_piece_a_weight}</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.required_per_piece_a_weight}   </div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2"> {selectedProductionData.required_per_piece_a_weight - selectedProductionData.current_per_piece_a_weight}</div>
+                      </div>
+                      <div className="row mx-3  reportTableBody bottom-border-2">
+                        <div className="col-md-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report  bottom-border-1 px-2  py-1">Length Pile to Pile</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.pile_to_pile_length}</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.required_length_p_to_p}</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.required_length_p_to_p-selectedProductionData.pile_to_pile_length}  </div>
+                      </div>
+                      <div className="row mx-3  reportTableBody bottom-border-2">
+                        <div className="col-md-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report bottom-border-1  px-2  py-1">
+                          Width Pile to Pile 
+                        </div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.pile_to_pile_width}</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.required_width_p_to_p}</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{selectedProductionData.required_width_p_to_p-selectedProductionData.pile_to_pile_width}  </div>
+                      </div>
+                      <div className="row mx-3  reportTableBody bottom-border-2 mb-4">
+                        <div className="col-md-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report  px-2  py-1">B Grade</div>
+                        <div className="col-md-3 px-0 py-auto right-border-2  py-1  text-right px-2">{((selectedProductionData.b_grade_pieces*100)/selectedProductionData.a_grade_pieces).toFixed(3)}%</div>
+                        <div className="col-md-6 px-0 py-auto right-border-2  py-1  text-right px-2"> </div>
+                   
+                      </div>
+                    </>
                   </div>
-                  <div className="text-center my-3">total record</div>
-                  <div className="col-md-2 ">total border</div>
-                  <div className="col-md-2">total a graade</div>
-                  <div className="col-md-2">total b grade</div>
-                  <div className="col-md-2">total piece</div>
-                  <div className="col-md-2">___________</div>
-                  <div className="col-md-2">___________</div>
-                  <div className="mb-3">.</div>
                 </div>
               </div>
             </>

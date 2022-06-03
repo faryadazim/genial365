@@ -1,7 +1,8 @@
 import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
+import { endPoint } from "../config/Config";
 
-const Login = ({ setisLogin, isLogin, setNavigationData }) => {
+const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
   const [disableLoginButton, setdisableLoginButton] = useState(false);
   const [credientials , setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
@@ -15,29 +16,7 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
     localStorage.setItem("authUser", "http://localhost:63145/");
   };
   const notify = () => toast("Login SuccessFully!");
-  const fetchNavigation = (e) => {
-    fetch(url+"api/navigation", {
-      method: "GET",
-      headers: {
-        Authorization: "bearer" + " " + e,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((response) => {
-        response.json().then((data) => {
-          console.log(data, "success");
-          setNavigationData(data);
- 
-          localStorage.setItem("userName",data.userName  );
-          localStorage.setItem("roleName",data.RoleName  );
-          localStorage.setItem("loginId",data.LoginName  );
-          // setemployeeSalaryResult(data);
 
-          setisLogin(true);
-        });
-      })
-      .catch((error) => console.log("error", error));
-  };
 
   return (
     <div>
@@ -83,8 +62,7 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                  <button
                     className="btn btn-default submit btn-official px-3 btn-sm text-light"
                     type="submit"
-                    disabled={disableLoginButton}
-                    aria-invalid="true"
+                    disabled={disableLoginButton} 
                     onClick={(e) => {
                       e.preventDefault(); 
                       setdisableLoginButton(true)
@@ -98,7 +76,7 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                       urlencoded.append("password", logInAuth.password);
                       urlencoded.append("grant_type", "password");
 
-                      fetch(url+"token", {
+                      fetch(endPoint+"token", {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/x-www-form-urlencoded",
@@ -110,11 +88,13 @@ const Login = ({ setisLogin, isLogin, setNavigationData }) => {
                             if (result.status === 200) {
                               // localStorage.setItem(
                               console.log(response, "Login ");
-                              fetchNavigation(response.access_token);
-                              //   "authUser",
-                              //   JSON.stringify(response)
-                              // );
-                              // window.location.reload(false);
+                      
+                              localStorage.setItem(
+                                "access_token",
+                                JSON.stringify(response)
+                                );
+                                setisLogin(true)
+                                fetchNavigation(response.access_token);
                               notify(); 
                             } else {
                          

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setNavSm, updateCurrentId } from "../../../store/actions/NavState";
+import { setNavMd, setNavSm, updateCurrentId  } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
@@ -11,6 +11,7 @@ const WeavingProductionForm = () => {
   const dispatch = useDispatch();
   const url = localStorage.getItem("authUser");
   const userId = localStorage.getItem("loginId");
+
   // Parent Personal State
   const showNavMenu = useSelector((state) => state.NavState);
   const currentID = useSelector((state) => state.IdToBeUpdate);
@@ -28,8 +29,6 @@ const WeavingProductionForm = () => {
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
   const [allLoomLists, setAllLoomLists] = useState([]);
-
-
 
   //state for DropDownSearchableSelector
   const [loomListOptions, setLoomListOptions] = useState([]);
@@ -218,14 +217,14 @@ const WeavingProductionForm = () => {
 
 
 
-    if (idToUpdateProductionTable == null) { 
+    if (idToUpdateProductionTable == null) {
       await fetchNewRoleName()
     }
     if (currentID !== null) {
       setIdToUpdateProductionTable(currentID)
       await generateReportOfSpecificId(currentID)
       dispatch(updateCurrentId(null))
-    
+
     }
 
     // Step One Dropdown List fetching from api/backend
@@ -466,6 +465,7 @@ const WeavingProductionForm = () => {
   };
 
   const stepOneValidationFunct = () => {
+    dispatch(setNavSm())
     if (rollDetail.rollWeight == "") {
       setStepOneValidator({ ...stepOneValidator, rollWeightValidate: false })
     } else if (rollDetail.loomNumber == "") {
@@ -638,7 +638,7 @@ const WeavingProductionForm = () => {
   }
 
   const stepTwoValidationFunct = async () => {
-
+    dispatch(setNavMd());
     await shiftTotalState.map((eachShift, i) => {
       var arr_data = shiftTotalState;
 
@@ -944,68 +944,68 @@ const WeavingProductionForm = () => {
     }
   }
   const updateWeavingProductionForm = () => {
-   
+
     var myHeaders = new Headers();
-myHeaders.append("Authorization", "Bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g");
-myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Authorization", "Bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g");
+    myHeaders.append("Content-Type", "application/json");
 
 
- 
-
- 
-var raw = JSON.stringify({
-  "roll_no": "sending_butt_didnot_effect",
-  "production_date":`${rollDetail.date}T00:00:00.928Z`,
-  "roll_weight": parseFloat(rollDetail.rollWeight),
-  "loom_id": rollDetail.loomNumber,
-  "borderSize_id": rollDetail.Size,
-  "borderQuality_id":rollDetail.Quality,
-  "programm_no": (rollDetail.programNumber),
-  "grayProduct_id": loomDetail.grayProductId,
-  "pile_to_pile_length": finalStepInput.pileToPileLength,
-  "pile_to_pile_width":  finalStepInput.pileToPileWidth,
-  "cut_piece_size": finalStepInput.cutPieceSize,
-  "cut_piece_weight": finalStepInput.cutPieceWeight,
-  "remarks": finalStepInput.remarks,
-  "total_border":  grandFinalTotal.totalBorders,
-  "total_pieces": grandFinalTotal.totalPiece,
-  "b_grade_pieces":  grandFinalTotal.totalBGrade,
-  "a_grade_pieces":grandFinalTotal.totalAGrade,
-  "current_per_piece_a_weight":  grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
-  "required_length_p_to_p":finalStepRequired.requireLengthpp,
-  "required_width_p_to_p": finalStepRequired.requireWidthpp,
-  "required_per_piece_a_weight":  finalStepRequired.requirePerPieceWeight,
-  "piece_in_one_border":  loomDetail.NumOfPieceOneBorder,
-  "shifts":shiftTotalState.map((eachShift, i) => {
-       return {
-      "shift_name": eachShift.shiftSelectorValue.label,
-      "weaver_employee_Id": eachShift.weaverSelectorValue.value,
-      "no_of_border":eachShift.noOfBorder,
-      "total_pieces":  eachShift.totalPiece,
-      "b_grade_piece":  eachShift.bGradePiece,
-      "a_grade_piece":  eachShift.aGradePieces,
-      "rate_per_border": eachShift.ratePerBorder,
-      "extra_amt":  eachShift.extraAmount.amount,
-      "extra_desc": eachShift.extraAmount.desc,
-      "total_amt": eachShift.totalAmount,
-      "natting_employee_Id": eachShift.nativingSelectorValue.value,
-      "known_faults_ids": knownFaultsIdsFunction(i),
-    }
-})
-}); 
 
 
-var requestOptions = {
-  method: 'PUT',
-  headers: myHeaders,
-  body: raw,
-  redirect: 'follow'
-};
 
-fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
-  .then(response => response.text())
-  .then(result => console.log(result))
-  .catch(error => console.log('error', error));
+    var raw = JSON.stringify({
+      "roll_no": "sending_butt_didnot_effect",
+      "production_date": `${rollDetail.date}T00:00:00.928Z`,
+      "roll_weight": parseFloat(rollDetail.rollWeight),
+      "loom_id": rollDetail.loomNumber,
+      "borderSize_id": rollDetail.Size,
+      "borderQuality_id": rollDetail.Quality,
+      "programm_no": (rollDetail.programNumber),
+      "grayProduct_id": loomDetail.grayProductId,
+      "pile_to_pile_length": finalStepInput.pileToPileLength,
+      "pile_to_pile_width": finalStepInput.pileToPileWidth,
+      "cut_piece_size": finalStepInput.cutPieceSize,
+      "cut_piece_weight": finalStepInput.cutPieceWeight,
+      "remarks": finalStepInput.remarks,
+      "total_border": grandFinalTotal.totalBorders,
+      "total_pieces": grandFinalTotal.totalPiece,
+      "b_grade_pieces": grandFinalTotal.totalBGrade,
+      "a_grade_pieces": grandFinalTotal.totalAGrade,
+      "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
+      "required_length_p_to_p": finalStepRequired.requireLengthpp,
+      "required_width_p_to_p": finalStepRequired.requireWidthpp,
+      "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
+      "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
+      "shifts": shiftTotalState.map((eachShift, i) => {
+        return {
+          "shift_name": eachShift.shiftSelectorValue.label,
+          "weaver_employee_Id": eachShift.weaverSelectorValue.value,
+          "no_of_border": eachShift.noOfBorder,
+          "total_pieces": eachShift.totalPiece,
+          "b_grade_piece": eachShift.bGradePiece,
+          "a_grade_piece": eachShift.aGradePieces,
+          "rate_per_border": eachShift.ratePerBorder,
+          "extra_amt": eachShift.extraAmount.amount,
+          "extra_desc": eachShift.extraAmount.desc,
+          "total_amt": eachShift.totalAmount,
+          "natting_employee_Id": eachShift.nativingSelectorValue.value,
+          "known_faults_ids": knownFaultsIdsFunction(i),
+        }
+      })
+    });
+
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log(result))
+      .catch(error => console.log('error', error));
 
 
 
@@ -1031,7 +1031,7 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
         setSecondStep("done")
         setFirstStep("active")
         setThirdStep("done")
-       setRoleNameBackEnd(data.roll_no)
+        setRoleNameBackEnd(data.roll_no)
         setborderQualityValue(data.borderQualityLabelId) //
         setBorderSizeValue(data.borderSizeLabelId)   //
 
@@ -1056,11 +1056,11 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
           NumOfPieceOneBorder: data.piece_in_one_border,
           grayProductId: data.grayProduct_id
         });
- 
+
         setShiftTotalState(data.shiftData.map((eachShift, i) => {
 
 
-    
+
           return {
             shiftName: eachShift.shift_name,
             weaverName: eachShift.weaver_EmployeeDNameId.value,
@@ -1074,7 +1074,7 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
             knownFaultsIds: eachShift.known_faults_ids.split(',').map((eachFault) => {
               return { label: eachFault, value: eachFault }
             }
-           
+
             ),
             nativing: eachShift.natting_EmployeeNameId.value,
 
@@ -1140,9 +1140,8 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
   // ----------------------------------
   useEffect(() => {
     console.log(currentID, "need to updated this one if null mean no one");
-    dispatch(setNavSm());
-  }, [finalStepRequired]);
 
+  }, [finalStepRequired]);
   return (
     <>
       <div
@@ -1230,8 +1229,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                           Draft <i className="fa fa-stack-exchange pl-2"> </i>
                         </button> : <></>
                       }
-
-
                       <button
                         className="btn btn-success btn-sm m-0 px-4"
                         onClick={() => stepOneValidationFunct()}   >
@@ -1266,7 +1263,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                         faultOptions={faultOptions}
                         grandFinalTotal={grandFinalTotal}
                         setShiftTotalState={setShiftTotalState}
-
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
@@ -1279,8 +1275,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                       >
                         Prev
                       </button>
-
-
                       {
                         idToUpdateProductionTable == null ?
                           <button className="btn btn-secondary btn-sm  text-light px-4 "
@@ -1288,21 +1282,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                             Draft <i className="fa fa-stack-exchange pl-2"> </i>
                           </button> : <></>
                       }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                       <button
                         className="btn btn-success btn-sm  px-4"
                         onClick={() => stepTwoValidationFunct()} >
@@ -1333,13 +1312,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                         <i className="fa fa-backward pr-2"></i>
                         Prev
                       </button>
-
-
-
-
-
-
-
                       {
                         idToUpdateProductionTable == null ?
                           <>  <button className="btn btn-secondary btn-sm  text-light px-4 "
@@ -1348,15 +1320,9 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
                           </button>   <button className="btn btn-success btn-sm  px-4   " onClick={() => saveWeavingProductionForm()}>
 
                               Save <i className="fa fa-save pl-2 "> </i>
-                            </button> </> : <> 
-                             <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
+                            </button> </> : <>
+                            <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
                       }
-
-
-
-
-
-
                       <button className="btn btn-danger btn-sm  px-4  ">
                         Print <i className="fa fa-print pl-2"> </i>
                       </button>
@@ -1369,9 +1335,6 @@ fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTabl
             </div>
           </div>
           <div className="text-left px-2 mb-1">
-
-
-
             {firstStep == "active" ?
               (userDraftBox.map((eachDraft) => {
                 return <div key={eachDraft.draft_id} className="btn btn-sm btn-light border-secondary border text-secondary">

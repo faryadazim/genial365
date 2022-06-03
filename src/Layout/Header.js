@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 // import { setNavSm, setNavMd } from "../actions/NavState";
 import { setNavSm, setNavMd } from "../store/actions/NavState";
-const Header = ({ roleName }) => {
+const Header = ({ roleName  , setisLogin}) => {
   const dispatch = useDispatch();
   const showNavMenu = useSelector((state) => state.NavState);
   const [ScreenWidth, setScreenWidth] = useState();
@@ -71,7 +71,9 @@ const Header = ({ roleName }) => {
                     <a className="dropdown-item" href="javascript:;">
                       Help
                     </a>
-                    <a className="dropdown-item" href="login.html">
+                    <a className="dropdown-item"  onClick={()=>{
+                      localStorage.clear()
+                      setisLogin(false)}}>
                       <i className="fa fa-sign-out pull-right" /> Log Out
                     </a>
                   </div>
