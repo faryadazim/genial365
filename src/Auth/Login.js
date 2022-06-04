@@ -13,7 +13,7 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
    
     const url = localStorage.getItem("authUser");
   const onLogin = () => {
-    localStorage.setItem("authUser", "http://localhost:63145/");
+    localStorage.setItem("authUser", endPoint);
   };
   const notify = () => toast("Login SuccessFully!");
 

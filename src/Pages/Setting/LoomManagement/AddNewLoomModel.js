@@ -151,12 +151,13 @@ const AddNewLoomModel = (props) => {
                     className="basic-single"
                     classNamePrefix="select"
 
-                    value={props.DropBoxValue.value}
+                    value={props.DropBoxValue}
                     onChange={(value) => {
                       props.setAddNewLoom({
                         ...props.AddNewLoom,
                         drawBox: value.value,
                       });
+                      props.setDropBoxValue({label:value.label , value:value.value})
                     }
                     }
                     isSearchable={true}
@@ -175,12 +176,13 @@ const AddNewLoomModel = (props) => {
                     required
                     className="basic-single"
                     classNamePrefix="select"
-                    value={props.JacquardValue.value}
+                    value={props.JacquardValue}
                     onChange={(value) => {
                       props.setAddNewLoom({
                         ...props.AddNewLoom,
                         jacquard: value.value,
                       });
+                      props.setJacquardValue({label:value.label , value:value.value})
                     }}
                     isSearchable={true}
                     name="color"
@@ -198,12 +200,13 @@ const AddNewLoomModel = (props) => {
                     required
                     className="basic-single"
                     classNamePrefix="select"
-                    value={props.weavingUnitValue.value}
+                    value={props.weavingUnitValue}
                     onChange={(value) => {
                       props.setAddNewLoom({
                         ...props.AddNewLoom,
                         weavingUnitId: value.value,
                       });
+                      props.setWeavingUnitValue({label:value.label , value:value.value})
                     }}
                     isSearchable={true}
                     name="color"

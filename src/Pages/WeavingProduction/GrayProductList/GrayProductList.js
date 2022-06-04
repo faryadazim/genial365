@@ -151,8 +151,7 @@ const GrayProductList = () => {
     }
   }
   const deleteGrayProduct = (e) => {
-
-    // http://localhost:63145/api/grayProductLists/13
+ 
     fetch(`${endPoint}/api/grayProductLists/${e}`, {
       method: "DELETE",
       // headers: {

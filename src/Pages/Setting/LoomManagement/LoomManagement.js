@@ -78,6 +78,9 @@ const LoomManagement = () => {
           // notifyAdd();
           setModalShowForUpdate(false);
           fetchAllData();
+          setDropBoxValue("")
+          setJacquardValue("")
+          setWeavingUnitValue("")
           setLoomValidatorUpdate(true)
         })
         .catch((err) => {
@@ -147,6 +150,10 @@ const LoomManagement = () => {
           addNewLoomFunc={addNewLoomFunc}
           onHide={() => {
             setModalShow(false)
+            setDropBoxValue("")
+            setJacquardValue("")
+            setWeavingUnitValue("")
+            setAddNewLoom(initialStateLoom)
             setloomValidator(defaultValueForLoomValidator)
           }}
           DropBoxValue={DropBoxValue} setDropBoxValue={setDropBoxValue} DropBox={DropBox}
@@ -164,6 +171,14 @@ const LoomManagement = () => {
           onHide={() => {
             setModalShowForUpdate(false)
             setLoomValidatorUpdate(true)
+
+            setModalShow(false)
+            setDropBoxValue("")
+            setJacquardValue("")
+            setWeavingUnitValue("")
+            setUpdateLoomList(initialStateLoom) 
+
+
           }}
           loomValidatorUpdate={loomValidatorUpdate}
         />

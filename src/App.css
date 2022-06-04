@@ -676,3 +676,33 @@ font-weight: 300 !important;
   color: #003a4d !important;
   font-weight: 800;
 }
+
+
+.btn-customOrange{
+  background-color: #003a4d !important;
+  color: #fff;
+}
+.btn-customOrange:hover{
+  background-color: #03151b !important;
+  color:  #fff;
+}
+
+.borderRadiusRound{
+  border-radius: 75px !important;
+  width: 34px !important;
+  height: 34px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
+@page {
+  size: auto;
+}
+
+
+.nav.child_menu li .active {
+color: white !important;
+}

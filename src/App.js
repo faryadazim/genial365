@@ -64,7 +64,7 @@ const fetchNavigation = (e) => {
 
 
 useEffect(() => {
-  localStorage.setItem("authUser", "http://localhost:63145/");
+  localStorage.setItem("authUser", endPoint);
   var newRetrived = localStorage.getItem("access_token");
   if (newRetrived) {
     setisLogin(true);

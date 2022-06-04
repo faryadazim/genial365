@@ -6,21 +6,7 @@ import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
 import MyVerticallyCenteredModal from './MyVerticallyCenteredModal'
-// import { Modal, Button } from "react-bootstrap";
-// import Creatable from "react-select/creatable";
-// import Select from "react-select";
-
-// const customStyles = {
-//   option: (provided, state) => ({
-//     ...provided,
-//     borderBottom: "1px  #003a4d",
-//     color: state.isSelected ? "#f79c74" : "#003a4d",
-//     padding: 8,
-
-//     backgroundColor: "white",
-//   }),
-// };
-
+ 
 const EmployeeList = () => {
   const [isDisableSubmitButton , setIsDisableSubmitButton] = useState(false)
   const [designationValue, setDesignationValue] = useState("Helper");
@@ -29,34 +15,34 @@ const EmployeeList = () => {
   const [ListOfEmployee, setListOfEmployee] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
+  const employeeInitialState={    name: "",
+  fatherName:"",
+  phoneNum1:"",
+  phoneNum2:"",
+  phoneNum3:"",
+  homePhoneNum: "",
+  cnicNum:"" ,
+  address:"" ,
+  referenceName:"",
+  referencePhoneNum:"",
+  jobStatus:"",
+  designation:"",
+  employeePic1: "",
+  employeePic2:"",
+  employeeCnicFront:"",
+  employeeCnicBsck:"",
+  recruitmentType: "",
+  weeklySalary: "",
+  monthlySalary: ""}
   const [showSingleUser, setShowSingleUSer] = useState(false);
   const [singleUserId, setSingleUserId] = useState("");
-  const [roleValue, setRoleVAlue] = useState("Active"); 
-  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState("Monthly");
+  // const [roleValue, setRoleVAlue] = useState("Active"); 
+  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({});
   const [stateUpdater ,setStateUpdater] = useState(true)
-  const [addNewEmployee, setAddNewEmployee] = useState({
-    name: "",
-    fatherName: "",
-    phoneNum1: "",
-    phoneNum2: "",
-    phoneNum3: "",
-    homePhoneNum: "",
-    cnicNum: "",
-    address: "",
-    referenceName: "",
-    referencePhoneNum: "",
-    jobStatus: "",
-    designation: 0,
-    employeePic1: "",
-    employeePic2: "",
-    employeeCnicFront: "",
-    employeeCnicBsck: "",
-    recruitmentType: "",
-    weeklySalary: 0,
-    monthlySalary: 0,
-  });
+  const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState);
  const [componentUpdater , setComponentUpdater] = useState(true)
  const url = localStorage.getItem("authUser");
+const [disableSubmitForUpdatePhoto , setdisableSubmitForUpdatePhoto] = useState(false)
 const recruitmentType = [
   { label: "Weekly", value: "Weekly" },
   { label: "Monthly", value: "Monthly" },
@@ -66,9 +52,33 @@ const recruitmentType = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
   ];
+  const [jobStatusValue , setJobStatusValue] = useState({})
   const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
-  const fileHandle1 = (e) => {
-  
+ const employeeListValidatorInitialState = {
+    name: true,
+    fatherName:true,
+    phoneNum1:true,
+    phoneNum2:true,
+    phoneNum3:true,
+    homePhoneNum: "",
+    cnicNum: true,
+    address: true,
+    referenceName:true,
+    referencePhoneNum:true,
+    jobStatus:true,
+    designation:true,
+    employeePic1: true,
+    employeePic2:true,
+    employeeCnicFront:true,
+    employeeCnicBsck:true,
+    recruitmentType: true,
+    weeklySalary: true,
+    monthlySalary: true,
+    
+  }
+  const [employeeListValidator , setEmployeeListValidator] = useState(employeeListValidatorInitialState);
+  const fileHandle1 = (e) => { 
+    console.log("emploeyeee pic 1");setdisableSubmitForUpdatePhoto(true)
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -87,6 +97,7 @@ const recruitmentType = [
         console.log("result image upload", result);
         setAddNewEmployee({ ...addNewEmployee, employeePic1: result });
         // setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
+        setdisableSubmitForUpdatePhoto(false)
       })
       .catch((error) => console.log("error", error));
   };
@@ -132,7 +143,7 @@ const recruitmentType = [
       .then((result) => {
         console.log("result image upload", result);
   
- setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
+ setAddNewEmployee({ ...addNewEmployee, employeeCnicFront: result });
       })
       .catch((error) => console.log("error", error));
   };
@@ -207,13 +218,18 @@ const recruitmentType = [
     e.preventDefault(); 
    console.log(addNewEmployee);
 if (
-  addNewEmployee.name==='' 
-  // || addNewEmployee.address==='' || addNewEmployee.fatherName==='' || addNewEmployee.cnicNum==='' ||
-  // addNewEmployee.designation==='' || addNewEmployee.employeeCnicBsck==='' || addNewEmployee.employeeCnicFront==='' || addNewEmployee.phoneNum1==='' ||
-  //  addNewEmployee.employeePic2==='' || addNewEmployee.homePhoneNum==='' || addNewEmployee.jobStatus==='' ||
-  //  addNewEmployee.monthlySalary==='' || addNewEmployee.recruitmentType==='' || addNewEmployee.phoneNum2==='' ||   addNewEmployee.phoneNum3==='' || addNewEmployee.recruitmentType===''   || addNewEmployee.referenceName===''
-) {
-  console.log("empty");
+  addNewEmployee.name==='' ){
+setEmployeeListValidator({...employeeListValidator, name:false})
+  }else if(addNewEmployee.cnicNum===''){
+    setEmployeeListValidator({...employeeListValidator, cnicNum:false})
+  }else if(addNewEmployee.fatherName===''){    setEmployeeListValidator({...employeeListValidator, fatherName:false})
+  }else if(addNewEmployee.phoneNum1==='' ){    setEmployeeListValidator({...employeeListValidator, phoneNum1:false})
+  }else if( addNewEmployee.address===''){    setEmployeeListValidator({...employeeListValidator, address:false})
+  }else if( addNewEmployee.jobStatus===''){    setEmployeeListValidator({...employeeListValidator, jobStatus:false})
+  }else if( addNewEmployee.designation===''){    setEmployeeListValidator({...employeeListValidator, designation:false})
+  }else if( addNewEmployee.recruitmentType===''){    setEmployeeListValidator({...employeeListValidator, recruitmentType:false})
+  }else if( addNewEmployee.monthlySalary==''&& addNewEmployee.weeklySalary==''){    setEmployeeListValidator({...employeeListValidator, monthlySalary:false}) 
+  setEmployeeListValidator({...employeeListValidator, weeklySalary:false}) 
 } else {
    const requestOptions = {
         method: "POST",
@@ -251,6 +267,10 @@ if (
             monthlySalary: "",
           }); 
           setIsDisableSubmitButton(false)
+          setEmployeeListValidator(employeeListValidatorInitialState)
+          setJobStatusValue("")
+          setrecruitmentTypeValue("")
+          
         })
         .catch((err) => {
           console.log("err front End", err);
@@ -340,36 +360,45 @@ console.log(value.value);
               fileHandle2={fileHandle2}
               fileHandle3={fileHandle3}
               fileHandle4={fileHandle4}
-              onHide={() => setModalShow(false)}
+              onHide={() => {setModalShow(false)
+                setAddNewEmployee({
+                  name: "",
+                  fatherName: "",
+                  phoneNum1: "",
+                  phoneNum2: "",
+                  phoneNum3: "",
+                  homePhoneNum: "",
+                  cnicNum: "",
+                  address: "",
+                  referenceName: "",
+                  referencePhoneNum: "",
+                  jobStatus: "",
+                  designation: "",
+                  employeePic1: "",
+                  employeePic2: "",
+                  employeeCnicFront: "",
+                  employeeCnicBsck: "",
+                  recruitmentType: "",
+                  weeklySalary: "",
+                  monthlySalary: "",
+                });  
+                setEmployeeListValidator(employeeListValidatorInitialState)
+                setJobStatusValue("")
+                setrecruitmentTypeValue("")
+              }}
+              disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
               jobStatus={jobStatus}
               recruitmentType={recruitmentType}
-              setRoleVAlue={setRoleVAlue}
+              jobStatusValue={jobStatusValue} setJobStatusValue={setJobStatusValue}
               recruitmentTypeValue={recruitmentTypeValue}
+              setrecruitmentTypeValue={setrecruitmentTypeValue}
               designationValue={designationValue}
               designation={designation}
               handleChange={handleChange}
               isDisableSubmitButton={isDisableSubmitButton}
+              employeeListValidator={employeeListValidator}
           
-            />
-
-            {/* <div className="col-md-3">
-              <div className="form-group row  w-50">
-                <select
-                  className="form-control"
-                  onChange={(e) => {
-                    fetchEmployeeByDemand(e.target.value);
-                  }}
-                >
-                  <option value={"-1"}>All</option>
-                  {listOfEmployeeName.map((item) => {
-                    return (
-                      <option value={item.employee_Id}>{item.name}</option>
-                    );
-                  })}
-                </select>
-              </div>
-            </div> */}
-
+            /> 
             <div className="col-md-6 px-0">
               {/* <div className="form-group row  w-100"> */}
               <div className="w-50 mb-2">

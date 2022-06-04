@@ -4,7 +4,7 @@ import { setNavMd, setNavSm, updateCurrentId  } from "../../../store/actions/Nav
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
-
+import {endPoint} from '../../../config/Config.js'
 
 
 const WeavingProductionForm = () => {
@@ -1002,7 +1002,7 @@ const WeavingProductionForm = () => {
       redirect: 'follow'
     };
 
-    fetch(`http://localhost:63145/api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
+    fetch(`${endPoint}api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
       .then(response => response.text())
       .then(result => console.log(result))
       .catch(error => console.log('error', error));
