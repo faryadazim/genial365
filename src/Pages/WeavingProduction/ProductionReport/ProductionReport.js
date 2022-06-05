@@ -228,9 +228,10 @@ const ProductionReport = () => {
                                   <i
                                     className="fa fa-edit pl-3"
                                     onClick={() => {
+                                   
                                       dispatch(
                                         updateCurrentId(
-                                          selectedProductionData.production_id
+                                          item.productionId
                                         )
                                       );
                                       navigateTo("/WeavingProductionForm");

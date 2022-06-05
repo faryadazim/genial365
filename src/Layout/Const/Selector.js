@@ -49,7 +49,7 @@ const customStyles = {
 }
 
 const Selector = ({ fetchEmployeeByDemand  , setStateUpdater
-   , stateUpdater , setSingleUserId,setModalShow
+   , stateUpdater , setSingleUserId,setModalShow ,updateSelectorList
 }) => {
   
   const url = localStorage.getItem("authUser");
@@ -107,6 +107,11 @@ const Selector = ({ fetchEmployeeByDemand  , setStateUpdater
     
     // ----- Setting Employee List ------
   }, []);
+  useEffect(() => {
+    fetchData()
+    
+    // ----- Setting Employee List ------
+  }, [updateSelectorList ,fetchData]);
   
 
   return (

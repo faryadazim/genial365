@@ -5,7 +5,7 @@ const ShowSingleEmployee = ({
   setShowSingleUSer,
   fetchAllData,
   setComponentUpdater,
-  componentUpdater,
+  componentUpdater,  setUpdateSelectorList , updateSelectorList
 }) => {
   const [showFormControlClass, setShowFormControlClass] = useState(true);
   const [isDisableFormControl, setIsDisableFormControl] = useState(true);
@@ -170,6 +170,7 @@ const ShowSingleEmployee = ({
         // deleteing Role for this Id
         setShowSingleUSer(false);
         fetchAllData();
+        setUpdateSelectorList(!updateSelectorList)
       })
       .catch((error) => {
         console.log("error", error);

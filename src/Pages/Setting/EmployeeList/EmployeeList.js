@@ -52,6 +52,8 @@ const recruitmentType = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
   ];
+
+  const [updateSelectorList ,setUpdateSelectorList ] =useState(false)
   const [jobStatusValue , setJobStatusValue] = useState({})
   const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
  const employeeListValidatorInitialState = {
@@ -102,7 +104,7 @@ const recruitmentType = [
       .catch((error) => console.log("error", error));
   };
   const fileHandle2 = (e) => {
-    
+    setdisableSubmitForUpdatePhoto(true)
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -119,12 +121,13 @@ const recruitmentType = [
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
+        setdisableSubmitForUpdatePhoto(false)
         setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle3 = (e) => {
-
+    setdisableSubmitForUpdatePhoto(true)
     console.log( e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
@@ -144,10 +147,12 @@ const recruitmentType = [
         console.log("result image upload", result);
   
  setAddNewEmployee({ ...addNewEmployee, employeeCnicFront: result });
+ setdisableSubmitForUpdatePhoto(false)
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle4 = (e) => {
+    setdisableSubmitForUpdatePhoto(true)
     console.log( e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
@@ -168,6 +173,7 @@ const recruitmentType = [
         console.log("result image upload", result);
   
  setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
+ setdisableSubmitForUpdatePhoto(false)
       })
       .catch((error) => console.log("error", error));
   };
@@ -227,9 +233,14 @@ setEmployeeListValidator({...employeeListValidator, name:false})
   }else if( addNewEmployee.address===''){    setEmployeeListValidator({...employeeListValidator, address:false})
   }else if( addNewEmployee.jobStatus===''){    setEmployeeListValidator({...employeeListValidator, jobStatus:false})
   }else if( addNewEmployee.designation===''){    setEmployeeListValidator({...employeeListValidator, designation:false})
-  }else if( addNewEmployee.recruitmentType===''){    setEmployeeListValidator({...employeeListValidator, recruitmentType:false})
-  }else if( addNewEmployee.monthlySalary==''&& addNewEmployee.weeklySalary==''){    setEmployeeListValidator({...employeeListValidator, monthlySalary:false}) 
-  setEmployeeListValidator({...employeeListValidator, weeklySalary:false}) 
+}else if( addNewEmployee.recruitmentType===''){    setEmployeeListValidator({...employeeListValidator, recruitmentType:false})
+}else if( addNewEmployee.monthlySalary==='' && addNewEmployee.weeklySalary===''){  
+    setEmployeeListValidator({...employeeListValidator, monthlySalary:false}) 
+    setEmployeeListValidator({...employeeListValidator, weeklySalary:false}) 
+}else if( addNewEmployee.employeePic1===''){    setEmployeeListValidator({...employeeListValidator, employeePic1:false})
+}else if( addNewEmployee.employeePic2===''){    setEmployeeListValidator({...employeeListValidator, employeePic2:false})
+}else if( addNewEmployee.employeeCnicFront===''){    setEmployeeListValidator({...employeeListValidator, employeeCnicFront:false})
+}else if( addNewEmployee.employeeCnicBsck===''){    setEmployeeListValidator({...employeeListValidator, employeeCnicBsck:false})
 } else {
    const requestOptions = {
         method: "POST",
@@ -270,6 +281,7 @@ setEmployeeListValidator({...employeeListValidator, name:false})
           setEmployeeListValidator(employeeListValidatorInitialState)
           setJobStatusValue("")
           setrecruitmentTypeValue("")
+          setUpdateSelectorList(!updateSelectorList)
           
         })
         .catch((err) => {
@@ -410,6 +422,7 @@ console.log(value.value);
                   setSingleUserId={setSingleUserId}
                   setModalShow={setModalShow}
                   componentUpdater={componentUpdater}
+                  updateSelectorList={updateSelectorList} 
                       
                 />
               </div>
@@ -426,6 +439,7 @@ console.log(value.value);
             </div>
             {showSingleUser ? (
               <ShowSingleEmployee
+              setUpdateSelectorList={setUpdateSelectorList} updateSelectorList={updateSelectorList}
               componentUpdater={componentUpdater} setComponentUpdater={setComponentUpdater}
               fetchAllData={fetchAllData}
                 singleUserId={singleUserId}
@@ -445,6 +459,7 @@ console.log(value.value);
                           <th className="column-title">Address</th>
                           <th className="column-title">Designation</th>
                           <th className="column-title">Job Status</th>
+                          <th className="column-title">Recruitment</th>
                           <th className="column-title">Salary</th>
                           <th className="column-title">Phone</th>
                         </tr>
@@ -461,7 +476,8 @@ console.log(value.value);
                               <td className=" ">{item.address}</td>
                               <td className=" ">{item.designationName}</td>
                               <td className=" ">{item.jobStatus}</td>
-                              <td className=" ">{item.monthlySalary}</td>
+                              <td className=" ">{item.recruitmentType}</td>
+                              <td className=" ">{item.recruitmentType==="Monthly" || item.recruitmentType==="Contract"?item.monthlySalary:item.weeklySalary}</td>
                               <td className=" ">{item.phoneNum1}</td>
                             </tr>
                           );

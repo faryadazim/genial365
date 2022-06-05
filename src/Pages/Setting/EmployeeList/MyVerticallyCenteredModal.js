@@ -152,8 +152,9 @@ const MyVerticallyCenteredModal = (props) => {
                   <input
                     className={props.employeeListValidator.cnicNum ? "form-control" : "form-control requiredValidateInput"}
                     name="nanr"
-                    placeholder="ex. 33103-4578234-5"
-                    required="required"
+                    type="number"
+                    placeholder="without Dashes Ex, 3310567889234"
+                    onInput={(er) => er.target.value = er.target.value.slice(0, 13)}
                     value={props.addNewEmployee.cnicNum}
                     onChange={(e) => {
                       //    props.changeSubmitButtonCondition()
@@ -199,8 +200,12 @@ const MyVerticallyCenteredModal = (props) => {
                       <input
                         className={props.employeeListValidator.phoneNum1 ? "form-control" : "form-control requiredValidateInput"}
                         name="number"
-                        placeholder="Phone Number 1"
+                        placeholder="without Dashes Ex, 03045678976"
+                        onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+                        type="number"
+
                         value={props.addNewEmployee.phoneNum1}
+
                         onChange={(e) => {
                           //  props.changeSubmitButtonCondition()
                           props.setAddNewEmployee({
@@ -216,6 +221,7 @@ const MyVerticallyCenteredModal = (props) => {
                         className="form-control"
                         name="number"
                         placeholder="Phone Number 2 (Optional)"
+                        onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         value={props.addNewEmployee.phoneNum2}
                         onChange={(e) =>
                           props.setAddNewEmployee({
@@ -231,6 +237,7 @@ const MyVerticallyCenteredModal = (props) => {
                       <input
                         className="form-control"
                         name="number"
+                        onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         placeholder="Phone Number 3 (Optional)"
                         value={props.addNewEmployee.phoneNum3}
                         onChange={(e) => {
@@ -247,6 +254,8 @@ const MyVerticallyCenteredModal = (props) => {
                       <input
                         className="form-control"
                         name="number"
+                        type="number"
+                        onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         placeholder="Home Phone (Optional)"
                         value={props.addNewEmployee.homePhoneNum}
                         onChange={(e) => {
@@ -255,8 +264,7 @@ const MyVerticallyCenteredModal = (props) => {
                             ...props.addNewEmployee,
                             homePhoneNum: e.target.value,
                           })
-                        }
-                        }
+                        }}
                       />
                     </div>
                   </div>
@@ -286,7 +294,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Reference Name<span className="required">*</span>
+                  Reference Name
                 </label>
                 <div className="col-md-4 col-sm-8">
                   <input
@@ -310,6 +318,8 @@ const MyVerticallyCenteredModal = (props) => {
                     className="form-control"
                     name="Phone "
                     placeholder="Reference Phone "
+                    type="number"
+                    onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                     value={props.addNewEmployee.referencePhoneNum}
                     onChange={(e) =>
                     //   {   props.changeSubmitButtonCondition()
@@ -381,7 +391,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Select RecruitmentType Type{" "}
+                  Recruitment Type{" "}
                   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
@@ -470,12 +480,12 @@ const MyVerticallyCenteredModal = (props) => {
                 <div className="col-md-3 col-sm-8">
                   <div>
                     <input
-                      className="form-control form-control-sm"
+                      className={props.employeeListValidator.employeePic1 ? "form-control " : "form-control requiredValidateInput"}
                       id="formFileSm"
                       name="employeePic1"
                       type="file"
                       style={{ height: "33px" }}
-                      onChange={(e)=>props.fileHandle1(e)}
+                      onChange={(e) => props.fileHandle1(e)}
                     />
                   </div>
                 </div>
@@ -486,7 +496,7 @@ const MyVerticallyCenteredModal = (props) => {
                 <div className="col-md-3 col-sm-8">
                   <div>
                     <input
-                      className="form-control form-control-sm"
+                      className={props.employeeListValidator.employeePic2 ? "form-control " : "form-control requiredValidateInput"}
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
@@ -502,7 +512,7 @@ const MyVerticallyCenteredModal = (props) => {
                 <div className="col-md-3 col-sm-8">
                   <div>
                     <input
-                      className="form-control form-control-sm"
+                      className={props.employeeListValidator.employeeCnicFront ? "form-control " : "form-control requiredValidateInput"}
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
@@ -517,7 +527,7 @@ const MyVerticallyCenteredModal = (props) => {
                 <div className="col-md-3 col-sm-8">
                   <div>
                     <input
-                      className="form-control form-control-sm"
+                      className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
@@ -526,7 +536,7 @@ const MyVerticallyCenteredModal = (props) => {
                   </div>
                 </div>
               </div>
-              {props.disableSubmitForUpdatePhoto ?   <>uploading image</>:<>   <div className="form-group mt-2 ">
+              {props.disableSubmitForUpdatePhoto ? <div className="text-center">Uploading Image Please wait ...</div> : <>   <div className="form-group mt-2 ">
                 <div className="col-md-6 offset-md-3 pb-2  ">
                   <button
                     type="submit"
@@ -541,7 +551,7 @@ const MyVerticallyCenteredModal = (props) => {
                 </div>
               </div></>
               }
-           
+
             </form>
           </div>
         </div>

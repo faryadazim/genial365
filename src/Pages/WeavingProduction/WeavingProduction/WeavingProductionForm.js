@@ -412,6 +412,7 @@ const WeavingProductionForm = () => {
             console.log("not available");
             setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
           } else {
+            console.log("this is what im searching , "  , result);
             setLoomDetail({
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
@@ -428,7 +429,8 @@ const WeavingProductionForm = () => {
                 requireWidthpp: result.pileToPileWidth,
                 requirePerPieceWeight: result.perPieceWeightInGrams,
               });
-
+ 
+              setReRender(!reRender);
               var arrDataForAllState = shiftTotalState;
               shiftTotalState.map((eachShiftState, i) => {
                 arrDataForAllState[i].ratePerBorder = parseInt(
@@ -450,6 +452,12 @@ const WeavingProductionForm = () => {
                   result.rateWithoutDrawBox
                 );
               });
+              setfinalStepRequired({
+                requireLengthpp: result.pileToPileLength,
+                requireWidthpp: result.pileToPileWidth,
+                requirePerPieceWeight: result.perPieceWeightInGrams,
+              });
+ 
               setShiftTotalState(arrDataForAllState);
               setReRender(!reRender);
 
@@ -803,20 +811,7 @@ const WeavingProductionForm = () => {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
     } else {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
       const requestOptions = {
         method: "POST",
         headers: {
@@ -933,7 +928,7 @@ const WeavingProductionForm = () => {
           setFirstStep("active");
           setSecondStep("disable");
           setThirdStep("disable");
-
+          FetchListSelector()
 
           // ---------
         })
@@ -1140,7 +1135,7 @@ const WeavingProductionForm = () => {
   // ----------------------------------
   useEffect(() => {
     console.log(currentID, "need to updated this one if null mean no one");
-
+console.log("iddd- " , finalStepRequired);
   }, [finalStepRequired]);
   return (
     <>
