@@ -8,7 +8,7 @@ import ProductionReportReciept from "./ProductionReportReciept";
 import ReactToPrint from "react-to-print";
 
 const ProductionReport = () => {
-  
+
   const componentRef = useRef();
   const showNavMenu = useSelector((state) => state.NavState);
   const dispatch = useDispatch();
@@ -116,9 +116,8 @@ const ProductionReport = () => {
     <>
       {" "}
       <div
-        className={`right_col  h-10 heightFixForFAult  ${
-          showNavMenu == false ? "right_col-margin-remove" : " "
-        } `}
+        className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
+          } `}
         role="main"
       >
         {" "}
@@ -228,7 +227,7 @@ const ProductionReport = () => {
                                   <i
                                     className="fa fa-edit pl-3"
                                     onClick={() => {
-                                   
+
                                       dispatch(
                                         updateCurrentId(
                                           item.productionId
@@ -269,7 +268,7 @@ const ProductionReport = () => {
                           trigger={() => {
                             return (
                               <button
-                                className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound" 
+                                className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
                               >
                                 <i className="fa fa-print"></i>
                               </button>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setNavMd, setNavSm, updateCurrentId  } from "../../../store/actions/NavState";
+import { setNavMd, setNavSm, updateCurrentId } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
-import {endPoint} from '../../../config/Config.js'
+import { endPoint } from '../../../config/Config.js'
 
 
 const WeavingProductionForm = () => {
@@ -412,7 +412,7 @@ const WeavingProductionForm = () => {
             console.log("not available");
             setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
           } else {
-            console.log("this is what im searching , "  , result);
+            console.log("this is what im searching , ", result);
             setLoomDetail({
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
@@ -429,7 +429,7 @@ const WeavingProductionForm = () => {
                 requireWidthpp: result.pileToPileWidth,
                 requirePerPieceWeight: result.perPieceWeightInGrams,
               });
- 
+
               setReRender(!reRender);
               var arrDataForAllState = shiftTotalState;
               shiftTotalState.map((eachShiftState, i) => {
@@ -457,7 +457,7 @@ const WeavingProductionForm = () => {
                 requireWidthpp: result.pileToPileWidth,
                 requirePerPieceWeight: result.perPieceWeightInGrams,
               });
- 
+
               setShiftTotalState(arrDataForAllState);
               setReRender(!reRender);
 
@@ -811,7 +811,7 @@ const WeavingProductionForm = () => {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
     } else {
 
- 
+
       const requestOptions = {
         method: "POST",
         headers: {
@@ -864,16 +864,6 @@ const WeavingProductionForm = () => {
         })
       };
 
-
-
-
-
-
-
-
-
-
-      console.log(requestOptions);
       fetch(url + "api/Production", requestOptions)
         .then((response) => response.json())
         .then((data) => {
@@ -1135,7 +1125,7 @@ const WeavingProductionForm = () => {
   // ----------------------------------
   useEffect(() => {
     console.log(currentID, "need to updated this one if null mean no one");
-console.log("iddd- " , finalStepRequired);
+    console.log("iddd- ", finalStepRequired);
   }, [finalStepRequired]);
   return (
     <>

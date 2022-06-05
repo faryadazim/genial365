@@ -24,7 +24,7 @@ const ProductionReportReciept = React.forwardRef(({ selectedProductionData }, re
               <div className="col-md-12 col-md-12 col-sm-12 col-12 col-xl-12">
                 <div className=" col-md-6 col-sm-6 col-6 col-xl-6">Date</div>
                 <div className=" col-md-6 col-sm-6 col-6 col-xl-6 text-right">
-                
+
                   {selectedProductionData.production_date}
                 </div>
               </div>
