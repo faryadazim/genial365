@@ -34,8 +34,10 @@ const ProductionReport = () => {
         method: "GET",
         headers: {
           Authorization:
-            "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
-          "Content-Type": "application/json",
+            "bearer" +
+            " " +
+            JSON.parse(localStorage.getItem("access_token")).access_token,
+          "Content-Type": "application/x-www-form-urlencoded",
         },
       }
     )
@@ -64,8 +66,10 @@ const ProductionReport = () => {
       method: "GET",
       headers: {
         Authorization:
-          "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
-        "Content-Type": "application/json",
+          "bearer" +
+          " " +
+          JSON.parse(localStorage.getItem("access_token")).access_token,
+        "Content-Type": "application/x-www-form-urlencoded",
       },
     })
       .then((response) => {
@@ -83,31 +87,7 @@ const ProductionReport = () => {
       });
     console.log(dateTo);
   };
-  // const deleteProductionData = () => {
-  //   console.log(selectedProductionData.production_id, "delete this ");
-  //   fetch(
-  //     `${endPoint}api/DeleteProduction?id=${selectedProductionData.production_id}`,
-  //     {
-  //       method: "DELETE",
-  //       headers: {
-  //         Authorization:
-  //           "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
-  //         "Content-Type": "application/json",
-  //       },
-  //     }
-  //   )
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       console.log(data);
-  //       fetchHistory();
-  //       setisLoaderSelectedProductionData(true);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err, "err");
-  //     });
-  // };
+   
   useEffect(() => {
     dispatch(setNavSm());
   }, []);
@@ -125,7 +105,7 @@ const ProductionReport = () => {
           <div className="col-md-3 ">
             <div className="x_panel">
               <div className="x_title">
-                <h2 className="pl-2 pt-2">Report Generator</h2>
+                <h2 className="pl-2 pt-2">Production Report Generator</h2>
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
                 <div className="clearfix" />
               </div>
