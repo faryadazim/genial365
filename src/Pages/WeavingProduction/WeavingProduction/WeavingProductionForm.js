@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector  } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setNavMd, setNavSm, updateCurrentId } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
@@ -9,6 +10,7 @@ import { endPoint } from '../../../config/Config.js'
 
 const WeavingProductionForm = () => {
   const dispatch = useDispatch();
+  const navigateTo = useNavigate();
   const url = localStorage.getItem("authUser");
   const userId = localStorage.getItem("loginId");
 
@@ -991,7 +993,9 @@ const WeavingProductionForm = () => {
 
     fetch(`${endPoint}api/UpdateProduction?id=${idToUpdateProductionTable}`, requestOptions)
       .then(response => response.text())
-      .then(result => console.log(result))
+      .then(result => {
+        navigateTo("/ProductionReport");
+        console.log(result)})
       .catch(error => console.log('error', error));
 
 
