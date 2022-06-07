@@ -706,3 +706,11 @@ font-weight: 300 !important;
 .nav.child_menu li .active {
 color: white !important;
 }
+
+
+.text-customOrange{
+  color: #f79c74;
+}
+.text-customBlue{
+  color:#003a4d;
+}

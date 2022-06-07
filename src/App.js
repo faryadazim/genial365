@@ -114,7 +114,7 @@ function App() {
                     setisLogin={setisLogin}
                   />
                   <Routes>
-                    <Route path="/" element={<Loader />} />
+                 
                     <Route path="RoleAccess" element={<AddRole />} />
                     <Route path="ModuleAccess" element={<AddModules />} />
                     <Route path="UserAccess" element={<AddUser />} />
@@ -123,6 +123,7 @@ function App() {
                       path="PermissionAccess"
                       element={<RolePermission />}
                     />
+                       <Route path="/" element={<Loader />} />
                     <Route path="EmployeesList" element={<EmployeeList />} />
                     <Route
                       path="GrayProductList"

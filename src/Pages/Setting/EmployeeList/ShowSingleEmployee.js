@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { endPoint } from "../../../config/Config";
 import Loader from "../../../Layout/Loader/Loader";
 const ShowSingleEmployee = ({
   singleUserId,
@@ -543,7 +544,7 @@ const ShowSingleEmployee = ({
                         <div className="col-md-6">
                           <div className="image text-right">
                             <img
-                              src={`${url}${EmployeeData.employeePic1.replace(
+                              src={`${endPoint}${EmployeeData.employeePic1.replace(
                                 /['"]+/g,
                                 ""
                               )}`}
