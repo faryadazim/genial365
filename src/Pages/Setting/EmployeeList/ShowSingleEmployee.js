@@ -193,7 +193,7 @@ const ShowSingleEmployee = ({
               <div className="x_title">
                 <h2 className="pl-2 pt-2">Employee Datails</h2>
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                  <li>
+                  <li className="d-none">
                     {showFormControlClass ? (
                       <a
                         className="close-link mt-2 mr-2"

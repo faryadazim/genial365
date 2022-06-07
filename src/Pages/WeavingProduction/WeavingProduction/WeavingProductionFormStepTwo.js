@@ -424,10 +424,10 @@ const WeavingProductionFormStepTwo = ({
                               />
                             </div>
                           </div>
-                          <div className="col-md-2 text-right">
+                          {/* <div className="col-md-2 text-right">
                             <i className="fa fa-close mt-1 mr-2"></i>
 
-                          </div>
+                          </div> */}
                         </div>
                       </td>
                     </tr>

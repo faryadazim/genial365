@@ -196,17 +196,20 @@ const WeavingProductionForm = () => {
   // Function of First Step
   const fetchNewRoleName = () => {
     fetch(url + "api/RoleName", {
-      method: "GET",
+      method: "GET", 
       headers: {
-        "Authorization":
-          "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
-        "Content-Type": "application/json"
+        Authorization:
+          "bearer" +
+          " " +
+          JSON.parse(localStorage.getItem("access_token")).access_token,
+          "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
       .then((data) => {
         console.log(data, "Role name----------------------");
         setRoleNameBackEnd(data)
+        // console.log("lof" , role );
 
       });
 
@@ -814,64 +817,75 @@ const WeavingProductionForm = () => {
     } else {
 
 
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          Authorization:
-            "bearer" +
-            " " +
-            JSON.parse(localStorage.getItem("access_token")).access_token,
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
+      // const requestOptions = {
+      //   method: "POST",
+      //   headers: {
+      //     Authorization:
+            // "bearer" +
+            // " " +
+            // ,
+      //     "Content-Type": "application/x-www-form-urlencoded",
+      //   }, 
+      //   body: JSON.stringify()
+      // };
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+      myHeaders.append("Content-Type", "application/json");
 
 
-        body: JSON.stringify({
-          "roll_no": roleNameBackEnd,
-          "production_date": `${rollDetail.date}T00:00:00.928Z`,
-          "roll_weight": parseFloat(rollDetail.rollWeight),
-          "loom_id": rollDetail.loomNumber,
-          "borderSize_id": rollDetail.Size,
-          "borderQuality_id": rollDetail.Quality,
-          "programm_no": (rollDetail.programNumber),
-          "grayProduct_id": loomDetail.grayProductId,
-          "pile_to_pile_length": finalStepInput.pileToPileLength,
-          "pile_to_pile_width": finalStepInput.pileToPileWidth,
-          "cut_piece_size": finalStepInput.cutPieceSize,
-          "cut_piece_weight": finalStepInput.cutPieceWeight,
-          "remarks": finalStepInput.remarks,
-          "total_border": grandFinalTotal.totalBorders,
-          "total_pieces": grandFinalTotal.totalPiece,
-          "b_grade_pieces": grandFinalTotal.totalBGrade,
-          "a_grade_pieces": grandFinalTotal.totalAGrade,
-          "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
-          "required_length_p_to_p": finalStepRequired.requireLengthpp,
-          "required_width_p_to_p": finalStepRequired.requireWidthpp,
-          "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
-          "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
-          "shifts": shiftTotalState.map((eachShift, i) => {
-            return {
-              "shift_name": eachShift.shiftSelectorValue.label,
-              "weaver_employee_Id": eachShift.weaverSelectorValue.value,
-              "no_of_border": eachShift.noOfBorder,
-              "total_pieces": eachShift.totalPiece,
-              "b_grade_piece": eachShift.bGradePiece,
-              "a_grade_piece": eachShift.aGradePieces,
-              "rate_per_border": eachShift.ratePerBorder,
-              "extra_amt": eachShift.extraAmount.amount,
-              "extra_desc": eachShift.extraAmount.desc,
-              "total_amt": eachShift.totalAmount,
-              "natting_employee_Id": eachShift.nativingSelectorValue.value,
-              "known_faults_ids": knownFaultsIdsFunction(i),
+      var raw = JSON.stringify( {
+        "roll_no": roleNameBackEnd,
+        "production_date": `${rollDetail.date}T00:00:00.928Z`,
+        "roll_weight": parseFloat(rollDetail.rollWeight),
+        "loom_id": rollDetail.loomNumber,
+        "borderSize_id": rollDetail.Size,
+        "borderQuality_id": rollDetail.Quality,
+        "programm_no": (rollDetail.programNumber),
+        "grayProduct_id": loomDetail.grayProductId,
+        "pile_to_pile_length": finalStepInput.pileToPileLength,
+        "pile_to_pile_width": finalStepInput.pileToPileWidth,
+        "cut_piece_size": finalStepInput.cutPieceSize,
+        "cut_piece_weight": finalStepInput.cutPieceWeight,
+        "remarks": finalStepInput.remarks,
+        "total_border": grandFinalTotal.totalBorders,
+        "total_pieces": grandFinalTotal.totalPiece,
+        "b_grade_pieces": grandFinalTotal.totalBGrade,
+        "a_grade_pieces": grandFinalTotal.totalAGrade,
+        "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
+        "required_length_p_to_p": finalStepRequired.requireLengthpp,
+        "required_width_p_to_p": finalStepRequired.requireWidthpp,
+        "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
+        "piece_in_one_border": loomDetail.NumOfPieceOneBorder,
+        "shifts": shiftTotalState.map((eachShift, i) => {
+          return {
+            "shift_name": eachShift.shiftSelectorValue.label,
+            "weaver_employee_Id": eachShift.weaverSelectorValue.value,
+            "no_of_border": eachShift.noOfBorder,
+            "total_pieces": eachShift.totalPiece,
+            "b_grade_piece": eachShift.bGradePiece,
+            "a_grade_piece": eachShift.aGradePieces,
+            "rate_per_border": eachShift.ratePerBorder,
+            "extra_amt": eachShift.extraAmount.amount,
+            "extra_desc": eachShift.extraAmount.desc,
+            "total_amt": eachShift.totalAmount,
+            "natting_employee_Id": eachShift.nativingSelectorValue.value,
+            "known_faults_ids": knownFaultsIdsFunction(i),
 
-            }
-          })
+          }
         })
+      });
+      
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
       };
 
-      fetch(url + "api/Production", requestOptions)
-        .then((response) => response.json())
-        .then((data) => {
-
+      fetch(endPoint+"api/Production", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        
           // ----------------- Setting Component To initial State
           setLoomListValue({})
           setborderQualityValue({})
@@ -923,19 +937,80 @@ const WeavingProductionForm = () => {
           setSecondStep("disable");
           setThirdStep("disable");
           FetchListSelector()
+      })
+      .catch(error => console.log('error', error));
 
-          // ---------
-        })
-        .catch((err) => {
-          console.log("err in appi fettching", err);
-        });
+
+
+
+      // fetch(url + "api/Production", requestOptions)
+      //   .then((response) => response.json())
+      //   .then((data) => {
+
+      //     // ----------------- Setting Component To initial State
+      //     setLoomListValue({})
+      //     setborderQualityValue({})
+      //     setBorderSizeValue({})
+      //     // setStepOneValidator(stepOneValidatorInitialValue)
+      //     setrollDetail({
+      //       // rollNo: "",
+      //       date: dateToday,
+      //       rollWeight: "",
+      //       loomNumber: "",
+      //       Quality: "",
+      //       Size: "",
+      //       programNumber: "",
+      //     });
+      //     setLoomDetail({
+      //       loomSize: "Auto Define",
+      //       jacquard: "Auto Define",
+      //       drawBox: "Auto Define",
+      //       NumOfPieceOneBorder: "Auto Define",
+      //       grayProductId: ""
+      //     });
+      //     setratePerBorderTempState("");
+      //     setUpdateNumberOfPieceOneBorderInput({ QualityId: "", BorderSizeId: "", LoomSize: "" });
+      //     setShiftTotalState(totalShiftInitialState);
+      //     setGrandFinalTotal({
+      //       totalBorders: 0,
+      //       totalPiece: 0,
+      //       totalBGrade: 0,
+      //       totalAGrade: 0,
+      //     });
+      //     setStepOneValidator(stepOneValidatorInitialValue)
+
+      //     setfinalStepRequired({
+      //       requireLengthpp: 0,
+      //       requireWidthpp: 0,
+      //       requirePerPieceWeight: 0,
+      //     });
+      //     setfinalStepInput({
+      //       pileToPileLength: "",
+      //       pileToPileWidth: "",
+      //       cutPieceSize: "",
+      //       cutPieceWeight: "",
+      //       remarks: ""
+      //     });
+
+      //     fetchNewRoleName()
+
+      //     setFirstStep("active");
+      //     setSecondStep("disable");
+      //     setThirdStep("disable");
+      //     FetchListSelector()
+
+      //     // ---------
+      //   })
+      //   .catch((err) => {
+      //     console.log("err in appi fettching", err);
+      //   });
 
     }
-  }
+  } 
   const updateWeavingProductionForm = () => {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization", "Bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g");
+    myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
     myHeaders.append("Content-Type", "application/json");
 
 
@@ -1003,11 +1078,11 @@ const WeavingProductionForm = () => {
   }
   const generateReportOfSpecificId = (id) => {
 
-    fetch(`${url}api/GetProductById?id=${id}`, {
+    fetch(`${endPoint}api/GetProductById?id=${id}`, {
       method: "GET",
       headers: {
         Authorization:
-          "bearer XRuIpUQo72izREUQ52zPC59IpINxX402zEAyJToI1hBhjpUvK4t4awHAmUnUs9VEx1bFL84-azlxZxJbRElDDdvDjlH1xiyI4UaDcQko4cSBM0TRklE0vl6J61aSo2zJiJ3YJKaJ939lHky6rnQ3xkov_RhsLhmCgQBlXeijIIrPkCEaDCuWURqnFX9HwxDLX-nha-sAvt2dnsOohdsFDEHaLG2T7KZfdlWe46OYVFcBzVLrnJcpiekmSeqf9LRZL9kqhgBlDx-0YBETgdeNmQ1_JgXKJ9NACwsS6Ex97Rm52HxhmaG6-dep1GDW7giwWQ_vZy0q31V3ad85kR_KT4jTZJTkzBpYS5WDhMeipR8Ovw3xh-IEVgJtd-qwhJ-t2P8oIkLPUWxZulCY0ZVd1G1YP5qIHbQJsSfMXEmMUFgLNefq5rS90Jj8HWSZR_Wnzo2d8z03XIp_bb3YSoXgjWYXwle67zlSphI8-nWzoiLoW8h8azO5SvDVfymXMbfUmw-93j_tIV7llT6EwHYt3g",
+        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
         "Content-Type": "application/json",
       },
     })
@@ -1130,7 +1205,7 @@ const WeavingProductionForm = () => {
 
   // ----------------------------------
   useEffect(() => {
-    console.log(currentID, "need to updated this one if null mean no one");
+    console.log(currentID, "need to updated this one if  " );
     console.log("iddd- ", finalStepRequired);
   }, [finalStepRequired]);
   return (
@@ -1314,9 +1389,9 @@ const WeavingProductionForm = () => {
                             </button> </> : <>
                             <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
                       }
-                      <button className="btn btn-danger btn-sm  px-4  ">
+                      {/* <button className="btn btn-danger btn-sm  px-4  ">
                         Print <i className="fa fa-print pl-2"> </i>
-                      </button>
+                      </button> */}
                     </div>
                   </div>
                 ) : (

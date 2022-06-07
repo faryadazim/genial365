@@ -66,9 +66,7 @@ const ProductionReport = () => {
       method: "GET",
       headers: {
         Authorization:
-          "bearer" +
-          " " +
-          JSON.parse(localStorage.getItem("access_token")).access_token,
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     })
@@ -87,7 +85,7 @@ const ProductionReport = () => {
       });
     console.log(dateTo);
   };
-   
+
   useEffect(() => {
     dispatch(setNavSm());
   }, []);

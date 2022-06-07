@@ -83,7 +83,10 @@ const Selector = ({ fetchEmployeeByDemand  , setStateUpdater
     fetch(url +"api/employeeListsName", {
       method: "GET",
       headers: {
-        // Authorization: "bearer" + " " + e,
+        Authorization:
+          "bearer" +
+          " " +
+          JSON.parse(localStorage.getItem("access_token")).access_token,
         "Content-Type": "application/x-www-form-urlencoded",
       },
     })

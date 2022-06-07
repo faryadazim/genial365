@@ -29,6 +29,8 @@ import ProductionReport from "./Pages/WeavingProduction/ProductionReport/Product
 import { endPoint } from "./config/Config";
 import WeaverWiseReport from "./Pages/WeavingProduction/WeaverWiseReport/WeaverWiseReport";
 import GenrProductionReport from "./Pages/WeavingProduction/GenrProductionReport/GenrProductionReport";
+import SalaryReport from "./Pages/WeavingProduction/SalaryReport/SalaryReport";
+import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");
@@ -155,6 +157,14 @@ function App() {
                     <Route
                       path="GenrProductionReport"
                       element={<GenrProductionReport />}
+                    />
+                    <Route
+                      path="SalaryReport"
+                      element={<SalaryReport />}
+                    />
+                    <Route
+                      path="WeaverLadger"
+                      element={<WeaverLadger />}
                     />
                   </Routes>
                   <Footer />

@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
 import LoomListUpdate from "./LoomListUpdate";
 import AddNewLoomModel from './AddNewLoomModel'
+import { endPoint } from "../../../config/Config";
 
 const LoomManagement = () => {
   let defaultValueForLoomValidator = { loomSize: true, drawBox: true, jacquard: true, weavingUnit: true }
@@ -44,13 +45,13 @@ const LoomManagement = () => {
   const DeleteLoom = (e) => {
     fetch(`${url}api/LoomLists?id=${e}`, {
       method: "DELETE",
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
+      headers: {
+        Authorization:
+              "bearer" +
+              " " +
+              JSON.parse(localStorage.getItem("access_token")).access_token,
+              "Content-Type": "application/json" ,
+      },
     })
       .then((response) => {
         // deleteing Role for this Id
@@ -67,8 +68,14 @@ const LoomManagement = () => {
       e.preventDefault();
       console.log(UpdateLoomList);
       const requestOptions = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        method: "PUT", 
+        headers: {
+          Authorization:
+                "bearer" +
+                " " +
+                JSON.parse(localStorage.getItem("access_token")).access_token,
+                "Content-Type": "application/json" ,
+        },
         body: JSON.stringify(UpdateLoomList),
       };
 
@@ -102,7 +109,16 @@ const LoomManagement = () => {
     } else {
       const requestOptions = {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        // headers: {
+          
+        // },
+          headers: {
+            Authorization:
+              "bearer" +
+              " " +
+              JSON.parse(localStorage.getItem("access_token")).access_token,
+              "Content-Type": "application/json" ,
+          },
         body: JSON.stringify(AddNewLoom),
       };
       console.log(requestOptions.body);
@@ -125,12 +141,27 @@ const LoomManagement = () => {
 
   };
   const fetchAllData = () => {
-    fetch(url + "api/LoomLists")
-      .then((response) => response.json())
-      .then((json) => {
-        setLoomList(json);
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders, 
+      redirect: 'follow'
+    };
+    
+    fetch(endPoint+"api/LoomLists", requestOptions)
+      .then(response => response.text())
+      .then(result => { 
+        setLoomList(JSON.parse(result));
         setisLoading(false);
-      });
+      })
+      .catch(error => console.log('error', error));
+
+
+
+
+ 
   };
   useEffect(() => {
     fetchAllData();

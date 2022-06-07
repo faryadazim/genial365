@@ -1,7 +1,8 @@
 // React Import
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter } from "react-router-dom";
+// import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 // Redux Import
 import { Provider } from "react-redux";
 import {
@@ -14,15 +15,14 @@ import { reducers } from "./store/reducers/index";
 import App from "./App";
 const store = createStore(reducers, compose(applyMiddleware(thunk)));
 // Component Import
-
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <Provider store={store}>
         <App />
       </Provider>
-    </BrowserRouter>
+    </HashRouter>
   </React.StrictMode>
 );
 

@@ -6,8 +6,8 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
   const [disableLoginButton, setdisableLoginButton] = useState(false);
   const [credientials , setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
-    username: "faryadazim",
-    password: "5@7B2s6d2k6$8",
+    username: "",
+    password: "",
     grant_type: "password",
   });
    
