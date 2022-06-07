@@ -21,7 +21,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
                 className={`page-link height-page-link  border-radius-none  ${
                   activeClass === true && index === 0 ? "active-pagination" : " "
                 }`}
-                href="#!"
+        
                 onClick={() => {
                   if (index === 0) {
                     setactiveClass(true);

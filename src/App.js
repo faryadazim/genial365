@@ -31,6 +31,7 @@ import WeaverWiseReport from "./Pages/WeavingProduction/WeaverWiseReport/WeaverW
 import GenrProductionReport from "./Pages/WeavingProduction/GenrProductionReport/GenrProductionReport";
 import SalaryReport from "./Pages/WeavingProduction/SalaryReport/SalaryReport";
 import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
+import JournalVoucher from "./Pages/Finance/WeaverLadger/JournalVoucher/JournalVoucher";
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");
@@ -167,6 +168,11 @@ function App() {
                       path="WeaverLadger"
                       element={<WeaverLadger />}
                     />
+                    <Route
+                      path="JournalVoucherForm"
+                      element={<JournalVoucher />}
+                    />
+                    
                   </Routes>
                   <Footer />
                 </div>
