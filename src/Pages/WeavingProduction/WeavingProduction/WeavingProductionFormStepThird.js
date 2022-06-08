@@ -1,7 +1,7 @@
 import React, { useState, } from "react";
 
 const WeavingProductionFormStepThird = ({
-  finalStepRequired, grandFinalTotal,
+  finalStepRequired, grandFinalTotal,rollDetail,
   finalStepInput, setfinalStepInput ,stepThirdValidator
 }) => {
 
@@ -110,13 +110,20 @@ const WeavingProductionFormStepThird = ({
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}  
+     
+        {(rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
+                       
+                       {/* console.log(rollDetail.rollWeight  ," rollWeight");
+                       console.log(grandFinalTotal.totalBGrade  ," grandFinalTotal.totalBGrade");
+                       console.log(finalStepInput.cutPieceWeight  ," rollWeight");
+                       console.log(rollDetail.rollWeight  ," rollWeight"); */}
+                       
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
-                          {finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} </div>
+                done  {finalStepRequired.requirePerPieceWeight } </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                          {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight -
-                            finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)}
+                     not set      {/* pp   {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight -
+                        finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} */}
                         </div>
                       </td>
                     </tr>

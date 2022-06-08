@@ -46,6 +46,7 @@ const customStyles = {
   }),
 };
 
+
 const JournalVoucher = () => {
   const showNavMenu = useSelector((state) => state.NavState);
   const [weaverOptions, setWeaverOptions] = useState([]);
@@ -58,7 +59,15 @@ const JournalVoucher = () => {
   const [dateSelected, setDateSelected] = useState(dateToday);
   const [lodgerBalanceDontShowAtStart, setLodgerBalanceDontShowAtStart] =
     useState(true);
+const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
+  const [formValidator, setFormValidator] = useState({
+    description: true,
+    debit: true,
+    credit: true,
+
+  })
   const [jvFormBody, setjvFormBody] = useState({
+    voucherInv: "",
     description: "",
     debit: 0,
     credit: 0,
@@ -91,7 +100,26 @@ const JournalVoucher = () => {
       })
       .catch((error) => console.log("error", error));
   };
+  const fetchVoucherName = () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
 
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeaders,
+      redirect: 'follow'
+    };
+
+    fetch(`${endPoint}api/VoucherName`, requestOptions)
+      .then(response => response.text())
+      .then(result => setjvFormBody({
+        voucherInv: (JSON.parse(result)),
+        description: "",
+        debit: 0,
+        credit: 0,
+      }))
+      .catch(error => console.log('error', error));
+  }
   const fetchLadgerBalance = (e) => {
     var myHeaders = new Headers();
     myHeaders.append(
@@ -111,51 +139,65 @@ const JournalVoucher = () => {
       .catch((error) => console.log("error", error));
   };
   const saveJVForm = () => {
-    console.log(weaverValue,  parseFloat(jvFormBody.debit), "actuall data");
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-      `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
-    );
-    myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({
-      date: `${dateSelected}T00:00:00.000Z`,
-      description: jvFormBody.description,
-      debit: parseFloat(jvFormBody.debit),
-      credit: parseFloat(jvFormBody.credit),
-    });
 
-    var requestOptions = {
-      method: "POST",
-      headers: myHeaders,
-      body: raw,
-      redirect: "follow",
-    };
 
-    fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
-      .then((response) => response.text())
-      .then((result) => {
-        console.log(result);
-        setjvFormBody({
-          description: "",
-          debit: 0,
-          credit: 0,
-        });
-        fetchLadgerBalance(weaverValue.value);
-      })
-      .catch((error) => console.log("error", error));
+
+    if (jvFormBody.description == "") {
+      console.log("cre empty");
+      setFormValidator({ ...formValidator, description: false })
+    } else if (jvFormBody.credit == "" && jvFormBody.debit == "" && jvFormBody.credit == 0 && jvFormBody.debit == 0) {
+      setFormValidator({ ...formValidator, debit: false, credit: false })
+    } else {
+
+      var myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+      );
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        date: `${dateSelected}T00:00:00.000Z`,
+        description: jvFormBody.description,
+        debit: parseFloat(jvFormBody.debit),
+        credit: parseFloat(jvFormBody.credit),
+        voucherInv: jvFormBody.voucherInv
+      });
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
+        .then((response) => response.text())
+        .then((result) => {
+          fetchLadgerBalance(weaverValue.value);
+          fetchVoucherName()
+          setFormValidator({
+            description: true,
+            debit: true,
+            credit: true,
+
+          })
+
+        })
+        .catch((error) => console.log("error", error));
+    }
   };
   useEffect(() => {
     fetchWeaverOptions();
+    fetchVoucherName()
   }, []);
 
   return (
     <div
       role="main"
-      className={`top_nav bg-light p-1 px-3 heightForJV ${
-        showNavMenu == false ? "right_col-margin-remove" : " "
-      }  `}
+      className={`top_nav bg-light p-1 px-3 heightForJV ${showNavMenu == false ? "right_col-margin-remove" : " "
+        }  `}
     >
       <div className="x_panel p ">
         <div className="x_title">
@@ -173,7 +215,7 @@ const JournalVoucher = () => {
                 <div className="col-md-8 col-sm-8">
                   <input
                     className="form-control form-control-sm"
-                    value="RL-2022-04"
+                    value={jvFormBody.voucherInv}
                     disabled
                   />
                 </div>
@@ -192,6 +234,7 @@ const JournalVoucher = () => {
                       value={weaverValue}
                       onChange={(e) => {
                         setWeaverValue({ label: e.label, value: e.value });
+                        setDisableSaveButtonInitial(false)
                         fetchLadgerBalance(e.value);
                         setLodgerBalanceDontShowAtStart(false);
                       }}
@@ -212,9 +255,9 @@ const JournalVoucher = () => {
                       <strong className="text-dark">
                         {" "}
                         {LadgerBalanceState < 0
-                          ? `${ Math.abs(( LadgerBalanceState))  }  Cr
+                          ? `${Math.abs((LadgerBalanceState))}  Cr
                           `
-                          : `${Math.abs(LadgerBalanceState)} Dr` }
+                          : `${Math.abs(LadgerBalanceState)} Dr`}
                       </strong>
                     </label>
                   </div>
@@ -275,182 +318,182 @@ const JournalVoucher = () => {
           </form>
 
           {/* ---------------table */}
-          
-            <div className="x_content mt-2">
-              <div
-                className="table-responsive px-2"
-                style={{ overflowX: "unset" }}
+
+          <div className="x_content mt-2">
+            <div
+              className="table-responsive px-2"
+              style={{ overflowX: "unset" }}
+            >
+              <table
+                className="table   jambo_table bulk_action "
+              // style={{ height: "129px" }}
               >
-                <table
-                  className="table   jambo_table bulk_action "
-                  // style={{ height: "129px" }}
-                >
-                  <thead>
-                    {/* */}
-                    <tr className="headings-for-Production-Form-Shif ">
-                      <th
-                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                <thead>
+                  {/* */}
+                  <tr className="headings-for-Production-Form-Shif ">
+                    <th
+                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                        style={{ width: "40%" }}
-                      >
-                        <div className=" py-1 d-flex justify-content-center ">
-                          Description
-                        </div>
-                      </th>
-                      <th
-                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                      style={{ width: "40%" }}
+                    >
+                      <div className=" py-1 d-flex justify-content-center ">
+                        Description
+                      </div>
+                    </th>
+                    <th
+                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                        style={{ width: "20%" }}
-                      >
-                        <div className=" py-1 d-flex justify-content-center ">
-                          Debit
-                        </div>
-                      </th>
-                      <th
-                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                      style={{ width: "20%" }}
+                    >
+                      <div className=" py-1 d-flex justify-content-center ">
+                        Debit
+                      </div>
+                    </th>
+                    <th
+                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                        style={{ width: "20%" }}
-                      >
-                        <div className=" py-1 d-flex justify-content-center ">
-                          Credit
-                        </div>
-                      </th>
-                      <th
-                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                      style={{ width: "20%" }}
+                    >
+                      <div className=" py-1 d-flex justify-content-center ">
+                        Credit
+                      </div>
+                    </th>
+                    <th
+                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                        style={{ width: "20%" }}
-                      >
-                        <div className=" py-1 d-flex justify-content-center ">
-                          Balance
-                        </div>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="headings-for-Production-Form-Shif ">
-                      <td
-                        className="column-title     text-center  p-0 px-1"
-                        style={{
-                          width: "10%",
-                          paddingRight: "2px",
-                          paddingLeft: "2px",
-                        }}
-                      >
-                        <div className=" py-1">
-                          <input
-                            className="form-control"
-                            type="text"
-                            value={jvFormBody.description}
-                            onChange={(e) => {
-                              setjvFormBody({
-                                ...jvFormBody,
-                                description: e.target.value,
-                              });
-                            }}
-                            placeholder="Desc. Here....."
-                          />
-                        </div>
-                      </td>
-                      <td
-                        className="column-title     text-center  p-0 px-1"
-                        style={{
-                          paddingRight: "2px",
-                          paddingLeft: "2px",
-                        }}
-                      >
-                        <div className=" py-1">
-                          <input
-                            className="form-control"
-                            type="number"
-                            value={jvFormBody.debit}
-                            onChange={(e) => {
-                              setjvFormBody({
-                                ...jvFormBody,
-                                debit: e.target.value,
-                                credit: 0,
-                              });
-                            }}
-                            placeholder="Debit Ex.3456...."
-                          />
-                        </div>
-                      </td>
-                      <td
-                        className="column-title     text-center  p-0 px-1"
-                        style={{
-                          paddingRight: "2px",
-                          paddingLeft: "2px",
-                        }}
-                      >
-                        <div className=" py-1">
-                          <input
-                            className="form-control"
-                            type="number"
-                            value={jvFormBody.credit}
-                            onChange={(e) => {
-                              setjvFormBody({
-                                ...jvFormBody,
-                                credit: e.target.value,
-                                debit: 0,
-                              });
-                            }}
-                            placeholder="Credit Ex.3456...."
-                          />
-                        </div>
-                      </td>
-                      <td
-                        className="column-title     text-center  p-0 px-1"
-                        style={{
-                          paddingRight: "2px",
-                          paddingLeft: "2px",
-                        }}
-                      >
-                        <div className=" py-1">
-                          <input
-                            className="form-control"
-                            type="text"
-                            // {LadgerBalanceState < 0
-                            //   ? `${ Math.abs(( LadgerBalanceState))  }  Cr
-                            //   `
-                            //   : `${Math.abs(LadgerBalanceState)} Dr` }
-                              value={
-                                parseFloat(LadgerBalanceState) -
-                                parseFloat(jvFormBody.credit) +  parseFloat(jvFormBody.debit)  <
-                                0
-                                 ? 
-                                `${ 
-                                  Math.abs(parseFloat(LadgerBalanceState) -
-                                    parseFloat(jvFormBody.credit) +  parseFloat(jvFormBody.debit) )
-                                    
-                                   } Cr `:
-                                   `${ 
-                                    Math.abs(parseFloat(LadgerBalanceState) -
-                                    parseFloat(jvFormBody.credit) +  parseFloat(jvFormBody.debit) )
-                                    
-                                   } Dr `
-                            } 
-                            disabled={true}
-                          />
-                        </div>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <div className="row">
-                  <div className="col-md-12 text-right my-2">
-                    <button
-                      className="btn btn-sm btn-primary  "
-                      style={{ width: "155px" }}
-                      onClick={() => {
-                        saveJVForm();
+                      style={{ width: "20%" }}
+                    >
+                      <div className=" py-1 d-flex justify-content-center ">
+                        Balance
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr className="headings-for-Production-Form-Shif ">
+                    <td
+                      className="column-title     text-center  p-0 px-1"
+                      style={{
+                        width: "10%",
+                        paddingRight: "2px",
+                        paddingLeft: "2px",
                       }}
                     >
-                      Save
-                    </button>
-                  </div>
+                      <div className=" py-1">
+                        <input
+                          className={formValidator.description?"form-control":"form-control requiredValidateInput "}
+                          type="text"
+                          value={jvFormBody.description}
+                          onChange={(e) => {
+                            setjvFormBody({
+                              ...jvFormBody,
+                              description: e.target.value,
+                            });
+                          }}
+                          placeholder="Desc. Here....."
+                        />
+                      </div>
+                    </td>
+                    <td
+                      className="column-title     text-center  p-0 px-1"
+                      style={{
+                        paddingRight: "2px",
+                        paddingLeft: "2px",
+                      }}
+                    >
+                      <div className=" py-1">
+                        <input
+                          className={formValidator.debit?"form-control":"form-control requiredValidateInput "}
+                          type="number"
+                          value={jvFormBody.debit}
+                          onChange={(e) => {
+                            setjvFormBody({
+                              ...jvFormBody,
+                              debit: e.target.value,
+                              credit: 0,
+                            });
+                          }}
+                          placeholder="Debit Ex.3456...."
+                        />
+                      </div>
+                    </td>
+                    <td
+                      className="column-title     text-center  p-0 px-1"
+                      style={{
+                        paddingRight: "2px",
+                        paddingLeft: "2px",
+                      }}
+                    >
+                      <div className=" py-1">
+                        <input
+                          className={formValidator.credit?"form-control":"form-control requiredValidateInput "}
+                          type="number"
+                          value={jvFormBody.credit}
+                          onChange={(e) => {
+                            setjvFormBody({
+                              ...jvFormBody,
+                              credit: e.target.value,
+                              debit: 0,
+                            });
+                          }}
+                          placeholder="Credit Ex.3456...."
+                        />
+                      </div>
+                    </td>
+                    <td
+                      className="column-title     text-center  p-0 px-1"
+                      style={{
+                        paddingRight: "2px",
+                        paddingLeft: "2px",
+                      }}
+                    >
+                      <div className=" py-1">
+                        <input
+                          className="form-control"
+                          type="text"
+                          // {LadgerBalanceState < 0
+                          //   ? `${ Math.abs(( LadgerBalanceState))  }  Cr
+                          //   `
+                          //   : `${Math.abs(LadgerBalanceState)} Dr` }
+                          value={
+                            parseFloat(LadgerBalanceState) -
+                              parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit) <
+                              0
+                              ?
+                              `${Math.abs(parseFloat(LadgerBalanceState) -
+                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))
+
+                              } Cr ` :
+                              `${Math.abs(parseFloat(LadgerBalanceState) -
+                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))
+
+                              } Dr `
+                          }
+                          disabled={true}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <div className="row">
+                <div className="col-md-12 text-right my-2">
+                  <button
+                    className="btn btn-sm btn-primary  "
+                    style={{ width: "155px" }}
+                    disabled={disableSaveButtonInitial}
+                    onClick={() => {
+                      saveJVForm();
+
+                    }}
+                  >
+                    Save
+                  </button>
                 </div>
               </div>
             </div>
-      
+          </div>
+
         </div>
       </div>
     </div>

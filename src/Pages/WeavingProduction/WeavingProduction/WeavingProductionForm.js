@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector  } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setNavMd, setNavSm, updateCurrentId } from "../../../store/actions/NavState";
 import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
@@ -196,13 +196,13 @@ const WeavingProductionForm = () => {
   // Function of First Step
   const fetchNewRoleName = () => {
     fetch(url + "api/RoleName", {
-      method: "GET", 
+      method: "GET",
       headers: {
         Authorization:
           "bearer" +
           " " +
           JSON.parse(localStorage.getItem("access_token")).access_token,
-          "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
     })
       .then((response) => response.json())
@@ -298,9 +298,9 @@ const WeavingProductionForm = () => {
 
 
 
- 
 
- var myHeaders = new Headers();
+
+    var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
@@ -840,24 +840,13 @@ const WeavingProductionForm = () => {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
     } else {
 
-
-      // const requestOptions = {
-      //   method: "POST",
-      //   headers: {
-      //     Authorization:
-            // "bearer" +
-            // " " +
-            // ,
-      //     "Content-Type": "application/x-www-form-urlencoded",
-      //   }, 
-      //   body: JSON.stringify()
-      // };
+ 
       var myHeaders = new Headers();
-      myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+      myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
       myHeaders.append("Content-Type", "application/json");
 
 
-      var raw = JSON.stringify( {
+      var raw = JSON.stringify({
         "roll_no": roleNameBackEnd,
         "production_date": `${rollDetail.date}T00:00:00.928Z`,
         "roll_weight": parseFloat(rollDetail.rollWeight),
@@ -875,7 +864,7 @@ const WeavingProductionForm = () => {
         "total_pieces": grandFinalTotal.totalPiece,
         "b_grade_pieces": grandFinalTotal.totalBGrade,
         "a_grade_pieces": grandFinalTotal.totalAGrade,
-        "current_per_piece_a_weight": grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight,
+        "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece,
         "required_length_p_to_p": finalStepRequired.requireLengthpp,
         "required_width_p_to_p": finalStepRequired.requireWidthpp,
         "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
@@ -898,7 +887,7 @@ const WeavingProductionForm = () => {
           }
         })
       });
-      
+
       var requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -906,10 +895,10 @@ const WeavingProductionForm = () => {
         redirect: 'follow'
       };
 
-      fetch(endPoint+"api/Production", requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        
+      fetch(endPoint + "api/Production", requestOptions)
+        .then(response => response.text())
+        .then(result => {
+
           // ----------------- Setting Component To initial State
           setLoomListValue({})
           setborderQualityValue({})
@@ -961,8 +950,8 @@ const WeavingProductionForm = () => {
           setSecondStep("disable");
           setThirdStep("disable");
           FetchListSelector()
-      })
-      .catch(error => console.log('error', error));
+        })
+        .catch(error => console.log('error', error));
 
 
 
@@ -1030,11 +1019,11 @@ const WeavingProductionForm = () => {
       //   });
 
     }
-  } 
+  }
   const updateWeavingProductionForm = () => {
 
     var myHeaders = new Headers();
-    myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
     myHeaders.append("Content-Type", "application/json");
 
 
@@ -1094,7 +1083,8 @@ const WeavingProductionForm = () => {
       .then(response => response.text())
       .then(result => {
         navigateTo("/ProductionReport");
-        console.log(result)})
+        console.log(result)
+      })
       .catch(error => console.log('error', error));
 
 
@@ -1106,7 +1096,7 @@ const WeavingProductionForm = () => {
       method: "GET",
       headers: {
         Authorization:
-        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
         "Content-Type": "application/json",
       },
     })
@@ -1229,7 +1219,7 @@ const WeavingProductionForm = () => {
 
   // ----------------------------------
   useEffect(() => {
-    console.log(currentID, "need to updated this one if  " );
+    console.log(currentID, "need to updated this one if  ");
     console.log("iddd- ", finalStepRequired);
   }, [finalStepRequired]);
   return (
@@ -1389,6 +1379,7 @@ const WeavingProductionForm = () => {
                         grandFinalTotal={grandFinalTotal}
                         finalStepInput={finalStepInput} setfinalStepInput={setfinalStepInput}
                         stepThirdValidator={stepThirdValidator}
+                        rollDetail={rollDetail}
                       />
                     </div>
                     <div className="text-right px-2 pt-3 ">
