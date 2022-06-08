@@ -31,7 +31,7 @@ import WeaverWiseReport from "./Pages/WeavingProduction/WeaverWiseReport/WeaverW
 import GenrProductionReport from "./Pages/WeavingProduction/GenrProductionReport/GenrProductionReport";
 import SalaryReport from "./Pages/WeavingProduction/SalaryReport/SalaryReport";
 import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
-import JournalVoucher from "./Pages/Finance/WeaverLadger/JournalVoucher/JournalVoucher";
+import JournalVoucher from './Pages/Finance/JournalVoucher/JournalVoucher'
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");

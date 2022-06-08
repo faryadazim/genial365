@@ -391,7 +391,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Recruitment Type{" "}
+                  Recruitment Type 
                   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
@@ -475,7 +475,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Picture 1
+                  Picture 1  <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div>
@@ -491,7 +491,7 @@ const MyVerticallyCenteredModal = (props) => {
                 </div>
 
                 <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  Picture 2
+                  Picture 2   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div>
@@ -507,7 +507,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  CNIC Front
+                  CNIC Front   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div>
@@ -522,7 +522,7 @@ const MyVerticallyCenteredModal = (props) => {
                 </div>
 
                 <label className="col-form-label col-md-2 col-sm-3  label-align">
-                  CNIC Back
+                  CNIC Back   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
                   <div>

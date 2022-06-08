@@ -6,7 +6,6 @@ import Select from "react-select";
 import ReactToPrint from "react-to-print";
 import SalaryReportReciept from "./SalaryReportReciept";
 
-
 const SalaryReport = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
@@ -14,6 +13,8 @@ const SalaryReport = () => {
   var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
   var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
   var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+
+  const [displaySalaryReportReciept, setSalaryReportReciept] = useState(false)
   const dateToday = `${year}-${month}-${day}`;
   const [dateFrom, setdateFrom] = useState(dateToday);
   const [dateTo, setdateTo] = useState(dateToday);
@@ -23,7 +24,7 @@ const SalaryReport = () => {
     grandFinalSumary: { grandTotal: "", paidAmount: "" }
   })
 
-  const [notDataAvailable  , setNotDataAvailable] = useState(true)
+  const [notDataAvailable, setNotDataAvailable] = useState(true)
   const fetchReportData = () => {
     let responseStatus;
     fetch(
@@ -57,20 +58,21 @@ const SalaryReport = () => {
 
 
 
-            
-          var paidAmount = 0;
-          eachWeaverSumary.productionData.map((eachTotalAmount)=>{
-            paidAmount= paidAmount+eachTotalAmount.paidAmount 
 
-          }) 
+            var paidAmount = 0;
+            eachWeaverSumary.productionData.map((eachTotalAmount) => {
+              paidAmount = paidAmount + eachTotalAmount.paidAmount
+
+            })
             arrForSummary.push({
               weaverName: eachWeaverSumary.weaverName,
               productionData: eachWeaverSumary.productionData,
-              grandFinalSumary: { grandTotal: grandTotal, paidAmount:paidAmount }
+              grandFinalSumary: { grandTotal: grandTotal, paidAmount: paidAmount }
             })
           })
           setSalaryDetailReport(arrForSummary);
           setNotDataAvailable(false)
+          setSalaryReportReciept(true)
 
 
         } else {
@@ -158,50 +160,48 @@ const SalaryReport = () => {
                   </div>
                 </form>
               </div>
+              <>
+              <div className={` col-md-12 px-0 ${displaySalaryReportReciept?"d-block" :"d-none"}`} >
+
+                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end px-3">
+                  <li>
+                    <ReactToPrint
+                      trigger={() => {
+                        return (
+                          <button
+                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                          >
+                            <i className="fa fa-print"></i>
+                          </button>
+                        );
+                      }}
+                      content={() => componentRef.current}
+                      documentTitle="new docs"
+                      pageStyle="print"
+                    />
+                  </li>
+                  <li>
+                    <button
+                      className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
+                      onClick={() => console.log("print")}
+                    >
+                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                    </button>
+                  </li>
+
+
+                </ul>
+
+                <SalaryReportReciept ref={componentRef}
+                  salaryDetailReport={salaryDetailReport} notDataAvailable={notDataAvailable}
+                />
+
+              </div></>
             </div>
           </div>
         </div>
 
-        <div className="col-md-12 px-0">
-          <div className="x_panel">
-            <div className="x_title">
-              <h2 className="pl-2 pt-2">Salary Detail Report</h2>
-              <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                <li>
-                  <ReactToPrint
-                    trigger={() => {
-                      return (
-                        <button
-                          className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
-                        >
-                          <i className="fa fa-print"></i>
-                        </button>
-                      );
-                    }}
-                    content={() => componentRef.current}
-                    documentTitle="new docs"
-                    pageStyle="print"
-                  />
-                </li>
-                <li>
-                  <button
-                    className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
-                    onClick={() => console.log("print")}
-                  >
-                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                  </button>
-                </li>
 
-
-              </ul>
-              <div className="clearfix" />
-            </div>
-
-            <SalaryReportReciept ref={componentRef}
-salaryDetailReport={salaryDetailReport}  notDataAvailable={notDataAvailable}
-            />
-          </div>
-        </div>
       </div>
     </>
   );

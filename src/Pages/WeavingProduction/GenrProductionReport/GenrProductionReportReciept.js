@@ -1,7 +1,7 @@
 import React from "react";
 
 const GenrProductionReportReciept = React.forwardRef(
-  ({ GenrProductionReportData }, ref) => {
+  ({ GenrProductionReportData }, ref) => { 
     return (
       <div className="x_content mb-3 " ref={ref}>
         <div className="row mx-3  reportTableHead ">

@@ -107,21 +107,40 @@ const WeaverLadger = () => {
     value: "",
   });
 
-  const [ selectValidation , setSelectorValidation] = useState(true)
+  const [selectValidation, setSelectorValidation] = useState(true)
   const [LadgerData, setLadgerData] = useState({})
-const [grandTotal , setGrandTotal] = useState({grandTotalDebit:"" , grandTotalCredit:""}) 
+  const [grandTotal, setGrandTotal] = useState({ grandTotalDebit: "", grandTotalCredit: "" })
   const fetchWeaverList = () => {
-    fetch(endPoint + "api/employeeWeaverListWithName", {
+
+    //     var arrForWeaverEmployee = [];
+    //     data.map((item) => {
+    //       arrForWeaverEmployee.push({
+    //         value: item.employeeId,
+    //         label: item.employeeName,
+    //       });
+    //     });
+    //     setEmployeeWeaverOptions(arrForWeaverEmployee);
+    //     setIsLoadingSelector(false);
+    //   });
+
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+    );
+
+    var requestOptions = {
       method: "GET",
-      headers: {
-        // Authorization: "bearer" + " " + e,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`${endPoint}api/employeeWeaverListWithName`, requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
         var arrForWeaverEmployee = [];
-        data.map((item) => {
+        JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
             value: item.employeeId,
             label: item.employeeName,
@@ -129,53 +148,61 @@ const [grandTotal , setGrandTotal] = useState({grandTotalDebit:"" , grandTotalCr
         });
         setEmployeeWeaverOptions(arrForWeaverEmployee);
         setIsLoadingSelector(false);
-      });
+      })
+      .catch((error) => console.log("error", error));
+
+
+
+
+
+
   };
 
   const fetchLadger = () => {
-if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||employeeWeaverValue.value==="") {
-  setSelectorValidation(false)
-  console.log("select first");
-} else {
-  
+    if (employeeWeaverValue.value === null || employeeWeaverValue.value === undefined || employeeWeaverValue.value === "") {
+      setSelectorValidation(false)
+      console.log("select first");
+    } else {
 
 
-    var myHeaders = new Headers();
-    myHeaders.append(
-      "Authorization",
-       `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
-    );
-    myHeaders.append("Content-Type", "application/json");
- 
-    var requestOptions = {
-      method: "GET",
-      headers: myHeaders, 
-      redirect: "follow",
-    };
 
-    fetch(
-      `${endPoint}api/Ladger?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&empId=${employeeWeaverValue.value}`,
-      requestOptions
-    )
-      .then((response) => response.text())
-      .then((result) => { 
-        setLadgerData(JSON.parse(result))
-        var grandTotalDebit = 0;
-        (JSON.parse(result).ladgerData).map((eachTotalAmount)=>{
-            grandTotalDebit= grandTotalDebit+eachTotalAmount.debit 
-     
-          
+      var myHeaders = new Headers();
+      myHeaders.append(
+        "Authorization",
+        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+      );
+      myHeaders.append("Content-Type", "application/json");
+
+      var requestOptions = {
+        method: "GET",
+        headers: myHeaders,
+        redirect: "follow",
+      };
+
+      fetch(
+        `${endPoint}api/Ladger?dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00&empId=${employeeWeaverValue.value}`,
+        requestOptions
+      )
+        .then((response) => response.text())
+        .then((result) => {
+          setLadgerData(JSON.parse(result))
+          var grandTotalDebit = 0;
+          (JSON.parse(result).ladgerData).map((eachTotalAmount) => {
+            grandTotalDebit = grandTotalDebit + eachTotalAmount.debit
+
+
+          })
+
+          var grandTotalCredit = 0;
+          (JSON.parse(result).ladgerData).map((eachTotalAmount) => {
+            grandTotalCredit = grandTotalCredit + eachTotalAmount.credit
+
+
+          })
+          setGrandTotal({ grandTotalDebit: grandTotalDebit, grandTotalCredit: grandTotalCredit })
         })
-
-        var grandTotalCredit = 0;
-        (JSON.parse(result).ladgerData).map((eachTotalAmount)=>{
-          grandTotalCredit= grandTotalCredit+eachTotalAmount.credit 
-      
-          
-        }) 
-   setGrandTotal({grandTotalDebit:grandTotalDebit , grandTotalCredit:grandTotalCredit})
-      })
-      .catch((error) => console.log("error", error));}
+        .catch((error) => console.log("error", error));
+    }
   };
   useEffect(() => {
     // dispatch(setNavSm());
@@ -185,13 +212,12 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
   return (
     <>
       <div
-        className={`right_col  h-10 heightFixForFAult  ${
-          showNavMenu == false ? "right_col-margin-remove" : " "
-        } `}
+        className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
+          } `}
         role="main"
       >
         <div className="row">
-          <div className="col-md-4">
+          <div className="col-md-12">
             <div className="x_panel">
               <div className="x_title">
                 <h2 className="pl-2 pt-2">Weaver Ladger Generator</h2>
@@ -200,7 +226,22 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
               </div>
               <div className="x_content">
                 <div className="row  pr-4">
-                  <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
+                 
+                </div>
+                <div className="row  pr-4">
+                  <div className="col-md-12 px-0">
+                  
+                  </div>
+                </div>
+                <div className="row  pr-4">
+                  <div className="col-md-12 px-0">
+                   
+                  </div>
+                </div>
+
+<div className="row">
+  <div className="col-md-4">
+  <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
                     Select Weaver
                   </label>
                   <div className="col-md-8 col-sm-8 ">
@@ -213,29 +254,29 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
                           className="basic-single"
                           classNamePrefix="select"
                           value={employeeWeaverValue}
-                          onChange={(e) =>
-                          { setSelectorValidation(true)
-                              setEmployeeWeaverValue({
+                          onChange={(e) => {
+                            setSelectorValidation(true)
+                            setEmployeeWeaverValue({
                               label: e.label,
                               value: e.value,
-                            })}
+                            })
                           }
-                         
+                          }
+
                           isSearchable={true}
                           name="color"
                           options={employeeWeaverOptions}
-                          styles={selectValidation?customStyles:customStylesDanger}
+                          styles={selectValidation ? customStyles : customStylesDanger}
                         />
                       </>
                     )}
                   </div>
-                </div>
-                <div className="row  pr-4">
-                  <div className="col-md-12 px-0">
-                    <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
+  </div>
+  <div className="col-md-4">
+  <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
                       Date From
                     </label>
-                    <div className="col-md-8 col-sm-8">
+                    <div className="col-md-9 col-sm-9">
                       <input
                         className="form-control"
                         type="date"
@@ -245,16 +286,14 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
                         }}
                       />
                     </div>
-                  </div>
-                </div>
-                <div className="row  pr-4">
-                  <div className="col-md-12 px-0">
-                    <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
+  </div>
+  <div className="col-md-4">
+  <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
                       Date To
                     </label>
-                    <div className="col-md-8 col-sm-8">
+                    <div className="col-md-9 col-sm-9">
                       <input
-                        className="form-control"
+                        className="form-control w-100"
                         type="date"
                         value={dateTo}
                         onChange={(e) => {
@@ -262,15 +301,16 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
                         }}
                       />
                     </div>
-                  </div>
-                </div>
+  </div>
+</div>
+                
                 <div className="row px-4 mb-2">
                   <div className="col-md-12 text-right pr-2 mt-1">
                     <button
                       className="btn btn-sm btn-customOrange pl-3"
                       onClick={(e) => {
                         e.preventDefault();
-                      
+
                         fetchLadger()
                       }}
                     >
@@ -279,13 +319,10 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="col-md-8 px-0">
-            <div className="x_panel">
-              <div className="x_title">
-                <h2 className="pl-2 pt-2">Weaver Ladger</h2>
-                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+              {/* <div className="x_panel"> */}
+                {/* <div className="x_title"> */}
+                {/* <h2 className="pl-2 pt-2">Weaver Ladger</h2> */}
+                <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
                   <li>
                     <ReactToPrint
                       trigger={() => {
@@ -310,11 +347,16 @@ if (employeeWeaverValue.value===null ||employeeWeaverValue.value===undefined ||e
                   </li>
                 </ul>
                 <div className="clearfix" />
-              </div>
-              <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData} 
-              grandTotal={grandTotal} selectValidation ={selectValidation}  
-              /> *
+                {/* </div> */}
+                <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
+                  grandTotal={grandTotal} selectValidation={selectValidation}
+                />
+              {/* </div> */}
             </div>
+
+          </div>
+          <div className="col-md-8 px-0">
+
           </div>
         </div>
       </div>

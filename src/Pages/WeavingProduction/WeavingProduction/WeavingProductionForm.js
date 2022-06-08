@@ -294,25 +294,49 @@ const WeavingProductionForm = () => {
         setBorderSizeOptions(arrForBorderSize);
       });
 
-    // Step Two Dropdown List fetching from api/backend
-    fetch(url + "api/employeeWeaverListWithName", {
+
+
+
+
+ 
+
+ var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+    );
+
+    var requestOptions = {
       method: "GET",
-      headers: {
-        // Authorization: "bearer" + " " + e,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
+      headers: myHeaders,
+      redirect: "follow",
+    };
+
+    fetch(`${endPoint}api/employeeWeaverListWithName`, requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
         var arrForWeaverEmployee = [];
-        data.map((item) => {
+        JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
             value: item.employeeId,
             label: item.employeeName,
           });
         });
         setWeaverEmployeeOptions(arrForWeaverEmployee);
-      });
+      })
+      .catch((error) => console.log("error", error));
+
+
+
+
+
+
+
+
+
+
+
+
     fetch(url + "api/employeeNativingListWithName", {
       method: "GET",
       headers: {
