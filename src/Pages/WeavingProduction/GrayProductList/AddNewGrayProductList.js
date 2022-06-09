@@ -181,8 +181,8 @@ const AddNewGrayProductList = (props) => {
                     type="number"
                     name="nanr"
                     placeholder="ex. 459.08 Gram"
-                    // required="required"
-                    value={props.AddNewProduct.PerPieceGrayWeightGram}
+                    onInput={(er) => er.target.value = er.target.value.slice(0)}
+                    value={props.AddNewProduct.PerPieceGrayWeightGram   && Math.max(0,props.AddNewProduct.PerPieceGrayWeightGram   ) }
                     onChange={(e) => {
                       props.setAddNewProduct({
                         ...props.AddNewProduct,
@@ -204,7 +204,8 @@ const AddNewGrayProductList = (props) => {
                         className={props.addNewGrayProductValidator.graySizeppWidth ? "form-control" : "form-control requiredValidateInput"}
                         type="number"
                         placeholder="Width"
-                        value={props.AddNewProduct.graySizeppWidth}
+                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                        value={props.AddNewProduct.graySizeppWidth   && Math.max(0,props.AddNewProduct.graySizeppWidth )}
                         onChange={(e) => {
                           props.setAddNewProduct({
                             ...props.AddNewProduct,
@@ -219,7 +220,8 @@ const AddNewGrayProductList = (props) => {
                         name="number"
                         type="number"
                         placeholder="Length"
-                        value={props.AddNewProduct.graySizeppLength}
+                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                        value={props.AddNewProduct.graySizeppLength   && Math.max(0,props.AddNewProduct.graySizeppLength)}
                         onChange={(e) => {
                           props.setAddNewProduct({
                             ...props.AddNewProduct,
@@ -252,11 +254,11 @@ const AddNewGrayProductList = (props) => {
 
                             className={props.addNewGrayProductValidator.LoomNumbPieceInBorder76 ? "form-control  mx-2" : "form-control  mx-2 requiredValidateInput"}
 
-
+                            onInput={(er) => er.target.value = er.target.value.slice(0)}
                             name="number"
                             type="number"
                             placeholder="Ex. Grams"
-                            value={props.AddNewProduct.LoomNumbPieceInBorder76}
+                            value={props.AddNewProduct.LoomNumbPieceInBorder76     && Math.max(0,props.AddNewProduct.LoomNumbPieceInBorder76 )}
                             onChange={(e) => {
                               props.setAddNewProduct({
                                 ...props.AddNewProduct,
@@ -278,10 +280,10 @@ const AddNewGrayProductList = (props) => {
                               className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithDraw76 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
                               type="number"
+                              onInput={(er) => er.target.value = er.target.value.slice(0)}
                               placeholder="With Draw"
                               value={
-                                props.AddNewProduct
-                                  .LoomNumbRatePerBorderWithDraw76
+                                props.AddNewProduct.LoomNumbRatePerBorderWithDraw76   && Math.max(0,props.AddNewProduct.LoomNumbRatePerBorderWithDraw76)
                               }
                               onChange={(e) => {
                                 props.setAddNewProduct({
@@ -297,10 +299,10 @@ const AddNewGrayProductList = (props) => {
                               className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithoutDraw76 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
                               type="number"
+                              onInput={(er) => er.target.value = er.target.value.slice(0)}
                               placeholder="Without Draw xx"
                               value={
-                                props.AddNewProduct
-                                  .LoomNumbRatePerBorderWithoutDraw76
+                                props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw76   && Math.max(0,props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw76)
                               }
                               onChange={(e) => {
                                 props.setAddNewProduct({
@@ -335,10 +337,10 @@ const AddNewGrayProductList = (props) => {
                         <div class="row">
                           <input
                             className={props.addNewGrayProductValidator.LoomNumbPieceInBorder96 ? "form-control " : "form-control   requiredValidateInput"}
-
+                            onInput={(er) => er.target.value = er.target.value.slice(0)}
                             type="number"
                             placeholder="Width"
-                            value={props.AddNewProduct.LoomNumbPieceInBorder96}
+                            value={props.AddNewProduct.LoomNumbPieceInBorder96  && Math.max(0,props.AddNewProduct.LoomNumbPieceInBorder96)}
                             onChange={(e) => {
                               props.setAddNewProduct({
                                 ...props.AddNewProduct,
@@ -360,8 +362,9 @@ const AddNewGrayProductList = (props) => {
                               className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithDraw96 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
                               type="number"
+                              onInput={(er) => er.target.value = er.target.value.slice(0)}
                               placeholder="With Draw"
-                              value={props.AddNewProduct.LoomNumbRatePerBorderWithDraw96}
+                              value={props.AddNewProduct.LoomNumbRatePerBorderWithDraw96   && Math.max(0,props.AddNewProduct.LoomNumbRatePerBorderWithDraw96 )}
                               onChange={(e) => {
                                 props.setAddNewProduct({
                                   ...props.AddNewProduct,
@@ -374,9 +377,10 @@ const AddNewGrayProductList = (props) => {
                             <input
                               className={props.addNewGrayProductValidator.LoomNumbRatePerBorderWithoutDraw96 ? "form-control " : "form-control   requiredValidateInput"}
                               name="number"
+                              onInput={(er) => er.target.value = er.target.value.slice(0)}
                               type="number"
                               placeholder="Without Draw"
-                              value={props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw96}
+                              value={props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw96  && Math.max(0,props.AddNewProduct.LoomNumbRatePerBorderWithoutDraw96)}
                               onChange={(e) => {
                                 props.setAddNewProduct({
                                   ...props.AddNewProduct,

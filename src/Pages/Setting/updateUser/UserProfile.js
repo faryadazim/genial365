@@ -1,6 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+
+import { toast } from "react-toastify";
+
+
 const Content = () => {
+  
+ 
+  const notifySuccess = () => toast("Password Change Successfully");
+  const notifyFail= (e) => toast(e); 
   const showNavMenu = useSelector((state) => state.NavState);
   const url=localStorage.getItem("authUser")
   const roleName = localStorage.getItem("roleName");
@@ -38,16 +46,22 @@ const Content = () => {
         // },
       }
     )
-      .then((response) => {
- console.log("updated");
- setPasswordState({
-  oldPassword: "",
-  newPassword: "",
-  confirmPassword: "",
-})
+      .then((response) => { 
+ if (response.status===200) {
+  setPasswordState({
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  })
+  notifySuccess()
+ } else {
+  notifyFail("Failed !!!")
+ }
+
 setCanChangePassword(false)
       })
-      .catch((error) => console.log("can not update error", error));
+      .catch((error) =>{notifyFail("Something went wrong")
+         console.log("can not update error", error)});
 
 
   };

@@ -155,7 +155,7 @@ const MyVerticallyCenteredModal = (props) => {
                     type="number"
                     placeholder="without Dashes Ex, 3310567889234"
                     onInput={(er) => er.target.value = er.target.value.slice(0, 13)}
-                    value={props.addNewEmployee.cnicNum}
+                    value={props.addNewEmployee.cnicNum && Math.max(0, props.addNewEmployee.cnicNum)}
                     onChange={(e) => {
                       //    props.changeSubmitButtonCondition()
                       props.setAddNewEmployee({
@@ -204,7 +204,7 @@ const MyVerticallyCenteredModal = (props) => {
                         onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         type="number"
 
-                        value={props.addNewEmployee.phoneNum1}
+                        value={props.addNewEmployee.phoneNum1 && Math.max(0, props.addNewEmployee.phoneNum1)}
 
                         onChange={(e) => {
                           //  props.changeSubmitButtonCondition()
@@ -221,8 +221,9 @@ const MyVerticallyCenteredModal = (props) => {
                         className="form-control"
                         name="number"
                         placeholder="Phone Number 2 (Optional)"
+                        type="number"
                         onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
-                        value={props.addNewEmployee.phoneNum2}
+                        value={props.addNewEmployee.phoneNum2 && Math.max(0, props.addNewEmployee.phoneNum2)}
                         onChange={(e) =>
                           props.setAddNewEmployee({
                             ...props.addNewEmployee,
@@ -237,11 +238,17 @@ const MyVerticallyCenteredModal = (props) => {
                       <input
                         className="form-control"
                         name="number"
+
+
+                        type="number"
+
+
+
+
                         onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         placeholder="Phone Number 3 (Optional)"
-                        value={props.addNewEmployee.phoneNum3}
+                        value={props.addNewEmployee.phoneNum3 && Math.max(0, props.addNewEmployee.phoneNum3)}
                         onChange={(e) => {
-                          //    props.changeSubmitButtonCondition()
                           props.setAddNewEmployee({
                             ...props.addNewEmployee,
                             phoneNum3: e.target.value,
@@ -257,9 +264,8 @@ const MyVerticallyCenteredModal = (props) => {
                         type="number"
                         onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         placeholder="Home Phone (Optional)"
-                        value={props.addNewEmployee.homePhoneNum}
+                        value={props.addNewEmployee.homePhoneNum && Math.max(0, props.addNewEmployee.homePhoneNum)}
                         onChange={(e) => {
-                          // props.changeSubmitButtonCondition()
                           props.setAddNewEmployee({
                             ...props.addNewEmployee,
                             homePhoneNum: e.target.value,
@@ -282,7 +288,6 @@ const MyVerticallyCenteredModal = (props) => {
                     required="required"
                     value={props.addNewEmployee.address}
                     onChange={(e) => {
-                      // props.changeSubmitButtonCondition()
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         address: e.target.value,
@@ -304,7 +309,6 @@ const MyVerticallyCenteredModal = (props) => {
                     required="required"
                     value={props.addNewEmployee.referenceName}
                     onChange={(e) => {
-                      // props.changeSubmitButtonCondition()
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         referenceName: e.target.value,
@@ -320,10 +324,8 @@ const MyVerticallyCenteredModal = (props) => {
                     placeholder="Reference Phone "
                     type="number"
                     onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
-                    value={props.addNewEmployee.referencePhoneNum}
-                    onChange={(e) =>
-                    //   {   props.changeSubmitButtonCondition()
-                    {
+                    value={props.addNewEmployee.referencePhoneNum && Math.max(0, props.addNewEmployee.referencePhoneNum)}
+                    onChange={(e) => {
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         referencePhoneNum: e.target.value,
@@ -391,7 +393,7 @@ const MyVerticallyCenteredModal = (props) => {
               </div>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
-                  Recruitment Type 
+                  Recruitment Type
                   <span className="required">*</span>
                 </label>
                 <div className="col-md-3 col-sm-8">
@@ -429,11 +431,12 @@ const MyVerticallyCenteredModal = (props) => {
                         <input
                           className={props.employeeListValidator.weeklySalary ? "form-control" : "form-control requiredValidateInput"}
                           name="nanr"
+                          type="number"
                           placeholder="ex. 20000"
                           required="required"
-                          value={props.addNewEmployee.weeklySalary}
+                          value={props.addNewEmployee.weeklySalary && Math.max(0, props.addNewEmployee.weeklySalary)}
+                          onInput={(er) => er.target.value = er.target.value.slice(0)}
                           onChange={(e) => {
-                            //   props.changeSubmitButtonCondition()
                             props.setAddNewEmployee({
                               ...props.addNewEmployee,
                               weeklySalary: e.target.value,
@@ -450,9 +453,11 @@ const MyVerticallyCenteredModal = (props) => {
                         <input
                           className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}
                           name="nanr"
+                          type="number"
                           placeholder="ex. 20000"
                           required="required"
-                          value={props.addNewEmployee.monthlySalary}
+                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary )}
+                          onInput={(er) => er.target.value = er.target.value.slice(0) }
                           onChange={(e) => {
                             //   props.changeSubmitButtonCondition()
                             props.setAddNewEmployee({

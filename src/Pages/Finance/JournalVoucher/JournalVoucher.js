@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import Select from "react-select";
+import { ToastContainer, toast } from "react-toastify";
 import { endPoint } from "../../../config/Config";
-
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -48,6 +49,8 @@ const customStyles = {
 
 
 const JournalVoucher = () => {
+  const navigate = useNavigate();
+  const notify = () => toast("Voucher Created Successfully");
   const showNavMenu = useSelector((state) => state.NavState);
   const [weaverOptions, setWeaverOptions] = useState([]);
   const [weaverValue, setWeaverValue] = useState({ label: "", value: "" });
@@ -71,7 +74,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
     description: "",
     debit: 0,
     credit: 0,
-  });
+  }); 
 
   const fetchWeaverOptions = () => {
     var myHeaders = new Headers();
@@ -85,15 +88,15 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
       headers: myHeaders,
       redirect: "follow",
     };
-
-    fetch(`${endPoint}api/employeeWeaverListWithName`, requestOptions)
+    // http://localhost:63145/
+    fetch(`${endPoint}api/employeeListsName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         var arrForWeaverEmployee = [];
         JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
-            value: item.employeeId,
-            label: item.employeeName,
+            value: item.employee_Id,
+            label: item.name,
           });
         });
         setWeaverOptions(arrForWeaverEmployee);
@@ -172,7 +175,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
         redirect: "follow",
       };
 
-      fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
+   return   fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           fetchLadgerBalance(weaverValue.value);
@@ -183,6 +186,9 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
             credit: true,
 
           })
+          console.log(JSON.parse(result) , "ADDED");
+          notify();
+          return (JSON.parse(result))
 
         })
         .catch((error) => console.log("error", error));
@@ -224,7 +230,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                 {" "}
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4  label-align">
-                    Select Weaver
+                    Select Employee
                   </label>
                   <div className="col-md-8 col-sm-8">
                     <Select
@@ -476,18 +482,43 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                   </tr>
                 </tbody>
               </table>
-              <div className="row">
+              <div className="row ">
                 <div className="col-md-12 text-right my-2">
                   <button
-                    className="btn btn-sm btn-primary  "
-                    style={{ width: "155px" }}
+                    className="btn btn-sm btn-success  "
+                    style={{ width: "110px" }}
                     disabled={disableSaveButtonInitial}
                     onClick={() => {
                       saveJVForm();
 
                     }}
                   >
-                    Save
+                    Save And New 
+                  </button>
+                  <button
+                    className="btn btn-sm btn-primary  "
+                    style={{ width: "110px" }}
+                    disabled={disableSaveButtonInitial}
+                    onClick={async() => {
+                   const resp = await   saveJVForm();
+              console.log(resp , "-0-----");
+                     navigate('/JournalVoucherReport', { state: {
+                       date:resp.financeNew.voucher_date,
+                       voucherInv:resp.financeNew.voucher_inv,
+                       description:resp.financeEntry.description,
+                       debit:resp.financeEntry.debit,
+                       credit:resp.financeEntry.credit,
+                       weaverId:weaverValue.value ,
+                       financeMainId:resp.financeNew.finance_main_id,
+                       weaverName:weaverValue.label  , 
+                       createdBy:resp.createdBy,
+                      }
+                      
+                     } );
+
+                    }}
+                  >
+                    Save & View
                   </button>
                 </div>
               </div>

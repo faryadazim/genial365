@@ -56,13 +56,20 @@ const WeaverLadgerReciept = React.forwardRef(
                           <>
                             <div className="col-md-8 px-0 right-border-2  py-1   text-right pr-2">
                               {LadgerData.openingBalance} </div>
-                            <div className="col-md-4 px-0 text-center">   Cr</div>
+                            <div className="col-md-4 px-0 text-center  mt-1">  Dr</div>
 
                           </>
                         ) : (
                           <>
-                            <div className="col-md-8  px-0 right-border-2 py-1   text-right pr-2">{Math.abs(LadgerData.openingBalance)}</div>
-                            <div className="col-md-4 px-0 text-center">     Dr</div>
+
+{
+  LadgerData.openingBalance==0?<div className=" text-right mt-1">  00.00</div>:<>
+    <div className="col-md-8  px-0 right-border-2 py-1   text-right pr-2">{Math.abs(LadgerData.openingBalance)}</div>
+                            <div className="col-md-4 px-0 text-center  mt-1">    Cr</div></>
+}
+
+
+                          
 
                           </>
                         )}
@@ -115,13 +122,13 @@ const WeaverLadgerReciept = React.forwardRef(
                           <>
                             <div className="col-md-8 px-0 right-border-2  py-1   text-right pr-2">
                               {eachLadgerItem.debit - eachLadgerItem.credit} </div>
-                            <div className="col-md-4 px-0 text-center">   Cr</div>
+                            <div className="col-md-4 px-0 text-center">   Dr</div>
 
                           </>
                         ) : (
                           <>
                             <div className="col-md-8  px-0 right-border-2 py-1   text-right pr-2">{Math.abs(eachLadgerItem.debit - eachLadgerItem.credit)}</div>
-                            <div className="col-md-4 px-0 text-center">     Dr</div>
+                            <div className="col-md-4 px-0 text-center">     Cr</div>
 
                           </>
                         )}
@@ -165,9 +172,9 @@ const WeaverLadgerReciept = React.forwardRef(
                   &nbsp; is { } : &nbsp;
                   <strong className="text-customBlue">
                     {LadgerData.closingBalance > 0 ? (
-                      <> {LadgerData.closingBalance} Cr</>
+                      <> {LadgerData.closingBalance} Dr</>
                     ) : (
-                      <>{Math.abs(LadgerData.closingBalance)} Dr</>
+                      <>{Math.abs(LadgerData.closingBalance)} Cr</>
                     )}
                   </strong>
                 </div>

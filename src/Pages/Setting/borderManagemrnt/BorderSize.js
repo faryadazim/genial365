@@ -1,7 +1,16 @@
 import React, { useEffect, useState } from "react";
 import EditBorderSize from "./EditBorderSize";
 
+
+
+import { toast } from "react-toastify";
+
+ 
 const BorderSize = ({ setisLoadBorderSize }) => {
+  
+  const notifyDeleted = () => toast("Border Size Deleted Successfully");
+  const notifyAdded = () => toast("Border Size Added Successfully");
+  const notifyUpdated = () => toast("Border Size Updated Successfully");
   const url = localStorage.getItem("authUser");
   const [borderSize, setBorderSize] = useState([]);
   const [AddNewSize, setAddNewSize] = useState({ borderSize1: "" });
@@ -36,6 +45,7 @@ const BorderSize = ({ setisLoadBorderSize }) => {
         // deleteing Role for this Id
 
         fetchAllData();
+        notifyDeleted()
       })
       .catch((error) => console.log("error", error));
   };
@@ -53,6 +63,7 @@ const BorderSize = ({ setisLoadBorderSize }) => {
       .then((data) => {
         fetchAllData();
         setAddNewSize({ borderSize1: "" });
+        notifyAdded()
       })
       .catch((err) => {
         console.log("err", err);
@@ -72,6 +83,7 @@ const BorderSize = ({ setisLoadBorderSize }) => {
         console.log("data updated");
         fetchAllData();
         setModalShow(false);
+        notifyUpdated()
       })
       .catch((err) => {
         console.log("err", err);

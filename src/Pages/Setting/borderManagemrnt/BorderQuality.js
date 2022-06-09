@@ -1,7 +1,17 @@
 import React, { useEffect, useState } from "react";
 import EditBorderQuality from "./EditBorderQuality";
+import { toast } from "react-toastify";
+
+
+
+
+
 
 const BorderQuality = ({ setisLoadBorderQuality }) => {
+   
+  const notifyDeleted = () => toast("Border Quality Deleted Successfully");
+  const notifyAdded = () => toast("Border Quality Added Successfully");
+  const notifyUpdated = () => toast("Border Quality Updated Successfully");
   const url = localStorage.getItem("authUser");
   const [borderQuality, setBorderQuality] = useState([]);
   const [AddNewQuality, setAddNewQuality] = useState({ borderQuality1: "" });
@@ -34,6 +44,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
         // deleteing Role for this Id
 
         fetchAllData();
+        notifyDeleted()
       })
       .catch((error) => console.log("error", error));
   };
@@ -51,6 +62,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
       .then((data) => {
         fetchAllData();
         setAddNewQuality({ borderQuality1: "" });
+        notifyAdded()
       })
       .catch((err) => {
         console.log("err", err);
@@ -70,6 +82,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
       console.log("data updated");
       fetchAllData()
       setModalShow(false)
+      notifyUpdated()
       })
       .catch((err) => {
         console.log("err", err);

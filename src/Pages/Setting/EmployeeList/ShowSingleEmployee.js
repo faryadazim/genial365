@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { endPoint } from "../../../config/Config";
 import Loader from "../../../Layout/Loader/Loader";
+
 const ShowSingleEmployee = ({
   singleUserId,
   setShowSingleUSer,
@@ -12,6 +14,7 @@ const ShowSingleEmployee = ({
   const [isDisableFormControl, setIsDisableFormControl] = useState(true);
   const [reRenderComponent, setReRenderComponent] = useState(true);
 
+  const notifyDeleted = () => toast("Employee Deleted Successfully");
   const url = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
   const [EmployeeData, setEmployeeData] = useState({
@@ -172,6 +175,7 @@ const ShowSingleEmployee = ({
         setShowSingleUSer(false);
         fetchAllData();
         setUpdateSelectorList(!updateSelectorList)
+        notifyDeleted()
       })
       .catch((error) => {
         console.log("error", error);

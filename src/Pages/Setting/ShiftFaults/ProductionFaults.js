@@ -2,9 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
 import { endPoint } from "../../../config/Config";
+import { toast } from "react-toastify";
+
+ 
 
 const ProducctionFaults = () => {
- 
+  const notifyDeleted = () => toast("Fault Deleted Successfully");
+  const notifyAdded = () => toast("Fault Added Successfully"); 
   const showNavMenu = useSelector((state) => state.NavState);
 const [isLoading  , setisLoading] = useState(true)
   const [faultList, setFaultList] = useState([{}]);
@@ -31,6 +35,7 @@ const addNewFault = (e)=>{
         .then((data) => { 
          setAddNewFaultTitle("")
           fetchAllData();
+          notifyAdded()
         })
         .catch((err) => {
           console.log("err", err);
@@ -50,6 +55,7 @@ fetch(`${endPoint}/api/ShiftFaults/${id}`, {
   })
     .then((response) => {  
       fetchAllData(); 
+      notifyDeleted()
     })
     .catch((error) => console.log("error", error));
   }

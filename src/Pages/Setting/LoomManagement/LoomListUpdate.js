@@ -84,8 +84,8 @@ const LoomListUpdate = (props) => {
                     type="number"
                     placeholder="ex. Loom Number"
                     required="required"
-                    value={props.UpdateLoomList.loomSize}
-                    onChange={(e) => {
+                    value={props.UpdateLoomList.loomSize   && Math.max(0, props.UpdateLoomList.loomSize )}
+                    onChange={(e) => { 
                       props.setUpdateLoomList({
                         ...props.UpdateLoomList,
                         loomSize: e.target.value,
@@ -143,6 +143,9 @@ const LoomListUpdate = (props) => {
                   />
                 </div>
               </div>
+
+
+              {/* disable  */}
               <div className="field item form-group d-none">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Weaving Unit<span className="required">*</span>

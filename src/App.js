@@ -32,6 +32,7 @@ import GenrProductionReport from "./Pages/WeavingProduction/GenrProductionReport
 import SalaryReport from "./Pages/WeavingProduction/SalaryReport/SalaryReport";
 import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
 import JournalVoucher from './Pages/Finance/JournalVoucher/JournalVoucher'
+import JVReport from './Pages/Finance/JVReport/JVReport'
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");
@@ -171,6 +172,10 @@ function App() {
                     <Route
                       path="JournalVoucherForm"
                       element={<JournalVoucher />}
+                    />
+                    <Route
+                      path="JournalVoucherReport"
+                      element={<JVReport />}
                     />
                     
                   </Routes>

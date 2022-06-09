@@ -15,7 +15,7 @@ const AddPages = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const [postsPerPage, setpostsPerPage] = useState(5);
+  const [postsPerPage, setpostsPerPage] = useState(50);
   const [Module, setModule] = useState([]);
   const [UserRegistered, setUserRegistered] = useState([]);
   const [pageRegisteredAdd, setPageRegisteredAdd] = useState({

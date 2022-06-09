@@ -113,17 +113,13 @@ const WeavingProductionFormStepThird = ({
      
         {(rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
                        
-                       {/* console.log(rollDetail.rollWeight  ," rollWeight");
-                       console.log(grandFinalTotal.totalBGrade  ," grandFinalTotal.totalBGrade");
-                       console.log(finalStepInput.cutPieceWeight  ," rollWeight");
-                       console.log(rollDetail.rollWeight  ," rollWeight"); */}
-                       
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
-                done  {finalStepRequired.requirePerPieceWeight } </div>
+                {finalStepRequired.requirePerPieceWeight } </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                     not set      {/* pp   {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight -
-                        finalStepRequired.requirePerPieceWeight * parseInt(grandFinalTotal.totalAGrade)} */}
+                        {finalStepRequired.requirePerPieceWeight-((rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece) }                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
+                       
+                   
                         </div>
                       </td>
                     </tr>

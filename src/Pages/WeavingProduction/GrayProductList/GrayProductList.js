@@ -256,11 +256,11 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                 Add New &nbsp;&nbsp;&nbsp;
                 <i className="fa fa-plus-circle"></i>
               </button>
-              <button className="btn btn-success  btn-sm w-10">
+              {/* <button className="btn btn-success  btn-sm w-10">
                 {" "}
                 Print &nbsp;&nbsp;&nbsp;
                 <i className="fa fa-print"></i>
-              </button>
+              </button> */}
             </div>
             <div className="clearfix" />
           </div>

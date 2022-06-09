@@ -129,7 +129,7 @@ const AddNewLoomModel = (props) => {
                     type="number"
                     placeholder="ex. Loom Size"
                     required="required"
-                    value={props.AddNewLoom.loomSize}
+                    value={props.AddNewLoom.loomSize  && Math.max(0, props.AddNewLoom.loomSize)}
                     onChange={(e) => {
                       props.setAddNewLoom({
                         ...props.AddNewLoom,

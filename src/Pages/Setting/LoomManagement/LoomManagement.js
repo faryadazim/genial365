@@ -4,8 +4,22 @@ import Loader from "../../../Layout/Loader/Loader";
 import LoomListUpdate from "./LoomListUpdate";
 import AddNewLoomModel from './AddNewLoomModel'
 import { endPoint } from "../../../config/Config";
+import { toast } from "react-toastify";
+
+
+
+
+
+
+  
+
+
+
 
 const LoomManagement = () => {
+  const notifyDeleted = () => toast("Loom Deleted Successfully");
+  const notifyAdded = () => toast("Loom Added Successfully");
+  const notifyUpdated = () => toast("Loom Updated Successfully");
   let defaultValueForLoomValidator = { loomSize: true, drawBox: true, jacquard: true, weavingUnit: true }
   const [loomValidator, setloomValidator] = useState(defaultValueForLoomValidator)
   const [loomValidatorUpdate, setLoomValidatorUpdate] = useState(true)
@@ -56,6 +70,7 @@ const LoomManagement = () => {
       .then((response) => {
         // deleteing Role for this Id
         fetchAllData();
+        notifyDeleted()
       })
       .catch((error) => {
         console.log("error", error);
@@ -82,7 +97,7 @@ const LoomManagement = () => {
       fetch(url + "api/LoomLists", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          // notifyAdd();
+         notifyUpdated();
           setModalShowForUpdate(false);
           fetchAllData();
           setDropBoxValue("")
@@ -132,6 +147,7 @@ const LoomManagement = () => {
           setJacquardValue("")
           setWeavingUnitValue("")
           setAddNewLoom(initialStateLoom)
+          notifyAdded()
         })
         .catch((err) => {
           console.log("err", err);

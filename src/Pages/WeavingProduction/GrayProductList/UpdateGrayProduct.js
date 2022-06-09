@@ -149,7 +149,6 @@ const UpdateGrayProduct = (props) => {
                                 </label>
                                 <div className="col-md-8 col-sm-8">
                                     <Select
-                                        // required
                                         className="basic-single"
                                         classNamePrefix="select"
                                         value={props.updatedGrayProductList.itemSizeValue}
@@ -177,14 +176,14 @@ const UpdateGrayProduct = (props) => {
                                         type="number"
                                         name="nanr"
                                         placeholder="ex. 459.08 Gram"
-                                        // required="required"
-                                        value={props.updatedGrayProductList.PerPieceGrayWeightGram}
-                                    onChange={(e) => {
-                                      props.setUpdatedGrayProductList({
-                                        ...props.updatedGrayProductList,
-                                        PerPieceGrayWeightGram: e.target.value,
-                                      });
-                                    }}
+                                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                        value={props.updatedGrayProductList.PerPieceGrayWeightGram  && Math.max(0,props.updatedGrayProductList.PerPieceGrayWeightGram  )}
+                                        onChange={(e) => {
+                                            props.setUpdatedGrayProductList({
+                                                ...props.updatedGrayProductList,
+                                                PerPieceGrayWeightGram: e.target.value,
+                                            });
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -200,13 +199,14 @@ const UpdateGrayProduct = (props) => {
                                                 className={"form-control"}
                                                 type="number"
                                                 placeholder="Width"
-                                                value={props.updatedGrayProductList.graySizeppWidth} 
-                                            onChange={(e) => {
-                                                props.setUpdatedGrayProductList({
-                                                  ...props.updatedGrayProductList,
-                                                  graySizeppWidth: e.target.value,
-                                                });
-                                              }}
+                                                onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                value={props.updatedGrayProductList.graySizeppWidth && Math.max(0,props.updatedGrayProductList.graySizeppWidth)}
+                                                onChange={(e) => {
+                                                    props.setUpdatedGrayProductList({
+                                                        ...props.updatedGrayProductList,
+                                                        graySizeppWidth: e.target.value,
+                                                    });
+                                                }}
                                             />
                                         </div>
                                         <div className="col-md-6">
@@ -215,13 +215,14 @@ const UpdateGrayProduct = (props) => {
                                                 name="number"
                                                 type="number"
                                                 placeholder="Length"
-                                                value={props.updatedGrayProductList.graySizeppLength}
+                                                onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                value={props.updatedGrayProductList.graySizeppLength  && Math.max(0,props.updatedGrayProductList.graySizeppLength)}
                                                 onChange={(e) => {
                                                     props.setUpdatedGrayProductList({
-                                                      ...props.updatedGrayProductList,
-                                                      graySizeppLength: e.target.value,
+                                                        ...props.updatedGrayProductList,
+                                                        graySizeppLength: e.target.value,
                                                     });
-                                                  }}
+                                                }}
                                             />
                                         </div>
                                     </div>
@@ -252,13 +253,14 @@ const UpdateGrayProduct = (props) => {
                                                         name="number"
                                                         type="number"
                                                         placeholder="Ex. Grams"
-                                                        value={props.updatedGrayProductList.LoomNumbPieceInBorder76}
+                                                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                        value={props.updatedGrayProductList.LoomNumbPieceInBorder76  && Math.max(0,props.updatedGrayProductList.LoomNumbPieceInBorder76)}
                                                         onChange={(e) => {
                                                             props.setUpdatedGrayProductList({
-                                                              ...props.updatedGrayProductList,
-                                                              LoomNumbPieceInBorder76: e.target.value,
+                                                                ...props.updatedGrayProductList,
+                                                                LoomNumbPieceInBorder76: e.target.value,
                                                             });
-                                                          }}
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -275,13 +277,14 @@ const UpdateGrayProduct = (props) => {
                                                             name="number"
                                                             type="number"
                                                             placeholder="With Draw"
-                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw76}
+                                                            onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw76  && Math.max(0,props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw76)}
                                                             onChange={(e) => {
                                                                 props.setUpdatedGrayProductList({
-                                                                  ...props.updatedGrayProductList,
-                                                                  LoomNumbRatePerBorderWithDraw76: e.target.value,
+                                                                    ...props.updatedGrayProductList,
+                                                                    LoomNumbRatePerBorderWithDraw76: e.target.value,
                                                                 });
-                                                              }}
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="col-md-6">
@@ -290,13 +293,14 @@ const UpdateGrayProduct = (props) => {
                                                             name="number"
                                                             type="number"
                                                             placeholder="Without Draw xx"
-                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76}
+                                                            onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76   && Math.max(0,props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76)}
                                                             onChange={(e) => {
                                                                 props.setUpdatedGrayProductList({
-                                                                  ...props.updatedGrayProductList,
-                                                                  LoomNumbRatePerBorderWithoutDraw76: e.target.value,
+                                                                    ...props.updatedGrayProductList,
+                                                                    LoomNumbRatePerBorderWithoutDraw76: e.target.value,
                                                                 });
-                                                              }}
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>
@@ -326,13 +330,14 @@ const UpdateGrayProduct = (props) => {
 
                                                         type="number"
                                                         placeholder="Width"
-                                                        value={props.updatedGrayProductList.LoomNumbPieceInBorder96}
+                                                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                        value={props.updatedGrayProductList.LoomNumbPieceInBorder96  && Math.max(0,props.updatedGrayProductList.LoomNumbPieceInBorder96 )}
                                                         onChange={(e) => {
                                                             props.setUpdatedGrayProductList({
-                                                              ...props.updatedGrayProductList,
-                                                              LoomNumbPieceInBorder96: e.target.value,
+                                                                ...props.updatedGrayProductList,
+                                                                LoomNumbPieceInBorder96: e.target.value,
                                                             });
-                                                          }}
+                                                        }}
                                                     />
                                                 </div>
                                             </div>
@@ -349,13 +354,14 @@ const UpdateGrayProduct = (props) => {
                                                             name="number"
                                                             type="number"
                                                             placeholder="With Draw"
-                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw96}
+                                                            onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw96  && Math.max(0,props.updatedGrayProductList.LoomNumbRatePerBorderWithDraw96)}
                                                             onChange={(e) => {
                                                                 props.setUpdatedGrayProductList({
-                                                                  ...props.updatedGrayProductList,
-                                                                  LoomNumbRatePerBorderWithDraw96: e.target.value,
+                                                                    ...props.updatedGrayProductList,
+                                                                    LoomNumbRatePerBorderWithDraw96: e.target.value,
                                                                 });
-                                                              }}
+                                                            }}
                                                         />
                                                     </div>
                                                     <div className="col-md-6">
@@ -364,13 +370,14 @@ const UpdateGrayProduct = (props) => {
                                                             name="number"
                                                             type="number"
                                                             placeholder="Without Draw"
-                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96}
+                                                            onInput={(er) => er.target.value = er.target.value.slice(0)}
+                                                            value={props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 && Math.max(0,props.updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96)}
                                                             onChange={(e) => {
                                                                 props.setUpdatedGrayProductList({
-                                                                  ...props.updatedGrayProductList,
-                                                                  LoomNumbRatePerBorderWithoutDraw96: e.target.value,
+                                                                    ...props.updatedGrayProductList,
+                                                                    LoomNumbRatePerBorderWithoutDraw96: e.target.value,
                                                                 });
-                                                              }}
+                                                            }}
                                                         />
                                                     </div>
                                                 </div>

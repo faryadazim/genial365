@@ -6,8 +6,10 @@ import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
 import MyVerticallyCenteredModal from './MyVerticallyCenteredModal'
+import { toast, ToastContainer } from "react-toastify";
  
 const EmployeeList = () => {
+  const notifyAdd = () => toast("Employee Added Successfully");
   const [isDisableSubmitButton , setIsDisableSubmitButton] = useState(false)
   const [designationValue, setDesignationValue] = useState("Helper");
   const [designation, setDesignation] = useState([]);
@@ -210,7 +212,7 @@ const recruitmentType = [
 
               setDesignation(arr);
 
-              // notifyAdd();
+             
             });
           // // ----- Setting Employee List ------
 
@@ -281,7 +283,7 @@ setEmployeeListValidator({...employeeListValidator, name:false})
           setJobStatusValue("")
           setrecruitmentTypeValue("")
           setUpdateSelectorList(!updateSelectorList)
-          
+          notifyAdd();
         })
         .catch((err) => {
           console.log("err front End", err);

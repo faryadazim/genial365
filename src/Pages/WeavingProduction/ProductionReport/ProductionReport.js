@@ -60,7 +60,7 @@ const ProductionReport = () => {
         console.log(err, "err");
       });
   };
-
+ 
   const generateReportOfSpecificId = (id) => {
     fetch(`${endPoint}api/GetProductById?id=${id}`, {
       method: "GET",
