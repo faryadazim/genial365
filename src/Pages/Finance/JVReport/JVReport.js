@@ -9,7 +9,7 @@ import Select from "react-select";
 import JVReportReciept from "./JVReportReciept";
 import UpdateJVReport from "./UpdateJVReport";
 import { toast } from "react-toastify";
-
+import '../financeStyle.css'
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -164,6 +164,7 @@ const JVReport = () => {
       .then(response => response.text())
       .then(result => {
         const data = JSON.parse(result)
+        console.log(data , "---------");
         setJVReportData({
           financeMainId: e,
           weaverName: data.weaverName,
@@ -294,8 +295,13 @@ const JVReport = () => {
                         <table className="table table-striped jambo_table bulk_action">
                           <thead>
                             <tr className="headings positionFixed">
-                              <th className="column-title"> Vouch.Date</th>
-                              <th className="column-title text-center">Voucher Inv</th>
+                              <th className="column-title fontStyleForHistoryHead"> Vouch.Date</th>
+                              <th className="column-title text-center fontStyleForHistoryHead">Vouch.Inv</th>
+                              <th className="column-title text-center">
+                                <div className="col-md-6 fontStyleForHistoryHead">Dr</div>
+                                <div className="col-md-6 fontStyleForHistoryHead">Cr</div>
+                              </th>
+                        
 
                             </tr>
                           </thead>
@@ -322,6 +328,7 @@ const JVReport = () => {
                                         <td
                                           className=" "
                                           onClick={() => { 
+                                            setWeaverValue({label:"just",value:eachRecord.weaverId } )
                                             generateReportOfSpecificId(eachRecord.jvId ,eachRecord.weaverId );
                                             setStateToShowReportResult(true)
                                           }}
@@ -340,8 +347,9 @@ const JVReport = () => {
 
                                         </td>
                                         <td
-                                          className=" text-center "
+                                          className=" text-center   "
                                           onClick={() => {
+                                            setWeaverValue({label:"just",value:eachRecord.weaverId } )
                                             generateReportOfSpecificId(
                                               eachRecord.jvId , eachRecord.weaverId 
                                             );
@@ -350,6 +358,10 @@ const JVReport = () => {
                                         >
                                           {eachRecord.Voucherinv}
                                         </td>
+                                        <th className="column-title text-center">
+                                <div className="col-md-6 text-success "> {(eachRecord.debit).toFixed(2)}</div>
+                                <div className="col-md-6  text-danger "> {(eachRecord.credit).toFixed(2)}</div>
+                              </th>
 
                                       </tr>
                                     </>
@@ -411,7 +423,7 @@ const JVReport = () => {
                             <button
                               className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
                               onClick={() => {
-
+                                
                                 setModalShowForUpdate(true)
                                 setbackupValueOfUpdate(JVReportData)
                               }}
@@ -444,7 +456,7 @@ const JVReport = () => {
             onHide={() => {
               setJVReportData(backupValueOfUpdate)
               setModalShowForUpdate(false)
-
+            
 
             }}
           />

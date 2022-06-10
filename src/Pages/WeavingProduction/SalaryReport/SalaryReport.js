@@ -5,6 +5,7 @@ import { endPoint } from "../../../config/Config";
 import Select from "react-select";
 import ReactToPrint from "react-to-print";
 import SalaryReportReciept from "./SalaryReportReciept";
+import '../Production.css'
 
 const SalaryReport = () => {
   const componentRef = useRef();

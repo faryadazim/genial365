@@ -575,7 +575,8 @@ const WeavingProductionForm = () => {
     var arr_data = shiftTotalState;
     arr_data[i].noOfBorder = parseInt(value);
     arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
-
+    arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - shiftTotalState[i].bGradePiece);
+    arr_data[i].totalAmount =( parseFloat((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
     setShiftTotalState(arr_data);
 
     setReRender(!reRender);
@@ -637,8 +638,8 @@ const WeavingProductionForm = () => {
 
   function updateExtraAmountAmount(i, value) {
     var arr_data = shiftTotalState;
-    arr_data[i].extraAmount.amount = parseInt(value);
-    arr_data[i].totalAmount = parseInt((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value)
+    arr_data[i].extraAmount.amount = parseFloat(value);
+    arr_data[i].totalAmount = (parseFloat((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value)).toFixed(2)
     );
     setShiftTotalState(arr_data);
     setReRender(!reRender);

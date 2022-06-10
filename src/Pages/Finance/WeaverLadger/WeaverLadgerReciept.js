@@ -1,5 +1,5 @@
 import React from "react";
-
+import '../financeStyle.css'
 const WeaverLadgerReciept = React.forwardRef(
   ({ LadgerData, grandTotal }, ref) => {
     return (
@@ -54,8 +54,8 @@ const WeaverLadgerReciept = React.forwardRef(
                         {/* {} */}
                         {LadgerData.openingBalance> 0 ? (
                           <>
-                            <div className="col-md-8 px-0 right-border-2  py-1   text-right pr-2">
-                              {LadgerData.openingBalance} </div>
+                            <div className="col-md-8 px-0 right-border-2  py-1   text-right pr-2 text-customBlue ">
+                           <strong>   {LadgerData.openingBalance}</strong>  </div>
                             <div className="col-md-4 px-0 text-center  mt-1">  Dr</div>
 
                           </>
@@ -63,8 +63,8 @@ const WeaverLadgerReciept = React.forwardRef(
                           <>
 
 {
-  LadgerData.openingBalance==0?<div className=" text-right mt-1">  00.00</div>:<>
-    <div className="col-md-8  px-0 right-border-2 py-1   text-right pr-2">{Math.abs(LadgerData.openingBalance)}</div>
+  LadgerData.openingBalance==0?<div className=" text-right mt-1 text-customBlue ">  <strong>00.00</strong> </div>:<>
+    <div className="col-md-8  px-0 right-border-2 py-1   text-right pr-2 text-customBlue "> <strong> {Math.abs(LadgerData.openingBalance)}</strong></div>
                             <div className="col-md-4 px-0 text-center  mt-1">    Cr</div></>
 }
 
@@ -146,11 +146,11 @@ const WeaverLadgerReciept = React.forwardRef(
                 <div className="col-md-3  col-sm-3 col-3 col-xl-3 bottom-border-2 font-size-12  py-1         right-border-2  text-center py-1   d-flex justify-content-center align-items-center ">
                   <strong> Grand Total{" "}</strong>
                 </div>
-                <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                  <strong> {grandTotal.grandTotalDebit}</strong>
+                <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
+                  <strong> {(grandTotal.grandTotalDebit).toFixed(2)}</strong>
                 </div>
-                <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                  <strong>{grandTotal.grandTotalCredit}</strong>
+                <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
+                  <strong>{(grandTotal.grandTotalCredit).toFixed(2)}</strong>
                 </div>
                 <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
                   --
@@ -158,7 +158,7 @@ const WeaverLadgerReciept = React.forwardRef(
               </div>
               <div className="row mx-3  reportTableBody">
                 <div className="  col-md-12 col-sm-12 col-12 col-xl-12 bottom-border-2  font-size-12 py-1  py-1  right-border-2 left-border-2  d-flex   ">
-                  Weaver Closing Balance Account at Date&nbsp;
+              <strong>    Weaver Closing Balance Account at Date&nbsp;
                   {/* {LadgerData.ladgerData[LadgerData.ladgerData.length -1].date} */}
                   <u className="text-customOrange">
                     {`${LadgerData.ladgerData[
@@ -176,7 +176,7 @@ const WeaverLadgerReciept = React.forwardRef(
                     ) : (
                       <>{Math.abs(LadgerData.closingBalance)} Cr</>
                     )}
-                  </strong>
+                  </strong></strong>
                 </div>
               </div>
             </>

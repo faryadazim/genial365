@@ -152,11 +152,16 @@ const WeavingProductionFormStepOne = ({
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <input
+
+// 
+// value={rollDetail.programNumber && Math.max(0, rollDetail.programNumber )}
+
                         className={stepOneValidator.rollWeightValidate ? "form-control" : "form-control requiredValidateInput"
                         } name="name"
                         type="number"
-                        placeholder="ex. 45/67  "
-                        value={rollDetail.rollWeight}
+                        // onInput={(er) => er.target.value = er.target.value.slice(0) }
+                        placeholder="ex. 569 grams  "
+                        value={rollDetail.rollWeight && Math.max(0, rollDetail.rollWeight )}
                         onChange={(e) =>
                           setrollDetail({
                             ...rollDetail,
@@ -251,13 +256,16 @@ const WeavingProductionFormStepOne = ({
                         className={stepOneValidator.programNumberValidate ? "form-control" : "form-control requiredValidateInput"}
                         type="number"
                         name="name"
-                        placeholder="ex. 45/67  "
-                        value={rollDetail.programNumber}
+                        placeholder="ex. 789...  "
+                        onInput={(er) => er.target.value = er.target.value.slice(0) }
+                        value={rollDetail.programNumber && Math.max(0, rollDetail.programNumber )}
                         onChange={(e) =>
-                          setrollDetail({
+                         {
+                           console.log(typeof(rollDetail.programNumber) ,  );
+                            setrollDetail({
                             ...rollDetail,
                             programNumber: e.target.value,
-                          })
+                          })}
                         }
                       />
                     </div>

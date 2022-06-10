@@ -3,6 +3,7 @@ import { Modal } from "react-bootstrap";
 import { endPoint } from '../../../config/Config';
  
 const UpdateJVReport = (props) => {
+ 
 
 
     return (
@@ -104,7 +105,6 @@ const UpdateJVReport = (props) => {
                                         onClick={(e) => {
 e.preventDefault()
                                         
-
 
 
 

@@ -254,16 +254,16 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
               </div>
 
               {!lodgerBalanceDontShowAtStart ? (
-                <div className="col-md-3 px-0  ">
+                <div className="col-md-3 px-0">
                   <div className="field item form-group">
                     <label className="col-form-label col-md-12 col-sm-12 text-left label-align">
                       Ladger Balance{" "}
                       <strong className="text-dark">
                         {" "}
                         {LadgerBalanceState < 0
-                          ? `${Math.abs((LadgerBalanceState))}  Cr
+                          ? `${(Math.abs((LadgerBalanceState))).toFixed(2)}  Cr
                           `
-                          : `${Math.abs(LadgerBalanceState)} Dr`}
+                          : `${(Math.abs(LadgerBalanceState)).toFixed(2)} Dr`}
                       </strong>
                     </label>
                   </div>
@@ -411,7 +411,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         <input
                           className={formValidator.debit?"form-control":"form-control requiredValidateInput "}
                           type="number"
-                          value={jvFormBody.debit}
+                          value={jvFormBody.debit  && Math.max(0,jvFormBody.debit)}
                           onChange={(e) => {
                             setjvFormBody({
                               ...jvFormBody,
@@ -434,7 +434,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         <input
                           className={formValidator.credit?"form-control":"form-control requiredValidateInput "}
                           type="number"
-                          value={jvFormBody.credit}
+                          value={jvFormBody.credit    && Math.max(0,jvFormBody.credit )}
                           onChange={(e) => {
                             setjvFormBody({
                               ...jvFormBody,
@@ -466,12 +466,12 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                               parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit) <
                               0
                               ?
-                              `${Math.abs(parseFloat(LadgerBalanceState) -
-                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))
+                              `${(Math.abs(parseFloat(LadgerBalanceState) -
+                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
 
                               } Cr ` :
-                              `${Math.abs(parseFloat(LadgerBalanceState) -
-                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))
+                              `${(Math.abs(parseFloat(LadgerBalanceState) -
+                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
 
                               } Dr `
                           }

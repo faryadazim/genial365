@@ -20,7 +20,7 @@ const WeavingProductionFormStepThird = ({
                     className={stepThirdValidator.pileToPileLengthValidate?"form-control":"form-control requiredValidateInput"}
                     name="name"
                     type="number"
-                    value={finalStepInput.pileToPileLength}
+                    value={finalStepInput.pileToPileLength   && Math.max(0,finalStepInput.pileToPileLength )}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileLength: parseInt(e.target.value) })
                     }}
@@ -37,7 +37,7 @@ const WeavingProductionFormStepThird = ({
                   <input
                        className={stepThirdValidator.pileToPileWidthValidate?"form-control":"form-control requiredValidateInput"}
                        type="number"
-                    value={finalStepInput.pileToPileWidth}
+                    value={finalStepInput.pileToPileWidth   && Math.max(0,finalStepInput.pileToPileWidth )}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileWidth: parseInt(e.target.value) })
                     }}
@@ -56,9 +56,9 @@ const WeavingProductionFormStepThird = ({
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
-                    value={finalStepInput.cutPieceSize}
+                    value={finalStepInput.cutPieceSize   && Math.max(0,finalStepInput.cutPieceSize )}
                     onChange={(e) => {
-                      setfinalStepInput({ ...finalStepInput, cutPieceSize: parseInt(e.target.value) })
+                      setfinalStepInput({ ...finalStepInput, cutPieceSize: parseFloat(e.target.value) })
                     }}
                   />
                 </div>
@@ -75,9 +75,9 @@ const WeavingProductionFormStepThird = ({
                     type="number"
                     name="name"
                     placeholder="ex. 45/67  "
-                    value={finalStepInput.cutPieceWeight}
+                    value={finalStepInput.cutPieceWeight   && Math.max(0,finalStepInput.cutPieceWeight )}
                     onChange={(e) => {
-                      setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseInt(e.target.value) })
+                      setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseFloat(e.target.value) })
                     }}
                   />
                 </div>
@@ -111,13 +111,13 @@ const WeavingProductionFormStepThird = ({
                         <div className="col-md-3 customPaddingForTableInWPFStepThree colorManagement text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
      
-        {(rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
+        {((rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece).toFixed(3)}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
                        
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
                 {finalStepRequired.requirePerPieceWeight } </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                        {finalStepRequired.requirePerPieceWeight-((rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece) }                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
+                        {(finalStepRequired.requirePerPieceWeight-((rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece) ).toFixed(3)}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
                        
                    
                         </div>

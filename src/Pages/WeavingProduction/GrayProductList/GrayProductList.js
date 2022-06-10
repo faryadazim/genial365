@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
 import AddNewGrayProductList from "./AddNewGrayProductList";
 import UpdateGrayProduct from "./UpdateGrayProduct";
+import './GrayProductList.css'
 const GrayProductList = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
@@ -26,6 +27,7 @@ const GrayProductList = () => {
     LoomNumbRatePerBorderWithoutDraw96: true,
     status: true
   }
+  //
   const [addNewGrayProductValidator, setaddNewGrayProductValidator] = useState(addNewGrayProductValidatorInitialState)
 
   const newProductInitialState = {
@@ -219,7 +221,7 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
       ) : (
         <div
           role="main"
-          className={`right_col  h-100  ${showNavMenu == false ? "right_col-margin-remove" : " "
+          className={`right_col  heightOfGray  ${showNavMenu == false ? "right_col-margin-remove " : " "
             } `}
         >
           <AddNewGrayProductList
@@ -265,7 +267,7 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
             <div className="clearfix" />
           </div>
 
-          <div className="x_panel">
+          <div className="x_panel  ">
             <div className="x_content">
               <div className="table-responsive">
                 <table className="table table-striped jambo_table bulk_action">
@@ -276,20 +278,20 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                                          removeLeftBorder  removeTopBorder text-center"
                         style={{ width: "3%" }}
                       >
-                        <div className=" py-1 d-flex justify-content-center ">
-                          {" "}
+                        <div className=" py-1 d-flex justify-content-center  fontSettingForGrayHeader">
+                       
                           Sr.
                         </div>
                       </th>
 
                       <th
-                        className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                        className="column-title fontSettingForGrayHeader    border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
                         style={{ width: "3%" }}
                       >
                         <div className=" py-1">Name </div>
                       </th>
                       <th
-                        className="column-title     border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                        className="column-title  fontSettingForGrayHeader   border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
                         style={{ width: "3%" }}
                       >
                         <div className=" py-1">Size </div>
@@ -298,7 +300,7 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                         className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
                         style={{ width: "13%" }}
                       >
-                        <div className=" py-1 paddingXaxisTable">
+                        <div className=" fontSettingForGrayHeader  py-1 paddingXaxisTable">
                           Per Piece Gray Weight in Grams
                         </div>{" "}
                       </th>
@@ -307,13 +309,13 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                         style={{ width: "12%" }}
                       >
                         <div>
-                          <div className="col-md-12 py-1">
+                          <div className="col-md-12 py-1 fontSettingForGrayHeader ">
                             Gray Size Pile to Pile
                           </div>
-                          <div className="col-md-6 border border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
+                          <div className="col-md-6 border fontSettingForGrayHeader  border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
                             Length
                           </div>
-                          <div className="col-md-6 border  border-primary removeRightBorder removeBottomBorder py-1">
+                          <div className="col-md-6 border  fontSettingForGrayHeader  border-primary removeRightBorder removeBottomBorder py-1">
                             Width
                           </div>
                         </div>
@@ -321,22 +323,22 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
 
                       <th
                         className="column-title   
-                                         border border-primary removePadding   border-bottom-color removeTopBorder  removePadding  text-center"
+                                         border border-primary removePadding   fontSettingForGrayHeader  border-bottom-color removeTopBorder  removePadding  text-center"
                         style={{ width: "27%" }}
                       >
                         76" Loom
                         <div className=" py-1 col-md-12 text-center removePadding">
-                          <div className=" py-1 col-md-6 text-center  removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder pt-5">
+                          <div className=" py-1 col-md-6 text-center   fontSettingForGrayHeader removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder pt-5">
                             No Of Piece in one Border{" "}
                           </div>
                           <div className=" py-1 col-md-6 text-center  removePadding  border border-primary  removeRightBorder removeBottomBorder">
-                            <div className="col-md-12 text-center  removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
+                            <div className="col-md-12 text-center   fontSettingForGrayHeader removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
                               Rate Per Border
                             </div>
-                            <div className="col-md-6 text-center    removePadding border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
+                            <div className="col-md-6 text-center    fontSettingForGrayHeader  removePadding border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
                               With Draw Box
                             </div>
-                            <div className="col-md-6 text-center  removePadding  border border-primary removeRightBorder removeBottomBorder">
+                            <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeBottomBorder">
                               Without Draw Box
                             </div>
                           </div>
@@ -344,22 +346,22 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                       </th>
                       <th
                         className="column-title  
-                                         border border-primary removePadding   border-bottom-color removeTopBorder  removePadding  text-center"
+                                         border border-primary removePadding  fontSettingForGrayHeader   border-bottom-color removeTopBorder  removePadding  text-center"
                         style={{ width: "27%" }}
                       >
                         96" Loom
                         <div className=" py-1 col-md-12 text-center removePadding">
-                          <div className=" py-1 col-md-6 text-center  removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder ">
+                          <div className=" py-1 col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder ">
                             No Of Piece in one Border{" "}
                           </div>
                           <div className=" py-1 col-md-6 text-center  removePadding  border border-primary  removeRightBorder removeBottomBorder">
-                            <div className="col-md-12 text-center  removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
+                            <div className="col-md-12 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
                               Rate Per Border
                             </div>
-                            <div className="col-md-6 text-center   removePadding border border-primary   removeBottomBorder removeLeftBorder ">
+                            <div className="col-md-6 text-center   fontSettingForGrayHeader  removePadding border border-primary   removeBottomBorder removeLeftBorder ">
                               With Draw Box
                             </div>
-                            <div className="col-md-6 text-center  removePadding  border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
+                            <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
                               Without Draw Box
                             </div>
                           </div>
@@ -367,14 +369,14 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
                       </th>
                       <th
                         className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
+                                        removeLeftBorder removeTopBorder removeRight Border   fontSettingForGrayHeader  border-bottom-color "
                         style={{ width: "4%" }}
                       >
                         Status
                       </th>
                       <th
                         className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border   border-bottom-color "
+                                        removeLeftBorder removeTopBorder removeRight Border  fontSettingForGrayHeader   border-bottom-color "
                         style={{ width: "2%" }}
                       >
                         Action

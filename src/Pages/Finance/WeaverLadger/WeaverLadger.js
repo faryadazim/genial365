@@ -226,54 +226,54 @@ const WeaverLadger = () => {
               </div>
               <div className="x_content">
                 <div className="row  pr-4">
-                 
+
                 </div>
                 <div className="row  pr-4">
                   <div className="col-md-12 px-0">
-                  
+
                   </div>
                 </div>
                 <div className="row  pr-4">
                   <div className="col-md-12 px-0">
-                   
+
                   </div>
                 </div>
 
-<div className="row">
-  <div className="col-md-4">
-  <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
-                    Select Weaver
-                  </label>
-                  <div className="col-md-8 col-sm-8 ">
-                    {isLoadingSelector ? (
-                      <>. . .</>
-                    ) : (
-                      <>
-                        <Select
-                          required
-                          className="basic-single"
-                          classNamePrefix="select"
-                          value={employeeWeaverValue}
-                          onChange={(e) => {
-                            setSelectorValidation(true)
-                            setEmployeeWeaverValue({
-                              label: e.label,
-                              value: e.value,
-                            })
-                          }
-                          }
+                <div className="row">
+                  <div className="col-md-4">
+                    <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
+                      Select Weaver
+                    </label>
+                    <div className="col-md-8 col-sm-8 ">
+                      {isLoadingSelector ? (
+                        <>. . .</>
+                      ) : (
+                        <>
+                          <Select
+                            required
+                            className="basic-single"
+                            classNamePrefix="select"
+                            value={employeeWeaverValue}
+                            onChange={(e) => {
+                              setSelectorValidation(true)
+                              setEmployeeWeaverValue({
+                                label: e.label,
+                                value: e.value,
+                              })
+                            }
+                            }
 
-                          isSearchable={true}
-                          name="color"
-                          options={employeeWeaverOptions}
-                          styles={selectValidation ? customStyles : customStylesDanger}
-                        />
-                      </>
-                    )}
+                            isSearchable={true}
+                            name="color"
+                            options={employeeWeaverOptions}
+                            styles={selectValidation ? customStyles : customStylesDanger}
+                          />
+                        </>
+                      )}
+                    </div>
                   </div>
-  </div>
-  <div className="col-md-4">
-  <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
+                  <div className="col-md-4">
+                    <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
                       Date From
                     </label>
                     <div className="col-md-9 col-sm-9">
@@ -286,9 +286,9 @@ const WeaverLadger = () => {
                         }}
                       />
                     </div>
-  </div>
-  <div className="col-md-4">
-  <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
+                  </div>
+                  <div className="col-md-4">
+                    <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
                       Date To
                     </label>
                     <div className="col-md-9 col-sm-9">
@@ -301,9 +301,9 @@ const WeaverLadger = () => {
                         }}
                       />
                     </div>
-  </div>
-</div>
-                
+                  </div>
+                </div>
+
                 <div className="row px-4 mb-2">
                   <div className="col-md-12 text-right pr-2 mt-1">
                     <button
@@ -320,37 +320,37 @@ const WeaverLadger = () => {
                 </div>
               </div>
               {/* <div className="x_panel"> */}
-                {/* <div className="x_title"> */}
-                {/* <h2 className="pl-2 pt-2">Weaver Ladger</h2> */}
-                <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
-                  <li>
-                    <ReactToPrint
-                      trigger={() => {
-                        return (
-                          <button className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound">
-                            <i className="fa fa-print"></i>
-                          </button>
-                        );
-                      }}
-                      content={() => componentRef.current}
-                      documentTitle="new docs"
-                      pageStyle="print"
-                    />
-                  </li>
-                  <li>
-                    <button
-                      className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
-                      onClick={() => console.log("print")}
-                    >
-                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                    </button>
-                  </li>
-                </ul>
-                <div className="clearfix" />
-                {/* </div> */}
-                <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
-                  grandTotal={grandTotal} selectValidation={selectValidation}
-                />
+              {/* <div className="x_title"> */}
+              {/* <h2 className="pl-2 pt-2">Weaver Ladger</h2> */}
+              <ul className="mr-3 nav navbar-right panel_toolbox d-flex justify-content-end">
+                <li>
+                  <ReactToPrint
+                    trigger={() => {
+                      return (
+                        <button className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound">
+                          <i className="fa fa-print"></i>
+                        </button>
+                      );
+                    }}
+                    content={() => componentRef.current}
+                    documentTitle="new docs"
+                    pageStyle="print"
+                  />
+                </li>
+                <li>
+                  <button
+                    className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
+                    onClick={() => console.log("print")}
+                  >
+                    <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                  </button>
+                </li>
+              </ul>
+              <div className="clearfix" />
+              {/* </div> */}
+              <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
+                grandTotal={grandTotal} selectValidation={selectValidation}
+              />
               {/* </div> */}
             </div>
 

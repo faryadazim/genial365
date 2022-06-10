@@ -78,13 +78,13 @@ const JVReportReciept = React.forwardRef(({ JVReportData }, ref) => {
             </div>
             <div className="col-md-4 px-0">
             <div className=" col-md-8  px-0 py-auto right-border-2  bottom-border-2  py-1  text-right px-2">
-            {JVReportData.debit}
+            {(JVReportData.debit)}
             </div>
             <div className=" col-md-4 px-0 py-auto right-border-2  bottom-border-2  py-1  text-center px-2">
               Dr
             </div>
             <div className=" col-md-8  px-0 py-auto right-border-2  bottom-border-2  py-1  text-right px-2">
-            {JVReportData.credit}
+            {(JVReportData.credit)}
             </div>
             <div className=" col-md-4 px-0 py-auto right-border-2  bottom-border-2  py-1  text-center px-2">
               Cr

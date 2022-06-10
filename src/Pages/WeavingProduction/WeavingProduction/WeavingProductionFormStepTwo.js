@@ -277,7 +277,7 @@ const WeavingProductionFormStepTwo = ({
                             className={shiftTotalState[i].shiftValidation.noOfBorderValidate ? "form-control" : "form-control requiredValidateInput"}
 
                             placeholder="no. of borders"
-                            value={shiftTotalState[i].noOfBorder}
+                            value={shiftTotalState[i].noOfBorder   && Math.max(0, shiftTotalState[i].noOfBorder  )}
                             onChange={(e) =>
                               updateNoOfBorders(i, e.target.value)
                             }
@@ -308,7 +308,7 @@ const WeavingProductionFormStepTwo = ({
                           <input
                             type="number"
                             className={shiftTotalState[i].shiftValidation.bGradePiece ? "form-control" : "form-control requiredValidateInput"}
-                            value={shiftTotalState[i].bGradePiece}
+                            value={shiftTotalState[i].bGradePiece    && Math.max(0, shiftTotalState[i].bGradePiece  )}
                             onChange={(e) =>
                               updateBGradePiece(i, e.target.value)
                             }
@@ -357,10 +357,11 @@ const WeavingProductionFormStepTwo = ({
                           <div className="col-md-5  py-1 px-0 pl-1">
                             <input
                               type="number"
+                              typeof="number"
                               className={shiftTotalState[i].shiftValidation.extraAmountAmountValidate ? "form-control" : "form-control requiredValidateInput"}
 
                               placeholder="ex. 500/- RS"
-                              value={shiftTotalState[i].extraAmount.amount}
+                              value={shiftTotalState[i].extraAmount.amount  && Math.max(0,shiftTotalState[i].extraAmount.amount)}
                               onChange={(e) =>
                                 updateExtraAmountAmount(i, e.target.value)
                               }
