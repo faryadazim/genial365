@@ -92,35 +92,35 @@ const WeaverWiseReportReciept = React.forwardRef(
                         <div className="col-md-4   col-sm-4 col-4 col-xl-4   right-border-2 h-100   py-1 font-size-12 text-center    d-flex justify-content-center align-items-center ">
                           {weaverWiseReportItem.product}
                         </div>
-                        <div className=" col-md-4 col-sm-4 col-3 col-xl-4   right-border-2 h-100 py-1 font-size-12 text-center   d-flex justify-content-center align-items-center ">
+                        <div className=" col-md-4 col-sm-4 col-3 col-xl-4   right-border-2 h-100 py-1 font-size-12    d-flex justify-content-end align-items-center ">
                           {weaverWiseReportItem.size}
                         </div>
-                        <div className=" col-md-4 col-sm-4 col-3 col-xl-4   right-border-2   py-1 font-size-12 text-center h-100   d-flex justify-content-center align-items-center ">
+                        <div className=" col-md-4 col-sm-4 col-3 col-xl-4   right-border-2   py-1 font-size-12 text-center h-100   d-flex justify-content-start align-items-center ">
                           {weaverWiseReportItem.border}
                         </div>
                       </div>
 
                       <div className=" col-md-4 col-sm-4 col-4 col-xl-4 px-0">
-                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2 h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
+                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2 h-100  py-1 font-size-12     d-flex justify-content-end align-items-center pr-1">
                           {weaverWiseReportItem.bGradePiece}
                         </div>
-                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-2  h-100  py-1 font-size-12   d-flex justify-content-center align-items-center ">
+                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-2  h-100  py-1 font-size-12   d-flex justify-content-end align-items-center  pr-1">
                           {weaverWiseReportItem.aGradePieces}
                         </div>
-                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2 h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
-                          {weaverWiseReportItem.ratePerBorder}
+                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2 h-100  py-1 font-size-12    d-flex justify-content-end align-items-center pr-1 ">
+                          {(weaverWiseReportItem.ratePerBorder).toFixed(2)}
                         </div>
-                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2  h-100  py-1 font-size-12  text-center   d-flex justify-content-center align-items-center ">
-                          {weaverWiseReportItem.totalAmount -
-                            weaverWiseReportItem.extraAmount}
+                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0  right-border-2  h-100  py-1 font-size-12      d-flex justify-content-end align-items-center pr-1 ">
+                          {(weaverWiseReportItem.totalAmount -
+                            weaverWiseReportItem.extraAmount).toFixed(2)}
                         </div>
                       </div>
 
-                      <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1  font-size-12     right-border-2  text-center py-1   d-flex justify-content-center align-items-center ">
-                        {weaverWiseReportItem.extraAmount}
+                      <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1  font-size-12     right-border-2  text-center py-1   d-flex justify-content-end align-items-center ">
+                        {(weaverWiseReportItem.extraAmount).toFixed(2)}
                       </div>
-                      <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                        {weaverWiseReportItem.totalAmount}
+                      <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
+                        {(weaverWiseReportItem.totalAmount).toFixed(2)}
                       </div>
                     </div>
                   );
@@ -132,8 +132,8 @@ const WeaverWiseReportReciept = React.forwardRef(
                   <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2 bottom-border-1 font-size-12    main_container  text-light    right-border-2  text-center py-1   d-flex justify-content-center align-items-center ">
                     Grand Total{" "}
                   </div>
-                  <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                    {summaryFinal.grandTotal} /- Rs
+                  <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12    py-1  right-border-2   d-flex justify-content-end align-items-center ">
+                    {(summaryFinal.grandTotal).toFixed(2)} /- 
                   </div>
                 </div>
                 <div className="row mx-3  reportTableBody">
@@ -143,7 +143,7 @@ const WeaverWiseReportReciept = React.forwardRef(
                     Paid Amount
                   </div>
                   <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                    {summaryFinal.paidAmount} /- Rs
+                    {/* {summaryFinal.paidAmount} /- Rs */}  --
                   </div>
                 </div>
                 <div className="row mx-3  reportTableBody">
@@ -153,7 +153,7 @@ const WeaverWiseReportReciept = React.forwardRef(
                     Balance
                   </div>
                   <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                    {summaryFinal.grandTotal - summaryFinal.paidAmount} /- Rs
+                    {/* {summaryFinal.grandTotal - summaryFinal.paidAmount} /- Rs */}   --
                   </div>
                 </div>
               </>

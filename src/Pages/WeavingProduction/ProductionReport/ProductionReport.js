@@ -163,18 +163,31 @@ const ProductionReport = () => {
                       <table className="table table-striped jambo_table bulk_action">
                         <thead>
                           <tr className="headings positionFixed">
-                            <th className="column-title"> Pro.Date</th>
-                            <th className="column-title">Roll Name</th>
+                            <th className="column-title"  style={{fontWeight:'400'}}> Pro.Date</th>
+                            <th className="column-title"  style={{fontWeight:'400'}}>Roll Name</th>
                             <th
                               className="column-title text-center"
-                              width="20%"
+                              width="20%" style={{fontWeight:'400'}}
                             >
                               Action
                             </th>
                           </tr>
                         </thead>
                         <tbody>
-                          {prdouctionItems.map((item) => {
+
+
+{
+  prdouctionItems.length==0? <> 
+  <tr className="even pointer">
+          <td
+            className=" text-center"
+          colSpan={3}
+          >
+          No Data Available </td>
+         
+        </tr>
+    </> :<>
+    {prdouctionItems.map((item) => {
                             return (
                               <tr className="even pointer">
                                 <td
@@ -218,6 +231,11 @@ const ProductionReport = () => {
                               </tr>
                             );
                           })}
+    </>
+ 
+}
+
+                        
                         </tbody>
                       </table>
                     </div>
