@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react'
 import { Modal } from "react-bootstrap";
 import { endPoint } from '../../../config/Config';
+import { ToastContainer, toast } from "react-toastify";
  
 const UpdateJVReport = (props) => {
- 
+    const notifyUpdate= () => toast("Report updated Successfully!");
 
 
     return (
@@ -131,7 +132,9 @@ e.preventDefault()
                                             
                                             fetch( `${endPoint}api/PutJVReport?financeMainId=${props.JVReportData.financeMainId}&weaverId=${props.weaverValue.value}`, requestOptions)
                                               .then(response => response.text())
-                                              .then(result => props.setModalShowForUpdate(false))
+                                              .then(result => {props.setModalShowForUpdate(false)
+                                                notifyUpdate();
+                                            })
                                               .catch(error => console.log('error', error));
 
 
