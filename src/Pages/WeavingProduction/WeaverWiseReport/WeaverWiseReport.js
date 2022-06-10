@@ -48,7 +48,53 @@ const customStyles = {
     height: "28px",
   }),
 };
+const customStylesDanger = {
+  // control: base => ({
+  //   ...base, 
+  //   // This line disable the blue border
 
+  // })
+  control: (provided, state, base) => ({
+    ...provided,
+    background: '#fff',
+    borderColor: 'red',
+    borderRadius: "none",
+    minHeight: '30px',
+    height: '30px',
+
+    ...base, boxShadow: 'none'
+  }),
+  option: (provided, state) => ({
+    ...provided,
+
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    background: '#fff',
+
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided, fontSize: "11px",
+    height: '30px',
+    padding: '0 6px',
+    // background: '#fff',
+
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: '0px',
+
+  }),
+  indicatorSeparator: state => ({
+    display: 'none',
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: '30px',
+
+  }),
+
+}
 const WeaverWiseReport = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
@@ -65,7 +111,7 @@ const WeaverWiseReport = () => {
   const [employeeWeaverOptions, setEmployeeWeaverOptions] = useState([])
   const [employeeWeaverValue, setEmployeeWeaverValue] = useState({ label: "", value: "" })
   const [WeaverWiseReportData, setWeaverWiseReportData] = useState([])
-
+const [weaverValueValidator , setWeaverValueValidator] = useState(true)
 
 
   const fetchWeaverList = () => {
@@ -107,6 +153,10 @@ const WeaverWiseReport = () => {
 
 
   const fetchReportData = () => {
+if (employeeWeaverValue.value==0 ||employeeWeaverValue.value==undefined ||employeeWeaverValue.value==null ) {
+  setWeaverValueValidator(false) 
+} else {
+   
     let responseStatus;
     fetch(
       `${endPoint}api/WeaverWiseReport?w_id=${employeeWeaverValue.value}&dateFrom=${dateFrom}T00:00:00&dateTo=${dateTo}T00:00:00`,
@@ -143,7 +193,7 @@ const WeaverWiseReport = () => {
 
           })
           setSummaryFinal({ grandTotal: grandTotal, paidAmount: grandTotal })
-
+          setWeaverValueValidator(true)
         } else {
           console.log("Something went wrong");
         }
@@ -151,6 +201,8 @@ const WeaverWiseReport = () => {
       .catch((err) => {
         console.log(err, "err");
       });
+
+    }
   };
   useEffect(() => {
     dispatch(setNavSm());
@@ -158,9 +210,7 @@ const WeaverWiseReport = () => {
   }, [])
 
   return (
-    <>
-
-
+    <> 
       <div
         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
           } `}
@@ -197,7 +247,7 @@ const WeaverWiseReport = () => {
                               isSearchable={true}
                               name="color"
                               options={employeeWeaverOptions}
-                              styles={customStyles}
+                              styles={weaverValueValidator?customStyles:customStylesDanger}
                             /></>
                         }
 
@@ -240,8 +290,7 @@ const WeaverWiseReport = () => {
                           className="btn btn-sm btn-customOrange pl-3"
                           onClick={(e) => {
                             e.preventDefault();
-                            fetchReportData()
-                            console.log("bawag", employeeWeaverValue, dateFrom, dateTo);
+                            fetchReportData() 
                           }}
                         >
                           Search <i className="fa fa-search pl-3 pr-2"></i>

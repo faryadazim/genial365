@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
 import MyVerticallyCenteredModal from './MyVerticallyCenteredModal'
 import { toast, ToastContainer } from "react-toastify";
+import { endPoint } from "../../../config/Config";
  
 const EmployeeList = () => {
   const notifyAdd = () => toast("Employee Added Successfully");
@@ -17,7 +18,8 @@ const EmployeeList = () => {
   const [ListOfEmployee, setListOfEmployee] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
-  const employeeInitialState={    name: "",
+  const employeeInitialState={    
+    name: "",
   fatherName:"",
   phoneNum1:"",
   phoneNum2:"",
@@ -236,59 +238,102 @@ setEmployeeListValidator({...employeeListValidator, name:false})
   }else if( addNewEmployee.jobStatus===''){    setEmployeeListValidator({...employeeListValidator, jobStatus:false})
   }else if( addNewEmployee.designation===''){    setEmployeeListValidator({...employeeListValidator, designation:false})
 }else if( addNewEmployee.recruitmentType===''){    setEmployeeListValidator({...employeeListValidator, recruitmentType:false})
-}else if( addNewEmployee.monthlySalary==='' && addNewEmployee.weeklySalary===''){  
-    setEmployeeListValidator({...employeeListValidator, monthlySalary:false}) 
-    setEmployeeListValidator({...employeeListValidator, weeklySalary:false}) 
+}else if( addNewEmployee.monthlySalary==='' ){  
+    setEmployeeListValidator({...employeeListValidator, monthlySalary:false})  
 }else if( addNewEmployee.employeePic1===''){    setEmployeeListValidator({...employeeListValidator, employeePic1:false})
 }else if( addNewEmployee.employeePic2===''){    setEmployeeListValidator({...employeeListValidator, employeePic2:false})
 }else if( addNewEmployee.employeeCnicFront===''){    setEmployeeListValidator({...employeeListValidator, employeeCnicFront:false})
 }else if( addNewEmployee.employeeCnicBsck===''){    setEmployeeListValidator({...employeeListValidator, employeeCnicBsck:false})
 } else {
-   const requestOptions = {
-        method: "POST",
-        headers: {
-          "Authorization": `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
-          "Content-Type": "application/json" },
-        body: JSON.stringify(addNewEmployee),
-      };
-      
-      fetch(url +"api/employeeLists", requestOptions)
-        .then((response) => response.json())
-        .then((data) => {  
-          setModalShow(false);
-          fetchAllData();
-          setAddNewEmployee({
-            name: "",
-            fatherName: "",
-            phoneNum1: "",
-            phoneNum2: "",
-            phoneNum3: "",
-            homePhoneNum: "",
-            cnicNum: "",
-            address: "",
-            referenceName: "",
-            referencePhoneNum: "",
-            jobStatus: "",
-            designation: "",
-            employeePic1: "",
-            employeePic2: "",
-            employeeCnicFront: "",
-            employeeCnicBsck: "",
-            recruitmentType: "",
-            weeklySalary: "",
-            monthlySalary: "",
-          }); 
-          setIsDisableSubmitButton(false)
-          setEmployeeListValidator(employeeListValidatorInitialState)
-          setJobStatusValue("")
-          setrecruitmentTypeValue("")
-          setUpdateSelectorList(!updateSelectorList)
-          notifyAdd();
-        })
-        .catch((err) => {
-          console.log("err front End", err);
-        });
-   
+ 
+
+  var myHeaders = new Headers();
+  myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+  myHeaders.append("Content-Type", "application/json");
+  
+  var raw = JSON.stringify({
+    "name": addNewEmployee.name,
+    "fatherName": addNewEmployee.fatherName,
+    "phoneNum1":addNewEmployee.phoneNum1,
+    "phoneNum2": addNewEmployee.phoneNum2,
+    "phoneNum3": addNewEmployee.phoneNum3,
+    "homePhoneNum": addNewEmployee.homePhoneNum,
+    "cnicNum":addNewEmployee.cnicNum,
+    "address": addNewEmployee.address,
+    "referenceName": addNewEmployee.referenceName,
+    "referencePhoneNum":addNewEmployee.referencePhoneNum,
+    "jobStatus": addNewEmployee.jobStatus,
+    "designation":parseInt( addNewEmployee.designation),
+    "employeePic1": addNewEmployee.employeePic1,
+    "employeePic2": addNewEmployee.employeePic2,
+    "employeeCnicFront": addNewEmployee.employeeCnicFront,
+    "employeeCnicBsck":addNewEmployee.employeeCnicBsck,
+    "recruitmentType": addNewEmployee.recruitmentType,
+    "salary":parseFloat( addNewEmployee.monthlySalary )
+  });
+  
+  var requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+  
+  fetch(`${endPoint}api/employeeLists`, requestOptions)
+    .then(response => response.text())
+    .then(result =>{
+      setAddNewEmployee({
+        name: "",
+        fatherName: "",
+        phoneNum1: "",
+        phoneNum2: "",
+        phoneNum3: "",
+        homePhoneNum: "",
+        cnicNum: "",
+        address: "",
+        referenceName: "",
+        referencePhoneNum: "",
+        jobStatus: "",
+        designation: "",
+        employeePic1: "",
+        employeePic2: "",
+        employeeCnicFront: "",
+        employeeCnicBsck: "",
+        recruitmentType: "",
+        weeklySalary: "",
+        monthlySalary: "",
+      });
+setModalShow(false);
+fetchAllData();
+
+setIsDisableSubmitButton(false)
+setEmployeeListValidator(employeeListValidatorInitialState)
+setJobStatusValue("")
+setrecruitmentTypeValue("")
+setUpdateSelectorList(!updateSelectorList)
+notifyAdd();
+    })
+    .catch(error => console.log('error', error));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 }     
   };
 
@@ -478,7 +523,7 @@ console.log(value.value);
                               <td className=" ">{item.designationName}</td>
                               <td className=" ">{item.jobStatus}</td>
                               <td className=" ">{item.recruitmentType}</td>
-                              <td className=" ">{item.recruitmentType==="Monthly" || item.recruitmentType==="Contract"?item.monthlySalary:item.weeklySalary}</td>
+                              <td className=" ">{item.salary}</td>
                               <td className=" ">{item.phoneNum1}</td>
                             </tr>
                           );

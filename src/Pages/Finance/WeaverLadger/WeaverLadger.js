@@ -136,14 +136,14 @@ const WeaverLadger = () => {
       redirect: "follow",
     };
 
-    fetch(`${endPoint}api/employeeWeaverListWithName`, requestOptions)
+    fetch(`${endPoint}api/employeeListsName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         var arrForWeaverEmployee = [];
         JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
-            value: item.employeeId,
-            label: item.employeeName,
+            value: item.employee_Id,
+            label: item.name,
           });
         });
         setEmployeeWeaverOptions(arrForWeaverEmployee);
@@ -185,7 +185,22 @@ const WeaverLadger = () => {
       )
         .then((response) => response.text())
         .then((result) => {
-          setLadgerData(JSON.parse(result))
+        
+
+
+          var apiResponse = JSON.parse(result); 
+          var arrayForCurrentBalance = []
+          let balance = JSON.parse(result).openingBalance;
+          console.log(balance, "balance");
+          apiResponse.ladgerData.map((eachLadgerItem) => {
+            balance = balance + (eachLadgerItem.debit - eachLadgerItem.credit)
+            arrayForCurrentBalance.push(balance);
+          })
+          setLadgerData({...apiResponse ,arrayForCurrentBalance })
+ 
+
+
+
           var grandTotalDebit = 0;
           (JSON.parse(result).ladgerData).map((eachTotalAmount) => {
             grandTotalDebit = grandTotalDebit + eachTotalAmount.debit
@@ -220,7 +235,7 @@ const WeaverLadger = () => {
           <div className="col-md-12">
             <div className="x_panel">
               <div className="x_title">
-                <h2 className="pl-2 pt-2">Weaver Ladger Generator</h2>
+                <h2 className="pl-2 pt-2">Ladger Report</h2>
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
                 <div className="clearfix" />
               </div>
@@ -242,7 +257,7 @@ const WeaverLadger = () => {
                 <div className="row">
                   <div className="col-md-4">
                     <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
-                      Select Weaver
+                      Select Employee
                     </label>
                     <div className="col-md-8 col-sm-8 ">
                       {isLoadingSelector ? (
@@ -350,6 +365,7 @@ const WeaverLadger = () => {
               {/* </div> */}
               <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
                 grandTotal={grandTotal} selectValidation={selectValidation}
+                dateFrom={dateFrom}
               />
               {/* </div> */}
             </div>

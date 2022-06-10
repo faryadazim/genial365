@@ -426,29 +426,7 @@ const MyVerticallyCenteredModal = (props) => {
                   props.recruitmentTypeValue.value == "Weekly" ? <> <label className="col-form-label col-md-2 col-sm-3  label-align">
                     Weekly Salary <span className="required">*</span>
                   </label>
-                    <div className="col-md-3 col-sm-8">
-                      <div>
-                        <input
-                          className={props.employeeListValidator.weeklySalary ? "form-control" : "form-control requiredValidateInput"}
-                          name="nanr"
-                          type="number"
-                          placeholder="ex. 20000"
-                          required="required"
-                          value={props.addNewEmployee.weeklySalary && Math.max(0, props.addNewEmployee.weeklySalary)}
-                          onInput={(er) => er.target.value = er.target.value.slice(0)}
-                          onChange={(e) => {
-                            props.setAddNewEmployee({
-                              ...props.addNewEmployee,
-                              weeklySalary: e.target.value,
-                            })
-                          }
-                          }
-                        />
-                      </div>
-                    </div></> : <> <label className="col-form-label col-md-2 col-sm-3  label-align">
-                      {props.recruitmentTypeValue.value}  Salary <span className="required">*</span>
-                    </label>
-                    <div className="col-md-3 col-sm-8">
+                  <div className="col-md-3 col-sm-8">
                       <div>
                         <input
                           className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}
@@ -456,8 +434,8 @@ const MyVerticallyCenteredModal = (props) => {
                           type="number"
                           placeholder="ex. 20000"
                           required="required"
-                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary )}
-                          onInput={(er) => er.target.value = er.target.value.slice(0) }
+                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary)}
+                          onInput={(er) => er.target.value = er.target.value.slice(0)}
                           onChange={(e) => {
                             //   props.changeSubmitButtonCondition()
                             props.setAddNewEmployee({
@@ -468,7 +446,33 @@ const MyVerticallyCenteredModal = (props) => {
                           }
                         />
                       </div>
-                    </div></>
+                    </div>
+                  </> : <>
+                    <label className="col-form-label col-md-2 col-sm-3  label-align">
+                      {props.recruitmentTypeValue.value}  Salary <span className="required">*</span>
+                    </label>
+                    <div className="col-md-3 col-sm-8">
+                      <div>
+                        <input
+                          className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}
+                          name="nanr"
+                          type="number"
+                          placeholder="ex. 20000"
+                          required="required"
+                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary)}
+                          onInput={(er) => er.target.value = er.target.value.slice(0)}
+                          onChange={(e) => {
+                            //   props.changeSubmitButtonCondition()
+                            props.setAddNewEmployee({
+                              ...props.addNewEmployee,
+                              monthlySalary: e.target.value,
+                            })
+                          }
+                          }
+                        />
+                      </div>
+                    </div>
+                  </>
                 }
 
 

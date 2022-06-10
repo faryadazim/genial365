@@ -1035,7 +1035,7 @@ const WeavingProductionForm = () => {
       "total_pieces": grandFinalTotal.totalPiece,
       "b_grade_pieces": grandFinalTotal.totalBGrade,
       "a_grade_pieces": grandFinalTotal.totalAGrade,
-      "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade * finalStepInput.cutPieceWeight)) / grandFinalTotal.totalPiece,
+      "current_per_piece_a_weight": (rollDetail.rollWeight - (finalStepInput.cutPieceWeight)) / grandFinalTotal.totalPiece,
       "required_length_p_to_p": finalStepRequired.requireLengthpp,
       "required_width_p_to_p": finalStepRequired.requireWidthpp,
       "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,

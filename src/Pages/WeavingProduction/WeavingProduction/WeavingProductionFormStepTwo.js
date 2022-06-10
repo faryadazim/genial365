@@ -447,24 +447,24 @@ const WeavingProductionFormStepTwo = ({
                 <table className="table table-striped jambo_table bulk_action">
                   <thead>
                     <tr className="headings">
-                      <th className="column-title"> Total </th>
-                      <th className="column-title">Borders </th>
-                      <th className="column-title"> Piece</th>
-                      <th className="column-title">B Grade</th>
-                      <th className="column-title">A Grade</th>
+                      {/* <th className="column-title"> Total </th> */}
+                      <th className="column-title" style={{fontWeight:"400"}}>Total Borders </th>
+                      <th className="column-title"  style={{fontWeight:"400"}}> Total Pieces</th>
+                      <th className="column-title"  style={{fontWeight:"400"}}>Total B Grade Pieces</th>
+                      <th className="column-title"  style={{fontWeight:"400"}}>Total A Grade Pieces</th>
                     </tr>
                   </thead>
 
                   <tbody>
                     <tr className="even pointer">
-                      <td
+                      {/* <td
                         style={{
-                          backgroundColor: "#f79c74",
+                          backgroundColor:" #003a4d",
                           color: "#fff",
                         }}
                       >
                         . . .
-                      </td>
+                      </td> */}
                       <td className=" ">{grandFinalTotal.totalBorders}</td>
                       <td className=" ">{grandFinalTotal.totalPiece}</td>
                       <td className=" ">{grandFinalTotal.totalBGrade}</td>

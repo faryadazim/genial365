@@ -17,10 +17,17 @@
 
 
 
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+
 
 body {
   overflow-x: hidden; /* Hide scrollbars */
-  user-select: none;
+  /* user-select: none; */
 }
 /* @import "~bootstrap/scss/bootstrap"; */
 .main_container {
@@ -743,4 +750,14 @@ color: white !important;
 
  .heightForJV{
    height: 90vh !important;
+ }
+
+
+ th{
+  border: 0px !important;
+ }
+
+
+ td{
+  
  }

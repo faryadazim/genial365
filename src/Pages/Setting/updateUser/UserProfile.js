@@ -75,7 +75,7 @@ setCanChangePassword(false)
     >
       <div className="x_panel p">
         <div className="x_title">
-          <h2 className="pl-2 pt-2">Border Quality</h2>
+          <h2 className="pl-2 pt-2">User Profile</h2>
           <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
           <div className="clearfix" />
         </div>

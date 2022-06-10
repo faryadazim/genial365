@@ -301,7 +301,7 @@ const WeavingProductionFormStepOne = ({
                           <td className="text-right ">{loomDetail.drawBox}</td>
                         </tr>
                         <tr className="even pointer">
-                          <td className="text-left ">Number of Piece In Border</td>
+                          <td className="text-left ">Number of Pieces In Border</td>
                           <td className=" text-right">
                             {loomDetail.NumOfPieceOneBorder}
                           </td>
