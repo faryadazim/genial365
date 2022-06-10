@@ -215,13 +215,8 @@ const WeavingProductionForm = () => {
 
   }
   const FetchListSelector = async () => {
-    // Fetching loom list number
-
-
-    // fetching and setting loom name 
-
-
-
+    // Fetching loom list number 
+    // fetching and setting loom name  
     if (idToUpdateProductionTable == null) {
       await fetchNewRoleName()
     }
@@ -300,19 +295,19 @@ const WeavingProductionForm = () => {
 
 
 
-    var myHeaders = new Headers();
-    myHeaders.append(
+    var myHeadersForWeaver = new Headers();
+    myHeadersForWeaver.append(
       "Authorization",
       `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
     );
 
     var requestOptions = {
       method: "GET",
-      headers: myHeaders,
+      headers: myHeadersForWeaver,
       redirect: "follow",
     };
 
-    fetch(`${endPoint}api/employeeWeaverListWithName`, requestOptions)
+    fetch(`${endPoint}api/employeeActiveWeaverListWithName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
         var arrForWeaverEmployee = [];
@@ -327,17 +322,8 @@ const WeavingProductionForm = () => {
       .catch((error) => console.log("error", error));
 
 
-
-
-
-
-
-
-
-
-
-
-    fetch(url + "api/employeeNativingListWithName", {
+ 
+    fetch(url + "api/employeeActiveNativingListWithName", {
       method: "GET",
       headers: {
         // Authorization: "bearer" + " " + e,
@@ -576,7 +562,7 @@ const WeavingProductionForm = () => {
     arr_data[i].noOfBorder = parseInt(value);
     arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
     arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - shiftTotalState[i].bGradePiece);
-    arr_data[i].totalAmount =( parseFloat((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
+    arr_data[i].totalAmount = (parseFloat((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
     setShiftTotalState(arr_data);
 
     setReRender(!reRender);
@@ -841,7 +827,7 @@ const WeavingProductionForm = () => {
       setStepThirdValidator({ ...stepThirdValidator, cutPieceWeightValidate: false })
     } else {
 
- 
+
       var myHeaders = new Headers();
       myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
       myHeaders.append("Content-Type", "application/json");
@@ -865,7 +851,7 @@ const WeavingProductionForm = () => {
         "total_pieces": grandFinalTotal.totalPiece,
         "b_grade_pieces": grandFinalTotal.totalBGrade,
         "a_grade_pieces": grandFinalTotal.totalAGrade,
-        "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece,
+        "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade * finalStepInput.cutPieceWeight)) / grandFinalTotal.totalPiece,
         "required_length_p_to_p": finalStepRequired.requireLengthpp,
         "required_width_p_to_p": finalStepRequired.requireWidthpp,
         "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
@@ -1049,7 +1035,7 @@ const WeavingProductionForm = () => {
       "total_pieces": grandFinalTotal.totalPiece,
       "b_grade_pieces": grandFinalTotal.totalBGrade,
       "a_grade_pieces": grandFinalTotal.totalAGrade,
-      "current_per_piece_a_weight":(rollDetail.rollWeight - (grandFinalTotal.totalBGrade* finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece,
+      "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade * finalStepInput.cutPieceWeight)) / grandFinalTotal.totalPiece,
       "required_length_p_to_p": finalStepRequired.requireLengthpp,
       "required_width_p_to_p": finalStepRequired.requireWidthpp,
       "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
