@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
-import { useSelector , useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
-  
-import {  setNavMd } from "../store/actions/NavState";
+
+import { setNavMd } from "../store/actions/NavState";
 
 
 
@@ -50,9 +50,8 @@ const Nav = ({ navigationResult, isLogin }) => {
                               return (
                                 <li
                                   //  className={`list-header ${currentBlock==(index+1?"happy" : console.log("null"))}`}
-                                  className={`   ${
-                                    currentBlock === index + 1 ? "active" : " "
-                                  }  `}
+                                  className={`   ${currentBlock === index + 1 ? "active" : " "
+                                    }  `}
                                 >
                                   <a
                                     onClick={(e) => {
@@ -68,11 +67,10 @@ const Nav = ({ navigationResult, isLogin }) => {
                                     <span className="fa fa-chevron-down" />
                                   </a>
                                   <ul
-                                    className={`nav child_menu ${
-                                      currentBlock === index + 1
-                                        ? "d-block"
-                                        : " d-none"
-                                    }`}
+                                    className={`nav child_menu ${currentBlock === index + 1
+                                      ? "d-block"
+                                      : " d-none"
+                                      }`}
                                   >
                                     {module.pages.map((page) => {
                                       return (
@@ -82,7 +80,7 @@ const Nav = ({ navigationResult, isLogin }) => {
                                           </NavLink>
                                         </li>
                                       );
-                                    })} 
+                                    })}
 
                                     {/* <li>
                               <NavLink to="UserAccess">Add User</NavLink>
@@ -104,14 +102,14 @@ const Nav = ({ navigationResult, isLogin }) => {
                             }
                           )}
 
-                          <li
-                          //  className=  "active"
+                          <li 
                           >
                             <a>
                               <i className="fa fa-windows" /> Role Management
                               <span className="fa fa-chevron-down" />
                             </a>
-                            <ul className={`nav child_menu d-block`}>
+                            <ul className={`nav child_menu 
+                            `}>
                               {/* 5@7B2s6d2k6$8 */}
                               <li>
                                 <NavLink to="RoleAccess">Add Role </NavLink>
@@ -146,55 +144,50 @@ const Nav = ({ navigationResult, isLogin }) => {
                       >
                         
                       </a> */}
-                              
-                              <NavLink to="UserProfile" data-toggle="tooltip"
+
+                      <NavLink to="UserProfile" data-toggle="tooltip"
                         data-placement="top"
                         title="FullScreen"
                       > <span
-                      className="glyphicon glyphicon-cog"
-                      aria-hidden="true"
-                    /> </NavLink>
-                  
-                       <NavLink to="RoleAccess" data-toggle="tooltip"
+                          className="glyphicon glyphicon-cog"
+                          aria-hidden="true"
+                        /> </NavLink>
+
+                      <NavLink to="RoleAccess" data-toggle="tooltip"
                         data-placement="top"
                         title="FullScreen"
                       > <span
-                      className="glyphicon glyphicon-fullscreen"
-                      aria-hidden="true"
-                    /> </NavLink>
-                       
-                       
-                     
-                      
-                     
+                          className="glyphicon glyphicon-fullscreen"
+                          aria-hidden="true"
+                        /> </NavLink>
 
 
-                      <NavLink to="EmployeesList"data-toggle="tooltip"
+
+
+
+
+
+                      <NavLink to="EmployeesList" data-toggle="tooltip"
                         data-placement="top"
                         title="Lock"
                       >  <span
-                      className="glyphicon glyphicon-user"
-                      aria-hidden="true"
-                    /> </NavLink>
-                      
-                  
-
- 
+                          className="glyphicon glyphicon-user"
+                          aria-hidden="true"
+                        /> </NavLink>
 
 
-                       <a
-                        onClick={()=>dispatch(setNavMd)}
+
+
+
+
+                      <a
+                        onClick={() => dispatch(setNavMd)}
                       >
                         <span
-                      className="glyphicon glyphicon-off"
-                      aria-hidden="true"
-                    />
-                        
-                      </a>  
-          
-                       
+                          className="glyphicon glyphicon-off"
+                          aria-hidden="true" />
+                      </a>
                     </div>
-                    {/* /menu footer buttons */}
                   </div>
                 </div>
               </>
