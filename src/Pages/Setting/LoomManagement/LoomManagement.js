@@ -153,21 +153,26 @@ const LoomManagement = () => {
           console.log(response, "response");
           if (response.status === 201) {
             notifyAdded();
+            
+// -----------
+
+            fetchAllData();
+            setloomValidator(defaultValueForLoomValidator)
+            setModalShow(false);
+            setDropBoxValue("")
+            setJacquardValue("")
+            setWeavingUnitValue("")
+            setAddNewLoom(initialStateLoom)
             return response.json();
 
           } else if (response.status === 400) {
+            setloomValidator(defaultValueForLoomValidator)
             notifyAlreadyExist()
           }
 
         })
         .then((data) => {
-          fetchAllData();
-          setloomValidator(defaultValueForLoomValidator)
-          setModalShow(false);
-          setDropBoxValue("")
-          setJacquardValue("")
-          setWeavingUnitValue("")
-          setAddNewLoom(initialStateLoom)
+       
 
         })
         .catch((err) => {

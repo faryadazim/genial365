@@ -82,9 +82,8 @@ const LoomListUpdate = (props) => {
                   <input
                     className={props.loomNumberValidatorUpdate ? "form-control" : "form-control requiredValidateInput"}
                     name="nanr"
-                    type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                    type="text" 
+                    autoFocus   
                     placeholder="ex. Loom Number"
                     required="required"
                     value={props.UpdateLoomList.loomNumber  }

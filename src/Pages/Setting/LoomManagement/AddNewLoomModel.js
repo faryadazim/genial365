@@ -138,10 +138,8 @@ const AddNewLoomModel = (props) => {
                 <div className="col-md-8 col-sm-8">
                   <input
                     className={props.loomValidator.loomNumber ? "form-control" : "form-control requiredValidateInput"}
-                    name="nanr"
-                    type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                    name="nanr" 
+                    autoFocus  
                     placeholder="ex. Loom Number"
                     required="required"
                     value={props.AddNewLoom.loomNumber}

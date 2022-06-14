@@ -5,6 +5,7 @@ import Loader from "../../../Layout/Loader/Loader";
 import Creatable from "react-select/creatable";
 
 import Select from "react-select";
+import { preventMinus } from "../../../config/oreventMinus";
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -275,13 +276,6 @@ const ShowSingleEmployee = ({
     setComponentUpdater(!componentUpdater);
     fetch(`${url}api/employeeLists?id=${singleUserId}`, {
       method: "DELETE",
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
     })
       .then((response) => {
         // deleteing Role for this Id
@@ -313,28 +307,28 @@ const ShowSingleEmployee = ({
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
                   <li >
                     {showFormControlClass ? (
-                      <button
+                      <a
                         className="close-link mt-2 mr-2 pt-2 bg-none" style={{ border: "none" }}
                         onClick={() => EditUser()}
                       >
                         <i className="fa fa-edit" />
-                      </button>
+                      </a>
                     ) : (
-                      <button className="close-link mt-2 pt-2 mr-2 bg-none border-none " style={{ border: "none" }}
+                      <a className="close-link mt-2 pt-2 mr-2 bg-none border-none " style={{ border: "none" }}
                         onClick={() => UpdateUserCredentials()}
                       >
                         <i className="fa fa-save" />
-                      </button>
+                      </a>
                     )}
                   </li>
                   <li>
                     {showFormControlClass ? (
-                      <button
+                      <a
                         className="close-link mt-2 mr-2 pt-2" style={{ border: 'none' }}
                         onClick={() => DeleteUser()}
                       >
                         <i className="fa fa-trash text-danger" />
-                      </button>
+                      </a>
                     ) : (
                       <a
                         className="close-link mt-2 mr-2"
@@ -366,6 +360,7 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                            type="text"
                             disabled={isDisableFormControl}
                             value={EmployeeData.name}
                             onChange={(e) =>
@@ -383,6 +378,7 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            type="text"
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -405,6 +401,9 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -432,6 +431,9 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             value={EmployeeData.phoneNum2}
                             onChange={(e) =>
                               setEmployeeData({
@@ -454,6 +456,8 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
                             value={EmployeeData.phoneNum3}
                             onChange={(e) =>
                               setEmployeeData({
@@ -476,6 +480,8 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                            type="number"
+                            min="0"
                             value={EmployeeData.homePhoneNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -498,6 +504,10 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                            type="number"
+
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             value={EmployeeData.cnicNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -515,6 +525,7 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            type="text"
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -537,6 +548,7 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            type="text"
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -559,6 +571,9 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -580,9 +595,6 @@ const ShowSingleEmployee = ({
                           Job Status
                         </label>
                         <div className="col-md-8 col-sm-8">
-
-
-
                           <Select
                             required
                             className="basic-single"
@@ -591,7 +603,7 @@ const ShowSingleEmployee = ({
                             name="color"
                             value={jobStatusValue}
                             options={jobStatus}
-                            // isDisabled={true}
+                            isDisabled={showFormControlClass}
                             styles={customStyles}
                             onChange={(e) => {
                               setJobStatusValue({ label: e.value, value: e.value })
@@ -622,7 +634,7 @@ const ShowSingleEmployee = ({
                             name="color"
                             value={designationValue}
                             options={designationOptions}
-                            // isDisabled={true}
+                            isDisabled={showFormControlClass}
                             styles={customStyles}
                             onChange={(e) => {
                               setDesignationValue({ label: e.label, value: e.value })
