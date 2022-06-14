@@ -11,7 +11,7 @@ import { toast } from "react-toastify";
 
 
 
-  
+
 
 
 
@@ -20,9 +20,11 @@ const LoomManagement = () => {
   const notifyDeleted = () => toast("Loom Deleted Successfully");
   const notifyAdded = () => toast("Loom Added Successfully");
   const notifyUpdated = () => toast("Loom Updated Successfully");
-  let defaultValueForLoomValidator = { loomSize: true, drawBox: true, jacquard: true, weavingUnit: true }
+  const notifyAlreadyExist = () => toast("Loom Number Already Exist");
+  let defaultValueForLoomValidator = { loomNumber: true, loomSize: true, drawBox: true, jacquard: true, weavingUnit: true }
   const [loomValidator, setloomValidator] = useState(defaultValueForLoomValidator)
   const [loomValidatorUpdate, setLoomValidatorUpdate] = useState(true)
+  const [loomNumberValidatorUpdate, setloomNumberValidatorUpdate] = useState(true)
   const showNavMenu = useSelector((state) => state.NavState);
   const [loomList, setLoomList] = useState([]);
   const url = localStorage.getItem("authUser");
@@ -30,6 +32,7 @@ const LoomManagement = () => {
   const [modalShowForUpdate, setModalShowForUpdate] = useState(false);
   const [isLoading, setisLoading] = useState(true);
   const initialStateLoom = {
+    loomNumber: "",
     loomSize: "",
     drawBox: "",
     jacquard: "",
@@ -61,10 +64,10 @@ const LoomManagement = () => {
       method: "DELETE",
       headers: {
         Authorization:
-              "bearer" +
-              " " +
-              JSON.parse(localStorage.getItem("access_token")).access_token,
-              "Content-Type": "application/json" ,
+          "bearer" +
+          " " +
+          JSON.parse(localStorage.getItem("access_token")).access_token,
+        "Content-Type": "application/json",
       },
     })
       .then((response) => {
@@ -75,21 +78,26 @@ const LoomManagement = () => {
       .catch((error) => {
         console.log("error", error);
       });
+    // setloomNumberValidatorUpdate
   };
   const UpdateLoomListFunc = (e) => {
-    if (UpdateLoomList.loomSize == "") {
+
+    if (UpdateLoomList.loomNumber === "" || UpdateLoomList.loomNumber === 0 || UpdateLoomList.loomNumber === undefined) {
+      setloomNumberValidatorUpdate(false)
+    } else if (UpdateLoomList.loomSize === "" || UpdateLoomList.loomSize === 0 || UpdateLoomList.loomSize === undefined) {
+
       setLoomValidatorUpdate(false)
     } else {
       e.preventDefault();
       console.log(UpdateLoomList);
       const requestOptions = {
-        method: "PUT", 
+        method: "PUT",
         headers: {
           Authorization:
-                "bearer" +
-                " " +
-                JSON.parse(localStorage.getItem("access_token")).access_token,
-                "Content-Type": "application/json" ,
+            "bearer" +
+            " " +
+            JSON.parse(localStorage.getItem("access_token")).access_token,
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(UpdateLoomList),
       };
@@ -97,13 +105,14 @@ const LoomManagement = () => {
       fetch(url + "api/LoomLists", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-         notifyUpdated();
+          notifyUpdated();
           setModalShowForUpdate(false);
           fetchAllData();
           setDropBoxValue("")
           setJacquardValue("")
           setWeavingUnitValue("")
           setLoomValidatorUpdate(true)
+          setloomNumberValidatorUpdate(true)
         })
         .catch((err) => {
           console.log("err", err);
@@ -112,8 +121,10 @@ const LoomManagement = () => {
   };
 
   const addNewLoomFunc = (e) => {
-
-    if (AddNewLoom.loomSize == "") {
+    console.log();
+    if (AddNewLoom.loomNumber == "" || AddNewLoom.loomNumber === 0 || AddNewLoom.loomNumber == 0) {
+      setloomValidator({ ...loomValidator, loomNumber: false })
+    } else if (AddNewLoom.loomSize == "") {
       setloomValidator({ ...loomValidator, loomSize: false })
     } else if (AddNewLoom.drawBox == "") {
       setloomValidator({ ...loomValidator, drawBox: false })
@@ -122,23 +133,33 @@ const LoomManagement = () => {
     } else if (AddNewLoom.weavingUnitId == "") {
       setloomValidator({ ...loomValidator, weavingUnit: false })
     } else {
+      console.log("undereee");
       const requestOptions = {
         method: "POST",
         // headers: {
-          
+
         // },
-          headers: {
-            Authorization:
-              "bearer" +
-              " " +
-              JSON.parse(localStorage.getItem("access_token")).access_token,
-              "Content-Type": "application/json" ,
-          },
+        headers: {
+          Authorization:
+            "bearer" +
+            " " +
+            JSON.parse(localStorage.getItem("access_token")).access_token,
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(AddNewLoom),
       };
-      console.log(requestOptions.body);
       fetch(url + "api/LoomLists", requestOptions)
-        .then((response) => response.json())
+        .then((response) => {
+          console.log(response, "response");
+          if (response.status === 201) {
+            notifyAdded();
+            return response.json();
+
+          } else if (response.status === 400) {
+            notifyAlreadyExist()
+          }
+
+        })
         .then((data) => {
           fetchAllData();
           setloomValidator(defaultValueForLoomValidator)
@@ -147,7 +168,7 @@ const LoomManagement = () => {
           setJacquardValue("")
           setWeavingUnitValue("")
           setAddNewLoom(initialStateLoom)
-          notifyAdded()
+
         })
         .catch((err) => {
           console.log("err", err);
@@ -158,17 +179,17 @@ const LoomManagement = () => {
   };
   const fetchAllData = () => {
     var myHeaders = new Headers();
-    myHeaders.append("Authorization",  `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
 
     var requestOptions = {
       method: 'GET',
-      headers: myHeaders, 
+      headers: myHeaders,
       redirect: 'follow'
     };
-    
-    fetch(endPoint+"api/LoomLists", requestOptions)
+
+    fetch(endPoint + "api/LoomLists", requestOptions)
       .then(response => response.text())
-      .then(result => { 
+      .then(result => {
         setLoomList(JSON.parse(result));
         setisLoading(false);
       })
@@ -177,7 +198,7 @@ const LoomManagement = () => {
 
 
 
- 
+
   };
   useEffect(() => {
     fetchAllData();
@@ -215,19 +236,21 @@ const LoomManagement = () => {
           DropBoxValue={DropBoxValue} setDropBoxValue={setDropBoxValue} DropBox={DropBox}
           JacquardValue={JacquardValue} setJacquardValue={setJacquardValue} Jacquard={Jacquard}
           weavingUnitOption={weavingUnitOption} weavingUnitValue={weavingUnitValue}
+          setWeavingUnitValue={setWeavingUnitValue}
           onHide={() => {
             setModalShowForUpdate(false)
             setLoomValidatorUpdate(true)
-
+            setloomNumberValidatorUpdate(true)
             setModalShow(false)
             setDropBoxValue("")
             setJacquardValue("")
             setWeavingUnitValue("")
-            setUpdateLoomList(initialStateLoom) 
+            setUpdateLoomList(initialStateLoom)
 
 
           }}
           loomValidatorUpdate={loomValidatorUpdate}
+          loomNumberValidatorUpdate={loomNumberValidatorUpdate}
         />
         <div className="row">
           <div className="col-md-6 text-left">
@@ -311,7 +334,7 @@ const LoomManagement = () => {
                                         console.log("lorememrm", item.weavingUnit_id);
                                         setDropBoxValue({ label: innerItem.drawBox, value: innerItem.drawBox })
                                         setJacquardValue({ label: innerItem.jacquard, value: innerItem.jacquard })
-                                        setWeavingUnitValue({ label: item.weavingUnit_id, value: item.weavingUnit_id })
+                                        setWeavingUnitValue({ label: `Weaving Unit ${item.weavingUnitName}`, value: item.weavingUnit_id })
                                       }}
                                     ></i>
                                     <i

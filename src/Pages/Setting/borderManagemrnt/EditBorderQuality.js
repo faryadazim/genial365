@@ -19,7 +19,7 @@ const [isValidateBorderQuality, setisValidateBorderQuality] = useState(true)
         {" "}
         <div className="x_panel mb-0">
           <div className="x_title">
-            <h2 className="pl-2 pt-2">Update Border Quality</h2>
+            <h2 className="pl-2 pt-2">Update Border Design</h2>
             <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
               <li></li>
             </ul>
@@ -30,7 +30,7 @@ const [isValidateBorderQuality, setisValidateBorderQuality] = useState(true)
           <p className="text-center pr-5 my-5"> 
             <div className="field item form-group">
               <label className="col-form-label col-md-4 col-sm-4  label-align">
-                Enter Quality Name<span className="required">*</span>
+                Enter Design Name<span className="required">*</span>
               </label>
               <div className="col-md-5 col-sm-5">
                 <input
@@ -68,7 +68,7 @@ const [isValidateBorderQuality, setisValidateBorderQuality] = useState(true)
                   }}
 
                 >
-                  Submit
+                  Update
                 </button>
                 <button type="submit" className="btn btn-danger btn-sm px-3 "
                   onClick={() => {

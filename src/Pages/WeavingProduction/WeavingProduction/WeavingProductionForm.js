@@ -555,9 +555,7 @@ const WeavingProductionForm = () => {
 
   // step two functions
 
-  function updateNoOfBorders(i, value) {
-    console.log("border test");
-
+  function updateNoOfBorders(i, value) {  
     var arr_data = shiftTotalState;
     arr_data[i].noOfBorder = parseInt(value);
     arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
@@ -706,7 +704,7 @@ const WeavingProductionForm = () => {
         setShiftTotalState(arr_data);
         setReRender(!reRender);
       }
-      // b rade piece  Validation --------- 
+      // b grade piece  Validation --------- 
       if (arr_data[i].bGradePiece == "" || arr_data[i].bGradePiece === 0) {
         arr_data[i].shiftValidation.bGradePiece = false;
         setShiftTotalState(arr_data);
@@ -717,25 +715,25 @@ const WeavingProductionForm = () => {
         setReRender(!reRender);
       }
       // extraAmount  Desc   Validate Validation --------- 
-      if (arr_data[i].extraAmount.desc == "") {
-        arr_data[i].shiftValidation.extraAmountDescValidate = false;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      } else {
-        arr_data[i].shiftValidation.extraAmountDescValidate = true;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      }
+      // if (arr_data[i].extraAmount.desc == "") {
+      //   arr_data[i].shiftValidation.extraAmountDescValidate = false;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // } else {
+      //   arr_data[i].shiftValidation.extraAmountDescValidate = true;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // }
       // extraAmount     Validate Validation --------- 
-      if (arr_data[i].extraAmount.amount == "" || arr_data[i].extraAmount.amount === 0) {
-        arr_data[i].shiftValidation.extraAmountAmountValidate = false;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      } else {
-        arr_data[i].shiftValidation.extraAmountAmountValidate = true;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      }
+      // if (arr_data[i].extraAmount.amount == "" || arr_data[i].extraAmount.amount === 0) {
+      //   arr_data[i].shiftValidation.extraAmountAmountValidate = false;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // } else {
+      //   arr_data[i].shiftValidation.extraAmountAmountValidate = true;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // }
     })
 
     let condition = false;

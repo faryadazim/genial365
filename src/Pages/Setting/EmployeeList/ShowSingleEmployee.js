@@ -2,13 +2,59 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { endPoint } from "../../../config/Config";
 import Loader from "../../../Layout/Loader/Loader";
+import Creatable from "react-select/creatable";
+
+import Select from "react-select";
+const customStyles = {
+  // control: base => ({
+  //   ...base,
+  //   // This line disable the blue border
+
+  // })
+  control: (provided, state, base) => ({
+    ...provided,
+    background: "#fff",
+    borderColor: "#d9e4e8",
+    borderRadius: "none",
+    minHeight: "28px",
+    height: "28px",
+    // boxShadow: state.isFocused ? null : null,
+    ...base,
+    boxShadow: "none",
+  }),
+  option: (provided, state) => ({
+    ...provided,
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    background: "#fff",
+  }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    height: "28px",
+    padding: "0 6px",
+    // background: '#fff',
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: "0px",
+  }),
+  indicatorSeparator: (state) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: "28px",
+  }),
+};
+
 
 const ShowSingleEmployee = ({
   singleUserId,
   setShowSingleUSer,
   fetchAllData,
   setComponentUpdater,
-  componentUpdater,  setUpdateSelectorList , updateSelectorList
+  componentUpdater, setUpdateSelectorList, updateSelectorList
 }) => {
   const [showFormControlClass, setShowFormControlClass] = useState(true);
   const [isDisableFormControl, setIsDisableFormControl] = useState(true);
@@ -17,6 +63,13 @@ const ShowSingleEmployee = ({
   const notifyDeleted = () => toast("Employee Deleted Successfully");
   const url = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
+  const [designationOptions, setDesignationOptions] = useState([])
+  const [designationValue, setDesignationValue] = useState({ label: "", value: "" })
+  const jobStatus = [
+    { label: "Active", value: "Active" },
+    { label: "Left", value: "Left" },
+  ];
+  const [jobStatusValue, setJobStatusValue] = useState({ label: "", value: "" })
   const [EmployeeData, setEmployeeData] = useState({
     name: "",
     fatherName: "",
@@ -36,7 +89,7 @@ const ShowSingleEmployee = ({
     employeeCnicBsck: "",
     recruitmentType: "",
     weeklySalary: "",
-    monthlySalary: "",
+    salary: "",
   });
 
   const EditUser = () => {
@@ -129,33 +182,93 @@ const ShowSingleEmployee = ({
       })
       .catch((error) => console.log("error", error));
   };
-  const UpdateUserCredentials = () => {
+  const UpdateUserCredentials = async () => {
     setComponentUpdater(!componentUpdater);
     setIsDisableFormControl(true);
     setShowFormControlClass(true);
+    console.log("employee DAta for update", EmployeeData);
 
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(EmployeeData),
+
+
+
+
+    var myHeaders = new Headers();
+    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "employee_Id": EmployeeData.employee_Id,
+      "name": EmployeeData.name,
+      "fatherName": EmployeeData.fatherName,
+      "phoneNum1": EmployeeData.phoneNum1,
+      "phoneNum2": EmployeeData.phoneNum2,
+      "phoneNum3": EmployeeData.phoneNum3,
+      "homePhoneNum": EmployeeData.phoneNum3,
+      "cnicNum": EmployeeData.cnicNum,
+      "address": EmployeeData.address,
+      "referenceName": EmployeeData.referenceName,
+      "referencePhoneNum": EmployeeData.referencePhoneNum,
+      "jobStatus": jobStatusValue.value,
+      "designation": designationValue.value,
+      "employeePic1": EmployeeData.employeePic1,
+      "employeePic2": EmployeeData.employeePic2,
+      "employeeCnicFront": EmployeeData.employeeCnicFront,
+      "employeeCnicBsck": EmployeeData.employeeCnicBsck,
+      "recruitmentType": EmployeeData.recruitmentType,
+      "salary": parseFloat(EmployeeData.salary),
+      "chart_id": EmployeeData.chart_id
+    });
+
+    var requestOptions = {
+      method: 'PUT',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
     };
-    console.log(requestOptions.body);
-    fetch(url + "api/employeeLists", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        // notifyAdd();
-        fetchAllData();
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
+
+    await fetch(`${endPoint}api/employeeLists`, requestOptions)
+      .then(response => response.text())
+      .then(result => console.log("_updated Successfully"))
+      .catch(error => console.log('error', error));
+
+
+
   };
-  const fetchDataForSingleUser = () => {
-    fetch(url + `api/employeeListsById?id=${singleUserId}`)
+  const fetchDataForSingleUser = async () => {
+    var myHeadersDesignation = new Headers();
+    myHeadersDesignation.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeadersDesignation,
+      redirect: 'follow'
+    };
+
+    await fetch(`${endPoint}api/employeeDesignations`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        var arr = [];
+        result.map((item) => {
+          arr.push({
+            label: item.designationName,
+            value: item.designation_id,
+          });
+        });
+        setDesignationOptions(arr);
+      })
+      .catch(error => console.log('error', error));
+    // ---------------
+
+
+    await fetch(url + `api/employeeListsById?id=${singleUserId}`)
       .then((response) => response.json())
       .then((json) => {
         setEmployeeData(json);
+        console.log("fetched data", json);
         setisLoading(false);
+        setJobStatusValue({ label: json.jobStatus, value: json.jobStatus })
+        setDesignationValue({ label: json.designationLabel, value: json.designation })
+
       });
   };
   const DeleteUser = () => {
@@ -198,31 +311,30 @@ const ShowSingleEmployee = ({
               <div className="x_title">
                 <h2 className="pl-2 pt-2">Employee Datails</h2>
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                  <li className="d-none">
+                  <li >
                     {showFormControlClass ? (
-                      <a
-                        className="close-link mt-2 mr-2"
+                      <button
+                        className="close-link mt-2 mr-2 pt-2 bg-none" style={{ border: "none" }}
                         onClick={() => EditUser()}
                       >
                         <i className="fa fa-edit" />
-                      </a>
+                      </button>
                     ) : (
-                      <a
-                        className="close-link mt-2 mr-2"
+                      <button className="close-link mt-2 pt-2 mr-2 bg-none border-none " style={{ border: "none" }}
                         onClick={() => UpdateUserCredentials()}
                       >
                         <i className="fa fa-save" />
-                      </a>
+                      </button>
                     )}
                   </li>
                   <li>
                     {showFormControlClass ? (
-                      <a
-                        className="close-link mt-2 mr-2"
+                      <button
+                        className="close-link mt-2 mr-2 pt-2" style={{ border: 'none' }}
                         onClick={() => DeleteUser()}
                       >
                         <i className="fa fa-trash text-danger" />
-                      </a>
+                      </button>
                     ) : (
                       <a
                         className="close-link mt-2 mr-2"
@@ -250,11 +362,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             disabled={isDisableFormControl}
                             value={EmployeeData.name}
                             onChange={(e) =>
@@ -273,11 +384,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.fatherName}
                             disabled={isDisableFormControl}
                             onChange={(e) =>
@@ -296,11 +406,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.phoneNum1}
                             onChange={(e) =>
                               setEmployeeData({
@@ -319,11 +428,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.phoneNum2}
                             onChange={(e) =>
                               setEmployeeData({
@@ -342,11 +450,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.phoneNum3}
                             onChange={(e) =>
                               setEmployeeData({
@@ -365,11 +472,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.homePhoneNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -388,11 +494,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.cnicNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -411,11 +516,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.address}
                             onChange={(e) =>
                               setEmployeeData({
@@ -434,11 +538,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.referenceName}
                             onChange={(e) =>
                               setEmployeeData({
@@ -457,11 +560,10 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
                             value={EmployeeData.referencePhoneNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -478,22 +580,30 @@ const ShowSingleEmployee = ({
                           Job Status
                         </label>
                         <div className="col-md-8 col-sm-8">
-                          <input
-                            className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
-                            value={EmployeeData.jobStatus}
-                            onChange={(e) =>
-                              setEmployeeData({
-                                ...EmployeeData,
-                                jobStatus: e.target.value,
-                              })
+
+
+
+                          <Select
+                            required
+                            className="basic-single"
+                            classNamePrefix="select"
+                            isSearchable={true}
+                            name="color"
+                            value={jobStatusValue}
+                            options={jobStatus}
+                            // isDisabled={true}
+                            styles={customStyles}
+                            onChange={(e) => {
+                              setJobStatusValue({ label: e.value, value: e.value })
+                              // setLoomDetailsUpdate(!loomDetailsUpdate)
+                              // updateLoomDetails(e.value);
+                              // setLoomListValue({ label: e.label, value: e.value })
                             }
-                            disabled={isDisableFormControl}
+                            }
                           />
+
+
+
                         </div>
                       </div>
                       <div className="row">
@@ -501,21 +611,22 @@ const ShowSingleEmployee = ({
                           Designation
                         </label>
                         <div className="col-md-8 col-sm-8">
-                          <input
-                            className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
-                            value={EmployeeData.designation}
-                            onChange={(e) =>
-                              setEmployeeData({
-                                ...EmployeeData,
-                                phondesignationeNum1: e.target.value,
-                              })
-                            }
-                            disabled={isDisableFormControl}
+
+
+
+                          <Select
+                            required
+                            className="basic-single"
+                            classNamePrefix="select"
+                            isSearchable={true}
+                            name="color"
+                            value={designationValue}
+                            options={designationOptions}
+                            // isDisabled={true}
+                            styles={customStyles}
+                            onChange={(e) => {
+                              setDesignationValue({ label: e.label, value: e.value })
+                            }}
                           />
                         </div>
                       </div>
@@ -526,17 +637,18 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${
-                                           showFormControlClass
-                                             ? "removeFormControlBorder"
-                                             : " "
-                                         } `}
-                            value={EmployeeData.monthlySalary}
-                            onChange={(e) =>
+                                         ${showFormControlClass
+                                ? "removeFormControlBorder"
+                                : " "
+                              } `}
+                            value={EmployeeData.salary}
+                            onChange={(e) => {
+                              console.log(EmployeeData.salary, "salalry")
                               setEmployeeData({
                                 ...EmployeeData,
-                                monthlySalary: e.target.value,
+                                salary: e.target.value,
                               })
+                            }
                             }
                             disabled={isDisableFormControl}
                           />

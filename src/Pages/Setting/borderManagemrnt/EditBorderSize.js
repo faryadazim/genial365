@@ -64,7 +64,7 @@ const EditBorderSize = (props) => {
                   }}
 
                 >
-                  Submit
+                  Update
                 </button>
                 <button type="submit" className="btn btn-danger btn-sm px-3 "
                   onClick={() => {

@@ -8,8 +8,8 @@ import { setNavMd } from "../store/actions/NavState";
 
 
 
-
 const Nav = ({ navigationResult, isLogin }) => {
+  const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
   const showNavMenu = useSelector((state) => state.NavState);
   const [currentBlock, setCurrentBlock] = useState(1);
   const dispatch = useDispatch();
@@ -82,35 +82,85 @@ const Nav = ({ navigationResult, isLogin }) => {
                                       );
                                     })}
 
-                                    {/* <li>
-                              <NavLink to="UserAccess">Add User</NavLink>
-                            </li>
-                            <li>
-                              <NavLink to="PagesAccess">Add Pages</NavLink>
-                            </li>
-                            <li>
-                              <NavLink to="ModuleAccess">Add Modules</NavLink>
-                            </li>
-                            <li>
-                              <NavLink to="PermissionAccess">
-                                Pages Permission
-                              </NavLink>
-                            </li> */}
+
                                   </ul>
                                 </li>
                               );
                             }
                           )}
 
-                          <li 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{/* 
+                          <li>
+                            <a><i className="fa fa-sitemap" /> Multilevel Menu
+                              <span className="fa fa-chevron-down" /></a>
+                            <ul className="nav child_menu d-block">
+                              <li>
+                                <a>Level One<span className="fa fa-chevron-down" /></a>
+                                <ul className="nav child_menu  >
+                            <li class=" sub_menu">
+                                <a href="level2.html">Level Two</a>
+                                <li><a href="#level2_1">Level Two</a></li>
+                                <li><a href="#level2_2">Level Two</a></li>
+                            </ul>
+                          </li>
+                          <li><a href="#level1_2">Level One</a></li>
+                        </ul>
+                      </li> */}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                      {/* <li 
                           >
                             <a>
                               <i className="fa fa-windows" /> Role Management
                               <span className="fa fa-chevron-down" />
                             </a>
-                            <ul className={`nav child_menu 
-                            `}>
-                              {/* 5@7B2s6d2k6$8 */}
+                            <ul className={`nav child_menu    
+                            `}> 
                               <li>
                                 <NavLink to="RoleAccess">Add Role </NavLink>
                               </li>
@@ -130,14 +180,14 @@ const Nav = ({ navigationResult, isLogin }) => {
                                 </NavLink>
                               </li>
                             </ul>
-                          </li>
-                        </ul>
-                      </div>
-                    </div>
-                    {/* /sidebar menu */}
-                    {/* /menu footer buttons */}
-                    <div className="sidebar-footer hidden-small">
-                      {/* <a
+                          </li> */}
+                    </ul>
+                  </div>
+                </div>
+                {/* /sidebar menu */}
+                {/* /menu footer buttons */}
+                <div className="sidebar-footer hidden-small">
+                  {/* <a
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Settings"
@@ -145,60 +195,60 @@ const Nav = ({ navigationResult, isLogin }) => {
                         
                       </a> */}
 
-                      <NavLink to="UserProfile" data-toggle="tooltip"
-                        data-placement="top"
-                        title="FullScreen"
-                      > <span
-                          className="glyphicon glyphicon-cog"
-                          aria-hidden="true"
-                        /> </NavLink>
+                  <NavLink to="UserProfile" data-toggle="tooltip"
+                    data-placement="top"
+                    title="FullScreen"
+                  > <span
+                      className="glyphicon glyphicon-cog"
+                      aria-hidden="true"
+                    /> </NavLink>
 
-                      <NavLink to="RoleAccess" data-toggle="tooltip"
-                        data-placement="top"
-                        title="FullScreen"
-                      > <span
-                          className="glyphicon glyphicon-fullscreen"
-                          aria-hidden="true"
-                        /> </NavLink>
-
-
-
-
-
-
-
-                      <NavLink to="EmployeesList" data-toggle="tooltip"
-                        data-placement="top"
-                        title="Lock"
-                      >  <span
-                          className="glyphicon glyphicon-user"
-                          aria-hidden="true"
-                        /> </NavLink>
+                  <NavLink to="RoleAccess" data-toggle="tooltip"
+                    data-placement="top"
+                    title="FullScreen"
+                  > <span
+                      className="glyphicon glyphicon-fullscreen"
+                      aria-hidden="true"
+                    /> </NavLink>
 
 
 
 
 
 
-                      <a
-                        onClick={() => dispatch(setNavMd)}
-                      >
-                        <span
-                          className="glyphicon glyphicon-off"
-                          aria-hidden="true" />
-                      </a>
-                    </div>
-                  </div>
+
+                  <NavLink to="EmployeesList" data-toggle="tooltip"
+                    data-placement="top"
+                    title="Lock"
+                  >  <span
+                      className="glyphicon glyphicon-user"
+                      aria-hidden="true"
+                    /> </NavLink>
+
+
+
+
+
+
+                  <a
+                    onClick={() => dispatch(setNavMd)}
+                  >
+                    <span
+                      className="glyphicon glyphicon-off"
+                      aria-hidden="true" />
+                  </a>
                 </div>
-              </>
-            ) : (
-              <></>
-            )}
-          </>
+              </div>
+                </div>
         </>
       ) : (
-        <>not load yet</>
+        <></>
       )}
+    </>
+        </>
+      ) : (
+  <>not load yet</>
+)}
     </>
   );
 };

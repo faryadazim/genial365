@@ -101,7 +101,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
         {" "}
         <div className="x_panel">
           <div className="x_title">
-            <h2 className="pl-2 pt-2">Border Quality</h2>
+            <h2 className="pl-2 pt-2">Border Design</h2>
             <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
               {/* <li>
                         <a
@@ -119,7 +119,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
               {/* <span className="section">Personal Info</span> */}
               <div className="field item form-group">
                 <label className="col-form-label col-md-4 col-sm-4  label-align">
-                  Enter Quality Name<span className="required">*</span>
+                  Enter Design Name<span className="required">*</span>
                 </label>
                 <div className="col-md-6 col-sm-6">
                   <input
@@ -166,7 +166,7 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
               <thead>
                 <tr className="headings">
                   <th className="column-title"> Sr. </th>
-                  <th className="column-title">Quality Name</th>
+                  <th className="column-title">Border Design</th>
                   <th className="column-title text-center" width="20%">
                     Action{" "}
                   </th>

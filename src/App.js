@@ -79,7 +79,7 @@ function App() {
     <>
       {/* <ToastContainer /> */}
       <ToastContainer
-        position="top-right"
+        position="top-center"
         autoClose={2500}
         hideProgressBar
         newestOnTop={false}

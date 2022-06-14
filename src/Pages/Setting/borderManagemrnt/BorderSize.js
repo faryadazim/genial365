@@ -127,7 +127,7 @@ const BorderSize = ({ setisLoadBorderSize }) => {
               {/* <span className="section">Personal Info</span> */}
               <div className="field item form-group">
                 <label className="col-form-label col-md-4 col-sm-4  label-align">
-                  Enter Quality Size<span className="required">*</span>
+                  Enter Border Size<span className="required">*</span>
                 </label>
                 <div className="col-md-6 col-sm-6">
                   <input
@@ -173,7 +173,7 @@ const BorderSize = ({ setisLoadBorderSize }) => {
               <thead>
                 <tr className="headings">
                   <th className="column-title"> Sr. </th>
-                  <th className="column-title">Quality Size</th>
+                  <th className="column-title">Border Size</th>
                   <th className="column-title text-center" width="20%">
                     Action
                   </th>

@@ -6,3 +6,9 @@ font-weight: 400 !important;
 .heightOfGray{
     min-height: 90vh;
 }
+
+
+ .grayListHeading{
+    color: rgb(170, 170, 170) !important;
+    font-size: 20px !important;
+ }

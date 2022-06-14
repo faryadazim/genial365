@@ -2,16 +2,14 @@ import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 import { endPoint } from "../config/Config";
 
-const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
+const Login = ({ setisLogin, isLogin, fetchNavigation }) => {
   const [disableLoginButton, setdisableLoginButton] = useState(false);
-  const [credientials , setCredientials] = useState(false);
+  const [credientials, setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
     username: "",
     password: "",
     grant_type: "password",
   });
-   
-    const url = localStorage.getItem("authUser");
   const onLogin = () => {
     localStorage.setItem("authUser", endPoint);
   };
@@ -33,9 +31,10 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
                     placeholder="Username"
                     required
                     value={logInAuth.username}
-                    onChange={(e) =>
-                     {setCredientials(false)
-                        setlogInAuth({ ...logInAuth, username: e.target.value })}
+                    onChange={(e) => {
+                      setCredientials(false)
+                      setlogInAuth({ ...logInAuth, username: e.target.value })
+                    }
                     }
                   />
                 </div>
@@ -46,25 +45,26 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
                     placeholder="Password"
                     required
                     value={logInAuth.password}
-                    onChange={(e) =>
-                    {setCredientials(false)
-                        setlogInAuth({ ...logInAuth, password: e.target.value })}
+                    onChange={(e) => {
+                      setCredientials(false)
+                      setlogInAuth({ ...logInAuth, password: e.target.value })
+                    }
                     }
                   />
                 </div>
                 <div>
                   {
-                    credientials?   <code>Wrong credientials</code>:""
+                    credientials ? <code>Wrong credientials</code> : ""
                   }
-               
+
                 </div>
                 <div className="text-right">
-                 <button
+                  <button
                     className="btn btn-default submit btn-official px-3 btn-sm text-light"
                     type="submit"
-                    disabled={disableLoginButton} 
+                    disabled={disableLoginButton}
                     onClick={(e) => {
-                      e.preventDefault(); 
+                      e.preventDefault();
                       setdisableLoginButton(true)
                       var urlencoded = new URLSearchParams();
                       urlencoded.append("username", logInAuth.username);
@@ -76,7 +76,7 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
                       urlencoded.append("password", logInAuth.password);
                       urlencoded.append("grant_type", "password");
 
-                      fetch(endPoint+"token", {
+                      fetch(endPoint + "token", {
                         method: "POST",
                         headers: {
                           "Content-Type": "application/x-www-form-urlencoded",
@@ -88,16 +88,16 @@ const Login = ({ setisLogin, isLogin, fetchNavigation}) => {
                             if (result.status === 200) {
                               // localStorage.setItem(
                               console.log(response, "Login ");
-                      
+
                               localStorage.setItem(
                                 "access_token",
                                 JSON.stringify(response)
-                                );
-                                setisLogin(true)
-                                fetchNavigation(response.access_token);
-                              notify(); 
+                              );
+                              setisLogin(true)
+                              fetchNavigation(response.access_token);
+                              notify();
                             } else {
-                         
+
                               setCredientials(true)
                               setdisableLoginButton(false)
                             }

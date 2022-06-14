@@ -1,4 +1,5 @@
 import React from "react";
+import { numberWithCommas } from "../../../config/commaSeperated";
 import '../financeStyle.css'
 const WeaverLadgerReciept = React.forwardRef(
   ({ LadgerData, grandTotal, dateFrom }, ref) => {
@@ -140,7 +141,7 @@ const WeaverLadgerReciept = React.forwardRef(
                   <strong> Grand Total{" "}</strong>
                 </div>
                 <div className="col-md-2  col-2     bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
-                  <strong> {(grandTotal.grandTotalDebit).toFixed(2)}</strong>
+                  <strong> {   numberWithCommas( (grandTotal.grandTotalDebit).toFixed(2))                       }</strong>
                 </div>
                 <div className="col-md-2     col-2     bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
                   <strong>{(grandTotal.grandTotalCredit).toFixed(2)}</strong>

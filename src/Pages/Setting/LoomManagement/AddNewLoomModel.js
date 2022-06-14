@@ -2,52 +2,65 @@ import React from 'react'
 
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
+import { preventMinus } from '../../../config/oreventMinus';
 const customStyles = {
   // control: base => ({
-  //   ...base, 
+  //   ...base,
   //   // This line disable the blue border
 
   // })
   control: (provided, state, base) => ({
     ...provided,
-    background: '#fff',
-    borderColor: '#d9e4e8',
+    background: "#fff",
+    borderColor: "#d9e4e8",
     borderRadius: "none",
-    minHeight: '30px',
-    height: '30px',
-    // boxShadow: state.isFocused ? null : null,
-    ...base, boxShadow: 'none'
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: '#fff',
+    minHeight: "30px",
+    height: "30px",
 
+    ...base,
+    boxShadow: "none",
   }),
+  // option: (provided, state) => ({
+  //     ...provided,
+
+  //     borderBottom: "1px  #003a4d",
+  //     color: state.isSelected ? "#f79c74" : "#003a4d",
+  //     background: '#fff',
+
+  // }),
+  // menu: base => ({
+  //     ...base,
+  //     // override border radius to match the box
+  //     borderRadius: 0,
+  //     backgroundColor: 'red',
+  //     marginTop: 0
+  //   }),
+  //   menuList: base => ({
+  //     ...base,
+  //     // kill the white space on first and last option
+  //     backgroundColor: 'red',
+  //     padding: 0
+  //   }),
   valueContainer: (provided, state) => ({
     ...provided,
-    height: '30px',
-    padding: '0 6px',
+    fontSize: "11px",
+    height: "30px",
+    padding: "0 6px",
     // background: '#fff',
-
   }),
 
   input: (provided, state) => ({
     ...provided,
-    margin: '0px',
-
+    margin: "0px",
   }),
-  indicatorSeparator: state => ({
-    display: 'none',
+  indicatorSeparator: (state) => ({
+    display: "none",
   }),
   indicatorsContainer: (provided, state) => ({
     ...provided,
-    height: '30px',
-
+    height: "30px",
   }),
-
-}
+};
 const customStylesDanger = {
   // control: base => ({
   //   ...base, 
@@ -120,16 +133,41 @@ const AddNewLoomModel = (props) => {
             <form>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+                  Loom Number<span className="required">*</span>
+                </label>
+                <div className="col-md-8 col-sm-8">
+                  <input
+                    className={props.loomValidator.loomNumber ? "form-control" : "form-control requiredValidateInput"}
+                    name="nanr"
+                    type="number" 
+                    onKeyPress={(e)=>{preventMinus(e)}}
+                    min="0"
+                    placeholder="ex. Loom Number"
+                    required="required"
+                    value={props.AddNewLoom.loomNumber}
+                    onChange={(e) => {
+                      props.setAddNewLoom({
+                        ...props.AddNewLoom,
+                        loomNumber: e.target.value,
+                      })
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="field item form-group">
+                <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Size<span className="required">*</span>
                 </label>
                 <div className="col-md-8 col-sm-8">
                   <input
                     className={props.loomValidator.loomSize ? "form-control" : "form-control requiredValidateInput"}
                     name="nanr"
-                    type="number"
+                    type="number" 
+                    onKeyPress={(e)=>{preventMinus(e)}}
+                    min="0"
                     placeholder="ex. Loom Size"
                     required="required"
-                    value={props.AddNewLoom.loomSize  && Math.max(0, props.AddNewLoom.loomSize)}
+                    value={props.AddNewLoom.loomSize}
                     onChange={(e) => {
                       props.setAddNewLoom({
                         ...props.AddNewLoom,

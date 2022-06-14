@@ -426,7 +426,7 @@ const MyVerticallyCenteredModal = (props) => {
                   props.recruitmentTypeValue.value == "Weekly" ? <> <label className="col-form-label col-md-2 col-sm-3  label-align">
                     Weekly Salary <span className="required">*</span>
                   </label>
-                  <div className="col-md-3 col-sm-8">
+                    <div className="col-md-3 col-sm-8">
                       <div>
                         <input
                           className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}

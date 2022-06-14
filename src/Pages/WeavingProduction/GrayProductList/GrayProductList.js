@@ -29,7 +29,21 @@ const GrayProductList = () => {
   }
   //
   const [addNewGrayProductValidator, setaddNewGrayProductValidator] = useState(addNewGrayProductValidatorInitialState)
-
+  const initialUpdatedValidation = {
+    PerPieceGrayWeightGram: true,
+    graySizeppWidth: true,
+    graySizeppLength: true,
+    LoomNumbPieceInBorder76: true,
+    LoomNumbRatePerBorderWithDraw76: true,
+    LoomNumbRatePerBorderWithoutDraw76: true,
+    LoomNumbPieceInBorder96: true,
+    LoomNumbRatePerBorderWithDraw96: true,
+    LoomNumbRatePerBorderWithoutDraw96: true,
+    status: true,
+    nativingRate76:true,
+    nativingRate96:true
+  }
+  const [updatedGrayProductListValidation, setUpdatedGrayProductListValidation] = useState(initialUpdatedValidation)
   const newProductInitialState = {
     itemName: "",
     itemSize: "",
@@ -45,10 +59,10 @@ const GrayProductList = () => {
     status: "",
   }
   const [AddNewProduct, setAddNewProduct] = useState(newProductInitialState);
-  const [updatedGrayProductList , setUpdatedGrayProductList] = useState({})
+  const [updatedGrayProductList, setUpdatedGrayProductList] = useState({})
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const [itemSizeOptions, setItemSizeOptions] = useState([]);
-  
+
   const itemStatusOptions = [
     { label: "Activate", value: "Activate" },
     { label: "Deactivate", value: "Deactivate" },
@@ -88,9 +102,9 @@ const GrayProductList = () => {
           },
         })
           .then((response) => response.json())
-          .then((data) => { 
+          .then((data) => {
             var arr2 = [];
-            data.map((item) => { 
+            data.map((item) => {
               arr2.push({
                 label: item.borderSize1,
                 value: item.borderSize_id,
@@ -153,7 +167,7 @@ const GrayProductList = () => {
     }
   }
   const deleteGrayProduct = (e) => {
- 
+
     fetch(`${endPoint}/api/grayProductLists/${e}`, {
       method: "DELETE",
       // headers: {
@@ -172,43 +186,167 @@ const GrayProductList = () => {
       })
       .catch((error) => console.log("error", error));
   }
-  const updateGrayProductList = (e)=>{
-e.preventDefault();
+  const updateGrayProductList = (e) => {
+    e.preventDefault();
+    if (updatedGrayProductList.PerPieceGrayWeightGram === "" || updatedGrayProductList.PerPieceGrayWeightGram === null || updatedGrayProductList.PerPieceGrayWeightGram === undefined || updatedGrayProductList.PerPieceGrayWeightGram == 0) {
+      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, PerPieceGrayWeightGram: false })
+    } else if (updatedGrayProductList.graySizeppWidth === "" || updatedGrayProductList.graySizeppWidth === null || updatedGrayProductList.graySizeppWidth === undefined || updatedGrayProductList.graySizeppWidth == 0) {
+      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppWidth: false })
+    } else if (updatedGrayProductList.graySizeppLength === "" || updatedGrayProductList.graySizeppLength === null || updatedGrayProductList.graySizeppLength === undefined || updatedGrayProductList.graySizeppLength == 0) {
+      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppLength: false })
 
-const updatedRefactoredGrayProduct = {
-  grayProduct_id:parseInt(  updatedGrayProductList.grayProduct_id),
-  itemName:parseInt( updatedGrayProductList.itemNameValue.value),
-  itemSize:parseInt( updatedGrayProductList.itemSizeValue.value),
-  PerPieceGrayWeightGram:parseInt( updatedGrayProductList.PerPieceGrayWeightGram),
-  graySizeppWidth:parseInt( updatedGrayProductList.graySizeppWidth),
-  graySizeppLength:parseInt( updatedGrayProductList.graySizeppLength),
-  LoomNumbPieceInBorder76:parseInt( updatedGrayProductList.LoomNumbPieceInBorder76),
-  LoomNumbRatePerBorderWithDraw76:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
-  LoomNumbRatePerBorderWithoutDraw76:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
-  LoomNumbPieceInBorder96:parseInt( updatedGrayProductList.LoomNumbPieceInBorder96),
-  LoomNumbRatePerBorderWithDraw96:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithDraw96),
-  LoomNumbRatePerBorderWithoutDraw96:parseInt( updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96),
-  status: updatedGrayProductList.status.value
-}
-console.log(updatedRefactoredGrayProduct , "data to be updated");
-// 
+      // loom number piece 
+    } else if ((updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 === "" || updatedGrayProductList.LoomNumbPieceInBorder76 == 0)
+      && (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 === "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0)) {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+        LoomNumbPieceInBorder76: false,
+        LoomNumbPieceInBorder96: false,
+      })
+      // loom number piece 
+    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 == 0)
+      && (updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 == 0)) {
 
-const requestOptions = {
-  method: "PUT",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(updatedRefactoredGrayProduct),
-};
 
-fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduct_id}`, requestOptions)
-  .then((response) => response)
-  .then((data) => { 
-   fetchAllData();
-   }) 
-  .catch((err) => {
-    console.log("err", err);
-  });
-  setModalShowForUpdate(false)
-  fetchAllData() 
+      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+          LoomNumbRatePerBorderWithDraw96: false,
+
+        })
+
+      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+          LoomNumbRatePerBorderWithDraw76: false,
+        })
+      } else { 
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+          LoomNumbRatePerBorderWithDraw76: false,
+          LoomNumbRatePerBorderWithDraw96: false,
+
+        })
+      }
+
+
+      // loom number piece 
+
+
+
+    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 == 0)
+      && (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 == 0)) {
+
+
+
+      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+          LoomNumbRatePerBorderWithoutDraw96: false,
+        })
+
+      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+
+          LoomNumbRatePerBorderWithoutDraw76: false,
+        })
+      } else {
+        console.log("something wriong boht");
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
+
+          LoomNumbRatePerBorderWithoutDraw96: false,
+          LoomNumbRatePerBorderWithoutDraw76: false,
+
+        })
+      }
+
+// --
+
+    } else if ((updatedGrayProductList.nativingRate76 === null || updatedGrayProductList.nativingRate76 === "" || updatedGrayProductList.nativingRate76 == 0)
+    && (updatedGrayProductList.nativingRate96 === null || updatedGrayProductList.nativingRate96 === "" || updatedGrayProductList.nativingRate96 == 0)) {
+
+
+    if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+
+        nativingRate96: false,
+
+      })
+
+    } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+
+        nativingRate76: false,
+      })
+    } else { 
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+
+        nativingRate76: false,
+        nativingRate96: false,
+
+      })
+    }
+// ---
+
+
+    } else if (updatedGrayProductList.status == "") {
+      console.log("eits empty status");
+      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, status: false })
+
+    } else {
+
+
+
+      const updatedRefactoredGrayProduct = {
+        grayProduct_id: parseInt(updatedGrayProductList.grayProduct_id),
+        itemName: parseInt(updatedGrayProductList.itemNameValue.value),
+        itemSize: parseInt(updatedGrayProductList.itemSizeValue.value),
+        PerPieceGrayWeightGram: parseInt(updatedGrayProductList.PerPieceGrayWeightGram),
+        graySizeppWidth: parseInt(updatedGrayProductList.graySizeppWidth),
+        graySizeppLength: parseInt(updatedGrayProductList.graySizeppLength),
+        LoomNumbPieceInBorder76: parseInt(updatedGrayProductList.LoomNumbPieceInBorder76),
+        LoomNumbRatePerBorderWithDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
+        LoomNumbRatePerBorderWithoutDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
+        LoomNumbPieceInBorder96: parseInt(updatedGrayProductList.LoomNumbPieceInBorder96),
+        LoomNumbRatePerBorderWithDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw96),
+        LoomNumbRatePerBorderWithoutDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96),
+        status: updatedGrayProductList.status.value,
+        nativingRate76: parseFloat(updatedGrayProductList.nativingRate76),
+        nativingRate96: parseFloat(updatedGrayProductList.nativingRate96)
+      }
+      console.log(updatedRefactoredGrayProduct, "data to be updated");
+      // 
+
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updatedRefactoredGrayProduct),
+      };
+
+      fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduct_id}`, requestOptions)
+        .then((response) => response)
+        .then((data) => {
+          setUpdatedGrayProductListValidation(initialUpdatedValidation)
+          fetchAllData();
+
+
+        })
+        .catch((err) => {
+          console.log("err", err);
+        });
+      setModalShowForUpdate(false)
+      fetchAllData()
+    }
   }
   useEffect(() => {
     fetchAllData();
@@ -233,288 +371,304 @@ fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduc
             AddNewProductFunc={AddNewProductFunc}
             itemStatusOptions={itemStatusOptions}
             setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
-            addNewGrayProductValidator={addNewGrayProductValidator} 
+            addNewGrayProductValidator={addNewGrayProductValidator}
           />
           <UpdateGrayProduct
-            show={modalShowForUpdate} 
-            itemNameOptions={itemNameOptions} 
-            onHide={() => setModalShowForUpdate(false)} 
+            show={modalShowForUpdate}
+            itemNameOptions={itemNameOptions}
+            onHide={() => setModalShowForUpdate(false)}
             itemStatusOptions={itemStatusOptions}
             setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
-            updatedGrayProductList={updatedGrayProductList}   setUpdatedGrayProductList={setUpdatedGrayProductList    }
+            updatedGrayProductList={updatedGrayProductList} setUpdatedGrayProductList={setUpdatedGrayProductList}
             updateGrayProductList={updateGrayProductList}
+            updatedGrayProductListValidation={updatedGrayProductListValidation}
+
+            setUpdatedGrayProductListValidation={setUpdatedGrayProductListValidation}
           />
 
-          <div className="page-title mb-2  ">
-            <div className="title_left ">
-              <h1>Gray Product Details</h1>
-            </div>
-            <div className="text-right">
-              <button
-                className="btn btn-primary  btn-sm w-10"
-                onClick={() => setModalShow(true)}
-              >
-                {" "}
-                Add New &nbsp;&nbsp;&nbsp;
-                <i className="fa fa-plus-circle"></i>
-              </button>
-              {/* <button className="btn btn-success  btn-sm w-10">
-                {" "}
-                Print &nbsp;&nbsp;&nbsp;
-                <i className="fa fa-print"></i>
-              </button> */}
-            </div>
-            <div className="clearfix" />
-          </div>
 
-          <div className="x_panel  ">
+
+          <div className="x_panel">
+            {/* <div className="x_title"> */}
+
+              <div className="page-title m-0  "> 
+                  <h1 className="py-2 pl-3 grayListHeading">Gray Product Details</h1>
+               
+                
+              </div>
+              <div className="clearfix" />
+            {/* </div> */}
             <div className="x_content">
-              <div className="table-responsive">
-                <table className="table table-striped jambo_table bulk_action">
-                  <thead>
-                    <tr className="headings-for-Gray-Product-Table">
-                      <th
-                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+
+              <div className="x_panel  ">
+                <div className="x_content">
+                  <div className="table-responsive">
+                    <table className="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr className="headings-for-Gray-Product-Table">
+                          <th
+                            className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center"
-                        style={{ width: "3%" }}
-                      >
-                        <div className=" py-1 d-flex justify-content-center  fontSettingForGrayHeader">
-                       
-                          Sr.
-                        </div>
-                      </th>
-
-                      <th
-                        className="column-title fontSettingForGrayHeader    border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "3%" }}
-                      >
-                        <div className=" py-1">Name </div>
-                      </th>
-                      <th
-                        className="column-title  fontSettingForGrayHeader   border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "3%" }}
-                      >
-                        <div className=" py-1">Size </div>
-                      </th>
-                      <th
-                        className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
-                        style={{ width: "13%" }}
-                      >
-                        <div className=" fontSettingForGrayHeader  py-1 paddingXaxisTable">
-                          Per Piece Gray Weight in Grams
-                        </div>{" "}
-                      </th>
-                      <th
-                        className="column-title pileSize  border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
-                        style={{ width: "12%" }}
-                      >
-                        <div>
-                          <div className="col-md-12 py-1 fontSettingForGrayHeader ">
-                            Gray Size Pile to Pile
-                          </div>
-                          <div className="col-md-6 border fontSettingForGrayHeader  border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
-                            Length
-                          </div>
-                          <div className="col-md-6 border  fontSettingForGrayHeader  border-primary removeRightBorder removeBottomBorder py-1">
-                            Width
-                          </div>
-                        </div>
-                      </th>
-
-                      <th
-                        className="column-title   
-                                         border border-primary removePadding   fontSettingForGrayHeader  border-bottom-color removeTopBorder  removePadding  text-center"
-                        style={{ width: "27%" }}
-                      >
-                        76" Loom
-                        <div className=" py-1 col-md-12 text-center removePadding">
-                          <div className=" py-1 col-md-6 text-center   fontSettingForGrayHeader removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder pt-5">
-                            No Of Piece in one Border{" "}
-                          </div>
-                          <div className=" py-1 col-md-6 text-center  removePadding  border border-primary  removeRightBorder removeBottomBorder">
-                            <div className="col-md-12 text-center   fontSettingForGrayHeader removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
-                              Rate Per Border
-                            </div>
-                            <div className="col-md-6 text-center    fontSettingForGrayHeader  removePadding border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
-                              With Draw Box
-                            </div>
-                            <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeBottomBorder">
-                              Without Draw Box
-                            </div>
-                          </div>
-                        </div>
-                      </th>
-                      <th
-                        className="column-title  
-                                         border border-primary removePadding  fontSettingForGrayHeader   border-bottom-color removeTopBorder  removePadding  text-center"
-                        style={{ width: "27%" }}
-                      >
-                        96" Loom
-                        <div className=" py-1 col-md-12 text-center removePadding">
-                          <div className=" py-1 col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder ">
-                            No Of Piece in one Border{" "}
-                          </div>
-                          <div className=" py-1 col-md-6 text-center  removePadding  border border-primary  removeRightBorder removeBottomBorder">
-                            <div className="col-md-12 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
-                              Rate Per Border
-                            </div>
-                            <div className="col-md-6 text-center   fontSettingForGrayHeader  removePadding border border-primary   removeBottomBorder removeLeftBorder ">
-                              With Draw Box
-                            </div>
-                            <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
-                              Without Draw Box
-                            </div>
-                          </div>
-                        </div>
-                      </th>
-                      <th
-                        className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border   fontSettingForGrayHeader  border-bottom-color "
-                        style={{ width: "4%" }}
-                      >
-                        Status
-                      </th>
-                      <th
-                        className="column-title  text-center  border border-primary 
-                                        removeLeftBorder removeTopBorder removeRight Border  fontSettingForGrayHeader   border-bottom-color "
-                        style={{ width: "2%" }}
-                      >
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {ListOfGrayProduct.map((item, index) => {
-                      return (
-                        <tr className="">
-                          <td
-                            className="column-title    removePadding   
-                                        text-center paddingYaxisTable"
                             style={{ width: "3%" }}
                           >
-                            <div className="  d-flex justify-content-center ">
-                              {" "}
-                              {index + 1}
+                            <div className=" py-1  d-flex justify-content-center  fontSettingForGrayHeader ">
+
+                              Sr.
                             </div>
-                          </td>
-                          <td
-                            className="column-title   paddingYaxisTable   removePadding      text-center"
-                            style={{ width: "6%" }}
+                          </th>
+
+                          <th
+                            className="column-title fontSettingForGrayHeader    border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                            style={{ width: "3%" }}
                           >
-                            <div className="  ">{item.itemName} </div>
-                          </td>
-                          <td
-                            className="column-title   paddingYaxisTable   removePadding      text-center"
-                            style={{ width: "6%" }}
+                            <div className=" py-1">Name </div>
+                          </th>
+                          <th
+                            className="column-title  fontSettingForGrayHeader   border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                            style={{ width: "3%" }}
                           >
-                            <div className="  ">{item.itemSize} </div>
-                          </td>
-                          <td
-                            className="column-title  text-center  paddingYaxisTable  removePadding "
-                            style={{ width: "13%" }}
+                            <div className=" py-1">Size </div>
+                          </th>
+                          <th
+                            className="column-title  text-center   border border-primary removePadding   border-bottom-color removeTopBorder"
+                            style={{ width: "5%" }}
                           >
-                            <div className="  ">
-                              {item.PerPieceGrayWeightGram}
+                            <div className=" fontSettingForGrayHeader  py-1 paddingXaxisTable">
+                              Per Piece Gray Weight in Grams
                             </div>{" "}
-                          </td>
-                          <td
-                            className="column-title pileSize    removePadding   paddingYaxisTable   text-center"
-                            style={{ width: "16%", height: "100%" }}
+                          </th>
+                          <th
+                            className="column-title pileSize  border border-primary removePadding   border-bottom-color removeTopBorder  text-center"
+                            style={{ width: "15px" }}
                           >
                             <div>
-                              <div className="col-md-6">
-                                {item.graySizeppLength}
+                              <div className="col-md-12 py-1 fontSettingForGrayHeader ">
+                                Gray Size Pile to Pile
                               </div>
-                              <div className="col-md-6 ">
-                                {item.graySizeppWidth}
+                              <div className="col-md-6 border fontSettingForGrayHeader  border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
+                                Length
+                              </div>
+                              <div className="col-md-6 border  fontSettingForGrayHeader  border-primary removeRightBorder removeBottomBorder py-1">
+                                Width
                               </div>
                             </div>
-                          </td>
+                          </th>
 
-                          <td
+                          <th
                             className="column-title   
-                                              removePadding      removePadding  text-center paddingYaxisTable"
-                            style={{ width: "27%" }}
+                                         border border-primary removePadding   fontSettingForGrayHeader  border-bottom-color removeTopBorder  removePadding  text-center"
+                            style={{ width: "28%" }}
                           >
-                            <div className="  col-md-12 text-center removePadding">
-                              <div className="   col-md-6 text-center  removePadding            pt-5">
-                                {item.LoomNumbPieceInBorder76}
-                              </div>
-                              <div className="  col-md-6 text-center             ">
-                                <div className="col-md-6 text-center    ">
-                                  {item.LoomNumbRatePerBorderWithDraw76}
-                                </div>
-                                <div className="col-md-6 text-center  removePadding  ">
-                                  {item.LoomNumbRatePerBorderWithoutDraw76}
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td
-                            className="column-title  
-                                            removePadding       removePadding  text-center paddingYaxisTable"
-                            style={{ width: "27%" }}
-                          >
+                            76" Loom
                             <div className=" py-1 col-md-12 text-center removePadding">
-                              <div className=" py-1 col-md-6 text-center  removePadding             ">
-                                {item.LoomNumbPieceInBorder96}
+                              <div className=" py-1 col-md-4 text-center   fontSettingForGrayHeader removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder pt-5">
+                                No Of Piece in one Border{" "}
                               </div>
-                              <div className=" py-1 col-md-6 text-center  removePadding     ">
-                                <div className="col-md-6 text-center   removePadding          ">
-                                  {item.LoomNumbRatePerBorderWithDraw96}
+                              <div className=" py-1 col-md-5 text-center  removePadding  border border-primary  removeRightBorder removeBottomBorder">
+                                <div className="col-md-12 text-center   fontSettingForGrayHeader removePadding  border border-primary   removeBottomBorder removeTopBorder removeLeftBorder ">
+                                  Rate Per Border
                                 </div>
-                                <div className="col-md-6 text-center  removePadding    removeLeftBorder">
-                                  {item.LoomNumbRatePerBorderWithoutDraw96}
+                                <div className="col-md-6 text-center    fontSettingForGrayHeader  removePadding border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
+                                  With Draw Box
                                 </div>
+                                <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary  removeBottomBorder">
+                                  Without Draw Box
+                                </div>
+                              </div>
+                              <div className=" py-1 col-md-3 text-center   fontSettingForGrayHeader    border border-primary removeLeftBorder removeBottomBorder removeRightBorder   p-0 px-1">
+                                Nativing Rate
                               </div>
                             </div>
-                          </td>
-                          <td
-                            className="column-title removePadding  text-center   paddingYaxisTable    
-                                            "
+                          </th>
+                          <th
+                            className="column-title  
+                                         border border-primary removePadding  fontSettingForGrayHeader   border-bottom-color removeTopBorder  removePadding  text-center"
+                            style={{ width: "32%" }}
+                          >
+                            96" Loom
+                            <div className=" py-1 col-md-12 text-center removePadding">
+                              <div className=" py-1 col-md-4 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeLeftBorder removeBottomBorder removeRightBorder ">
+                                No Of Piece in one Border{" "}
+                              </div>
+                              <div className=" py-1 col-md-5 text-center  removePadding  border border-primary    removeBottomBorder">
+                                <div className="col-md-12 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeLeftBorder removeBottomBorder removeTopBorder removeLeftBorder ">
+                                  Rate Per Border
+                                </div>
+                                <div className="col-md-6 text-center   fontSettingForGrayHeader  removePadding border border-primary   removeBottomBorder removeLeftBorder ">
+                                  With Draw Box
+                                </div>
+                                <div className="col-md-6 text-center  fontSettingForGrayHeader  removePadding  border border-primary removeRightBorder removeBottomBorder removeLeftBorder">
+                                  Without Draw Box
+                                </div>
+                              </div>
+                              <div className=" py-1 col-md-3 text-center   fontSettingForGrayHeader    border border-primary removeLeftBorder removeBottomBorder removeRightBorder   px-1">
+                                Nativing Rate
+                              </div>
+                            </div>
+                          </th>
+                          <th
+                            className="column-title  text-center  border border-primary 
+                                        removeLeftBorder removeTopBorder removeRight Border   fontSettingForGrayHeader  border-bottom-color "
                             style={{ width: "4%" }}
                           >
-                            {item.status}
-                          </td>
-                          <td
-                            className="column-title removePadding  text-center   paddingYaxisTable    
-                                            "
+                            Status
+                          </th>
+                          <th
+                            className="column-title  text-center  border border-primary 
+                                        removeLeftBorder removeTopBorder removeRight Border  fontSettingForGrayHeader   border-bottom-color "
                             style={{ width: "2%" }}
                           >
-                            <i className="fa fa-edit text-common"
-                               onClick={() => {
-                        
-
-                            setUpdatedGrayProductList ({ 
-                                    grayProduct_id: item.grayProduct_id, 
-                                    itemNameValue:{label:item.itemName , value:item.itemNameId},
-                                    itemSizeValue: {label:item.itemSize , value:item.itemSizeId},
-                                    PerPieceGrayWeightGram: item.PerPieceGrayWeightGram,
-                                    graySizeppWidth: item.graySizeppWidth,
-                                    graySizeppLength: item.graySizeppLength,
-                                    LoomNumbPieceInBorder76: item.LoomNumbPieceInBorder76,
-                                    LoomNumbRatePerBorderWithDraw76: item.LoomNumbRatePerBorderWithDraw76,
-                                    LoomNumbRatePerBorderWithoutDraw76: item.LoomNumbRatePerBorderWithoutDraw76,
-                                    LoomNumbPieceInBorder96: item.LoomNumbPieceInBorder96,
-                                    LoomNumbRatePerBorderWithDraw96: item.LoomNumbRatePerBorderWithDraw96,
-                                    LoomNumbRatePerBorderWithoutDraw96: item.LoomNumbRatePerBorderWithoutDraw96,
-                                    status:{label:item.status , value:item.status}, 
-                                 });
-                              setModalShowForUpdate(true)
-                                }}
-                                 ></i>
-                            <i className="fa fa-trash ml-2 pb-1 text-danger"
-
-                              onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>
-                          </td>
+                            Action
+                          </th>
                         </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
+                      </thead>
+                      <tbody>
+                        {ListOfGrayProduct.map((item, index) => {
+                          return (
+                            <tr className="">
+                              <td
+                                className="column-title    removePadding   
+                                        text-center paddingYaxisTable"
+                                style={{ width: "3%" }}
+                              >
+                                <div className="  d-flex justify-content-center ">
+                                  {" "}
+                                  {index + 1}
+                                </div>
+                              </td>
+                              <td
+                                className="column-title   paddingYaxisTable   removePadding      text-center"
+                                style={{ width: "6%" }}
+                              >
+                                <div className="  ">{item.itemName} </div>
+                              </td>
+                              <td
+                                className="column-title   paddingYaxisTable   removePadding      text-center"
+                                style={{ width: "6%" }}
+                              >
+                                <div className="  ">{item.itemSize} </div>
+                              </td>
+                              <td
+                                className="column-title  text-center  paddingYaxisTable  removePadding "
+                                style={{ width: "13%" }}
+                              >
+                                <div className="  ">
+                                  {item.PerPieceGrayWeightGram}
+                                </div>{" "}
+                              </td>
+                              <td
+                                className="column-title pileSize    removePadding   paddingYaxisTable   text-center"
+                                style={{ width: "16%", height: "100%" }}
+                              >
+                                <div>
+                                  <div className="col-md-6">
+                                    {item.graySizeppLength}
+                                  </div>
+                                  <div className="col-md-6 ">
+                                    {item.graySizeppWidth}
+                                  </div>
+                                </div>
+                              </td>
+
+                              <td
+                                className="column-title   
+                                              removePadding      removePadding  text-center paddingYaxisTable"
+                                style={{ width: "27%" }}
+                              >
+                                <div className="  col-md-12 text-center removePadding">
+                                  <div className="   col-md-4 text-center  removePadding            pt-5">
+                                    {item.LoomNumbPieceInBorder76}
+                                  </div>
+                                  <div className="  col-md-5 text-center             ">
+                                    <div className="col-md-6 text-center    ">
+                                      {(item.LoomNumbRatePerBorderWithDraw76)}
+                                    </div>
+                                    <div className="col-md-6 text-center  removePadding  ">
+                                      {(item.LoomNumbRatePerBorderWithoutDraw76)}
+                                    </div>
+                                  </div>
+                                  <div className="   col-md-3 text-center  removePadding            ">
+                                    {item.nativingRate76}
+                                  </div>
+                                </div>
+                              </td>
+                              <td
+                                className="column-title  
+                                            removePadding       removePadding  text-center paddingYaxisTable"
+                                style={{ width: "27%" }}
+                              >
+                                <div className=" py-1 col-md-12 text-center removePadding">
+                                  <div className=" py-1 col-md-4 text-center  removePadding             ">
+                                    {item.LoomNumbPieceInBorder96}
+                                  </div>
+                                  <div className=" py-1 col-md-5 text-center  removePadding     ">
+                                    <div className="col-md-6 text-center   removePadding          ">
+                                      {(item.LoomNumbRatePerBorderWithDraw96)}
+                                    </div>
+                                    <div className="col-md-6 text-center  removePadding    removeLeftBorder">
+                                      {(item.LoomNumbRatePerBorderWithoutDraw96)}
+                                    </div>
+                                  </div>
+                                  <div className="   col-md-3 text-center  removePadding        ">
+                                    {item.nativingRate96}
+                                  </div>
+                                </div>
+                              </td>
+                              <td
+                                className="column-title removePadding  text-center   paddingYaxisTable    
+                                            "
+                                style={{ width: "4%" }}
+                              >
+                                {item.status}
+                              </td>
+                              <td
+                                className="column-title removePadding  text-center   paddingYaxisTable    
+                                            "
+                                style={{ width: "2%" }}
+                              >
+                                <i className="fa fa-edit text-common"
+                                  onClick={() => {
+
+
+                                    setUpdatedGrayProductList({
+                                      grayProduct_id: item.grayProduct_id,
+                                      itemNameValue: { label: item.itemName, value: item.itemNameId },
+                                      itemSizeValue: { label: item.itemSize, value: item.itemSizeId },
+                                      PerPieceGrayWeightGram: item.PerPieceGrayWeightGram,
+                                      graySizeppWidth: item.graySizeppWidth,
+                                      graySizeppLength: item.graySizeppLength,
+                                      LoomNumbPieceInBorder76: item.LoomNumbPieceInBorder76,
+                                      LoomNumbRatePerBorderWithDraw76: item.LoomNumbRatePerBorderWithDraw76,
+                                      LoomNumbRatePerBorderWithoutDraw76: item.LoomNumbRatePerBorderWithoutDraw76,
+                                      LoomNumbPieceInBorder96: item.LoomNumbPieceInBorder96,
+                                      LoomNumbRatePerBorderWithDraw96: item.LoomNumbRatePerBorderWithDraw96,
+                                      LoomNumbRatePerBorderWithoutDraw96: item.LoomNumbRatePerBorderWithoutDraw96,
+                                      status: { label: item.status, value: item.status },
+                                      nativingRate76: item.nativingRate76,
+                                      nativingRate96: item.nativingRate96,
+                                    });
+                                    setModalShowForUpdate(true)
+                                  }}
+                                ></i>
+                                <i className="fa fa-trash ml-2 pb-1 text-danger"
+
+                                  onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>
+                              </td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
+
+
+
+
         </div>
       )}
     </>

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { Modal } from "react-bootstrap";
 import Select from "react-select";
+import { preventMinus } from '../../../config/oreventMinus';
 const customStyles = {
   // control: base => ({
   //   ...base, 
@@ -75,16 +76,41 @@ const LoomListUpdate = (props) => {
             <form>
               <div className="field item form-group">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
+                  Loom Number<span className="required">*</span>
+                </label>
+                <div className="col-md-8 col-sm-8">
+                  <input
+                    className={props.loomNumberValidatorUpdate ? "form-control" : "form-control requiredValidateInput"}
+                    name="nanr"
+                    type="number" 
+                    onKeyPress={(e)=>{preventMinus(e)}}
+                    min="0"
+                    placeholder="ex. Loom Number"
+                    required="required"
+                    value={props.UpdateLoomList.loomNumber  }
+                    onChange={(e) => { 
+                      props.setUpdateLoomList({
+                        ...props.UpdateLoomList,
+                        loomNumber: e.target.value,
+                      })
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="field item form-group">
+                <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Size<span className="required">*</span>
                 </label>
                 <div className="col-md-8 col-sm-8">
                   <input
                     className={props.loomValidatorUpdate ? "form-control" : "form-control requiredValidateInput"}
                     name="nanr"
-                    type="number"
+                    type="number" 
+                    onKeyPress={(e)=>{preventMinus(e)}}
+                    min="0"
                     placeholder="ex. Loom Number"
                     required="required"
-                    value={props.UpdateLoomList.loomSize   && Math.max(0, props.UpdateLoomList.loomSize )}
+                    value={props.UpdateLoomList.loomSize   }
                     onChange={(e) => { 
                       props.setUpdateLoomList({
                         ...props.UpdateLoomList,
@@ -146,7 +172,7 @@ const LoomListUpdate = (props) => {
 
 
               {/* disable  */}
-              <div className="field item form-group d-none">
+              <div className="field item form-group  ">
                 <label className="col-form-label col-md-3 col-sm-3  label-align">
                   Weaving Unit<span className="required">*</span>
                 </label>
@@ -160,6 +186,8 @@ const LoomListUpdate = (props) => {
                         ...props.UpdateLoomList,
                         weavingUnitId: value.value,
                       });
+                      console.log(value)
+                  props.setWeavingUnitValue({label:value.label , value:value.value})
                     }}
                     isSearchable={true}
                     name="color"
