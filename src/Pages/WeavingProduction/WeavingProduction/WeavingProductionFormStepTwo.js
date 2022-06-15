@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Creatable from "react-select/creatable";
 import Select from "react-select";
+import { preventMinus } from "../../../config/oreventMinus";
 
 import { useDispatch  } from "react-redux";
 import { setNavSm , setNavMd } from "../../../store/actions/NavState";
@@ -275,9 +276,11 @@ const WeavingProductionFormStepTwo = ({
                           <input
                             type="number"
                             className={shiftTotalState[i].shiftValidation.noOfBorderValidate ? "form-control" : "form-control requiredValidateInput"}
-
+                         
+                            onKeyPress={(e) => preventMinus(e)}
+                            min="0"
                             placeholder="no. of borders"
-                            value={shiftTotalState[i].noOfBorder   && Math.max(0, shiftTotalState[i].noOfBorder  )}
+                            value={shiftTotalState[i].noOfBorder}
                             onChange={(e) =>
                               updateNoOfBorders(i, e.target.value)
                             }
@@ -309,6 +312,8 @@ const WeavingProductionFormStepTwo = ({
                             type="number"
                             className={shiftTotalState[i].shiftValidation.bGradePiece ? "form-control" : "form-control requiredValidateInput"}
                             value={shiftTotalState[i].bGradePiece    && Math.max(0, shiftTotalState[i].bGradePiece  )}
+                            onKeyPress={(e) => preventMinus(e)}
+                            min="0"
                             onChange={(e) =>
                               updateBGradePiece(i, e.target.value)
                             }
@@ -358,9 +363,11 @@ const WeavingProductionFormStepTwo = ({
                             <input
                               type="number"
                               typeof="number"
+                              onKeyPress={(e) => preventMinus(e)}
+                              min="0"
                               className={shiftTotalState[i].shiftValidation.extraAmountAmountValidate ? "form-control" : "form-control requiredValidateInput"}
 
-                              placeholder="ex. 500/- RS"
+                              placeholder="ex. 500/-"
                               value={shiftTotalState[i].extraAmount.amount  && Math.max(0,shiftTotalState[i].extraAmount.amount)}
                               onChange={(e) =>
                                 updateExtraAmountAmount(i, e.target.value)

@@ -62,6 +62,7 @@ const ShowSingleEmployee = ({
   const [reRenderComponent, setReRenderComponent] = useState(true);
 
   const notifyDeleted = () => toast("Employee Deleted Successfully");
+  const notifyUpdated = () => toast("Employee Updated Successfully");
   const url = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
   const [designationOptions, setDesignationOptions] = useState([])
@@ -185,8 +186,8 @@ const ShowSingleEmployee = ({
   };
   const UpdateUserCredentials = async () => {
     setComponentUpdater(!componentUpdater);
-    setIsDisableFormControl(true);
-    setShowFormControlClass(true);
+    // setIsDisableFormControl(true);
+    // setShowFormControlClass(true);
     console.log("employee DAta for update", EmployeeData);
 
 
@@ -229,7 +230,11 @@ const ShowSingleEmployee = ({
 
     await fetch(`${endPoint}api/employeeLists`, requestOptions)
       .then(response => response.text())
-      .then(result => console.log("_updated Successfully"))
+      .then(result => {
+        setIsDisableFormControl(true);
+        setShowFormControlClass(true);
+        console.log("_updated Successfully")
+        notifyUpdated()})
       .catch(error => console.log('error', error));
 
 
@@ -402,6 +407,7 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             type="number"
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)} 
                             onKeyPress={(e) => { preventMinus(e) }}
                             min="0"
                             className={`form-control 
@@ -426,6 +432,8 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+                  
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -456,6 +464,8 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+                  
                             type="number"
                             onKeyPress={(e) => { preventMinus(e) }}
                             value={EmployeeData.phoneNum3}
@@ -480,6 +490,7 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                             type="number"
                             min="0"
                             value={EmployeeData.homePhoneNum}
@@ -505,7 +516,7 @@ const ShowSingleEmployee = ({
                                 : " "
                               } `}
                             type="number"
-
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 13)}
                             onKeyPress={(e) => { preventMinus(e) }}
                             min="0"
                             value={EmployeeData.cnicNum}
@@ -579,6 +590,7 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
+                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}  
                             value={EmployeeData.referencePhoneNum}
                             onChange={(e) =>
                               setEmployeeData({

@@ -1,4 +1,6 @@
 import React, { useState, } from "react";
+import { preventMinus } from "../../../config/oreventMinus";
+
 
 const WeavingProductionFormStepThird = ({
   finalStepRequired, grandFinalTotal,rollDetail,
@@ -20,11 +22,13 @@ const WeavingProductionFormStepThird = ({
                     className={stepThirdValidator.pileToPileLengthValidate?"form-control":"form-control requiredValidateInput"}
                     name="name"
                     type="number"
-                    value={finalStepInput.pileToPileLength   && Math.max(0,finalStepInput.pileToPileLength )}
+                    onKeyPress={(e) => preventMinus(e)}
+                    min="0"
+                    value={finalStepInput.pileToPileLength}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileLength: parseInt(e.target.value) })
                     }}
-                    placeholder="Define By User"
+                    placeholder="Unit (Length)"
                   />
                 </div>
               </div>
@@ -37,11 +41,13 @@ const WeavingProductionFormStepThird = ({
                   <input
                        className={stepThirdValidator.pileToPileWidthValidate?"form-control":"form-control requiredValidateInput"}
                        type="number"
-                    value={finalStepInput.pileToPileWidth   && Math.max(0,finalStepInput.pileToPileWidth )}
+                       onKeyPress={(e) => preventMinus(e)}
+                       min="0"
+                    value={finalStepInput.pileToPileWidth}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileWidth: parseInt(e.target.value) })
                     }}
-                    placeholder="ex. 45/67  "
+                    placeholder="Unit (Width) "
                   />
                 </div>
               </div>
@@ -55,8 +61,10 @@ const WeavingProductionFormStepThird = ({
                className={stepThirdValidator.cutPieceSizeValidate?"form-control":"form-control requiredValidateInput"}
                     type="number"
                     name="name"
-                    placeholder="ex. 45/67  "
-                    value={finalStepInput.cutPieceSize   && Math.max(0,finalStepInput.cutPieceSize )}
+                    placeholder="Unit (Size)"
+                    onKeyPress={(e) => preventMinus(e)}
+                    min="0"
+                    value={finalStepInput.cutPieceSize   }
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceSize: parseFloat(e.target.value) })
                     }}
@@ -74,8 +82,10 @@ const WeavingProductionFormStepThird = ({
                    
                     type="number"
                     name="name"
-                    placeholder="ex. 45/67  "
-                    value={finalStepInput.cutPieceWeight   && Math.max(0,finalStepInput.cutPieceWeight )}
+                    onKeyPress={(e) => preventMinus(e)}
+                    min="0"
+                    placeholder="Unit (KG)"
+                    value={finalStepInput.cutPieceWeight  }
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseFloat(e.target.value) })
                     }}

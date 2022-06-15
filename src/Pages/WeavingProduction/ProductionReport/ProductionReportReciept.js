@@ -61,7 +61,8 @@ const ProductionReportReciept = React.forwardRef(({ selectedProductionData }, re
                 <div className=" col-md-6 col-sm-6 col-6 col-xl-6">Program Number </div>
                 <div className=" col-md-6 col-sm-6 col-6 col-xl-6 text-right">
                   {" "}
-                  {selectedProductionData.programm_no}
+                  {selectedProductionData.programm_no==null ||selectedProductionData.programm_no==undefined ||selectedProductionData.programm_no==""?
+                  "--":selectedProductionData.programm_no}
                 </div>
               </div>
             </div>{" "}
@@ -235,7 +236,7 @@ const ProductionReportReciept = React.forwardRef(({ selectedProductionData }, re
                   {item.total_amt}
                 </div>
                 <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center ">
-                  {item.natting_EmployeeNameId.label === null
+                  {item.natting_EmployeeNameId==null
                     ? "--"
                     : item.natting_EmployeeNameId.label}
                 </div>

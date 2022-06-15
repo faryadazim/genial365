@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import "./LittleLoader.css";
+import { preventMinus } from '../../../config/oreventMinus.js'
 
 const customStyles = {
   // control: base => ({
@@ -88,10 +89,10 @@ const WeavingProductionFormStepOne = ({
   loomDetailsUpdate, setrollDetail, loomListOptions, setLoomDetailsUpdate,
   updateLoomDetails, borderQualityOptions, setUpdateNumberOfPieceOneBorderInput,
   updateNumberOfPieceOneBorderInput, borderSizeOptions, loomListValue, setLoomListValue,
-  borderQualityValue, setborderQualityValue, borderSizeValue, setBorderSizeValue, stepOneValidator ,roleNameBackEnd
+  borderQualityValue, setborderQualityValue, borderSizeValue, setBorderSizeValue, stepOneValidator, roleNameBackEnd
 }) => {
 
-  
+
   useEffect(() => {
     FetchListSelector();
     console.log(rollDetail);
@@ -152,16 +153,15 @@ const WeavingProductionFormStepOne = ({
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <input
-
-// 
-// value={rollDetail.programNumber && Math.max(0, rollDetail.programNumber )}
-
                         className={stepOneValidator.rollWeightValidate ? "form-control" : "form-control requiredValidateInput"
-                        } name="name"
+                        }
+                        name="name"
                         type="number"
+                        onKeyPress={(e) => preventMinus(e)}
+                        min="0"
                         // onInput={(er) => er.target.value = er.target.value.slice(0) }
-                        placeholder="ex. 569 grams  "
-                        value={rollDetail.rollWeight && Math.max(0, rollDetail.rollWeight )}
+                        placeholder="ex. 569 Grams"
+                        value={rollDetail.rollWeight}
                         onChange={(e) =>
                           setrollDetail({
                             ...rollDetail,
@@ -255,17 +255,19 @@ const WeavingProductionFormStepOne = ({
                       <input
                         className={stepOneValidator.programNumberValidate ? "form-control" : "form-control requiredValidateInput"}
                         type="number"
+                        onKeyPress={(e) => preventMinus(e)}
+                        min="0"
                         name="name"
                         placeholder="ex. 789...  "
-                        onInput={(er) => er.target.value = er.target.value.slice(0) }
-                        value={rollDetail.programNumber && Math.max(0, rollDetail.programNumber )}
-                        onChange={(e) =>
-                         {
-                           console.log(typeof(rollDetail.programNumber) ,  );
-                            setrollDetail({
+                        onInput={(er) => er.target.value = er.target.value.slice(0)}
+                        value={rollDetail.programNumber && Math.max(0, rollDetail.programNumber)}
+                        onChange={(e) => {
+                          console.log(typeof (rollDetail.programNumber),);
+                          setrollDetail({
                             ...rollDetail,
                             programNumber: e.target.value,
-                          })}
+                          })
+                        }
                         }
                       />
                     </div>
@@ -281,8 +283,8 @@ const WeavingProductionFormStepOne = ({
                       <thead >
                         <tr className="headings">
                           <th className="column-title" colspan="2">
-                          
-                            Loom Details 
+
+                            Loom Details
                           </th>
                         </tr>
                       </thead>
