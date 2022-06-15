@@ -235,7 +235,7 @@ const WeaverLadger = () => {
           <div className="col-md-12">
             <div className="x_panel">
               <div className="x_title">
-                <h2 className="pl-2 pt-2">Ladger Report</h2>
+                <h2 className="pl-2 pt-2">Laeger Report</h2>
                 <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
                 <div className="clearfix" />
               </div>

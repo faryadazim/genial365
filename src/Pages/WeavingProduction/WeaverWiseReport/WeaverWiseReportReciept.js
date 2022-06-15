@@ -134,12 +134,12 @@ const WeaverWiseReportReciept = React.forwardRef(
                     Grand Total{" "}
                   </div>
                   <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   bottom-border-2  font-size-12    py-1  right-border-2   d-flex justify-content-end align-items-center ">
-                    {     numberWithCommas( (summaryFinal.grandTotal).toFixed(2))      } /- 
+                    {numberWithCommas((summaryFinal.grandTotal).toFixed(2))} /-
 
 
 
 
-               
+
                   </div>
                 </div>
                 <div className="row mx-3  reportTableBody">

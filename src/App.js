@@ -33,6 +33,7 @@ import SalaryReport from "./Pages/WeavingProduction/SalaryReport/SalaryReport";
 import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
 import JournalVoucher from './Pages/Finance/JournalVoucher/JournalVoucher'
 import JVReport from './Pages/Finance/JVReport/JVReport'
+import Dashboard from "./Pages/Home/Dashboard.js/Dashboard";
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");
@@ -125,7 +126,7 @@ function App() {
                       path="PermissionAccess"
                       element={<RolePermission />}
                     />
-                       <Route path="/" element={<Loader />} />
+                       <Route path="/" element={<Dashboard />} />
                     <Route path="EmployeesList" element={<EmployeeList />} />
                     <Route
                       path="GrayProductList"

@@ -6,6 +6,7 @@ import WeavingProductionFormStepOne from "./WeavingProductionFormStepOne";
 import WeavingProductionFormStepThird from "./WeavingProductionFormStepThird";
 import WeavingProductionFormStepTwo from "./WeavingProductionFormStepTwo";
 import { endPoint } from '../../../config/Config.js'
+import WeavingProductionFormStepFourth from "./WeavingProductionFormStepFourth.js";
 import { toast } from "react-toastify";
 
 const WeavingProductionForm = () => {
@@ -42,7 +43,9 @@ const WeavingProductionForm = () => {
   const [borderQualityValue, setborderQualityValue] = useState({})
   const [borderSizeOptions, setBorderSizeOptions] = useState([]);
   const [borderSizeValue, setBorderSizeValue] = useState({})
-  // state to store form data in database    
+  // state to store form data in database 
+
+
   const [rollDetail, setrollDetail] = useState({
     //rollNo: "85",
     date: dateToday,
@@ -61,6 +64,8 @@ const WeavingProductionForm = () => {
     NumOfPieceOneBorder: "Auto Define",
     grayProductId: ""
   });
+
+
   //  state for update Function Number of Border in Loom Detail table
   const [
     updateNumberOfPieceOneBorderInput,
@@ -83,7 +88,7 @@ const WeavingProductionForm = () => {
       finalStepInput,
       loomDetail: loomDetail,
       //stepStates
-      firstStep, secondStep, thirdStep,
+      firstStep, secondStep, thirdStep ,FourthStep
 
     }
     const object = {
@@ -152,6 +157,7 @@ const WeavingProductionForm = () => {
         setFirstStep("active");
         setSecondStep("disable");
         setThirdStep("disable");
+        setFourthStep("disable")
         // ..........
       })
       .catch((err) => {
@@ -186,6 +192,7 @@ const WeavingProductionForm = () => {
     setFirstStep(draftData.firstStep)  //
     setSecondStep(draftData.secondStep)//
     setThirdStep(draftData.thirdStep)//
+    setFourthStep(draftData.FourthStep)
     setGrandFinalTotal(draftData.grandFinalTotal) //
     setLoomDetail(draftData.loomDetail)    //
     setLoomListValue(draftData.loomListValue)   //
@@ -1330,12 +1337,13 @@ const WeavingProductionForm = () => {
                 {thirdStep == "active" ? (
                   <div className="container text-center px-2 mt-5">
                     <div className=" ">
-                    <WeavingProductionFormStepThird
+                      <WeavingProductionFormStepThird
                         finalStepRequired={finalStepRequired}
                         grandFinalTotal={grandFinalTotal}
                         finalStepInput={finalStepInput} setfinalStepInput={setfinalStepInput}
                         stepThirdValidator={stepThirdValidator}
                         rollDetail={rollDetail}
+                      
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
@@ -1349,9 +1357,9 @@ const WeavingProductionForm = () => {
                         Prev
                       </button>
                       <button className="btn btn-secondary btn-sm  text-light px-4 "
-                            onClick={() => { postUserDraft() }}>
-                            Draft <i className="fa fa-stack-exchange pl-2"> </i>
-                          </button>
+                        onClick={() => { postUserDraft() }}>
+                        Draft <i className="fa fa-stack-exchange pl-2"> </i>
+                      </button>
                       <button
                         className="btn btn-success btn-sm  px-4"
                         onClick={() => {
@@ -1372,7 +1380,18 @@ const WeavingProductionForm = () => {
                 {FourthStep == "active" ? (
                   <div className="container text-center px-2   my-5  ">
                     <div className=" ">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste nisi blanditiis, ad minus, natus laborum, harum vel magnam enim asperiores facilis laudantium officiis.
+                      <WeavingProductionFormStepFourth
+                        rollDetail={rollDetail}
+                        roleNameBackEnd={roleNameBackEnd}
+                        borderSizeValue={borderSizeValue}
+                        borderQualityValue={borderQualityValue}
+                        loomListValue={loomListValue}
+                        loomDetail={loomDetail}
+                        finalStepInput={finalStepInput}
+                        grandFinalTotal={grandFinalTotal}
+                        shiftTotalState={shiftTotalState}
+                        finalStepRequired={finalStepRequired}
+                      />
                     </div>
                     <div className="text-right px-2 pt-3 ">
                       <button
@@ -1396,7 +1415,7 @@ const WeavingProductionForm = () => {
                               Save <i className="fa fa-save pl-2 "> </i>
                             </button> </> : <>
                             <button className="btn btn-success btn-sm  px-4" onClick={() => updateWeavingProductionForm()}> Update</button></>
-                      } 
+                      }
                     </div>
                   </div>
                 ) : (
