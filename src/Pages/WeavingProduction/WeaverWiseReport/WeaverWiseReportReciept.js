@@ -8,14 +8,15 @@ const WeaverWiseReportReciept = React.forwardRef(
         <div className="x_content mb-3" ref={ref}>
           <div className="row mx-3  reportTableHead ">
             <div className="col-md-3 col-md-3 col-sm-3 col-3 col-xl-3  px-0 my-auto  ">
-              <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-1 h-100 text-center font-size-12  h-100 my-1 ">
-                Sr
-              </div>
+            
               <div className=" col-md-4 col-sm-4 col-4 col-xl-4 px-0 text-center font-size-12  right-border-1  h-100 my-1 ">
                 Date
               </div>
               <div className=" col-md-5 col-sm-5 col-5 col-xl-5 right-border-1 h-100 my-1 font-size-12 text-center">
                 Roll #
+              </div>
+              <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-1 h-100 text-center font-size-12  h-100 my-1 ">
+               Shift
               </div>
             </div>
 
@@ -72,10 +73,8 @@ const WeaverWiseReportReciept = React.forwardRef(
                   return (
                     <div className="row mx-3  reportTableBody bottom-border-2">
                       <div className="col-md-3 col-md-3 col-sm-3 col-3 col-xl-3 right-border-1 px-0">
-                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100 left-border-2 d-flex justify-content-center align-items-center">
-                          {index + 1}
-                        </div>
-                        <div className=" col-md-4 col-sm-4 col-4 col-xl-4  text-center font-size-12 right-border-2 py-1 h-100  d-flex justify-content-center align-items-center">
+                  
+                        <div className=" col-md-4 col-sm-4 col-4 col-xl-4  left-border-2 text-center font-size-12 right-border-2 py-1 h-100  d-flex justify-content-center align-items-center">
                           {`${weaverWiseReportItem.productDate.slice(
                             8,
                             10
@@ -86,6 +85,10 @@ const WeaverWiseReportReciept = React.forwardRef(
                         </div>
                         <div className="col-md-5 col-md-5 col-sm-5 col-4 col-xl-5 right-border-2 h-100  py-1 font-size-12 text-center d-flex justify-content-center align-items-center px-0">
                           {weaverWiseReportItem.rollNumber}
+                        </div>
+                        <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 right-border-1 h-100 text-center font-size-12 right-border-2 py-1 h-100  d-flex justify-content-center align-items-center">
+       
+                          {weaverWiseReportItem.shiftName.slice(6)}  
                         </div>
                       </div>
 

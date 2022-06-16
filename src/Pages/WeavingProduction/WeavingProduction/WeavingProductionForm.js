@@ -725,16 +725,16 @@ const WeavingProductionForm = () => {
         setShiftTotalState(arr_data);
         setReRender(!reRender);
       }
-      // b grade piece  Validation --------- 
-      if (arr_data[i].bGradePiece == "" || arr_data[i].bGradePiece === 0) {
-        arr_data[i].shiftValidation.bGradePiece = false;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      } else {
-        arr_data[i].shiftValidation.bGradePiece = true;
-        setShiftTotalState(arr_data);
-        setReRender(!reRender);
-      }
+      // // b grade piece  Validation --------- 
+      // if (arr_data[i].bGradePiece == "" || arr_data[i].bGradePiece === 0) {
+      //   arr_data[i].shiftValidation.bGradePiece = false;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // } else {
+      //   arr_data[i].shiftValidation.bGradePiece = true;
+      //   setShiftTotalState(arr_data);
+      //   setReRender(!reRender);
+      // }
       // extraAmount  Desc   Validate Validation --------- 
       // if (arr_data[i].extraAmount.desc == "") {
       //   arr_data[i].shiftValidation.extraAmountDescValidate = false;
@@ -905,14 +905,14 @@ const WeavingProductionForm = () => {
       .then(response => {
         if (response.status == 200) {
           notifyAdd()
-          return response.text()
+          return response
         } else {
           notifyIssue()
         }
       })
 
       .then(result => {
-
+console.log("production post data result" , result);
         // ----------------- Setting Component To initial State
         setLoomListValue({})
         setborderQualityValue({})

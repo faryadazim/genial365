@@ -393,8 +393,8 @@ const ShowSingleEmployee = ({
                   <div className="field item form-group pl-2">
                     <div className="col-md-7">
                       <div className="row">
-                        <label className="col-form-label col-md-3 col-sm-3   ">
-                          Name
+                        <label className="col-form-label col-md-3 col-sm-3  d-flex  justify-content-between  ">
+                          Name  {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
@@ -418,8 +418,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3  ">
-                          Father Name
+                        <label className="col-form-label  col-md-3 col-sm-3   d-flex  justify-content-between ">
+                          Father Name {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
@@ -439,8 +439,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3  ">
-                          Phone Number 1
+                        <label className="col-form-label  col-md-3 col-sm-3  d-flex  justify-content-between   ">
+                          Phone Number 1{!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
@@ -501,10 +501,10 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
-                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
-
-                            type="number"
-                            onKeyPress={(e) => { preventMinus(e) }}
+                              type="number"
+                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+                              onKeyPress={(e) => { preventMinus(e) }}
+                              min="0"
                             value={EmployeeData.phoneNum3}
                             onChange={(e) =>
                               setEmployeeData({
@@ -542,8 +542,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3  ">
-                          CNIC
+                        <label className="col-form-label  col-md-3 col-sm-3  d-flex  justify-content-between  ">
+                          CNIC {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
@@ -566,8 +566,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3 ">
-                          Address
+                        <label className="col-form-label  col-md-3 col-sm-3  d-flex  justify-content-between ">
+                          Address {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
@@ -639,8 +639,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3    ">
-                          Job Status
+                        <label className="col-form-label  col-md-3 col-sm-3    d-flex  justify-content-between  ">
+                          Job Status {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <Select
@@ -667,8 +667,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3  ">
-                          Designation
+                        <label className="col-form-label  col-md-3 col-sm-3  d-flex  justify-content-between  ">
+                          Designation {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
 
@@ -691,8 +691,8 @@ const ShowSingleEmployee = ({
                         </div>
                       </div>
                       <div className="row">
-                        <label className="col-form-label  col-md-3 col-sm-3 ">
-                          Salary
+                        <label className="col-form-label  col-md-3 col-sm-3  d-flex  justify-content-between ">
+                          Salary {!showFormControlClass? <span className="required">*</span>    : <></> }  
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input

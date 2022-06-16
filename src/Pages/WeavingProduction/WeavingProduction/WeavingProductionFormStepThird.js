@@ -121,7 +121,7 @@ const WeavingProductionFormStepThird = ({
                         <div className="col-md-3 customPaddingForTableInWPFStepThree main_container text-light text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
 
-                          {((rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece).toFixed(3)}     =--         
+                          {((rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece).toFixed(3)}       
 
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
