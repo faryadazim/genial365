@@ -35,7 +35,7 @@ const WeavingProductionForm = () => {
   var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
-  const [allLoomLists, setAllLoomLists] = useState([]); 
+  const [allLoomLists, setAllLoomLists] = useState([]);
 
 
   //state for DropDownSearchableSelector
@@ -90,7 +90,7 @@ const WeavingProductionForm = () => {
       finalStepInput,
       loomDetail: loomDetail,
       //stepStates
-      firstStep, secondStep, thirdStep ,FourthStep
+      firstStep, secondStep, thirdStep, FourthStep
 
     }
     const object = {
@@ -322,7 +322,7 @@ const WeavingProductionForm = () => {
     fetch(`${endPoint}api/employeeActiveWeaverListWithName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
-        
+
         var arrForWeaverEmployee = [];
         JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
@@ -345,11 +345,11 @@ const WeavingProductionForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("----" , );
+        console.log("----",);
         var arrForNativingEmployee = [];
         data.map((item) => {
           arrForNativingEmployee.push({
-            value: item.employeeId, 
+            value: item.employeeId,
             label: `${item.employeeName} (${item.employeeSerialNumber})`,
           });
         });
@@ -511,9 +511,9 @@ const WeavingProductionForm = () => {
       setStepOneValidator({ ...stepOneValidator, qualityValidate: false })
     } else if (rollDetail.Size == "") {
       setStepOneValidator({ ...stepOneValidator, sizeValidate: false })
-    } else if (loomDetail.NumOfPieceOneBorder == "" ||loomDetail.NumOfPieceOneBorder == " " ||loomDetail.NumOfPieceOneBorder ==="--" || loomDetail.NumOfPieceOneBorder ===undefined || loomDetail.NumOfPieceOneBorder === null|| loomDetail.NumOfPieceOneBorder === 0) {
-     console.log("no of border are not bsdk");
-     notifyNoBorder()
+    } else if (loomDetail.NumOfPieceOneBorder == "" || loomDetail.NumOfPieceOneBorder == " " || loomDetail.NumOfPieceOneBorder === "--" || loomDetail.NumOfPieceOneBorder === undefined || loomDetail.NumOfPieceOneBorder === null || loomDetail.NumOfPieceOneBorder === 0) {
+      console.log("no of border are not bsdk");
+      notifyNoBorder()
       // ---------program number validation removed 
 
       // } else if (rollDetail.programNumber == "") {
@@ -870,7 +870,7 @@ const WeavingProductionForm = () => {
       "total_pieces": grandFinalTotal.totalPiece,
       "b_grade_pieces": grandFinalTotal.totalBGrade,
       "a_grade_pieces": grandFinalTotal.totalAGrade,
-      "current_per_piece_a_weight":  (rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece ,
+      "current_per_piece_a_weight": (rollDetail.rollWeight * 1000 - (finalStepInput.cutPieceWeight * 1000)) / grandFinalTotal.totalPiece,
       "required_length_p_to_p": finalStepRequired.requireLengthpp,
       "required_width_p_to_p": finalStepRequired.requireWidthpp,
       "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,
@@ -1350,7 +1350,7 @@ const WeavingProductionForm = () => {
                         finalStepInput={finalStepInput} setfinalStepInput={setfinalStepInput}
                         stepThirdValidator={stepThirdValidator}
                         rollDetail={rollDetail}
-                      
+
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
