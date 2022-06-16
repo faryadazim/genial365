@@ -94,7 +94,7 @@ const Selector = ({ fetchEmployeeByDemand  , setStateUpdater
         response.json().then((data) => {
           var arr = [{label:"All" , value :-1}];
           data.map((item) => {
-            arr.push({ label: item.name, value: item.employee_Id });
+            arr.push({ label: `${item.name} (${item.serialNumber})`, value: item.employee_Id });
           });
 
           setRoles(arr); 

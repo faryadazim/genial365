@@ -28,6 +28,7 @@ const customStyles = {
     borderBottom: "1px  #003a4d",
     color: state.isSelected ? "#f79c74" : "#003a4d",
     background: "#fff",
+    textAlign: "left",
   }),
   valueContainer: (provided, state) => ({
     ...provided,
@@ -84,6 +85,7 @@ const customStylesDanger = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: "28px",
+    
   }),
 };
 const WeavingProductionFormStepTwo = ({
@@ -245,7 +247,7 @@ const WeavingProductionFormStepTwo = ({
                       </td>
 
                       <td
-                        className="column-title      text-center  p-0 px-1"
+                        className="column-title       p-0 px-1"
                         style={{ width: "10%" }}
                       >
                         <div className=" py-1">

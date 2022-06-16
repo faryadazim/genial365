@@ -322,11 +322,12 @@ const WeavingProductionForm = () => {
     fetch(`${endPoint}api/employeeActiveWeaverListWithName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
+        
         var arrForWeaverEmployee = [];
         JSON.parse(result).map((item) => {
           arrForWeaverEmployee.push({
             value: item.employeeId,
-            label: item.employeeName,
+            label: `${item.employeeName} (${item.employeeSerialNumber})`,
           });
         });
         setWeaverEmployeeOptions(arrForWeaverEmployee);
@@ -344,11 +345,12 @@ const WeavingProductionForm = () => {
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log("----" , );
         var arrForNativingEmployee = [];
         data.map((item) => {
           arrForNativingEmployee.push({
-            value: item.employeeId,
-            label: item.employeeName,
+            value: item.employeeId, 
+            label: `${item.employeeName} (${item.employeeSerialNumber})`,
           });
         });
 
