@@ -321,9 +321,9 @@ const WeavingProductionFormStepFourth = (
         <>
           <div className="row mx-3  reportTableBody bottom-border-2">
             <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report   px-2 bottom-border-1 top-border-1 py-1">Total Weight/Cut Piece</div>
-            <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">   {((rollDetail.rollWeight - (finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece).toFixed(3)} </div>
+            <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">    {((rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece).toFixed(3)}   </div>
             <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">   {finalStepRequired.requirePerPieceWeight }   </div>
-            <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">     {(finalStepRequired.requirePerPieceWeight-((rollDetail.rollWeight - (finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece) ).toFixed(3)}  </div>
+            <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">     {(finalStepRequired.requirePerPieceWeight - (((rollDetail.rollWeight*1000) - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece)).toFixed(3)}  </div>
           </div>
           <div className="row mx-3  reportTableBody bottom-border-2">
             <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto left-border-2 right-border-2 bg-for-step-three-product-report  bottom-border-1 px-2  py-1">Length Pile to Pile</div>

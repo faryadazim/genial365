@@ -17,6 +17,7 @@ const WeavingProductionForm = () => {
 
   const notifyAdd = () => toast("Production Role added Successfully!");
   const notifyIssue = () => toast("Something Went wrong!");
+  const notifyNoBorder = () => toast("No of Border is not valid!");
   // Parent Personal State
   const showNavMenu = useSelector((state) => state.NavState);
   const currentID = useSelector((state) => state.IdToBeUpdate);
@@ -34,7 +35,8 @@ const WeavingProductionForm = () => {
   var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
-  const [allLoomLists, setAllLoomLists] = useState([]);
+  const [allLoomLists, setAllLoomLists] = useState([]); 
+
 
   //state for DropDownSearchableSelector
   const [loomListOptions, setLoomListOptions] = useState([]);
@@ -507,6 +509,9 @@ const WeavingProductionForm = () => {
       setStepOneValidator({ ...stepOneValidator, qualityValidate: false })
     } else if (rollDetail.Size == "") {
       setStepOneValidator({ ...stepOneValidator, sizeValidate: false })
+    } else if (loomDetail.NumOfPieceOneBorder == "" ||loomDetail.NumOfPieceOneBorder == " " ||loomDetail.NumOfPieceOneBorder ==="--" || loomDetail.NumOfPieceOneBorder ===undefined || loomDetail.NumOfPieceOneBorder === null|| loomDetail.NumOfPieceOneBorder === 0) {
+     console.log("no of border are not bsdk");
+     notifyNoBorder()
       // ---------program number validation removed 
 
       // } else if (rollDetail.programNumber == "") {
@@ -863,7 +868,7 @@ const WeavingProductionForm = () => {
       "total_pieces": grandFinalTotal.totalPiece,
       "b_grade_pieces": grandFinalTotal.totalBGrade,
       "a_grade_pieces": grandFinalTotal.totalAGrade,
-      "current_per_piece_a_weight": (rollDetail.rollWeight - (grandFinalTotal.totalBGrade * finalStepInput.cutPieceWeight)) / grandFinalTotal.totalPiece,
+      "current_per_piece_a_weight":  (rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece ,
       "required_length_p_to_p": finalStepRequired.requireLengthpp,
       "required_width_p_to_p": finalStepRequired.requireWidthpp,
       "required_per_piece_a_weight": finalStepRequired.requirePerPieceWeight,

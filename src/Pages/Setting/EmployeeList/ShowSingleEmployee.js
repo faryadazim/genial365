@@ -59,7 +59,6 @@ const ShowSingleEmployee = ({
 }) => {
   const [showFormControlClass, setShowFormControlClass] = useState(true);
   const [isDisableFormControl, setIsDisableFormControl] = useState(true);
-  const [reRenderComponent, setReRenderComponent] = useState(true);
 
   const notifyDeleted = () => toast("Employee Deleted Successfully");
   const notifyUpdated = () => toast("Employee Updated Successfully");
@@ -93,7 +92,18 @@ const ShowSingleEmployee = ({
     weeklySalary: "",
     salary: "",
   });
-
+  const [employeeDataUpdateValidator, setEmployeeDataUpdateValidator] = useState({
+    name: true,
+    fatherName: true,
+    phoneNum1: true,
+    cnicNum: true,
+    address: true,
+    employeePic1: true,
+    employeePic2: true,
+    employeeCnicFront: true,
+    employeeCnicBsck: true,
+    salary: true,
+  })
   const EditUser = () => {
     setIsDisableFormControl(false);
     setShowFormControlClass(false);
@@ -185,60 +195,88 @@ const ShowSingleEmployee = ({
       .catch((error) => console.log("error", error));
   };
   const UpdateUserCredentials = async () => {
+    // -------------------
+    // -------------------
+    // employeeDataUpdateValidator, setEmployeeDataUpdateValidator
+
+    // cnicNum: true,
+    // address: true,  
+    // employeePic1: true,
+    // employeePic2: true,
+    // employeeCnicFront: true,
+    // employeeCnicBsck: true, 
+    //  salary: true,
+    // -------------------
+    // -------------------
+    if (EmployeeData.name == "" || EmployeeData.name === "" || EmployeeData.name == null || EmployeeData.name === 0 || EmployeeData.name === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, name: false })
+      console.log("invalid name");
+      setComponentUpdater(!componentUpdater);
+    } else if (EmployeeData.fatherName == "" || EmployeeData.fatherName == null || EmployeeData.fatherName === 0 || EmployeeData.fatherName === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, fatherName: false })
+    } else if (EmployeeData.phoneNum1 == "" || EmployeeData.phoneNum1 == null || EmployeeData.phoneNum1 === 0 || EmployeeData.phoneNum1 === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, phoneNum1: false })
+    } else if (EmployeeData.cnicNum == "" || EmployeeData.cnicNum == null || EmployeeData.cnicNum === 0 || EmployeeData.cnicNum === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, cnicNum: false })
+    } else if (EmployeeData.address == "" || EmployeeData.address == null || EmployeeData.address === 0 || EmployeeData.address === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, address: false })
+    } else if (EmployeeData.salary == "" || EmployeeData.salary == null || EmployeeData.salary === 0 || EmployeeData.salary === undefined) {
+      setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, salary: false })
+
+
+    } else {
+
+
+      // setIsDisableFormControl(true);
+      // setShowFormControlClass(true);  
+
+      var myHeaders = new Headers();
+      myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        "employee_Id": EmployeeData.employee_Id,
+        "name": EmployeeData.name,
+        "fatherName": EmployeeData.fatherName,
+        "phoneNum1": EmployeeData.phoneNum1,
+        "phoneNum2": EmployeeData.phoneNum2,
+        "phoneNum3": EmployeeData.phoneNum3,
+        "homePhoneNum": EmployeeData.phoneNum3,
+        "cnicNum": EmployeeData.cnicNum,
+        "address": EmployeeData.address,
+        "referenceName": EmployeeData.referenceName,
+        "referencePhoneNum": EmployeeData.referencePhoneNum,
+        "jobStatus": jobStatusValue.value,
+        "designation": designationValue.value,
+        "employeePic1": EmployeeData.employeePic1,
+        "employeePic2": EmployeeData.employeePic2,
+        "employeeCnicFront": EmployeeData.employeeCnicFront,
+        "employeeCnicBsck": EmployeeData.employeeCnicBsck,
+        "recruitmentType": EmployeeData.recruitmentType,
+        "salary": parseFloat(EmployeeData.salary),
+        "chart_id": EmployeeData.chart_id
+      });
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      await fetch(`${endPoint}api/employeeLists`, requestOptions)
+        .then(response => response.text())
+        .then(result => {
+          setIsDisableFormControl(true);
+          setShowFormControlClass(true);
+          console.log("_updated Successfully")
+          notifyUpdated()
+        })
+        .catch(error => console.log('error', error));
+
+    }
+
     setComponentUpdater(!componentUpdater);
-    // setIsDisableFormControl(true);
-    // setShowFormControlClass(true);
-    console.log("employee DAta for update", EmployeeData);
-
-
-
-
-
-    var myHeaders = new Headers();
-    myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
-    myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-      "employee_Id": EmployeeData.employee_Id,
-      "name": EmployeeData.name,
-      "fatherName": EmployeeData.fatherName,
-      "phoneNum1": EmployeeData.phoneNum1,
-      "phoneNum2": EmployeeData.phoneNum2,
-      "phoneNum3": EmployeeData.phoneNum3,
-      "homePhoneNum": EmployeeData.phoneNum3,
-      "cnicNum": EmployeeData.cnicNum,
-      "address": EmployeeData.address,
-      "referenceName": EmployeeData.referenceName,
-      "referencePhoneNum": EmployeeData.referencePhoneNum,
-      "jobStatus": jobStatusValue.value,
-      "designation": designationValue.value,
-      "employeePic1": EmployeeData.employeePic1,
-      "employeePic2": EmployeeData.employeePic2,
-      "employeeCnicFront": EmployeeData.employeeCnicFront,
-      "employeeCnicBsck": EmployeeData.employeeCnicBsck,
-      "recruitmentType": EmployeeData.recruitmentType,
-      "salary": parseFloat(EmployeeData.salary),
-      "chart_id": EmployeeData.chart_id
-    });
-
-    var requestOptions = {
-      method: 'PUT',
-      headers: myHeaders,
-      body: raw,
-      redirect: 'follow'
-    };
-
-    await fetch(`${endPoint}api/employeeLists`, requestOptions)
-      .then(response => response.text())
-      .then(result => {
-        setIsDisableFormControl(true);
-        setShowFormControlClass(true);
-        console.log("_updated Successfully")
-        notifyUpdated()})
-      .catch(error => console.log('error', error));
-
-
-
   };
   const fetchDataForSingleUser = async () => {
     var myHeadersDesignation = new Headers();
@@ -364,15 +402,17 @@ const ShowSingleEmployee = ({
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
                                 : " "
-                              } `}
+                              }        ${employeeDataUpdateValidator.name ? "" : "requiredValidateInput"}        `}
                             type="text"
                             disabled={isDisableFormControl}
                             value={EmployeeData.name}
-                            onChange={(e) =>
+                            onChange={(e) => {
+                              setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, name: true })
                               setEmployeeData({
                                 ...EmployeeData,
                                 name: e.target.value,
                               })
+                            }
                             }
                           />
                         </div>
@@ -385,18 +425,16 @@ const ShowSingleEmployee = ({
                           <input
                             type="text"
                             className={`form-control 
-                                         ${showFormControlClass
-                                ? "removeFormControlBorder"
-                                : " "
-                              } `}
+                                         ${showFormControlClass  ? "removeFormControlBorder" : " "  }   ${employeeDataUpdateValidator.fatherName ? "" : "requiredValidateInput"}         `}
                             value={EmployeeData.fatherName}
                             disabled={isDisableFormControl}
                             onChange={(e) =>
-                              setEmployeeData({
+                             {   setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, fatherName: true })
+                               setEmployeeData({
                                 ...EmployeeData,
                                 fatherName: e.target.value,
                               })
-                            }
+                            }}
                           />
                         </div>
                       </div>
@@ -407,20 +445,18 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             type="number"
-                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)} 
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                             onKeyPress={(e) => { preventMinus(e) }}
                             min="0"
                             className={`form-control 
-                                         ${showFormControlClass
-                                ? "removeFormControlBorder"
-                                : " "
-                              } `}
+                                         ${showFormControlClass  ? "removeFormControlBorder"   : " "  }     ${employeeDataUpdateValidator.phoneNum1 ? "" : "requiredValidateInput"}     `}
                             value={EmployeeData.phoneNum1}
                             onChange={(e) =>
-                              setEmployeeData({
+                             {   setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, phoneNum1: true })
+                               setEmployeeData({
                                 ...EmployeeData,
                                 phoneNum1: e.target.value,
-                              })
+                              })}
                             }
                             disabled={isDisableFormControl}
                           />
@@ -433,7 +469,7 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
-                  
+
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
@@ -444,10 +480,11 @@ const ShowSingleEmployee = ({
                             min="0"
                             value={EmployeeData.phoneNum2}
                             onChange={(e) =>
-                              setEmployeeData({
+                             {
+                               setEmployeeData({
                                 ...EmployeeData,
                                 phoneNum2: e.target.value,
-                              })
+                              })}
                             }
                             disabled={isDisableFormControl}
                           />
@@ -464,8 +501,8 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
-                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
-                  
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+
                             type="number"
                             onKeyPress={(e) => { preventMinus(e) }}
                             value={EmployeeData.phoneNum3}
@@ -490,7 +527,7 @@ const ShowSingleEmployee = ({
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
-                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                             type="number"
                             min="0"
                             value={EmployeeData.homePhoneNum}
@@ -511,20 +548,18 @@ const ShowSingleEmployee = ({
                         <div className="col-md-8 col-sm-8">
                           <input
                             className={`form-control 
-                                         ${showFormControlClass
-                                ? "removeFormControlBorder"
-                                : " "
-                              } `}
+                                         ${showFormControlClass ? "removeFormControlBorder"    : " "  }  ${employeeDataUpdateValidator.cnicNum ? "" : "requiredValidateInput"}`}
                             type="number"
                             onInput={(er) => er.target.value = er.target.value.slice(0, 13)}
                             onKeyPress={(e) => { preventMinus(e) }}
                             min="0"
                             value={EmployeeData.cnicNum}
                             onChange={(e) =>
-                              setEmployeeData({
+                             {   setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, cnicNum: true })
+                               setEmployeeData({
                                 ...EmployeeData,
                                 cnicNum: e.target.value,
-                              })
+                              })}
                             }
                             disabled={isDisableFormControl}
                           />
@@ -541,13 +576,14 @@ const ShowSingleEmployee = ({
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
                                 : " "
-                              } `}
+                              }    ${employeeDataUpdateValidator.address ? "" : "requiredValidateInput"}     `}
                             value={EmployeeData.address}
                             onChange={(e) =>
-                              setEmployeeData({
+                             {   setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, address: true })
+                               setEmployeeData({
                                 ...EmployeeData,
                                 address: e.target.value,
-                              })
+                              })}
                             }
                             disabled={isDisableFormControl}
                           />
@@ -584,13 +620,13 @@ const ShowSingleEmployee = ({
                           <input
                             type="number"
                             onKeyPress={(e) => { preventMinus(e) }}
-                            min="0"
+                            min="0" 
                             className={`form-control 
                                          ${showFormControlClass
                                 ? "removeFormControlBorder"
                                 : " "
                               } `}
-                              onInput={(er) => er.target.value = er.target.value.slice(0, 11)}  
+                            onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                             value={EmployeeData.referencePhoneNum}
                             onChange={(e) =>
                               setEmployeeData({
@@ -660,14 +696,14 @@ const ShowSingleEmployee = ({
                         </label>
                         <div className="col-md-8 col-sm-8">
                           <input
-                            className={`form-control 
-                                         ${showFormControlClass
-                                ? "removeFormControlBorder"
-                                : " "
-                              } `}
+                            className={`form-control   ${showFormControlClass  ? "removeFormControlBorder" : " "  }    ${employeeDataUpdateValidator.salary ? "" : "requiredValidateInput"}     `}
                             value={EmployeeData.salary}
+                            type="number"
+                            min="0" 
+                            onKeyPress={(e) => { preventMinus(e) }}
+                      
                             onChange={(e) => {
-                              console.log(EmployeeData.salary, "salalry")
+                              setEmployeeDataUpdateValidator({ ...employeeDataUpdateValidator, salary: true })
                               setEmployeeData({
                                 ...EmployeeData,
                                 salary: e.target.value,

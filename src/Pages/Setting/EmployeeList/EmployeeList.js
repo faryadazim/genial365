@@ -316,24 +316,6 @@ notifyAdd();
     .catch(error => console.log('error', error));
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
 }     
   };
 
@@ -497,17 +479,17 @@ console.log(value.value);
                   <div className="table-responsive">
                     <table className="table table-striped jambo_table bulk_action">
                       <thead>
-                        <tr className="headings">
-                          <th className="column-title"> Sr. </th>
-                          <th className="column-title">Emp.Name</th>
-                          <th className="column-title">FatherName</th>
-                          <th className="column-title">CNIC</th>
-                          <th className="column-title">Address</th>
-                          <th className="column-title">Designation</th>
-                          <th className="column-title">Job Status</th>
-                          <th className="column-title">Recruitment</th>
-                          <th className="column-title">Salary</th>
-                          <th className="column-title">Phone</th>
+                        <tr className="headings fontWeight300">
+                          <th className="column-title fontWeight300 "> Sr. </th>
+                          <th className="column-title fontWeight300 ">Emp.Name</th>
+                          <th className="column-title fontWeight300 ">FatherName</th>
+                          <th className="column-title fontWeight300 ">CNIC</th>
+                          <th className="column-title fontWeight300 ">Address</th>
+                          <th className="column-title fontWeight300 ">Designation</th>
+                          <th className="column-title fontWeight300 ">Recruitment</th>
+                          <th className="column-title fontWeight300 ">Salary</th>
+                          <th className="column-title fontWeight300 ">Phone</th>
+                          <th className="column-title fontWeight300 ">Status</th>
                         </tr>
                       </thead>
 
@@ -521,10 +503,10 @@ console.log(value.value);
                               <td className=" ">{item.cnicNum}</td>
                               <td className=" ">{item.address}</td>
                               <td className=" ">{item.designationName}</td>
-                              <td className=" ">{item.jobStatus}</td>
                               <td className=" ">{item.recruitmentType}</td>
                               <td className=" ">{item.salary}</td>
                               <td className=" ">{item.phoneNum1}</td>
+                              <td className=" ">{item.jobStatus}</td>
                             </tr>
                           );
                         })}

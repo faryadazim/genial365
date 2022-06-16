@@ -149,7 +149,7 @@ const WeavingProductionFormStepOne = ({
                   </div>
                   <div className="field item form-group">
                     <label className="col-form-label col-md-4 col-sm-4  label-align">
-                      Roll Weight/KG<span className="required">*</span>
+                      Roll Weight(KG)<span className="required">*</span>
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <input
@@ -160,7 +160,7 @@ const WeavingProductionFormStepOne = ({
                         onKeyPress={(e) => preventMinus(e)}
                         min="0"
                         // onInput={(er) => er.target.value = er.target.value.slice(0) }
-                        placeholder="ex. 569 Grams"
+                        placeholder="ex. 5 KGs"
                         value={rollDetail.rollWeight}
                         onChange={(e) =>
                           setrollDetail({
@@ -196,7 +196,7 @@ const WeavingProductionFormStepOne = ({
                   </div>
                   <div className="field item form-group">
                     <label className="col-form-label col-md-4 col-sm-4  label-align">
-                      Quality (Border){" "}
+                      Quality (Border)<span className="required">*</span>
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <Select
@@ -249,7 +249,7 @@ const WeavingProductionFormStepOne = ({
                   </div>
                   <div className="field item form-group">
                     <label className="col-form-label col-md-4 col-sm-4  label-align">
-                      Program Number<span className="required">*</span>
+                      Program Number
                     </label>
                     <div className="col-md-6 col-sm-6">
                       <input

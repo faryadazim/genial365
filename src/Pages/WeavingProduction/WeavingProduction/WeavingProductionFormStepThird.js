@@ -3,8 +3,8 @@ import { preventMinus } from "../../../config/oreventMinus";
 
 
 const WeavingProductionFormStepThird = ({
-  finalStepRequired, grandFinalTotal,rollDetail,
-  finalStepInput, setfinalStepInput ,stepThirdValidator
+  finalStepRequired, grandFinalTotal, rollDetail,
+  finalStepInput, setfinalStepInput, stepThirdValidator
 }) => {
 
   return (
@@ -15,11 +15,11 @@ const WeavingProductionFormStepThird = ({
             <form>
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                  Pile To Pile Length <span className="required">*</span>
+                  Pile To Pile Length
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                    className={stepThirdValidator.pileToPileLengthValidate?"form-control":"form-control requiredValidateInput"}
+                    className={stepThirdValidator.pileToPileLengthValidate ? "form-control" : "form-control requiredValidateInput"}
                     name="name"
                     type="number"
                     onKeyPress={(e) => preventMinus(e)}
@@ -35,14 +35,14 @@ const WeavingProductionFormStepThird = ({
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                  Pile To Pile width<span className="required">*</span>
+                  Pile To Pile width
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-                       className={stepThirdValidator.pileToPileWidthValidate?"form-control":"form-control requiredValidateInput"}
-                       type="number"
-                       onKeyPress={(e) => preventMinus(e)}
-                       min="0"
+                    className={stepThirdValidator.pileToPileWidthValidate ? "form-control" : "form-control requiredValidateInput"}
+                    type="number"
+                    onKeyPress={(e) => preventMinus(e)}
+                    min="0"
                     value={finalStepInput.pileToPileWidth}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, pileToPileWidth: parseInt(e.target.value) })
@@ -54,17 +54,17 @@ const WeavingProductionFormStepThird = ({
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                  Cut Piece Size<span className="required">*</span>
+                  Cut Piece Size
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-               className={stepThirdValidator.cutPieceSizeValidate?"form-control":"form-control requiredValidateInput"}
+                    className={stepThirdValidator.cutPieceSizeValidate ? "form-control" : "form-control requiredValidateInput"}
                     type="number"
                     name="name"
                     placeholder="Unit (Size)"
                     onKeyPress={(e) => preventMinus(e)}
                     min="0"
-                    value={finalStepInput.cutPieceSize   }
+                    value={finalStepInput.cutPieceSize}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceSize: parseFloat(e.target.value) })
                     }}
@@ -74,18 +74,18 @@ const WeavingProductionFormStepThird = ({
 
               <div className="field item form-group">
                 <label className="col-form-label col-md-5 col-sm-5  label-align">
-                  Cut Piece Weight<span className="required">*</span>
+                  Cut Piece Weight
                 </label>
                 <div className="col-md-7 col-sm-7">
                   <input
-               className={stepThirdValidator.cutPieceWeightValidate?"form-control":"form-control requiredValidateInput"}
-                   
+                    className={stepThirdValidator.cutPieceWeightValidate ? "form-control" : "form-control requiredValidateInput"}
+
                     type="number"
                     name="name"
                     onKeyPress={(e) => preventMinus(e)}
                     min="0"
                     placeholder="Unit (KG)"
-                    value={finalStepInput.cutPieceWeight  }
+                    value={finalStepInput.cutPieceWeight}
                     onChange={(e) => {
                       setfinalStepInput({ ...finalStepInput, cutPieceWeight: parseFloat(e.target.value) })
                     }}
@@ -104,13 +104,13 @@ const WeavingProductionFormStepThird = ({
                     <tr className="headings">
                       <th className="column-title">
                         <div className="row mb-2 borderBottomForTableHeader">
-                          <div className="col-md-12 pb-2"  style={{fontWeight:"400"}}>Per Piece Detail</div>
+                          <div className="col-md-12 pb-2" style={{ fontWeight: "400" }}>Per Piece Detail</div>
                         </div>
                         <div className="row">
-                          <div className="col-md-3"  style={{fontWeight:"400"}}>Label</div>
-                          <div className="col-md-3"  style={{fontWeight:"400"}}>Current</div>
-                          <div className="col-md-3"  style={{fontWeight:"400"}}>Requried</div>
-                          <div className="col-md-3"  style={{fontWeight:"400"}}>Difference</div>
+                          <div className="col-md-3" style={{ fontWeight: "400" }}>Label</div>
+                          <div className="col-md-3" style={{ fontWeight: "400" }}>Current</div>
+                          <div className="col-md-3" style={{ fontWeight: "400" }}>Requried</div>
+                          <div className="col-md-3" style={{ fontWeight: "400" }}>Difference</div>
                         </div>
                       </th>
                     </tr>
@@ -120,16 +120,16 @@ const WeavingProductionFormStepThird = ({
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree main_container text-light text-left"  >Total Weight - Cut Piece</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-     
-        {((rollDetail.rollWeight - (finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece).toFixed(3)}               {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
-                       
+
+                          {((rollDetail.rollWeight*1000 - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece).toFixed(3)}     =--         
+
                         </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree  text-right">
-                {finalStepRequired.requirePerPieceWeight } </div>
+                          {finalStepRequired.requirePerPieceWeight} </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">
-                        {(finalStepRequired.requirePerPieceWeight-((rollDetail.rollWeight - (finalStepInput.cutPieceWeight) )/grandFinalTotal.totalPiece) ).toFixed(3)}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
-                       
-                   
+                          {(finalStepRequired.requirePerPieceWeight - (((rollDetail.rollWeight*1000) - (finalStepInput.cutPieceWeight*1000)) / grandFinalTotal.totalPiece)).toFixed(3)}                {/* {grandFinalTotal.totalPiece * finalStepRequired.requirePerPieceWeight}   */}
+
+
                         </div>
                       </td>
                     </tr>
@@ -165,7 +165,7 @@ const WeavingProductionFormStepThird = ({
                     <tr className="even pointer">
                       <td className="p-0">
                         <div className="col-md-3 customPaddingForTableInWPFStepThree   text-left  main_container text-light"  >B Grade %</div>
-                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalAGrade).toFixed(3)}%</div>
+                        <div className="col-md-3 customPaddingForTableInWPFStepThree text-right"> {((grandFinalTotal.totalBGrade * 100) / grandFinalTotal.totalPiece).toFixed(3)}%</div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree text-right">     </div>
                         <div className="col-md-3 customPaddingForTableInWPFStepThree">
                         </div>
