@@ -1,11 +1,20 @@
-import React, { useState, } from "react";
+import React, { useState,useEffect } from "react";
 import { preventMinus } from "../../../config/oreventMinus";
+
+import { useDispatch, useSelector } from "react-redux";
+// import { setNavMd  } from "../../../store/actions/NavState";
 
 
 const WeavingProductionFormStepThird = ({
   finalStepRequired, grandFinalTotal, rollDetail,
   finalStepInput, setfinalStepInput, stepThirdValidator
 }) => {
+  // const dispatch = useDispatch();
+  useEffect(() => {
+ 
+    // dispatch(setNavMd());
+  }, [])
+  
 
   return (
     <>

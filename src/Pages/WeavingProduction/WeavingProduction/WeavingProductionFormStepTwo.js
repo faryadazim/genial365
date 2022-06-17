@@ -1,11 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Creatable from "react-select/creatable";
-import Select from "react-select";
+// import Select from "react-select";
 import { preventMinus } from "../../../config/oreventMinus";
-
 import { useDispatch  } from "react-redux";
 import { setNavSm , setNavMd } from "../../../store/actions/NavState";
 
+import Select, { components } from "react-select";
+const { ValueContainer, Placeholder } = components;
+const CustomValueContainer = ({ children, ...props }) => {
+  return (
+    <ValueContainer {...props}>
+      <Placeholder {...props} isFocused={props.isFocused}>
+        {props.selectProps.placeholder}
+      </Placeholder>
+      {React.Children.map(children, child =>
+        child && child.type !== Placeholder ? child : null
+      )}
+    </ValueContainer>
+  );
+};
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -47,6 +60,11 @@ const customStyles = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: "28px",
+  //  background:"red",
+  //  padding:"0px",
+  //  width:
+  //  margin:"0px"
+    
   }),
 };
 
@@ -393,11 +411,18 @@ const WeavingProductionFormStepTwo = ({
                         <Select
                           required
                           className="basic-single"
+                    
                           classNamePrefix="select"
+                          components={{
+                            ValueContainer: CustomValueContainer
+                          }}
+                             placeholder={!shiftTotalState[i].nativingSelectorValue.hasOwnProperty('label')?"Select Nater":""}
                           value={shiftTotalState[i].nativingSelectorValue}
-                          onChange={(e) =>
-                            updateNativingName(i, e.value, e.label)
-                          }
+                          onChange={(e ,option ) =>{  
+                           option.action==="clear"?updateNativingName(i, -1, -1):updateNativingName(i, e.value, e.label)
+                            
+                          }}
+                          isClearable  
                           isSearchable={true}
                           name="color"
                           options={nativingEmployeeOptions}

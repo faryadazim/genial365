@@ -797,3 +797,29 @@ color: white !important;
   text-align: center;
   color: #888;
 } 
+
+
+
+.select__indicator {
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+  }
+  
+.select__dropdown-indicator{
+  padding-left: 0px !important;
+  padding-right: 2px !important;
+  }
+   
+.css-tlfecz-indicatorContainer{
+padding-left: 0px !important;
+padding-right: 2px !important;
+}
+
+
+ 
+ 
+.select__clear-indicator{
+  padding-left: 0px !important;
+  padding-right: 0px !important;
+}
+ 

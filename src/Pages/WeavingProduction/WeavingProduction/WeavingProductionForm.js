@@ -502,7 +502,7 @@ const WeavingProductionForm = () => {
   };
 
   const stepOneValidationFunct = () => {
-    dispatch(setNavSm())
+  
     if (rollDetail.rollWeight == "") {
       setStepOneValidator({ ...stepOneValidator, rollWeightValidate: false })
     } else if (rollDetail.loomNumber == "") {
@@ -522,6 +522,7 @@ const WeavingProductionForm = () => {
     } else {
       setSecondStep("active");
       setFirstStep("done");
+      dispatch(setNavSm())
     }
 
   }
@@ -594,13 +595,21 @@ const WeavingProductionForm = () => {
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  function updateNativingName(i, value, label) {
-    console.log("nativing test");
-    var arr_data = shiftTotalState;
-    arr_data[i].nativingSelectorValue = { label: label, value: value };
-    arr_data[i].nativing = value;
-    setShiftTotalState(arr_data);
-    setReRender(!reRender);
+  function updateNativingName(i, value, label) { 
+    if (value===-1 && label===-1) {
+      var arr_data = shiftTotalState;
+      arr_data[i].nativingSelectorValue = {};
+      arr_data[i].nativing = "";
+      setShiftTotalState(arr_data);
+      setReRender(!reRender);
+    } else {
+      var arr_data = shiftTotalState;
+      arr_data[i].nativingSelectorValue = { label: label, value: value };
+      arr_data[i].nativing = value;
+      setShiftTotalState(arr_data);
+      setReRender(!reRender);
+    }
+
   }
   function updateShift(i, value, label) {
     console.log("shift test");
@@ -692,7 +701,7 @@ const WeavingProductionForm = () => {
   }
 
   const stepTwoValidationFunct = async () => {
-    dispatch(setNavMd());
+ 
     await shiftTotalState.map((eachShift, i) => {
       var arr_data = shiftTotalState;
 
@@ -798,6 +807,7 @@ const WeavingProductionForm = () => {
       console.log("Go Next");
       setThirdStep("active");
       setSecondStep("done");
+   dispatch(setNavMd());
     } else {
       console.log("Cannt Go Next ");
     }
@@ -1195,7 +1205,7 @@ const WeavingProductionForm = () => {
           <div className="x_content mb-3">
             <div id="wizard" className="form_wizard wizard_horizontal">
               {/* ---------   Navigation Of Form Steps ---------- */}
-              <ul className="wizard_steps my-4 px-0">
+              <ul className="wizard_steps mt-4 mb-0 px-0">
                 <li className="col-md-3 px-0">
                   <a>
                     <span
@@ -1346,15 +1356,7 @@ const WeavingProductionForm = () => {
                 ) : (
                   ""
                 )}
-
-
-                {/* ----------------------- */}
-
-
-
-
-
-
+ 
                 {thirdStep == "active" ? (
                   <div className="container text-center px-2 mt-5">
                     <div className=" ">
@@ -1371,6 +1373,7 @@ const WeavingProductionForm = () => {
                       <button
                         className="btn btn-primary btn-sm  px-4"
                         onClick={() => {
+                          dispatch(setNavSm()); 
                           setThirdStep("done");
                           setSecondStep("active");
                         }}
@@ -1393,13 +1396,9 @@ const WeavingProductionForm = () => {
                   </div>
                 ) : (
                   ""
-                )}
-
-
-
-                {/* -------- */}
+                )} 
                 {FourthStep == "active" ? (
-                  <div className="container text-center px-2   my-5  ">
+                  <div className="container text-center px-2   my-1  ">
                     <div className=" ">
                       <WeavingProductionFormStepFourth
                         rollDetail={rollDetail}

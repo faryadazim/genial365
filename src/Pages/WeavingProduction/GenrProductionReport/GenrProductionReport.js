@@ -17,6 +17,8 @@ const GenrProductionReport = () => {
   const [dateFrom, setdateFrom] = useState(dateToday);
   const [GenrProductionReportData, setGenrProductionReportData] = useState([])
 
+
+
   const fetchReportData = () => {
     let responseStatus;
     fetch(
@@ -38,11 +40,8 @@ const GenrProductionReport = () => {
         return response.json();
       })
       .then((data) => {
-        if (responseStatus == 200) {
-          console.log(data, "  ------------------");
-
-          setGenrProductionReportData(data)
-
+        if (responseStatus == 200) {  
+          setGenrProductionReportData(data) 
         } else {
           console.log("Something went wrong");
         }
@@ -50,14 +49,18 @@ const GenrProductionReport = () => {
       .catch((err) => {
         console.log(err, "err");
       });
-  };
-
+  }; 
   useEffect(() => {
     dispatch(setNavSm());
   }, []);
 
   return (
     <>
+
+    {/* ---- Model Preview Production  ---- */}
+
+
+   {/* ---- Model Preview Production  ---- */}
       <div
         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
           } `}

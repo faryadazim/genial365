@@ -75,9 +75,10 @@ const Nav = ({ navigationResult, isLogin }) => {
                                     {module.pages.map((page) => {
                                       return (
                                         <li>
-                                          <NavLink to={page.pageURL} >
+                                           <NavLink to={page.pageURL}  >
                                             {page.pageName}
                                           </NavLink>
+                                   
                                         </li>
                                       );
                                     })}
@@ -116,7 +117,7 @@ const Nav = ({ navigationResult, isLogin }) => {
 
 
 
-{/* 
+                          {/* 
                           <li>
                             <a><i className="fa fa-sitemap" /> Multilevel Menu
                               <span className="fa fa-chevron-down" /></a>
@@ -153,7 +154,7 @@ const Nav = ({ navigationResult, isLogin }) => {
 
 
 
-                      {/* <li 
+                          {/* <li 
                           >
                             <a>
                               <i className="fa fa-windows" /> Role Management
@@ -181,13 +182,13 @@ const Nav = ({ navigationResult, isLogin }) => {
                               </li>
                             </ul>
                           </li> */}
-                    </ul>
-                  </div>
-                </div>
-                {/* /sidebar menu */}
-                {/* /menu footer buttons */}
-                <div className="sidebar-footer hidden-small">
-                  {/* <a
+                        </ul>
+                      </div>
+                    </div>
+                    {/* /sidebar menu */}
+                    {/* /menu footer buttons */}
+                    <div className="sidebar-footer hidden-small">
+                      {/* <a
                         data-toggle="tooltip"
                         data-placement="top"
                         title="Settings"
@@ -195,60 +196,61 @@ const Nav = ({ navigationResult, isLogin }) => {
                         
                       </a> */}
 
-                  <NavLink to="UserProfile" data-toggle="tooltip"
-                    data-placement="top"
-                    title="FullScreen"
-                  > <span
-                      className="glyphicon glyphicon-cog"
-                      aria-hidden="true"
-                    /> </NavLink>
+                      <NavLink to="UserProfile" data-toggle="tooltip"
+                        data-placement="top"
+                        title="FullScreen"
+                      > <span
+                          className="glyphicon glyphicon-cog"
+                          aria-hidden="true"
+                        />
+                      </NavLink>
 
-                  <NavLink to="RoleAccess" data-toggle="tooltip"
-                    data-placement="top"
-                    title="FullScreen"
-                  > <span
-                      className="glyphicon glyphicon-fullscreen"
-                      aria-hidden="true"
-                    /> </NavLink>
-
-
-
-
-
-
-
-                  <NavLink to="EmployeesList" data-toggle="tooltip"
-                    data-placement="top"
-                    title="Lock"
-                  >  <span
-                      className="glyphicon glyphicon-user"
-                      aria-hidden="true"
-                    /> </NavLink>
+                      <NavLink to="RoleAccess" data-toggle="tooltip"
+                        data-placement="top"
+                        title="FullScreen"
+                      > <span
+                          className="glyphicon glyphicon-fullscreen"
+                          aria-hidden="true"
+                        /> </NavLink>
 
 
 
 
 
 
-                  <a
-                    onClick={() => dispatch(setNavMd)}
-                  >
-                    <span
-                      className="glyphicon glyphicon-off"
-                      aria-hidden="true" />
-                  </a>
+
+                      <NavLink to="EmployeesList" data-toggle="tooltip"
+                        data-placement="top"
+                        title="Lock"
+                      >  <span
+                          className="glyphicon glyphicon-user"
+                          aria-hidden="true"
+                        /> </NavLink>
+
+
+
+
+
+
+                      <a
+                        onClick={() => dispatch(setNavMd)}
+                      >
+                        <span
+                          className="glyphicon glyphicon-off"
+                          aria-hidden="true" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
-              </div>
-                </div>
+              </>
+            ) : (
+              <></>
+            )}
+          </>
         </>
       ) : (
-        <></>
+        <>not load yet</>
       )}
-    </>
-        </>
-      ) : (
-  <>not load yet</>
-)}
     </>
   );
 };
