@@ -480,9 +480,7 @@ const WeavingProductionFormStepTwo = ({
           </div>
         </div>
         <div className="col-md-3 text-right mt-auto pb-3 pr-3">
-          <button className="btn btn-sm btn-primary" onClick={()=>{ console.log(shiftTotalState);}}>
-            shift console
-          </button>
+      
           <button
             className="btn btn-sm btn-danger AddShiftBorderRadius"
             onClick={() =>
