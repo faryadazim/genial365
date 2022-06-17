@@ -110,6 +110,7 @@ const WeavingProductionFormStepTwo = ({
   grandFinalTotal,
   setShiftTotalState,
   isLoadingStepTwo,
+  removeShift
 }) => {
   
   const dispatch = useDispatch();
@@ -434,10 +435,10 @@ const WeavingProductionFormStepTwo = ({
                               />
                             </div>
                           </div>
-                          {/* <div className="col-md-2 text-right">
-                            <i className="fa fa-close mt-1 mr-2"></i>
+                          <div className="col-md-2 text-right">
+                            <i className="fa fa-close mt-1 mr-2" onClick={()=>removeShift(i)}></i>
 
-                          </div> */}
+                          </div>
                         </div>
                       </td>
                     </tr>
@@ -466,14 +467,7 @@ const WeavingProductionFormStepTwo = ({
 
                   <tbody>
                     <tr className="even pointer">
-                      {/* <td
-                        style={{
-                          backgroundColor:" #003a4d",
-                          color: "#fff",
-                        }}
-                      >
-                        . . .
-                      </td> */}
+                     
                       <td className=" ">{grandFinalTotal.totalBorders}</td>
                       <td className=" ">{grandFinalTotal.totalPiece}</td>
                       <td className=" ">{grandFinalTotal.totalBGrade}</td>
@@ -486,6 +480,9 @@ const WeavingProductionFormStepTwo = ({
           </div>
         </div>
         <div className="col-md-3 text-right mt-auto pb-3 pr-3">
+          <button className="btn btn-sm btn-primary" onClick={()=>{ console.log(shiftTotalState);}}>
+            shift console
+          </button>
           <button
             className="btn btn-sm btn-danger AddShiftBorderRadius"
             onClick={() =>

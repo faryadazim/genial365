@@ -222,12 +222,21 @@ const WeavingProductionFormStepFourth = (
                 {" "}
                 Shift faults: &nbsp;{" "}
               </span>{" "}
-              {/* {item.known_faults_ids
-                    .split(",")
-                    .map((eachFault) => {
-                      return <span>{eachFault}, </span>;
-                    })} */}
-              --
+ 
+ 
+          {
+          
+          eachShift.knownFaultsIds===undefined ||  eachShift.knownFaultsIds==null ||  eachShift.knownFaultsIds==="" ?
+           <>--</>:<>{    eachShift.knownFaultsIds.length===0 ?<></> :<>
+           {
+            eachShift.knownFaultsIds.map((eachFault) => {
+              return <span>{eachFault.label}, </span>;
+            })
+           }
+           </>
+            }</>
+           
+                  }    
             </div>
           </div>
         </>

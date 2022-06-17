@@ -656,6 +656,18 @@ const WeavingProductionForm = () => {
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
+  const removeShift = (i) => {
+var shiftArray = shiftTotalState;
+  var arrayToRemove=  shiftArray.splice(i);
+  
+  var arr_data = shiftArray.filter((eachShift)=>{
+    return eachShift!==arrayToRemove[0];
+    
+  });
+ 
+      setShiftTotalState(arr_data);
+   setReRender(!reRender);
+  }
 
   function updateGrandTotalValue() {
     let totalNumberofBorders = 0;
@@ -912,7 +924,7 @@ const WeavingProductionForm = () => {
       })
 
       .then(result => {
-console.log("production post data result" , result);
+        console.log("production post data result", result);
         // ----------------- Setting Component To initial State
         setLoomListValue({})
         setborderQualityValue({})
@@ -1303,6 +1315,7 @@ console.log("production post data result" , result);
                         faultOptions={faultOptions}
                         grandFinalTotal={grandFinalTotal}
                         setShiftTotalState={setShiftTotalState}
+                        removeShift={removeShift}
                       />
                     </div>
                     <div className="text-right px-2 pt-2 ">
