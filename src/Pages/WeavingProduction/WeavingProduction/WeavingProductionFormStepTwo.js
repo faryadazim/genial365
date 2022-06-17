@@ -436,7 +436,7 @@ const WeavingProductionFormStepTwo = ({
                             </div>
                           </div>
                           <div className="col-md-2 text-right">
-                            <i className="fa fa-close mt-1 mr-2" onClick={()=>removeShift(i)}></i>
+                            <i className= {`fa fa-close mt-1 mr-2  ${shiftTotalState.length===1?"d-none":""}`}  onClick={()=>removeShift(i)}></i>
 
                           </div>
                         </div>

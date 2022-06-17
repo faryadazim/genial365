@@ -657,14 +657,15 @@ const WeavingProductionForm = () => {
     setReRender(!reRender);
   }
   const removeShift = (i) => {
-var shiftArray = shiftTotalState;
-  var arrayToRemove=  shiftArray.splice(i);
+// var shiftArray = shiftTotalState;
+  // var arrayToRemove=  shiftArray.findIndex(i);
   
-  var arr_data = shiftArray.filter((eachShift)=>{
-    return eachShift!==arrayToRemove[0];
+  var arr_data = shiftTotalState.filter((eachShift)=>{
+ return (shiftTotalState.indexOf(eachShift)!==i);
     
   });
  
+  // console.log("array to remove -- " ,arr_data);
       setShiftTotalState(arr_data);
    setReRender(!reRender);
   }
