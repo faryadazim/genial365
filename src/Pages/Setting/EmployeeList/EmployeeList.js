@@ -5,17 +5,18 @@ import Loader from "../../../Layout/Loader/Loader";
 import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
-import MyVerticallyCenteredModal from './MyVerticallyCenteredModal'
+import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import { toast, ToastContainer } from "react-toastify";
 import { endPoint } from "../../../config/Config";
 
 const EmployeeList = () => {
   const notifyAdd = () => toast("Employee Added Successfully");
-  const [isDisableSubmitButton, setIsDisableSubmitButton] = useState(false)
+  const [isDisableSubmitButton, setIsDisableSubmitButton] = useState(false);
   const [designationValue, setDesignationValue] = useState("Helper");
   const [designation, setDesignation] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [ListOfEmployee, setListOfEmployee] = useState([]);
+  const [allEmpListConst, setAllEmpListConst] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
   const employeeInitialState = {
@@ -37,29 +38,30 @@ const EmployeeList = () => {
     employeeCnicBsck: "",
     recruitmentType: "",
     weeklySalary: "",
-    monthlySalary: ""
-  }
+    monthlySalary: "",
+  };
   const [showSingleUser, setShowSingleUSer] = useState(false);
   const [singleUserId, setSingleUserId] = useState("");
-  // const [roleValue, setRoleVAlue] = useState("Active"); 
+  // const [roleValue, setRoleVAlue] = useState("Active");
   const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({});
-  const [stateUpdater, setStateUpdater] = useState(true)
+  const [stateUpdater, setStateUpdater] = useState(true);
   const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState);
-  const [componentUpdater, setComponentUpdater] = useState(true)
+  const [componentUpdater, setComponentUpdater] = useState(true);
   const url = localStorage.getItem("authUser");
-  const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] = useState(false)
+  const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] =
+    useState(false);
   const recruitmentType = [
     { label: "Weekly", value: "Weekly" },
     { label: "Monthly", value: "Monthly" },
     { label: "Contract", value: "Contract" },
-  ]
+  ];
   const jobStatus = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
   ];
 
-  const [updateSelectorList, setUpdateSelectorList] = useState(false)
-  const [jobStatusValue, setJobStatusValue] = useState({})
+  const [updateSelectorList, setUpdateSelectorList] = useState(false);
+  const [jobStatusValue, setJobStatusValue] = useState({});
   const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
   const employeeListValidatorInitialState = {
     name: true,
@@ -81,11 +83,13 @@ const EmployeeList = () => {
     recruitmentType: true,
     weeklySalary: true,
     monthlySalary: true,
-
-  }
-  const [employeeListValidator, setEmployeeListValidator] = useState(employeeListValidatorInitialState);
+  };
+  const [employeeListValidator, setEmployeeListValidator] = useState(
+    employeeListValidatorInitialState
+  );
   const fileHandle1 = (e) => {
-    console.log("emploeyeee pic 1"); setdisableSubmitForUpdatePhoto(true)
+    console.log("emploeyeee pic 1");
+    setdisableSubmitForUpdatePhoto(true);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -104,12 +108,12 @@ const EmployeeList = () => {
         console.log("result image upload", result);
         setAddNewEmployee({ ...addNewEmployee, employeePic1: result });
         // setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
-        setdisableSubmitForUpdatePhoto(false)
+        setdisableSubmitForUpdatePhoto(false);
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle2 = (e) => {
-    setdisableSubmitForUpdatePhoto(true)
+    setdisableSubmitForUpdatePhoto(true);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
     myHeaders.append("processData", "false");
@@ -126,13 +130,13 @@ const EmployeeList = () => {
       .then((response) => response.text())
       .then((result) => {
         console.log("result image upload", result);
-        setdisableSubmitForUpdatePhoto(false)
+        setdisableSubmitForUpdatePhoto(false);
         setAddNewEmployee({ ...addNewEmployee, employeePic2: result });
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle3 = (e) => {
-    setdisableSubmitForUpdatePhoto(true)
+    setdisableSubmitForUpdatePhoto(true);
     console.log(e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
@@ -152,12 +156,12 @@ const EmployeeList = () => {
         console.log("result image upload", result);
 
         setAddNewEmployee({ ...addNewEmployee, employeeCnicFront: result });
-        setdisableSubmitForUpdatePhoto(false)
+        setdisableSubmitForUpdatePhoto(false);
       })
       .catch((error) => console.log("error", error));
   };
   const fileHandle4 = (e) => {
-    setdisableSubmitForUpdatePhoto(true)
+    setdisableSubmitForUpdatePhoto(true);
     console.log(e.target.files[0]);
     var myHeaders = new Headers();
     myHeaders.append("contentType", "false");
@@ -178,7 +182,7 @@ const EmployeeList = () => {
         console.log("result image upload", result);
 
         setAddNewEmployee({ ...addNewEmployee, employeeCnicBsck: result });
-        setdisableSubmitForUpdatePhoto(false)
+        setdisableSubmitForUpdatePhoto(false);
       })
       .catch((error) => console.log("error", error));
   };
@@ -194,6 +198,7 @@ const EmployeeList = () => {
         response.json().then((data) => {
           console.log(data, "success");
           setListOfEmployee(data);
+          setAllEmpListConst(data);
 
           // ----- Setting Employee List ------
           fetch(url + "api/employeeDesignations", {
@@ -214,8 +219,6 @@ const EmployeeList = () => {
               });
 
               setDesignation(arr);
-
-
             });
           // // ----- Setting Employee List ------
 
@@ -228,71 +231,94 @@ const EmployeeList = () => {
   const AddNewEmployeeServer = (e) => {
     e.preventDefault();
     console.log(addNewEmployee);
-    if (
-      addNewEmployee.name === '') {
-      setEmployeeListValidator({ ...employeeListValidator, name: false })
-    } else if (addNewEmployee.cnicNum === '') {
-      setEmployeeListValidator({ ...employeeListValidator, cnicNum: false })
-    } else if (addNewEmployee.fatherName === '') {
-      setEmployeeListValidator({ ...employeeListValidator, fatherName: false })
-    } else if (addNewEmployee.phoneNum1 === '') {
-      setEmployeeListValidator({ ...employeeListValidator, phoneNum1: false })
-    } else if (addNewEmployee.address === '') {
-      setEmployeeListValidator({ ...employeeListValidator, address: false })
-    } else if (addNewEmployee.jobStatus === '') {
-      setEmployeeListValidator({ ...employeeListValidator, jobStatus: false })
-    } else if (addNewEmployee.designation === '') {
-      setEmployeeListValidator({ ...employeeListValidator, designation: false })
-    } else if (addNewEmployee.recruitmentType === '') {
-      setEmployeeListValidator({ ...employeeListValidator, recruitmentType: false })
-    } else if (addNewEmployee.monthlySalary === '') {
-      setEmployeeListValidator({ ...employeeListValidator, monthlySalary: false })
-    } else if (addNewEmployee.employeePic1 === '') {
-      setEmployeeListValidator({ ...employeeListValidator, employeePic1: false })
-    } else if (addNewEmployee.employeePic2 === '') {
-      setEmployeeListValidator({ ...employeeListValidator, employeePic2: false })
-    } else if (addNewEmployee.employeeCnicFront === '') {
-      setEmployeeListValidator({ ...employeeListValidator, employeeCnicFront: false })
-    } else if (addNewEmployee.employeeCnicBsck === '') {
-      setEmployeeListValidator({ ...employeeListValidator, employeeCnicBsck: false })
+    if (addNewEmployee.name === "") {
+      setEmployeeListValidator({ ...employeeListValidator, name: false });
+    } else if (addNewEmployee.cnicNum === "") {
+      setEmployeeListValidator({ ...employeeListValidator, cnicNum: false });
+    } else if (addNewEmployee.fatherName === "") {
+      setEmployeeListValidator({ ...employeeListValidator, fatherName: false });
+    } else if (addNewEmployee.phoneNum1 === "") {
+      setEmployeeListValidator({ ...employeeListValidator, phoneNum1: false });
+    } else if (addNewEmployee.address === "") {
+      setEmployeeListValidator({ ...employeeListValidator, address: false });
+    } else if (addNewEmployee.jobStatus === "") {
+      setEmployeeListValidator({ ...employeeListValidator, jobStatus: false });
+    } else if (addNewEmployee.designation === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        designation: false,
+      });
+    } else if (addNewEmployee.recruitmentType === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        recruitmentType: false,
+      });
+    } else if (addNewEmployee.monthlySalary === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        monthlySalary: false,
+      });
+    } else if (addNewEmployee.employeePic1 === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeePic1: false,
+      });
+    } else if (addNewEmployee.employeePic2 === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeePic2: false,
+      });
+    } else if (addNewEmployee.employeeCnicFront === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeeCnicFront: false,
+      });
+    } else if (addNewEmployee.employeeCnicBsck === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeeCnicBsck: false,
+      });
     } else {
-
-
       var myHeaders = new Headers();
-      myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+      myHeaders.append(
+        "Authorization",
+        `Bearer ${
+          JSON.parse(localStorage.getItem("access_token")).access_token
+        }`
+      );
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
-        "name": addNewEmployee.name,
-        "fatherName": addNewEmployee.fatherName,
-        "phoneNum1": addNewEmployee.phoneNum1,
-        "phoneNum2": addNewEmployee.phoneNum2,
-        "phoneNum3": addNewEmployee.phoneNum3,
-        "homePhoneNum": addNewEmployee.homePhoneNum,
-        "cnicNum": addNewEmployee.cnicNum,
-        "address": addNewEmployee.address,
-        "referenceName": addNewEmployee.referenceName,
-        "referencePhoneNum": addNewEmployee.referencePhoneNum,
-        "jobStatus": addNewEmployee.jobStatus,
-        "designation": parseInt(addNewEmployee.designation),
-        "employeePic1": addNewEmployee.employeePic1,
-        "employeePic2": addNewEmployee.employeePic2,
-        "employeeCnicFront": addNewEmployee.employeeCnicFront,
-        "employeeCnicBsck": addNewEmployee.employeeCnicBsck,
-        "recruitmentType": addNewEmployee.recruitmentType,
-        "salary": parseFloat(addNewEmployee.monthlySalary)
+        name: addNewEmployee.name,
+        fatherName: addNewEmployee.fatherName,
+        phoneNum1: addNewEmployee.phoneNum1,
+        phoneNum2: addNewEmployee.phoneNum2,
+        phoneNum3: addNewEmployee.phoneNum3,
+        homePhoneNum: addNewEmployee.homePhoneNum,
+        cnicNum: addNewEmployee.cnicNum,
+        address: addNewEmployee.address,
+        referenceName: addNewEmployee.referenceName,
+        referencePhoneNum: addNewEmployee.referencePhoneNum,
+        jobStatus: addNewEmployee.jobStatus,
+        designation: parseInt(addNewEmployee.designation),
+        employeePic1: addNewEmployee.employeePic1,
+        employeePic2: addNewEmployee.employeePic2,
+        employeeCnicFront: addNewEmployee.employeeCnicFront,
+        employeeCnicBsck: addNewEmployee.employeeCnicBsck,
+        recruitmentType: addNewEmployee.recruitmentType,
+        salary: parseFloat(addNewEmployee.monthlySalary),
       });
 
       var requestOptions = {
-        method: 'POST',
+        method: "POST",
         headers: myHeaders,
         body: raw,
-        redirect: 'follow'
+        redirect: "follow",
       };
 
       fetch(`${endPoint}api/employeeLists`, requestOptions)
-        .then(response => response.text())
-        .then(result => {
+        .then((response) => response.text())
+        .then((result) => {
           setAddNewEmployee({
             name: "",
             fatherName: "",
@@ -317,16 +343,14 @@ const EmployeeList = () => {
           setModalShow(false);
           fetchAllData();
 
-          setIsDisableSubmitButton(false)
-          setEmployeeListValidator(employeeListValidatorInitialState)
-          setJobStatusValue("")
-          setrecruitmentTypeValue("")
-          setUpdateSelectorList(!updateSelectorList)
+          setIsDisableSubmitButton(false);
+          setEmployeeListValidator(employeeListValidatorInitialState);
+          setJobStatusValue("");
+          setrecruitmentTypeValue("");
+          setUpdateSelectorList(!updateSelectorList);
           notifyAdd();
         })
-        .catch(error => console.log('error', error));
-
-
+        .catch((error) => console.log("error", error));
     }
   };
 
@@ -350,7 +374,7 @@ const EmployeeList = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          designationName: value.value
+          designationName: value.value,
         }),
       };
 
@@ -359,7 +383,10 @@ const EmployeeList = () => {
         .then((data) => {
           console.log(data, "new Designation Created");
           setDesignationValue(data.designation_id);
-          setAddNewEmployee({ ...addNewEmployee, designation: data.designation_id })
+          setAddNewEmployee({
+            ...addNewEmployee,
+            designation: data.designation_id,
+          });
         })
         .catch((err) => {
           console.log("err front End", err);
@@ -367,7 +394,7 @@ const EmployeeList = () => {
       console.log("new Created Not Saved");
     } else {
       setDesignationValue(value.value);
-      setAddNewEmployee({ ...addNewEmployee, designation: value.value })
+      setAddNewEmployee({ ...addNewEmployee, designation: value.value });
     }
     console.log(value.value);
     //     switch (field) {
@@ -383,8 +410,38 @@ const EmployeeList = () => {
 
   useEffect(() => {
     fetchAllData();
-
   }, []);
+
+  const searchItem = (e) => {
+    var allData = allEmpListConst;
+    setListOfEmployee(allEmpListConst);
+    // const filteredResult = allData.map((item) => {
+    //   var SearchedObject = Object.keys(item).filter(function (key, index) {
+    //     var nodeOfObject = item[key];
+    //    var checkisavailable= nodeOfObject.toString().toLowerCase().includes(e.toLowerCase());
+    //    if (checkisavailable) {
+    //     return item
+    //    }
+    //   });
+    //   console.log(SearchedObject);
+    //   return SearchedObject;
+
+    //   // return item.name.toLowerCase().includes(e.toLowerCase());
+    // });
+    // console.log(filteredResult);
+
+    var filteredData = allData.filter((obj) => {
+      var data = Object.keys(obj)
+        .filter((key) => (obj[key].toString()).toLowerCase().includes(e))
+        .reduce((cur, key) => {
+          return Object.assign(cur, { [key]: obj[key] });
+        }, {});
+      if (Object.keys(data).length !== 0) {
+        return obj;
+      }
+    });
+    setListOfEmployee(filteredData);
+  };
 
   return (
     <>
@@ -398,8 +455,9 @@ const EmployeeList = () => {
           {" "}
           <div
             role="main"
-            className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
-              } `}
+            className={`right_col  h-100  ${
+              showNavMenu === false ? "right_col-margin-remove" : " "
+            } `}
           >
             <MyVerticallyCenteredModal
               show={modalShow}
@@ -411,7 +469,7 @@ const EmployeeList = () => {
               fileHandle3={fileHandle3}
               fileHandle4={fileHandle4}
               onHide={() => {
-                setModalShow(false)
+                setModalShow(false);
                 setAddNewEmployee({
                   name: "",
                   fatherName: "",
@@ -433,14 +491,15 @@ const EmployeeList = () => {
                   weeklySalary: "",
                   monthlySalary: "",
                 });
-                setEmployeeListValidator(employeeListValidatorInitialState)
-                setJobStatusValue("")
-                setrecruitmentTypeValue("")
+                setEmployeeListValidator(employeeListValidatorInitialState);
+                setJobStatusValue("");
+                setrecruitmentTypeValue("");
               }}
               disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
               jobStatus={jobStatus}
               recruitmentType={recruitmentType}
-              jobStatusValue={jobStatusValue} setJobStatusValue={setJobStatusValue}
+              jobStatusValue={jobStatusValue}
+              setJobStatusValue={setJobStatusValue}
               recruitmentTypeValue={recruitmentTypeValue}
               setrecruitmentTypeValue={setrecruitmentTypeValue}
               designationValue={designationValue}
@@ -448,23 +507,37 @@ const EmployeeList = () => {
               handleChange={handleChange}
               isDisableSubmitButton={isDisableSubmitButton}
               employeeListValidator={employeeListValidator}
-
             />
-            <div className="col-md-6 px-0">
+            <div className="col-md-6 px-0 ">
               {/* <div className="form-group row  w-100"> */}
-              <div className="w-50 mb-2">
+              <div className="col-md-6">
                 {" "}
-                <Selector
-                  setStateUpdater={setStateUpdater} stateUpdater={stateUpdater}
-                  listOfEmployeeName={listOfEmployeeName}
-                  fetchEmployeeByDemand={fetchEmployeeByDemand}
-                  setSingleUserId={setSingleUserId}
-                  setModalShow={setModalShow}
-                  componentUpdater={componentUpdater}
-                  updateSelectorList={updateSelectorList}
-
-                />
+                <div className=" ">
+                  <Selector
+                    setStateUpdater={setStateUpdater}
+                    stateUpdater={stateUpdater}
+                    listOfEmployeeName={listOfEmployeeName}
+                    fetchEmployeeByDemand={fetchEmployeeByDemand}
+                    setSingleUserId={setSingleUserId}
+                    setModalShow={setModalShow}
+                    componentUpdater={componentUpdater}
+                    updateSelectorList={updateSelectorList}
+                  />
+                </div>
               </div>
+              <div className="col-md-6">
+                {" "}
+                <div className=" mb-2">
+                  {" "}
+                  <input
+                    type="text"
+                    placeholder="search"
+                    className="form-control "
+                    onChange={(e) => searchItem(e.target.value)}
+                  />
+                </div>
+              </div>
+
               {/* </div> */}
             </div>
             <div className="col-md-6 text-right">
@@ -478,8 +551,10 @@ const EmployeeList = () => {
             </div>
             {showSingleUser ? (
               <ShowSingleEmployee
-                setUpdateSelectorList={setUpdateSelectorList} updateSelectorList={updateSelectorList}
-                componentUpdater={componentUpdater} setComponentUpdater={setComponentUpdater}
+                setUpdateSelectorList={setUpdateSelectorList}
+                updateSelectorList={updateSelectorList}
+                componentUpdater={componentUpdater}
+                setComponentUpdater={setComponentUpdater}
                 fetchAllData={fetchAllData}
                 singleUserId={singleUserId}
                 setShowSingleUSer={setShowSingleUSer}
@@ -492,16 +567,32 @@ const EmployeeList = () => {
                       <thead>
                         <tr className="headings fontWeight300">
                           <th className="column-title fontWeight300 "> Sr. </th>
-                          <th className="column-title fontWeight300 ">Emp.Name</th>
-                          <th className="column-title fontWeight300 ">FatherName</th>
+                          <th className="column-title fontWeight300 ">
+                            Emp.Name
+                          </th>
+                          <th className="column-title fontWeight300 ">
+                            FatherName
+                          </th>
                           <th className="column-title fontWeight300 ">CNIC</th>
-                          <th className="column-title fontWeight300 ">Address</th>
-                          <th className="column-title fontWeight300 ">Designation</th>
-                          <th className="column-title fontWeight300 ">Recruitment</th>
-                          <th className="column-title fontWeight300 ">Salary</th>
+                          <th className="column-title fontWeight300 ">
+                            Address
+                          </th>
+                          <th className="column-title fontWeight300 ">
+                            Designation
+                          </th>
+                          <th className="column-title fontWeight300 ">
+                            Recruitment
+                          </th>
+                          <th className="column-title fontWeight300 ">
+                            Salary
+                          </th>
                           <th className="column-title fontWeight300 ">Phone</th>
-                          <th className="column-title fontWeight300 ">Status</th>
-                          <th className="column-title fontWeight300 ">Control</th>
+                          <th className="column-title fontWeight300 ">
+                            Status
+                          </th>
+                          <th className="column-title fontWeight300 ">
+                            Control
+                          </th>
                         </tr>
                       </thead>
 
@@ -514,49 +605,90 @@ const EmployeeList = () => {
                               <td className=" ">{item.fatherName}</td>
                               <td className=" text-right">{item.cnicNum}</td>
                               <td className="text-left  ">{item.address}</td>
-                              <td className=" text-left ">{item.designationName}</td>
-                              <td className="text-left ">{item.recruitmentType}</td>
-                              <td className="text-right ">{(item.salary).toFixed(2)}</td>
+                              <td className=" text-left ">
+                                {item.designationName}
+                              </td>
+                              <td className="text-left ">
+                                {item.recruitmentType}
+                              </td>
+                              <td className="text-right ">
+                                {item.salary.toFixed(2)}
+                              </td>
                               <td className=" text-right">{item.phoneNum1}</td>
                               <td className="text-center ">
                                 {/* {item.jobStatus} */}
 
-                                <input type="checkbox" class="flat" checked={item.jobStatus === "Active" ? true : false}
+                                <input
+                                  type="checkbox"
+                                  class="flat"
+                                  checked={
+                                    item.jobStatus === "Active" ? true : false
+                                  }
                                   onChange={() => {
-                                  
                                     var myHeaders = new Headers();
-                                    myHeaders.append("Authorization",       `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
-                                    
+                                    myHeaders.append(
+                                      "Authorization",
+                                      `Bearer ${
+                                        JSON.parse(
+                                          localStorage.getItem("access_token")
+                                        ).access_token
+                                      }`
+                                    );
+
                                     var requestOptions = {
-                                      method: 'PUT',
+                                      method: "PUT",
                                       headers: myHeaders,
-                                      redirect: 'follow'
+                                      redirect: "follow",
                                     };
-                                    
-                                    fetch(`${endPoint}api/updateEmpStatus?id=${item.employee_Id}`, requestOptions)
-                                      .then(response => response.text())
-                                      .then(result => {
+
+                                    fetch(
+                                      `${endPoint}api/updateEmpStatus?id=${item.employee_Id}`,
+                                      requestOptions
+                                    )
+                                      .then((response) => response.text())
+                                      .then((result) => {
                                         var arrData = ListOfEmployee;
-                                        var updatedData = arrData.filter((eachEmp) => {
-                                          return eachEmp.employee_Id !== item.employee_Id
-                                        });
-                                        var newEMpl = arrData.filter((eachEmp) => {
-                                          return eachEmp.employee_Id === item.employee_Id
-                                        });
-                                        var empToBeUpdate = newEMpl[0]
-                                        var arrayUnSorted = [...updatedData, { ...empToBeUpdate, jobStatus: item.jobStatus === "Active" ? "Left" : "Active" }]
-                                        var sorted = arrayUnSorted.sort((a, b) => a.name.localeCompare(b.name))
-                                        setListOfEmployee(sorted)
+                                        var updatedData = arrData.filter(
+                                          (eachEmp) => {
+                                            return (
+                                              eachEmp.employee_Id !==
+                                              item.employee_Id
+                                            );
+                                          }
+                                        );
+                                        var newEMpl = arrData.filter(
+                                          (eachEmp) => {
+                                            return (
+                                              eachEmp.employee_Id ===
+                                              item.employee_Id
+                                            );
+                                          }
+                                        );
+                                        var empToBeUpdate = newEMpl[0];
+                                        var arrayUnSorted = [
+                                          ...updatedData,
+                                          {
+                                            ...empToBeUpdate,
+                                            jobStatus:
+                                              item.jobStatus === "Active"
+                                                ? "Left"
+                                                : "Active",
+                                          },
+                                        ];
+                                        var sorted = arrayUnSorted.sort(
+                                          (a, b) => a.name.localeCompare(b.name)
+                                        );
+                                        setListOfEmployee(sorted);
                                       })
-                                      .catch(error => console.log('error', error));
-                                   
+                                      .catch((error) =>
+                                        console.log("error", error)
+                                      );
                                   }}
-
                                 />
-
-
                               </td>
-                              <td className=" text-center"><i className="fa fa-edit"></i></td>
+                              <td className=" text-center">
+                                <i className="fa fa-edit"></i>
+                              </td>
                             </tr>
                           );
                         })}
@@ -574,4 +706,3 @@ const EmployeeList = () => {
 };
 
 export default EmployeeList;
-
