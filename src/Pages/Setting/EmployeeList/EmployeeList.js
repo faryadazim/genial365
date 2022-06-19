@@ -6,6 +6,7 @@ import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
 import Selector from "../../../Layout/Const/Selector";
 import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
+import MyVerticallyCenteredModalView from "./MyVerticallyCenteredModalView.js";
 import { toast, ToastContainer } from "react-toastify";
 import { endPoint } from "../../../config/Config";
 
@@ -19,6 +20,9 @@ const EmployeeList = () => {
   const [allEmpListConst, setAllEmpListConst] = useState([]);
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
+
+
+
   const employeeInitialState = {
     name: "",
     fatherName: "",
@@ -40,16 +44,16 @@ const EmployeeList = () => {
     weeklySalary: "",
     monthlySalary: "",
   };
-  const [showSingleUser, setShowSingleUSer] = useState(false);
-  const [singleUserId, setSingleUserId] = useState("");
+  // const [showSingleUser, setShowSingleUSer] = useState(false);
+  // const [singleUserId, setSingleUserId] = useState("");
   // const [roleValue, setRoleVAlue] = useState("Active");
   const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({});
-  const [stateUpdater, setStateUpdater] = useState(true);
+  // const [stateUpdater, setStateUpdater] = useState(true);
   const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState);
-  const [componentUpdater, setComponentUpdater] = useState(true);
+  // const [componentUpdater, setComponentUpdater] = useState(true);
   const url = localStorage.getItem("authUser");
-  const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] =
-    useState(false);
+  const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] = useState(false);
+  const [modalShowView, setModalShowView] = useState(false)
   const recruitmentType = [
     { label: "Weekly", value: "Weekly" },
     { label: "Monthly", value: "Monthly" },
@@ -62,7 +66,7 @@ const EmployeeList = () => {
 
   const [updateSelectorList, setUpdateSelectorList] = useState(false);
   const [jobStatusValue, setJobStatusValue] = useState({});
-  const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
+  // const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
   const employeeListValidatorInitialState = {
     name: true,
     fatherName: true,
@@ -87,6 +91,10 @@ const EmployeeList = () => {
   const [employeeListValidator, setEmployeeListValidator] = useState(
     employeeListValidatorInitialState
   );
+  const [emplToUpdate, setEmployeeToUpdate] = useState({})
+
+  // const [selectEmployee, setselectEmployee] = useState({})
+  const [isEmplEditModeOn, setIsEmplEditModeOn] = useState(false)
   const fileHandle1 = (e) => {
     console.log("emploeyeee pic 1");
     setdisableSubmitForUpdatePhoto(true);
@@ -282,8 +290,7 @@ const EmployeeList = () => {
       var myHeaders = new Headers();
       myHeaders.append(
         "Authorization",
-        `Bearer ${
-          JSON.parse(localStorage.getItem("access_token")).access_token
+        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token
         }`
       );
       myHeaders.append("Content-Type", "application/json");
@@ -354,19 +361,19 @@ const EmployeeList = () => {
     }
   };
 
-  const fetchEmployeeByDemand = (e) => {
-    setShowSingleUSer(false);
+  // const fetchEmployeeByDemand = (e) => {
+  //  // setShowSingleUSer(false);
 
-    setSingleUserId("");
-    if (e.value == -1) {
-      setShowSingleUSer(false);
-      console.log("show All");
-      setSingleUserId("");
-    } else {
-      setSingleUserId(e.value);
-      setShowSingleUSer(true);
-    }
-  };
+  //  // setSingleUserId("");
+  //   if (e.value == -1) {
+  //     setShowSingleUSer(false);
+  //     console.log("show All");
+  //     setSingleUserId("");
+  //   } else {
+  //     setSingleUserId(e.value);
+  //     setShowSingleUSer(true);
+  //   }
+  // };
 
   const handleChange = (field, value) => {
     if (value.__isNew__ == true) {
@@ -408,31 +415,193 @@ const EmployeeList = () => {
     //     }
   };
 
+
+  // -----------Function for updated -------
+  const fileHandle1ForUpdate = (e) => {
+    setdisableSubmitForUpdatePhoto(true);
+    var myHeaders = new Headers();
+    myHeaders.append("contentType", "false");
+    myHeaders.append("processData", "false");
+    var formdata = new FormData();
+    formdata.append("UploadedImage", e.target.files[0]);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    //   ///api/Employees/attach-files
+    fetch(url + "api/FileUpload", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("result image upload", result);
+        setdisableSubmitForUpdatePhoto(false);
+        setEmployeeToUpdate({ ...emplToUpdate, employeePic1: result });
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const fileHandle2ForUpdate = (e) => {
+    setdisableSubmitForUpdatePhoto(true);
+    var myHeaders = new Headers();
+    myHeaders.append("contentType", "false");
+    myHeaders.append("processData", "false");
+    var formdata = new FormData();
+    formdata.append("UploadedImage", e.target.files[0]);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    //   ///api/Employees/attach-files
+    fetch(url + "api/FileUpload", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("result image upload", result);
+        setdisableSubmitForUpdatePhoto(false);
+        setEmployeeToUpdate({ ...emplToUpdate, employeePic2: result });
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const fileHandle3ForUpdate = (e) => {
+    setdisableSubmitForUpdatePhoto(true);
+    var myHeaders = new Headers();
+    myHeaders.append("contentType", "false");
+    myHeaders.append("processData", "false");
+    var formdata = new FormData();
+    formdata.append("UploadedImage", e.target.files[0]);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    //   ///api/Employees/attach-files
+    fetch(url + "api/FileUpload", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("result image upload", result);
+        setdisableSubmitForUpdatePhoto(false);
+        setEmployeeToUpdate({ ...emplToUpdate, employeeCnicFront: result });
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const fileHandle4ForUpdate = (e) => {
+    setdisableSubmitForUpdatePhoto(true);
+    var myHeaders = new Headers();
+    myHeaders.append("contentType", "false");
+    myHeaders.append("processData", "false");
+    var formdata = new FormData();
+    formdata.append("UploadedImage", e.target.files[0]);
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: formdata,
+      redirect: "follow",
+    };
+    //   ///api/Employees/attach-files
+    fetch(url + "api/FileUpload", requestOptions)
+      .then((response) => response.text())
+      .then((result) => {
+        console.log("result image upload", result);
+        setdisableSubmitForUpdatePhoto(false);
+        setEmployeeToUpdate({ ...emplToUpdate, employeeCnicBsck: result });
+      })
+      .catch((error) => console.log("error", error));
+  };
+  const updateEmployeeClouds = (e) => {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      employee_Id: emplToUpdate.employee_Id,
+      name: emplToUpdate.name,
+      fatherName: emplToUpdate.fatherName,
+      phoneNum1: emplToUpdate.phoneNum1,
+      phoneNum2: emplToUpdate.phoneNum2,
+      phoneNum3: emplToUpdate.phoneNum3,
+      homePhoneNum: emplToUpdate.homePhoneNum,
+      cnicNum: emplToUpdate.cnicNum,
+      address: emplToUpdate.address,
+      referenceName: emplToUpdate.referenceName,
+      referencePhoneNum: emplToUpdate.referencePhoneNum,
+      jobStatus: emplToUpdate.jobStatusValueUpdate.value,
+      designation: emplToUpdate.designationValueUpdate.value,
+      employeePic1: emplToUpdate.employeePic1,
+      employeePic2:  emplToUpdate.employeePic2,
+      employeeCnicFront:  emplToUpdate.employeeCnicFront,
+      employeeCnicBsck:  emplToUpdate.employeeCnicBsck,
+      recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
+      salary: emplToUpdate.salary,
+      chart_id: emplToUpdate.chartID,
+    });
+
+    var requestOptions = {
+      method: "PUT",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    fetch(`${endPoint}api/employeeLists`, requestOptions)
+      .then((response) => {
+        if (response.status === 200) {
+          console.log("updatedSuccessFully");
+          const filterdEmp = ListOfEmployee.filter((emp) => {
+            return emp.employee_Id !== emplToUpdate.employee_Id;
+          });
+
+
+
+
+          setListOfEmployee([...filterdEmp, {
+            address: emplToUpdate.address,
+            chartID: emplToUpdate.chartID,
+            employee_Id: emplToUpdate.employee_Id,
+            name: emplToUpdate.name,
+            fatherName: emplToUpdate.fatherName,
+            phoneNum1: emplToUpdate.phoneNum1,
+            phoneNum2: emplToUpdate.phoneNum2,
+            phoneNum3: emplToUpdate.phoneNum3,
+            homePhoneNum: emplToUpdate.homePhoneNum,
+            cnicNum: emplToUpdate.cnicNum,
+            referenceName: emplToUpdate.referenceName,
+            referencePhoneNum: emplToUpdate.referencePhoneNum,
+            jobStatus: emplToUpdate.jobStatusValueUpdate.value,
+            designation: emplToUpdate.designationValueUpdate.value,
+            designationName: emplToUpdate.designationValueUpdate.label,
+            employeePic1:emplToUpdate.employeePic1,
+            employeePic2: emplToUpdate.employeePic2,
+            employeeCnicFront:emplToUpdate.employeeCnicFront,
+            employeeCnicBsck:emplToUpdate.employeeCnicBsck,
+            recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
+            salary: parseFloat(emplToUpdate.salary,)
+          }])
+        } else {
+          console.log("Something went wrong");
+        }
+
+        return response.text();
+      })
+      .then((result) => console.log("result --> good ho gya"))
+      .catch((error) => console.log("error", error));
+  };
+
   useEffect(() => {
     fetchAllData();
   }, []);
 
   const searchItem = (e) => {
     var allData = allEmpListConst;
+    console.log(e);
     setListOfEmployee(allEmpListConst);
-    // const filteredResult = allData.map((item) => {
-    //   var SearchedObject = Object.keys(item).filter(function (key, index) {
-    //     var nodeOfObject = item[key];
-    //    var checkisavailable= nodeOfObject.toString().toLowerCase().includes(e.toLowerCase());
-    //    if (checkisavailable) {
-    //     return item
-    //    }
-    //   });
-    //   console.log(SearchedObject);
-    //   return SearchedObject;
-
-    //   // return item.name.toLowerCase().includes(e.toLowerCase());
-    // });
-    // console.log(filteredResult);
-
     var filteredData = allData.filter((obj) => {
       var data = Object.keys(obj)
-        .filter((key) => (obj[key].toString()).toLowerCase().includes(e))
+        .filter((key) => obj[key].toString().toLowerCase().includes(e))
         .reduce((cur, key) => {
           return Object.assign(cur, { [key]: obj[key] });
         }, {});
@@ -455,10 +624,11 @@ const EmployeeList = () => {
           {" "}
           <div
             role="main"
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "right_col-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
+              } `}
           >
+
+            {/* Add New Employee  */}
             <MyVerticallyCenteredModal
               show={modalShow}
               AddNewEmployeeServer={AddNewEmployeeServer}
@@ -508,9 +678,30 @@ const EmployeeList = () => {
               isDisableSubmitButton={isDisableSubmitButton}
               employeeListValidator={employeeListValidator}
             />
+
+            {/* View Employee Detail  */}
+            <MyVerticallyCenteredModalView
+              show={modalShowView}
+              emplToUpdate={emplToUpdate}
+              onHide={() => {
+                setIsEmplEditModeOn(false)
+                setModalShowView(false)
+              }}
+
+              isEmplEditModeOn={isEmplEditModeOn}
+              selectEmployee={emplToUpdate}
+              setEmployeeToUpdate={setEmployeeToUpdate}
+              designation={designation} jobStatus={jobStatus} recruitmentType={recruitmentType}
+              ListOfEmployee={ListOfEmployee} setListOfEmployee={setListOfEmployee}
+              updateEmployeeClouds={updateEmployeeClouds}
+              fileHandle1ForUpdate={fileHandle1ForUpdate}
+              fileHandle2ForUpdate={fileHandle2ForUpdate}
+              fileHandle3ForUpdate={fileHandle3ForUpdate}
+              fileHandle4ForUpdate={fileHandle4ForUpdate}
+            />
             <div className="col-md-6 px-0 ">
               {/* <div className="form-group row  w-100"> */}
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 {" "}
                 <div className=" ">
                   <Selector
@@ -524,32 +715,32 @@ const EmployeeList = () => {
                     updateSelectorList={updateSelectorList}
                   />
                 </div>
-              </div>
-              <div className="col-md-6">
+              </div> */}
+              <div className="col-md-6 pl-0">
                 {" "}
                 <div className=" mb-2">
                   {" "}
                   <input
                     type="text"
-                    placeholder="search"
+                    placeholder="Search Filter"
                     className="form-control "
-                    onChange={(e) => searchItem(e.target.value)}
+                    onChange={(e) => searchItem((e.target.value).toLowerCase())}
                   />
                 </div>
               </div>
 
               {/* </div> */}
             </div>
-            <div className="col-md-6 text-right">
+            <div className="col-md-6 text-right pr-0">
               <button
-                className="btn btn-success  mt-2 btn-sm   px-2"
+                className="btn btn-success  mt-2 btn-sm   px-2 mr-0"
                 onClick={() => setModalShow(true)}
               >
                 Add New Employee
                 <i className="ml-2 fa fa-plus-square"></i>
               </button>
             </div>
-            {showSingleUser ? (
+            {/* {showSingleUser ? (
               <ShowSingleEmployee
                 setUpdateSelectorList={setUpdateSelectorList}
                 updateSelectorList={updateSelectorList}
@@ -559,145 +750,190 @@ const EmployeeList = () => {
                 singleUserId={singleUserId}
                 setShowSingleUSer={setShowSingleUSer}
               />
-            ) : (
-              <div className="x_panel">
-                <div className="x_content">
-                  <div className="table-responsive">
-                    <table className="table table-striped jambo_table bulk_action">
-                      <thead>
-                        <tr className="headings fontWeight300">
-                          <th className="column-title fontWeight300 "> Sr. </th>
-                          <th className="column-title fontWeight300 ">
-                            Emp.Name
-                          </th>
-                          <th className="column-title fontWeight300 ">
-                            FatherName
-                          </th>
-                          <th className="column-title fontWeight300 ">CNIC</th>
-                          <th className="column-title fontWeight300 ">
-                            Address
-                          </th>
-                          <th className="column-title fontWeight300 ">
-                            Designation
-                          </th>
-                          <th className="column-title fontWeight300 ">
-                            Recruitment
-                          </th>
-                          <th className="column-title fontWeight300 ">
-                            Salary
-                          </th>
-                          <th className="column-title fontWeight300 ">Phone</th>
-                          <th className="column-title fontWeight300 ">
-                            Status
-                          </th>
-                          <th className="column-title fontWeight300 ">
-                            Control
-                          </th>
-                        </tr>
-                      </thead>
+            ) : ( */}
+            <div className="x_panel">
+              <div className="x_content">
+                <div className="table-responsive">
+                  <table className="table table-striped jambo_table bulk_action">
+                    <thead>
+                      <tr className="headings fontWeight300">
+                        <th className="column-title fontWeight300 "> Sr. </th>
+                        <th className="column-title fontWeight300 ">
+                          Emp.Name
+                        </th>
+                        <th className="column-title fontWeight300 ">
+                          FatherName
+                        </th>
+                        <th className="column-title fontWeight300 ">CNIC</th>
+                        <th className="column-title fontWeight300 ">
+                          Address
+                        </th>
+                        <th className="column-title fontWeight300 ">
+                          Designation
+                        </th>
+                        <th className="column-title fontWeight300 ">
+                          Recruitment
+                        </th>
+                        <th className="column-title fontWeight300 ">
+                          Salary
+                        </th>
+                        <th className="column-title fontWeight300 ">Phone</th>
+                        <th className="column-title fontWeight300 ">
+                          Status
+                        </th>
+                        <th className="column-title fontWeight300 ">
+                          Control
+                        </th>
+                      </tr>
+                    </thead>
 
-                      <tbody>
-                        {ListOfEmployee.map((item, index) => {
-                          return (
-                            <tr className="even pointer" key={item.employee_Id}>
-                              <td className=" ">{index + 1}</td>
-                              <td className=" ">{item.name}</td>
-                              <td className=" ">{item.fatherName}</td>
-                              <td className=" text-right">{item.cnicNum}</td>
-                              <td className="text-left  ">{item.address}</td>
-                              <td className=" text-left ">
-                                {item.designationName}
-                              </td>
-                              <td className="text-left ">
-                                {item.recruitmentType}
-                              </td>
-                              <td className="text-right ">
-                                {item.salary.toFixed(2)}
-                              </td>
-                              <td className=" text-right">{item.phoneNum1}</td>
-                              <td className="text-center ">
-                                {/* {item.jobStatus} */}
+                    <tbody>
+                      {ListOfEmployee.map((item, index) => {
+                        return (
+                          <tr className="even pointer" key={item.employee_Id}>
+                            <td className=" ">{index + 1}</td>
+                            <td className=" ">{item.name}</td>
+                            <td className=" ">{item.fatherName}</td>
+                            <td className=" text-right">{item.cnicNum}</td>
+                            <td className="text-left  ">{item.address}</td>
+                            <td className=" text-left ">
+                              {item.designationName}
+                            </td>
+                            <td className="text-left ">
+                              {item.recruitmentType}
+                            </td>
+                            <td className="text-right ">
+                              {item.salary !== null && item.salary.toFixed(2)}
+                            </td>
+                            <td className=" text-right">{item.phoneNum1}</td>
+                            <td className="text-center ">
+                              {/* {item.jobStatus} */}
 
-                                <input
-                                  type="checkbox"
-                                  class="flat"
-                                  checked={
-                                    item.jobStatus === "Active" ? true : false
-                                  }
-                                  onChange={() => {
-                                    var myHeaders = new Headers();
-                                    myHeaders.append(
-                                      "Authorization",
-                                      `Bearer ${
-                                        JSON.parse(
-                                          localStorage.getItem("access_token")
-                                        ).access_token
-                                      }`
-                                    );
+                              <input
+                                type="checkbox"
+                                class="flat"
+                                checked={
+                                  item.jobStatus === "Active" ? true : false
+                                }
+                                onChange={() => {
+                                  var myHeaders = new Headers();
+                                  myHeaders.append(
+                                    "Authorization",
+                                    `Bearer ${JSON.parse(
+                                      localStorage.getItem("access_token")
+                                    ).access_token
+                                    }`
+                                  );
 
-                                    var requestOptions = {
-                                      method: "PUT",
-                                      headers: myHeaders,
-                                      redirect: "follow",
-                                    };
+                                  var requestOptions = {
+                                    method: "PUT",
+                                    headers: myHeaders,
+                                    redirect: "follow",
+                                  };
 
-                                    fetch(
-                                      `${endPoint}api/updateEmpStatus?id=${item.employee_Id}`,
-                                      requestOptions
-                                    )
-                                      .then((response) => response.text())
-                                      .then((result) => {
-                                        var arrData = ListOfEmployee;
-                                        var updatedData = arrData.filter(
-                                          (eachEmp) => {
-                                            return (
-                                              eachEmp.employee_Id !==
-                                              item.employee_Id
-                                            );
-                                          }
-                                        );
-                                        var newEMpl = arrData.filter(
-                                          (eachEmp) => {
-                                            return (
-                                              eachEmp.employee_Id ===
-                                              item.employee_Id
-                                            );
-                                          }
-                                        );
-                                        var empToBeUpdate = newEMpl[0];
-                                        var arrayUnSorted = [
-                                          ...updatedData,
-                                          {
-                                            ...empToBeUpdate,
-                                            jobStatus:
-                                              item.jobStatus === "Active"
-                                                ? "Left"
-                                                : "Active",
-                                          },
-                                        ];
-                                        var sorted = arrayUnSorted.sort(
-                                          (a, b) => a.name.localeCompare(b.name)
-                                        );
-                                        setListOfEmployee(sorted);
-                                      })
-                                      .catch((error) =>
-                                        console.log("error", error)
+                                  fetch(
+                                    `${endPoint}api/updateEmpStatus?id=${item.employee_Id}`,
+                                    requestOptions
+                                  )
+                                    .then((response) => response.text())
+                                    .then((result) => {
+                                      var arrData = ListOfEmployee;
+                                      var updatedData = arrData.filter(
+                                        (eachEmp) => {
+                                          return (
+                                            eachEmp.employee_Id !==
+                                            item.employee_Id
+                                          );
+                                        }
+                                      ); // old emp  except updated
+                                      var newEMpl = arrData.filter(
+                                        (eachEmp) => {
+                                          return (
+                                            eachEmp.employee_Id ===
+                                            item.employee_Id
+                                          );
+                                        }
+                                      );   // //new updated emp
+                                      var empToBeUpdate = newEMpl[0];
+                                      var arrayUnSorted = [
+                                        ...updatedData,
+                                        {
+                                          ...empToBeUpdate,
+                                          jobStatus:
+                                            item.jobStatus === "Active"
+                                              ? "Left"
+                                              : "Active",
+                                        },
+                                      ];
+                                      var sorted = arrayUnSorted.sort(
+                                        (a, b) => a.name.localeCompare(b.name)
                                       );
-                                  }}
-                                />
-                              </td>
-                              <td className=" text-center">
-                                <i className="fa fa-edit"></i>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
+                                      setListOfEmployee(sorted);
+                                      // Searching sstate managing
+                                      var ListOfEmployeeInitialData = allEmpListConst;
+
+                                      var updatedDataConst = ListOfEmployeeInitialData.filter(
+                                        (eachEmp) => {
+                                          return (
+                                            eachEmp.employee_Id !==
+                                            item.employee_Id
+                                          );
+                                        }
+                                      ); // old emp  except updated
+                                      var unSortedEmpConst = [...updatedDataConst, {
+                                        ...empToBeUpdate,
+                                        jobStatus:
+                                          item.jobStatus === "Active"
+                                            ? "Left"
+                                            : "Active",
+                                      }];
+                                      var sortedEmpConst = unSortedEmpConst.sort(
+                                        (a, b) => a.name.localeCompare(b.name)
+                                      );
+                                      setAllEmpListConst(sortedEmpConst)
+
+                                    })
+                                    .catch((error) =>
+                                      console.log("error", error)
+                                    );
+                                }}
+                              />
+                            </td>
+                            <td className=" text-center   ">
+                              <i className="fa fa-edit mr-2" onClick={() => {
+                                setEmployeeToUpdate({
+                                  ...item,
+                                  designationValueUpdate: { label: item.designationName, value: item.designation },
+                                  recruitmentTypeValueUpdate: { label: item.recruitmentType, value: item.recruitmentType },
+                                  jobStatusValueUpdate: { label: item.jobStatus, value: item.jobStatus }
+                                });
+                                setIsEmplEditModeOn(true)
+                                setModalShowView(true)
+
+                              }}></i>
+                              <i className="fa fa-eye" onClick={() => {
+                                const SelectedEmpl = ListOfEmployee.filter((eachEmp) => {
+                                  return eachEmp.employee_Id === item.employee_Id
+                                })
+                                const selectedPer = SelectedEmpl[0];
+                                setEmployeeToUpdate({
+                                  ...selectedPer,
+                                  designationValueUpdate: { label: item.designationName, value: item.designation },
+                                  recruitmentTypeValueUpdate: { label: item.recruitmentType, value: item.recruitmentType },
+                                  jobStatusValueUpdate: { label: item.jobStatus, value: item.jobStatus }
+                                });
+                                setModalShowView(true)
+                              }}></i>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
-            )}
+            </div>
+            {/* )} */}
           </div>
         </>
       )}

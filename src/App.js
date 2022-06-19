@@ -34,6 +34,8 @@ import WeaverLadger from "./Pages/Finance/WeaverLadger/WeaverLadger";
 import JournalVoucher from './Pages/Finance/JournalVoucher/JournalVoucher'
 import JVReport from './Pages/Finance/JVReport/JVReport'
 import Dashboard from "./Pages/Home/Dashboard.js/Dashboard";
+import PrivateRoute from "./Layout/PrivateRoute";
+
 function App() {
   const [isLogin, setisLogin] = useState(false);
   const [navigationData, setNavigationData] = useState("");
@@ -117,7 +119,7 @@ function App() {
                     setisLogin={setisLogin}
                   />
                   <Routes>
-                 
+
                     <Route path="RoleAccess" element={<AddRole />} />
                     <Route path="ModuleAccess" element={<AddModules />} />
                     <Route path="UserAccess" element={<AddUser />} />
@@ -126,7 +128,15 @@ function App() {
                       path="PermissionAccess"
                       element={<RolePermission />}
                     />
-                       <Route path="/" element={<Dashboard />} />
+
+
+                    {/* <Route path="/" element={<PrivateRoute nameRoute={"Dashboard"}><Dashboard /></PrivateRoute>} /> */}
+
+
+                    <Route path="/" element={
+                    <Dashboard />
+                  } />
+
                     <Route path="EmployeesList" element={<EmployeeList />} />
                     <Route
                       path="GrayProductList"
@@ -178,7 +188,7 @@ function App() {
                       path="JournalVoucherReport"
                       element={<JVReport />}
                     />
-                    
+
                   </Routes>
                   <Footer />
                 </div>
