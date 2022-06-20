@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-
+ 
 
 import { setNavMd } from "../store/actions/NavState";
+
 
 
 
@@ -12,9 +13,10 @@ const Nav = ({ navigationResult, isLogin }) => {
   const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
   const showNavMenu = useSelector((state) => state.NavState);
   const [currentBlock, setCurrentBlock] = useState(1);
+  const showNavResult = useSelector((state) => state.NavReducer.data);
   const dispatch = useDispatch();
   useEffect(() => {
-    console.log(navigationResult.navigationResult);
+    console.log("navigationResult.navigationResult" , );
   }, []);
 
   return (
@@ -45,7 +47,7 @@ const Nav = ({ navigationResult, isLogin }) => {
                       <div className="menu_section">
                         {/*<h3>General</h3>*/}
                         <ul className="nav side-menu">
-                          {navigationResult.navigationResult.map(
+                          {showNavResult.navigationResult.map(
                             (module, index) => {
                               return (
                                 <li

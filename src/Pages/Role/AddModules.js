@@ -40,33 +40,36 @@ const AddModules = () => {
     module_icon: "",
   });
 
-  //  Read
+ 
   const fetchAllData = () => {
-    fetch(URL + "/api/Modules")
+    fetch(URL + "/api/Modules" , {
+      method: "GET",
+      headers: {
+        Authorization:
+        `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
         setModuleRegistered(json);
         setisLoading(false);
       });
   };
-  // Create
+  
   const ModuleAdd = () => {
     const requestOptions = {
       method: "POST",
       headers: {
         Authorization:
-          "bearer" +
-          " " +
-          JSON.parse(localStorage.getItem("access_token")).access_token,
-          "Content-Type": "application/json",
-      }, 
+            `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/json" },
       body: JSON.stringify(moduleRegisteredAdd),
     };
 
     fetch(URL + "/api/Modules", requestOptions)
       .then((response) => response.json())
-      .then((data) => {
-        console.log("added", data);
+      .then((data) => { 
         notifyAdd();
         setModuleRegisteredAdd({ module_name: "", module_icon: "" });
         fetchAllData();
@@ -75,6 +78,31 @@ const AddModules = () => {
         console.log("err", err);
       });
   };
+  // const updateModule = () => { 
+  //   const requestOptions = {
+  //     method: "PUT",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(currentEditUser),
+  //   };
+
+  //   fetch(URL + "/api/Modules", requestOptions)
+  //     .then((response) => response)
+  //     .then((data) => { 
+  //      fetchAllData();
+  //      notifyUpdate();
+  //      setCurrentEditUser({
+  //       module_name: "",
+  //       module_icon: "",
+  //     });
+
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  //     fetchAllData()
+  // };
+  // Delete
+  
   const updateModule = () => {
     console.log(currentEditUser);
     const requestOptions = {
@@ -99,23 +127,16 @@ const AddModules = () => {
       });
       fetchAllData()
   };
-  // Delete
+
   const deleteModule = (e) => {
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(moduleRegisteredAdd),
-    };
+     
     fetch(`${URL}/api/Modules/${e}`, {
       method: "DELETE",
       body: JSON.stringify(moduleRegisteredAdd),
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
+      headers: {
+        Authorization:
+            `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/json" },
     })
       .then((response) => {
         // deleteing Role for this Id

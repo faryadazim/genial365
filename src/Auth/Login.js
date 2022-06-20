@@ -2,7 +2,11 @@ import { ToastContainer, toast } from "react-toastify";
 import React, { useState } from "react";
 import { endPoint } from "../config/Config";
 
-const Login = ({ setisLogin, isLogin, fetchNavigation }) => {
+import { useDispatch, useSelector } from "react-redux";
+import { doGetNavigation } from "../store/actions/Navigation";
+
+
+const Login = ({ setisLogin, isLogin, fetchNavigation , setShowMainLoader  }) => {
   const [disableLoginButton, setdisableLoginButton] = useState(false);
   const [credientials, setCredientials] = useState(false);
   const [logInAuth, setlogInAuth] = useState({
@@ -10,6 +14,7 @@ const Login = ({ setisLogin, isLogin, fetchNavigation }) => {
     password: "",
     grant_type: "password",
   });
+  const dispatch = useDispatch();
   const onLogin = () => {
     localStorage.setItem("authUser", endPoint);
   };
@@ -86,15 +91,15 @@ const Login = ({ setisLogin, isLogin, fetchNavigation }) => {
                         .then((result) => {
                           result.json().then((response) => {
                             if (result.status === 200) {
-                              // localStorage.setItem(
-                              console.log(response, "Login ");
-
+                              // localStorage.setItem(  
                               localStorage.setItem(
                                 "access_token",
                                 JSON.stringify(response)
                               );
                               setisLogin(true)
-                              fetchNavigation(response.access_token);
+                              // fetchNavigation(response.access_token);
+
+                              dispatch(doGetNavigation(setShowMainLoader , setisLogin ))
                               notify();
                             } else {
 

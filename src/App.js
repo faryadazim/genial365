@@ -35,47 +35,41 @@ import JournalVoucher from './Pages/Finance/JournalVoucher/JournalVoucher'
 import JVReport from './Pages/Finance/JVReport/JVReport'
 import Dashboard from "./Pages/Home/Dashboard.js/Dashboard";
 import PrivateRoute from "./Layout/PrivateRoute";
+import { useDispatch, useSelector } from "react-redux";
+import { doGetNavigation } from "./store/actions/Navigation";
+
 
 function App() {
   const [isLogin, setisLogin] = useState(false);
-  const [navigationData, setNavigationData] = useState("");
   const [showMainLoader, setShowMainLoader] = useState(true);
+  const [navigationData, setNavigationData] = useState("");
+  const dispatch = useDispatch();
+  const showNavResukt = useSelector((state) => state.NavReducer.data);
 
-  const fetchNavigation = (e) => {
-    fetch(endPoint + "api/navigation", {
-      method: "GET",
-      headers: {
-        Authorization:
-          "bearer" +
-          " " +
-          JSON.parse(localStorage.getItem("access_token")).access_token,
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    })
-      .then((response) => {
-        response.json().then((data) => {
-          console.log(data, "success");
-          setNavigationData(data);
-
-          localStorage.setItem("userName", data.userName);
-          localStorage.setItem("roleName", data.RoleName);
-          localStorage.setItem("loginId", data.LoginName);
-          // setemployeeSalaryResult(data);
-
-          setisLogin(true);
-          setShowMainLoader(false);
-        });
+  let PermissionObject = { GenrProductionReport: { view: true, add: false } };
+  if (showNavResukt !== undefined) {
+    showNavResukt.navigationResult.map((eachModule, index) => {
+      eachModule.pages.map((eachPage) => {
+        var pageUrlName = eachPage.pageURL;
+        PermissionObject = { pageUrlName: { view: eachPage.AddPermission, add: false } }
       })
-      .catch((error) => console.log("error", error));
-  };
+    })
 
+
+    console.log(PermissionObject, "ddgdgdg");
+  }
+
+
+  // const [permissionTableFromServer, setPermissionTableFromServer] = useState({})
   useEffect(() => {
     localStorage.setItem("authUser", endPoint);
     var newRetrived = localStorage.getItem("access_token");
     if (newRetrived) {
       setisLogin(true);
-      fetchNavigation();
     }
+    dispatch(doGetNavigation(setShowMainLoader))
+
+
   }, []);
 
   return (
@@ -98,8 +92,8 @@ function App() {
           <Login
             setisLogin={setisLogin}
             isLogin={isLogin}
-            fetchNavigation={fetchNavigation}
             setShowMainLoader={setShowMainLoader}
+
           />
         </>
       ) : (
@@ -113,14 +107,22 @@ function App() {
             <>
               <div className="container body">
                 <div className="main_container">
-                  <Nav navigationResult={navigationData} isLogin={isLogin} />
+                  <Nav navigationResult={showNavResukt} isLogin={isLogin} />
                   <Header
-                    roleName={navigationData.RoleName}
+                    roleName={showNavResukt.RoleName}
                     setisLogin={setisLogin}
                   />
                   <Routes>
 
-                    <Route path="RoleAccess" element={<AddRole />} />
+                    {/* <PrivateRoute exact path="/RoleAccess"   >
+                      <AddRole />
+                    </PrivateRoute> */}
+
+
+
+
+
+                     <Route path="/RoleAccess" element={<AddRole />} />  
                     <Route path="ModuleAccess" element={<AddModules />} />
                     <Route path="UserAccess" element={<AddUser />} />
                     <Route path="PagesAccess" element={<AddPages />} />
@@ -133,9 +135,7 @@ function App() {
                     {/* <Route path="/" element={<PrivateRoute nameRoute={"Dashboard"}><Dashboard /></PrivateRoute>} /> */}
 
 
-                    <Route path="/" element={
-                    <Dashboard />
-                  } />
+                    <Route path="/" element={<Dashboard />} />
 
                     <Route path="EmployeesList" element={<EmployeeList />} />
                     <Route

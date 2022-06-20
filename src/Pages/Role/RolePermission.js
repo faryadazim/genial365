@@ -3,7 +3,7 @@ import Loader from "../../Layout/Loader/Loader";
 import "./Role.css";
 import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import Form from "react-bootstrap/Form"; 
+import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
 
 
@@ -19,37 +19,37 @@ const customStyles = {
   // control: base => ({
   //   ...base, 
   //   // This line disable the blue border
- 
+
   // })
-  control: (provided, state , base) => ({
+  control: (provided, state, base) => ({
     ...provided,
     background: '#fff',
     borderColor: '#d9e4e8',
-    borderRadius:"none",
+    borderRadius: "none",
     minHeight: '30px',
     height: '30px',
     // boxShadow: state.isFocused ? null : null,
-    ...base,    boxShadow: 'none'
+    ...base, boxShadow: 'none'
   }),
-    option: (provided, state) => ({
-      ...provided,
-      borderBottom: "1px  #003a4d",
-      color: state.isSelected ? "#f79c74" : "#003a4d",
-      background: '#fff',
-   
-    }),
+  option: (provided, state) => ({
+    ...provided,
+    borderBottom: "1px  #003a4d",
+    color: state.isSelected ? "#f79c74" : "#003a4d",
+    background: '#fff',
+
+  }),
   valueContainer: (provided, state) => ({
     ...provided,
     height: '30px',
-    padding: '0 6px' ,  
-      // background: '#fff',
-    
+    padding: '0 6px',
+    // background: '#fff',
+
   }),
 
   input: (provided, state) => ({
     ...provided,
     margin: '0px',
-    
+
   }),
   indicatorSeparator: state => ({
     display: 'none',
@@ -57,63 +57,63 @@ const customStyles = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: '30px',
-    
+
   }),
-  
+
 }
 const RolePermission = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [isLoading, setisLoading] = useState(false);
-  const [pagePermissionList , setpagePermissionList] = useState([])
-  
+  const [pagePermissionList, setpagePermissionList] = useState([])
 
-  const [roleValue, setRoleVAlue] = useState(""); 
-  const [roleOptions , setRoleOptions] = useState([]);
 
-const [RoleToBeSearch ,setRoleToBeSearch] = useState("4f9d320b4b9f4d61b2589686b65180f6")
+  const [roleValue, setRoleVAlue] = useState("");
+  const [roleOptions, setRoleOptions] = useState([]);
+
+  const [RoleToBeSearch, setRoleToBeSearch] = useState("4f9d320b4b9f4d61b2589686b65180f6")
 
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
- 
 
 
-const fetchAllData = ()=>{
- 
-  fetch(url +`api/PagePermissions?roleId=${RoleToBeSearch}`, {
-    method: "GET",
-    headers: {
-      // Authorization: "bearer" + " " + e,
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-  })
-    .then((response) => {
-      response.json().then((data) => {
-   
-        setpagePermissionList(data)
-        fetch(url + "api/Roles"  , {
-          method: "GET",
-          headers: {
-            // Authorization: "bearer" + " " + e,
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-        }).then((response) => {
-          response.json().then((data) => { 
-          var arr= []
-          data.map((item)=>{
-              arr.push({label:item.Name , value:item.Id})
-          })
-        setRoleOptions(arr)
-          });
-        })
-          
-      });
+
+  const fetchAllData = () => {
+
+    fetch(url + `api/PagePermissions?roleId=${RoleToBeSearch}`, {
+      method: "GET",
+      headers: {
+        // Authorization: "bearer" + " " + e,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
     })
-    .catch((error) => console.log("error", error));
-}
-  useEffect(() => {fetchAllData()}, []);
+      .then((response) => {
+        response.json().then((data) => {
+
+          setpagePermissionList(data)
+          fetch(url + "api/Roles", {
+            method: "GET",
+            headers: {
+              // Authorization: "bearer" + " " + e,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+          }).then((response) => {
+            response.json().then((data) => {
+              var arr = []
+              data.map((item) => {
+                arr.push({ label: item.Name, value: item.Id })
+              })
+              setRoleOptions(arr)
+            });
+          })
+
+        });
+      })
+      .catch((error) => console.log("error", error));
+  }
+  useEffect(() => { fetchAllData() }, []);
 
   return (
     <>
@@ -125,9 +125,8 @@ const fetchAllData = ()=>{
         <>
           {" "}
           <div
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "footer-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "footer-margin-remove" : " "
+              } `}
             role="main"
           >
             <div className="field item form-group d-flex justify-content-center ">
@@ -142,23 +141,23 @@ const fetchAllData = ()=>{
                   <option value="2">USer</option>
               
                 </Form.Select> */}
-                 <Select
-                      required
-                        className="basic-single"
-                        classNamePrefix="select"
-                        defaultValue={"Active"}
-                        value={roleValue.value}
-                        onChange={(value) => { 
-          
-                          setRoleToBeSearch(value.value)
-                          fetchAllData()
-                        }} 
-                        isSearchable={true}
-                        name="color"
-                        options={roleOptions}
-                        styles={customStyles}
-                      />
-       
+                <Select
+                  required
+                  className="basic-single"
+                  classNamePrefix="select"
+                  defaultValue={"Active"}
+                  value={roleValue.value}
+                  onChange={(value) => {
+
+                    setRoleToBeSearch(value.value)
+                    fetchAllData()
+                  }}
+                  isSearchable={true}
+                  name="color"
+                  options={roleOptions}
+                  styles={customStyles}
+                />
+
               </div>
             </div>
             <Modal
@@ -184,13 +183,13 @@ const fetchAllData = ()=>{
                       name="name"
                       placeholder="ex. Ali A.Khan"
                       required="required"
-                      // value={currentEditUser.userName}
-                      // onChange={(e) =>
-                      //   setcurrentEditUser({
-                      //     ...currentEditUser,
-                      //     userName: e.target.value,
-                      //   })
-                      // }
+                    // value={currentEditUser.userName}
+                    // onChange={(e) =>
+                    //   setcurrentEditUser({
+                    //     ...currentEditUser,
+                    //     userName: e.target.value,
+                    //   })
+                    // }
                     />
                   </div>
                 </div>
@@ -204,13 +203,13 @@ const fetchAllData = ()=>{
                       name="email"
                       required="required"
                       type="email"
-                      // value={currentEditUser.email}
-                      // onChange={(e) =>
-                      //   setcurrentEditUser({
-                      //     ...currentEditUser,
-                      //     email: e.target.value,
-                      //   })
-                      // }
+                    // value={currentEditUser.email}
+                    // onChange={(e) =>
+                    //   setcurrentEditUser({
+                    //     ...currentEditUser,
+                    //     email: e.target.value,
+                    //   })
+                    // }
                     />
                   </div>
                 </div>
@@ -237,15 +236,15 @@ const fetchAllData = ()=>{
                   <table className="table  jambo_table  ">
                     <thead>
                       <tr className="headings">
-                        <th className="column-title" width="334px">
+                        <th className="column-title text-center" width="334px">
                           {" "}
                           Title{" "}
                         </th>
                         <th className="column-title text-center">View </th>
                         <th className="column-title text-center">Delete </th>
                         <th className="column-title text-center">Add </th>
-                        <th className="column-title text-center">Add </th>
-                        <th className="column-title text-center">Update </th>
+                        <th className="column-title text-center">Edit </th>
+                        {/* <th className="column-title text-center">Update </th> */}
                       </tr>
                     </thead>
 
@@ -253,7 +252,7 @@ const fetchAllData = ()=>{
                       {pagePermissionList.map((item, index) => {
                         return (
                           <>
-                          
+
                             <tr className="moduleBgColor">
                               <td colSpan="6" className="py-2">
                                 <div>{item.module_name}</div>
@@ -261,62 +260,144 @@ const fetchAllData = ()=>{
                             </tr>
                             {
 
-item.pages.map((arr)=>{
-  return <> 
-  
-   <tr className="even pointer">
-  
-  <td className=" pl-5 ">{arr.pageName}</td>
-  <td className=" text-center ">
-    
-      <input
-        type="checkbox"
-        className="flat"
-        checked={true}
-      />
+                              item.pages.map((arr) => {
+                                return <>
 
-  </td>
-  <td className=" text-center ">
-    
-    <input
-      type="checkbox"
-      className="flat"
-      checked={true}
-    />
+                                  <tr className="even pointer">
 
-</td>
+                                    <td className=" pl-5 ">{arr.pageName}</td>
+                                    <td className=" text-center ">
 
-<td className=" text-center ">
-    
-    <input
-      type="checkbox"
-      className="flat"
-      checked={true}
-    />
+                                      <input
+                                        type="checkbox"
+                                        className="flat"
+                                        checked={arr.viewPermission === 'true' ? true:false}
+                                        onChange={() => {
+                                          const filteredModules = pagePermissionList.filter((eachMod) => {
+                                            return eachMod.module_id !== item.module_id
+                                          })
+                                          const filterPages = item.pages.filter((eachPage) => {
+                                            return eachPage.page_id !== arr.page_id
+                                          }) 
+                                         setpagePermissionList([...filteredModules, {
+                                            module_name: item.module_name, module_id: item.module_id,
+                                            pages: [...filterPages, {
+                                              pageID:arr.pageID,
+                                              page_id:arr.page_id,
+                                              pageName: arr.pageName,
+                                              pageURL: arr.pageURL,
+                                              AddPermission: arr.AddPermission,
+                                              DelPermission:arr.DelPermission,
+                                              EditPermission:arr.EditPermission,
+                                              viewPermission: (arr.viewPermission === 'true' ? "false":"true"),
+                                            }]
+                                          }])
 
-</td><td className=" text-center ">
-    
-    <input
-      type="checkbox"
-      className="flat"
-      checked={true}
-    />
+                                        }}
+                                      />
 
-</td>
-  <td className="a-right a-right  text-center ">
-    <i
-      className="fa fa-edit pr-2"
-      onClick={() => {
-        handleShow();
-      }}
-    ></i>
-  </td>
-</tr>
-</>
-})
+                                    </td>
+                                    <td className=" text-center ">
+
+                                      <input
+                                        type="checkbox"
+                                        className="flat"
+                                        checked={arr.DelPermission === 'true' ? true:false}
+                                        onChange={() => {
+                                          const filteredModules = pagePermissionList.filter((eachMod) => {
+                                            return eachMod.module_id !== item.module_id
+                                          })
+                                          const filterPages = item.pages.filter((eachPage) => {
+                                            return eachPage.page_id !== arr.page_id
+                                          }) 
+                                         setpagePermissionList([...filteredModules, {
+                                            module_name: item.module_name, module_id: item.module_id,
+                                            pages: [...filterPages, {
+                                              pageID:arr.pageID,
+                                              page_id:arr.page_id,
+                                              pageName: arr.pageName,
+                                              pageURL: arr.pageURL,
+                                              AddPermission:  arr.AddPermission  ,
+                                              DelPermission:(arr.DelPermission === 'true' ? "false":"true"),
+                                              EditPermission:  arr.EditPermission ,
+                                              viewPermission: arr.viewPermission ,
+                                            }]
+                                          }])
+
+                                        }}
+                                      />
+
+                                    </td>
+
+                                    <td className=" text-center ">
+
+                                      <input
+                                        type="checkbox"
+                                        className="flat"
+                                        checked={arr.AddPermission === 'true' ? true:false}
+                                        onChange={() => {
+                                          const filteredModules = pagePermissionList.filter((eachMod) => {
+                                            return eachMod.module_id !== item.module_id
+                                          })
+                                          const filterPages = item.pages.filter((eachPage) => {
+                                            return eachPage.page_id !== arr.page_id
+                                          }) 
+                                         setpagePermissionList([...filteredModules, {
+                                            module_name: item.module_name, module_id: item.module_id,
+                                            pages: [...filterPages, {
+                                              pageID:arr.pageID,
+                                              page_id:arr.page_id,
+                                              pageName: arr.pageName,
+                                              pageURL: arr.pageURL,
+                                              AddPermission: (arr.AddPermission === 'true' ? "false":"true"),
+                                              DelPermission:arr.DelPermission, 
+                                              EditPermission:  arr.EditPermission ,
+                                              viewPermission: arr.viewPermission ,
+                                            }]
+                                          }])
+
+                                        }}
+                                    
+                                      />
+
+                                    </td><td className=" text-center ">
+
+                                      <input
+                                        type="checkbox"
+                                        className="flat"
+                                        checked={arr.EditPermission === 'true' ? true:false}
+                                        onChange={() => {
+                                          const filteredModules = pagePermissionList.filter((eachMod) => {
+                                            return eachMod.module_id !== item.module_id
+                                          })
+                                          const filterPages = item.pages.filter((eachPage) => {
+                                            return eachPage.page_id !== arr.page_id
+                                          }) 
+                                         setpagePermissionList([...filteredModules, {
+                                            module_name: item.module_name, module_id: item.module_id,
+                                            pages: [...filterPages, {
+                                              pageID:arr.pageID,
+                                              page_id:arr.page_id,
+                                              pageName: arr.pageName,
+                                              pageURL: arr.pageURL,
+                                              AddPermission: arr.AddPermission,
+                                              DelPermission:arr.DelPermission, 
+                                              EditPermission: (arr.EditPermission === 'true' ? "false":"true"),
+                                              viewPermission: arr.viewPermission ,
+                                            }]
+                                          }])
+
+                                        }}
+                                      />
+
+                                    </td>
+                                   
+                                  </tr>
+                                </>
+                              })
                             }
-                         
-                        
+
+
                           </>
                         );
                       })}

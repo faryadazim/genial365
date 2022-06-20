@@ -21,7 +21,7 @@ const AddUser = () => {
   const [UserRegistered, setUserRegistered] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setpostsPerPage] = useState(5);
-const [showPassword, setshowPassword] = useState("password")
+  const [showPassword, setshowPassword] = useState("password")
   const [repeatPassword, setRepeatPassword] = useState("");
   const [userRegisteredAdd, setuserRegisteredAdd] = useState({
     userName: "",
@@ -55,14 +55,50 @@ const [showPassword, setshowPassword] = useState("password")
   const notifyDelete = () => toast("Deleted Successfully!");
   const notifyAdd = () => toast("User Created Successfully!");
 
+  // const fetchAllData = () => {
+  //   fetch(url + "/api/Users")
+  //     .then((response) => response.json())
+  //     .then((json) => {
+  //       console.log(json);
+  //       setUserRegistered(json);
+
+
+  //       // fetching list of role 
+  //       fetch(url + "/api/Roles")
+  //         .then((response) => response.json())
+  //         .then((role) => {
+  //           setRoles(role);
+  //           setSelectedRole(role[0].Id)
+  //           setisLoading(false);
+  //         });
+  //     });
+
+  // };
+
   const fetchAllData = () => {
-    fetch(url + "/api/Users")
+    fetch(url + "/api/Users", {
+      method: "GET",
+      headers: {
+        Authorization:
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         setUserRegistered(json);
 
-        fetch(url + "/api/Roles")
+
+        // fetching List of Role 
+        fetch(url + "/api/Roles", {
+          method: "GET",
+          headers: {
+            Authorization:
+              `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
           .then((response) => response.json())
           .then((role) => {
             setRoles(role);
@@ -72,19 +108,62 @@ const [showPassword, setshowPassword] = useState("password")
       });
 
   };
+  // const AddUserRegistered = () => { 
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(userRegisteredAdd),
+  //   };
+
+  //   fetch(url + "/api/Users", requestOptions)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("user created" , data , selectedRole);
+  //       const requestOptionsForRole = {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({
+  //           UserId: data.Id,
+  //           RoleId: selectedRole,
+  //         }),
+  //       };
+  //       fetch(url + "/api/UserRoles", requestOptionsForRole)
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           console.log("success", data);
+  //           setuserRegisteredAdd({
+  //             userName: "",
+  //             password: "",
+  //             phoneNumber: "",
+  //             email: "",
+  //           });
+  //           fetchAllData();
+  //           setRepeatPassword("");
+  //           notifyAdd();
+  //         })
+  //         .catch((err) => {
+  //           console.log("err", err);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  // };
 
   const AddUserRegistered = () => {
-    console.log("user", selectedRole, userRegisteredAdd);
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization:
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(userRegisteredAdd),
     };
 
     fetch(url + "/api/Users", requestOptions)
       .then((response) => response.json())
       .then((data) => {
-        console.log("user created" , data , selectedRole);
         const requestOptionsForRole = {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -96,7 +175,6 @@ const [showPassword, setshowPassword] = useState("password")
         fetch(url + "/api/UserRoles", requestOptionsForRole)
           .then((response) => response.json())
           .then((data) => {
-            console.log("success", data);
             setuserRegisteredAdd({
               userName: "",
               password: "",
@@ -115,6 +193,8 @@ const [showPassword, setshowPassword] = useState("password")
         console.log("err", err);
       });
   };
+
+
   const UpdateUserRegistered = () => {
     console.log("Update DAta", currentEditUser, selectedRole);
 
@@ -132,16 +212,34 @@ const [showPassword, setshowPassword] = useState("password")
         // },
       }
     )
-      .then((response) => {
-        console.log(response);
+      .then((response) => { 
         fetchAllData();
       })
       .catch((error) => console.log("error", error));
   };
-  const deleteUser = (e) => {
-    console.log(e, "Delte this one");
-    //
+  // const deleteUser = (e) => {
+  //   console.log(e, "Delte this one");
+  //   //
 
+  //   fetch(`${url}/api/Users/${e}`, {
+  //     method: "DELETE",
+  //     // headers: {
+  //     //   Authorization:
+  //     //     JSON.parse(localStorage.getItem("authUser")).token_type +
+  //     //     " " +
+  //     //     JSON.parse(localStorage.getItem("authUser")).access_token,
+  //     //   "Content-Type": "application/x-www-form-urlencoded",
+  //     // },
+  //   })
+  //     .then((response) => {
+  //       // deleteing Role for this Id
+
+  //    fetchAllData();
+  //       notifyDelete();
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // };
+  const deleteUser = (e) => {
     fetch(`${url}/api/Users/${e}`, {
       method: "DELETE",
       // headers: {
@@ -153,22 +251,16 @@ const [showPassword, setshowPassword] = useState("password")
       // },
     })
       .then((response) => {
-        // deleteing Role for this Id
-
-     fetchAllData();
+        // deleteing Role for this Id 
+        fetchAllData();
         notifyDelete();
       })
       .catch((error) => console.log("error", error));
   };
+
   useEffect(() => {
     fetchAllData();
-    // dispatch(getUsers(setisLoading))
-    // dispatch(fetchAllUser(setisLoading))
   }, []);
-  // useEffect(() => {
-  //   dispatch(fetchAllUser(setisLoading));
-  //   console.log("stateisRunning");
-  // }, [dispatch]);
 
   return (
     <>
@@ -180,9 +272,8 @@ const [showPassword, setshowPassword] = useState("password")
         <>
           {" "}
           <div
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "footer-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "footer-margin-remove" : " "
+              } `}
             role="main"
           >
             {/* Registration Form  */}
@@ -262,7 +353,7 @@ const [showPassword, setshowPassword] = useState("password")
                         <div className="col-md-6 col-sm-6">
                           <input
                             className="form-control"
-                            type={showPassword?"password":"text"}
+                            type={showPassword ? "password" : "text"}
                             id="password1"
                             name="password"
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
@@ -278,14 +369,14 @@ const [showPassword, setshowPassword] = useState("password")
                           />
                           <span
                             style={{ position: "absolute", right: 15, top: 7 }}
-                            onClick={()=>{setshowPassword(!showPassword)}}
+                            onClick={() => { setshowPassword(!showPassword) }}
                           >
                             <i id="slash" className="fa fa-eye-slash" />
                             <i id="eye" className="fa fa-eye" />
                           </span>
                         </div>
                       </div>
-                      <div className="field item form-group">
+                      {/* <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
                           Repeat Password<span className="required">*</span>
                         </label>
@@ -299,7 +390,7 @@ const [showPassword, setshowPassword] = useState("password")
                             onChange={(e) => setRepeatPassword(e.target.value)}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
@@ -309,6 +400,7 @@ const [showPassword, setshowPassword] = useState("password")
                           <Form.Select
                             aria-label="Default select example"
                             className="form-control text-center w-50"
+                            value={selectedRole}
                             onChange={(e) => setSelectedRole(e.target.value)}
                           >
                             {Roles.map((item) => {
