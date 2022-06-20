@@ -587,7 +587,7 @@ const EmployeeList = () => {
 
         return response.text();
       })
-      .then((result) => console.log("result --> good ho gya"))
+      .then((result) => setModalShowView(false))
       .catch((error) => console.log("error", error));
   };
 
@@ -686,8 +686,9 @@ const EmployeeList = () => {
               onHide={() => {
                 setIsEmplEditModeOn(false)
                 setModalShowView(false)
+                
               }}
-
+              disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
               isEmplEditModeOn={isEmplEditModeOn}
               selectEmployee={emplToUpdate}
               setEmployeeToUpdate={setEmployeeToUpdate}
@@ -782,7 +783,7 @@ const EmployeeList = () => {
                           Status
                         </th>
                         <th className="column-title fontWeight300 ">
-                          Control
+                          Action
                         </th>
                       </tr>
                     </thead>

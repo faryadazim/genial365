@@ -6,7 +6,7 @@ import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {endPoint} from '../../config/Config'
-const AddRole = () => {
+const AddRole = ({pagePermission}) => {
   const showNavMenu = useSelector((state) => state.NavState);
   const URL = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
@@ -97,6 +97,7 @@ const AddRole = () => {
       });
   };
 
+  
 
   // const deleteRoleRigistered = (idToBeDelete) => {
   //   fetch(`${URL}/api/Roles/${idToBeDelete}`, {
@@ -192,6 +193,7 @@ const AddRole = () => {
   };
   useEffect(() => {
     fetchAllData();
+    console.log(pagePermission);
   }, []);
 
   return (

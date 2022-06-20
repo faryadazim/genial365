@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 
 // import { setNavSm, setNavMd } from "../actions/NavState";
 import { setNavSm, setNavMd } from "../store/actions/NavState";
-const Header = ({ roleName  , setisLogin}) => {
+const Header = ({ roleName  , setisLogin }) => {
   const dispatch = useDispatch();
   const showNavMenu = useSelector((state) => state.NavState);
   const [ScreenWidth, setScreenWidth] = useState();
@@ -20,6 +20,7 @@ const Header = ({ roleName  , setisLogin}) => {
 
   useEffect(() => {
     setScreenWidth(width);
+    
   }, []);
 
   return (

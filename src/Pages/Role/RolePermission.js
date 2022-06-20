@@ -92,7 +92,12 @@ const RolePermission = () => {
       .then((response) => {
         response.json().then((data) => {
 
-          setpagePermissionList(data)
+          var sorted = data.sort(
+            (a, b) => a.module_name.localeCompare(b.module_name)
+          );
+
+
+          setpagePermissionList(sorted)
           fetch(url + "api/Roles", {
             method: "GET",
             headers: {
@@ -271,28 +276,31 @@ const RolePermission = () => {
                                       <input
                                         type="checkbox"
                                         className="flat"
-                                        checked={arr.viewPermission === 'true' ? true:false}
+                                        checked={arr.viewPermission === 'true' ? true : false}
                                         onChange={() => {
                                           const filteredModules = pagePermissionList.filter((eachMod) => {
                                             return eachMod.module_id !== item.module_id
                                           })
                                           const filterPages = item.pages.filter((eachPage) => {
                                             return eachPage.page_id !== arr.page_id
-                                          }) 
-                                         setpagePermissionList([...filteredModules, {
+                                          })
+                                          const updatedFilteredDataUnsorted = [...filteredModules, {
                                             module_name: item.module_name, module_id: item.module_id,
                                             pages: [...filterPages, {
-                                              pageID:arr.pageID,
-                                              page_id:arr.page_id,
+                                              pageID: arr.pageID,
+                                              page_id: arr.page_id,
                                               pageName: arr.pageName,
                                               pageURL: arr.pageURL,
                                               AddPermission: arr.AddPermission,
-                                              DelPermission:arr.DelPermission,
-                                              EditPermission:arr.EditPermission,
-                                              viewPermission: (arr.viewPermission === 'true' ? "false":"true"),
-                                            }]
-                                          }])
-
+                                              DelPermission: arr.DelPermission,
+                                              EditPermission: arr.EditPermission,
+                                              viewPermission: (arr.viewPermission === 'true' ? "false" : "true"),
+                                            }].sort((a, b) => a.pageName.localeCompare(b.pageName))
+                                          }]
+                                          const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
+                                            (a, b) => a.module_name.localeCompare(b.module_name)
+                                          );
+                                          setpagePermissionList(updatedFilteredDataSorted);
                                         }}
                                       />
 
@@ -302,27 +310,34 @@ const RolePermission = () => {
                                       <input
                                         type="checkbox"
                                         className="flat"
-                                        checked={arr.DelPermission === 'true' ? true:false}
+                                        checked={arr.DelPermission === 'true' ? true : false}
                                         onChange={() => {
                                           const filteredModules = pagePermissionList.filter((eachMod) => {
                                             return eachMod.module_id !== item.module_id
                                           })
                                           const filterPages = item.pages.filter((eachPage) => {
                                             return eachPage.page_id !== arr.page_id
-                                          }) 
-                                         setpagePermissionList([...filteredModules, {
+                                          })
+                                          const updatedFilteredDataUnsorted = [...filteredModules, {
                                             module_name: item.module_name, module_id: item.module_id,
                                             pages: [...filterPages, {
-                                              pageID:arr.pageID,
-                                              page_id:arr.page_id,
+                                              pageID: arr.pageID,
+                                              page_id: arr.page_id,
                                               pageName: arr.pageName,
                                               pageURL: arr.pageURL,
-                                              AddPermission:  arr.AddPermission  ,
-                                              DelPermission:(arr.DelPermission === 'true' ? "false":"true"),
-                                              EditPermission:  arr.EditPermission ,
-                                              viewPermission: arr.viewPermission ,
-                                            }]
-                                          }])
+                                              AddPermission: arr.AddPermission,
+                                              DelPermission: (arr.DelPermission === 'true' ? "false" : "true"),
+                                              EditPermission: arr.EditPermission,
+                                              viewPermission: arr.viewPermission,
+                                            }].sort((a, b) => a.pageName.localeCompare(b.pageName))
+                                          }];
+
+
+                                          const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
+                                            (a, b) => a.module_name.localeCompare(b.module_name)
+                                          );
+                                          setpagePermissionList(updatedFilteredDataSorted);
+
 
                                         }}
                                       />
@@ -334,30 +349,38 @@ const RolePermission = () => {
                                       <input
                                         type="checkbox"
                                         className="flat"
-                                        checked={arr.AddPermission === 'true' ? true:false}
+                                        checked={arr.AddPermission === 'true' ? true : false}
                                         onChange={() => {
                                           const filteredModules = pagePermissionList.filter((eachMod) => {
                                             return eachMod.module_id !== item.module_id
                                           })
                                           const filterPages = item.pages.filter((eachPage) => {
                                             return eachPage.page_id !== arr.page_id
-                                          }) 
-                                         setpagePermissionList([...filteredModules, {
+                                          })
+                                          const updatedFilteredDataUnsorted = [...filteredModules, {
                                             module_name: item.module_name, module_id: item.module_id,
                                             pages: [...filterPages, {
-                                              pageID:arr.pageID,
-                                              page_id:arr.page_id,
+                                              pageID: arr.pageID,
+                                              page_id: arr.page_id,
                                               pageName: arr.pageName,
                                               pageURL: arr.pageURL,
-                                              AddPermission: (arr.AddPermission === 'true' ? "false":"true"),
-                                              DelPermission:arr.DelPermission, 
-                                              EditPermission:  arr.EditPermission ,
-                                              viewPermission: arr.viewPermission ,
-                                            }]
-                                          }])
+                                              AddPermission: (arr.AddPermission === 'true' ? "false" : "true"),
+                                              DelPermission: arr.DelPermission,
+                                              EditPermission: arr.EditPermission,
+                                              viewPermission: arr.viewPermission,
+                                            }].sort((a, b) => a.pageName.localeCompare(b.pageName))
+                                          }];
+
+                                          const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
+                                            (a, b) => a.module_name.localeCompare(b.module_name)
+                                          );
+                                          setpagePermissionList(updatedFilteredDataSorted);
+
+
+
 
                                         }}
-                                    
+
                                       />
 
                                     </td><td className=" text-center ">
@@ -365,33 +388,41 @@ const RolePermission = () => {
                                       <input
                                         type="checkbox"
                                         className="flat"
-                                        checked={arr.EditPermission === 'true' ? true:false}
+                                        checked={arr.EditPermission === 'true' ? true : false}
                                         onChange={() => {
                                           const filteredModules = pagePermissionList.filter((eachMod) => {
                                             return eachMod.module_id !== item.module_id
                                           })
                                           const filterPages = item.pages.filter((eachPage) => {
                                             return eachPage.page_id !== arr.page_id
-                                          }) 
-                                         setpagePermissionList([...filteredModules, {
+                                          })
+                                          const updatedFilteredDataUnsorted = [...filteredModules, {
                                             module_name: item.module_name, module_id: item.module_id,
                                             pages: [...filterPages, {
-                                              pageID:arr.pageID,
-                                              page_id:arr.page_id,
+                                              pageID: arr.pageID,
+                                              page_id: arr.page_id,
                                               pageName: arr.pageName,
                                               pageURL: arr.pageURL,
                                               AddPermission: arr.AddPermission,
-                                              DelPermission:arr.DelPermission, 
-                                              EditPermission: (arr.EditPermission === 'true' ? "false":"true"),
-                                              viewPermission: arr.viewPermission ,
-                                            }]
-                                          }])
+                                              DelPermission: arr.DelPermission,
+                                              EditPermission: (arr.EditPermission === 'true' ? "false" : "true"),
+                                              viewPermission: arr.viewPermission,
+                                            }].sort((a, b) => a.pageName.localeCompare(b.pageName))
+                                          }];
+
+
+
+                                          const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
+                                            (a, b) => a.module_name.localeCompare(b.module_name)
+                                          );
+                                          setpagePermissionList(updatedFilteredDataSorted);
+
 
                                         }}
                                       />
 
                                     </td>
-                                   
+
                                   </tr>
                                 </>
                               })

@@ -46,21 +46,17 @@ function App() {
   const dispatch = useDispatch();
   const showNavResukt = useSelector((state) => state.NavReducer.data);
 
-  let PermissionObject = { GenrProductionReport: { view: true, add: false } };
+
+
+  let allPagesData = [1];
   if (showNavResukt !== undefined) {
-    showNavResukt.navigationResult.map((eachModule, index) => {
+    showNavResukt.navigationResult.map((eachModule) => {
       eachModule.pages.map((eachPage) => {
-        var pageUrlName = eachPage.pageURL;
-        PermissionObject = { pageUrlName: { view: eachPage.AddPermission, add: false } }
+        allPagesData.push(eachPage);
       })
     })
-
-
-    console.log(PermissionObject, "ddgdgdg");
   }
 
-
-  // const [permissionTableFromServer, setPermissionTableFromServer] = useState({})
   useEffect(() => {
     localStorage.setItem("authUser", endPoint);
     var newRetrived = localStorage.getItem("access_token");
@@ -68,8 +64,6 @@ function App() {
       setisLogin(true);
     }
     dispatch(doGetNavigation(setShowMainLoader))
-
-
   }, []);
 
   return (
@@ -114,15 +108,27 @@ function App() {
                   />
                   <Routes>
 
-                    {/* <PrivateRoute exact path="/RoleAccess"   >
+
+
+
+
+
+                    {/* <PrivateRoute path="/RoleAccess"  >
                       <AddRole />
                     </PrivateRoute> */}
 
 
+                    <Route path="/RoleAccess" element={
+                      <PrivateRoute pagePermission={allPagesData.find(o => o.pageURL === 'RoleAccess')} >
+                       <AddRole />
+                      </PrivateRoute>
+                    }
+                    />
 
 
 
-                     <Route path="/RoleAccess" element={<AddRole />} />  
+
+                    {/* <Route path="/RoleAccess" element={<AddRole      pagePermission={allPagesData.find(o => o.pageURL === 'RoleAccess')}/>} /> */}
                     <Route path="ModuleAccess" element={<AddModules />} />
                     <Route path="UserAccess" element={<AddUser />} />
                     <Route path="PagesAccess" element={<AddPages />} />
