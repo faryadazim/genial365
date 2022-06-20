@@ -144,7 +144,7 @@ const RolePermission = () => {
                   <option value="1">Admin</option>
                   <option value="3">Cashier</option>
                   <option value="2">USer</option>
-              
+               
                 </Form.Select> */}
                 <Select
                   required
@@ -160,7 +160,7 @@ const RolePermission = () => {
                   isSearchable={true}
                   name="color"
                   options={roleOptions}
-                  styles={customStyles}
+                  // styles={customStyles}
                 />
 
               </div>
