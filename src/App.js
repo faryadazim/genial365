@@ -37,6 +37,8 @@ import Dashboard from "./Pages/Home/Dashboard.js/Dashboard";
 import PrivateRoute from "./Layout/PrivateRoute";
 import { useDispatch, useSelector } from "react-redux";
 import { doGetNavigation } from "./store/actions/Navigation";
+import TransactionReport from "./Pages/Finance/TransactionReport/TransactionReport";
+import GatePassForm from "./Pages/GatePass/GatePassForm/GatePassForm";
 
 
 function App() {
@@ -64,6 +66,10 @@ function App() {
       setisLogin(true);
     }
     dispatch(doGetNavigation(setShowMainLoader))
+    let Connected = window.navigator.onLine;
+    if (!Connected) {
+      alert('Connection available');
+    }
   }, []);
 
   return (
@@ -118,17 +124,17 @@ function App() {
                     </PrivateRoute> */}
 
 
-                    <Route path="/RoleAccess" element={
+                    {/* <Route path="/RoleAccess" element={
                       <PrivateRoute pagePermission={allPagesData.find(o => o.pageURL === 'RoleAccess')} >
                        <AddRole />
                       </PrivateRoute>
                     }
-                    />
+                    /> */}
 
 
 
 
-                    {/* <Route path="/RoleAccess" element={<AddRole      pagePermission={allPagesData.find(o => o.pageURL === 'RoleAccess')}/>} /> */}
+                    <Route path="/RoleAccess" element={<AddRole pagePermission={allPagesData.find(o => o.pageURL === 'RoleAccess')} />} />
                     <Route path="ModuleAccess" element={<AddModules />} />
                     <Route path="UserAccess" element={<AddUser />} />
                     <Route path="PagesAccess" element={<AddPages />} />
@@ -193,6 +199,14 @@ function App() {
                     <Route
                       path="JournalVoucherReport"
                       element={<JVReport />}
+                    />
+                    <Route
+                      path="TransactionReport"
+                      element={< TransactionReport />}
+                    />
+                    <Route
+                      path="GatePassForm"
+                      element={< GatePassForm />}
                     />
 
                   </Routes>
