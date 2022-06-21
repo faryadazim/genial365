@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
+import { endPoint } from "../../config/Config";
 
 const AddPages = () => {
   const url = localStorage.getItem("authUser");
@@ -23,7 +24,9 @@ const AddPages = () => {
     page_link: "",
     module_id: "",
   });
-  
+
+  const [addPageValidation, setAddPageValidation] = useState({ page_name: true, page_link: true })
+  const [EditPageValidation, setEditPageValidation] = useState({ page_name: true, page_link: true })
 
   const [currentEditPage, setCurrentEditPage] = useState({
     page_id: "",
@@ -33,12 +36,14 @@ const AddPages = () => {
   });
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
 
-  const notifyAdd = () => toast("User Created Successfully!");
-  const notifyDelete = () => toast("User Deleted Successfully!");
+  const notifyAdd = () => toast("Page Created Successfully!");
+  const notifyDelete = () => toast("Page Deleted Successfully!");
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setEditPageValidation({ page_name: true, page_link: true })
+    setShow(false)};
   const handleShow = () => setShow(true);
 
   // Get current posts
@@ -49,7 +54,7 @@ const AddPages = () => {
   const fetchAllData = () => {
     fetch(url + "/api/Pages")
       .then((response) => response.json())
-      .then((json) => { 
+      .then((json) => {
         setUserRegistered(json);
         fetch(url + "/api/Modules")
           .then((response) => response.json())
@@ -57,12 +62,12 @@ const AddPages = () => {
 
 
             setModule(ModuleList);
-
-            // setPageRegisteredAdd({
-            //   ...pageRegisteredAdd,
-            //   // module_id: ModuleList[0].module_id,
-            // })
-
+            setPageRegisteredAdd({
+              page_name: "",
+              page_link: "",
+              module_id: ModuleList[0].module_id,
+            })
+        
 
 
 
@@ -71,39 +76,44 @@ const AddPages = () => {
       });
   };
   const AddPageRegistered = () => {
-console.log(pageRegisteredAdd , "added to be data");
 
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(pageRegisteredAdd),
-    };
-    console.log(requestOptions.body);
-    fetch(url + "/api/Pages", requestOptions)
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data, "added user");
-        fetchAllData();
-        setPageRegisteredAdd({
-          page_name: "",
-          page_link: "",
-          module_id: "",
+
+    if (pageRegisteredAdd.page_name === "" || pageRegisteredAdd.page_name == "" || pageRegisteredAdd.page_name === undefined ||
+      pageRegisteredAdd.page_name === null || pageRegisteredAdd.page_name === " " || pageRegisteredAdd.page_name == " ") {
+   setAddPageValidation({...addPageValidation , page_name:false}) 
+    } else if (pageRegisteredAdd.page_link === "" || pageRegisteredAdd.page_link == "" || pageRegisteredAdd.page_link === undefined ||
+      pageRegisteredAdd.page_link === null || pageRegisteredAdd.page_link === " " || pageRegisteredAdd.page_link == " ") {
+        setAddPageValidation({...addPageValidation , page_link:false})
+    } else {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pageRegisteredAdd),
+      };
+      fetch(url + "/api/Pages", requestOptions)
+        .then((response) => response.json())
+        .then((data) => {
+          fetchAllData();
+          notifyAdd();
+          setPageRegisteredAdd({
+            page_name: "",
+            page_link: "",
+            module_id: "",
+          });
+          setAddPageValidation({ page_name: true, page_link: true })
+        })
+        .catch((err) => {
+          console.log("err", err);
         });
-        notifyAdd();
-      })
-      .catch((err) => {
-        console.log("err", err);
-      });
-      
-      setPageRegisteredAdd({
-        page_name: "",
-        page_link: "",
-        module_id: "",
-      });
+    }
+
+
+
+
   };
   const deletePage = (e) => {
     console.log(e);
-    fetch(`${url}/api/Pages/${e}`, {
+    fetch(`${endPoint}api/Pages/${e}`, {
       method: "DELETE",
       // headers: {
       //   Authorization:
@@ -114,32 +124,45 @@ console.log(pageRegisteredAdd , "added to be data");
       // },
     })
       .then((response) => {
-        // deleteing Role for this Id
-
         fetchAllData();
         notifyDelete();
       })
       .catch((error) => console.log("error", error));
   };
-  const updatePage = () => { 
+  const updatePage = () => {
+
+    if (currentEditPage.page_name === "" || currentEditPage.page_name == "" || currentEditPage.page_name === undefined ||
+    currentEditPage.page_name === null || currentEditPage.page_name === " " || currentEditPage.page_name == " ") {
+ setEditPageValidation({...EditPageValidation , page_name:false}) 
+  } else if (currentEditPage.page_link === "" || currentEditPage.page_link == "" || currentEditPage.page_link === undefined ||
+    currentEditPage.page_link === null || currentEditPage.page_link === " " || currentEditPage.page_link == " ") {
+      setEditPageValidation({...EditPageValidation , page_link:false})
+  } else {
+
+
+
+
+
     const requestOptions = {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(currentEditPage),
     };
-    
+
     fetch(url + "/api/Pages", requestOptions)
       .then((response) => response)
       .then((data) => {
         fetchAllData();
         console.log(data, "updated user");
-        
+
         notifyAdd();
       })
       .catch((err) => {
         console.log("err", err);
       });
-      fetchAllData();
+      setEditPageValidation({ page_name: true, page_link: true })
+    fetchAllData();
+    handleClose();}
   };
 
   useEffect(() => {
@@ -157,9 +180,8 @@ console.log(pageRegisteredAdd , "added to be data");
         <>
           {" "}
           <div
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "footer-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "footer-margin-remove" : " "
+              } `}
             role="main"
           >
             {/* Registration Form  */}
@@ -191,17 +213,18 @@ console.log(pageRegisteredAdd , "added to be data");
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <input
-                            className="form-control"
+                            className={addPageValidation.page_name?"form-control" : "form-control requiredValidateInput"}
                             data-validate-length-range={6}
                             data-validate-words={2}
                             name="name"
                             placeholder="ex. Purchases"
                             value={pageRegisteredAdd.page_name}
                             onChange={(e) =>
-                              setPageRegisteredAdd({
+                            {setAddPageValidation({...addPageValidation ,page_name:true  })
+                                setPageRegisteredAdd({
                                 ...pageRegisteredAdd,
                                 page_name: e.target.value,
-                              })
+                              })}
                             }
                             required="required"
                           />
@@ -214,16 +237,18 @@ console.log(pageRegisteredAdd , "added to be data");
                         </label>
                         <div className="col-md-6 col-sm-6">
                           <input
-                            className="form-control"
+                            className={addPageValidation.page_link?"form-control" : "form-control requiredValidateInput"}
+                        
                             name="url"
                             // required="required"
                             type="text"
                             value={pageRegisteredAdd.page_link}
                             onChange={(e) =>
-                              setPageRegisteredAdd({
+                           {setAddPageValidation({...addPageValidation , page_link:true})
+                               setPageRegisteredAdd({
                                 ...pageRegisteredAdd,
                                 page_link: e.target.value,
-                              })
+                              })}
                             }
                           />
                         </div>
@@ -237,7 +262,7 @@ console.log(pageRegisteredAdd , "added to be data");
                           <Form.Select
                             aria-label="Default select example"
                             className="form-control text-center w-50"
-                      
+                            value={pageRegisteredAdd.module_id}
                             onChange={(e) =>
                               setPageRegisteredAdd({
                                 ...pageRegisteredAdd,
@@ -309,18 +334,20 @@ console.log(pageRegisteredAdd , "added to be data");
                   </label>
                   <div className="col-md-9 col-sm-9">
                     <input
-                      className="form-control"
+                      className={EditPageValidation.page_name?"form-control" : "form-control requiredValidateInput"}
+                        
                       data-validate-length-range={6}
                       data-validate-words={2}
                       name="name"
                       placeholder="ex. Ali A.Khan"
-                      required="required" 
+                      required="required"
                       value={currentEditPage.page_name}
                       onChange={(e) =>
-                        setCurrentEditPage({
+                       {setEditPageValidation({...EditPageValidation , page_name:true})
+                         setCurrentEditPage({
                           ...currentEditPage,
                           page_name: e.target.value,
-                        })
+                        })}
                       }
                     />
                   </div>
@@ -331,16 +358,18 @@ console.log(pageRegisteredAdd , "added to be data");
                   </label>
                   <div className="col-md-9 col-sm-9">
                     <input
-                      className="form-control"
+                         className={EditPageValidation.page_link?"form-control" : "form-control requiredValidateInput"}
+                   
                       name="text"
                       required="required"
                       type="text"
                       value={currentEditPage.page_link}
                       onChange={(e) =>
-                        setCurrentEditPage({
+                       {setEditPageValidation({...EditPageValidation , page_link:true})
+                         setCurrentEditPage({
                           ...currentEditPage,
                           page_link: e.target.value,
-                        })
+                        })}
                       }
                     />
                   </div>
@@ -386,9 +415,9 @@ console.log(pageRegisteredAdd , "added to be data");
                   className="btn-sm px-3 ModalButtonPositionAdjectment 
                 "
                   onClick={() => {
-                    handleClose();
+                 
                     updatePage()
-                    
+
                   }}
                 >
                   Update
@@ -427,9 +456,9 @@ console.log(pageRegisteredAdd , "added to be data");
                                 onClick={() => {
                                   handleShow();
                                   setCurrentEditPage({
-                                    page_id:Page.id,
+                                    page_id: Page.id,
                                     page_name: Page.name,
-                                    page_link:Page.pageUrl,
+                                    page_link: Page.pageUrl,
                                     module_id: Page.moduleId,
                                   })
                                 }}

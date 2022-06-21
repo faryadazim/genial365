@@ -1,54 +1,46 @@
-import React  , {useState}from "react";
+import React, { useState } from "react";
 import { endPoint } from "../../../config/Config.js";
 
 import PreviewProductionReport from "./PreviewProductionReport.js";
 const GenrProductionReportReciept = React.forwardRef(
-  ({ GenrProductionReportData }, ref) => {
+  ({ GenrProductionReportData, GenrProductionGrandTotal }, ref) => {
     const [modalShow, setModalShow] = useState(false);
-    const [productionIdForPreview , setProductionIdForPreview] = useState("")
-    const [selectedProductionData , setSelectedProductionData] = useState("")
-    const [isLoadingIdGenerated ,setIsLoadingIdGenerated ] = useState(true)
-
-
+    const [productionIdForPreview, setProductionIdForPreview] = useState("");
+    const [selectedProductionData, setSelectedProductionData] = useState("");
+    const [isLoadingIdGenerated, setIsLoadingIdGenerated] = useState(true);
 
     const generateReportOfSpecificId = (id) => {
       fetch(`${endPoint}api/GetProductById?id=${id}`, {
         method: "GET",
         headers: {
-          Authorization:
-            `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+          Authorization: `Bearer ${
+            JSON.parse(localStorage.getItem("access_token")).access_token
+          }`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
       })
         .then((response) => {
           return response.json();
         })
-        .then(async(data) => {
- await  setSelectedProductionData(data);
-   
- await  setIsLoadingIdGenerated(false)
-    await      setModalShow(true)
+        .then(async (data) => {
+          await setSelectedProductionData(data);
+          await setIsLoadingIdGenerated(false);
+          await setModalShow(true);
         })
         .catch((err) => {
           console.log(err, "err");
-        }); 
+        });
     };
-  
-
-
-
-
-
-
 
     return (
       <div className="x_content mb-3 " ref={ref}>
-        <PreviewProductionReport show={modalShow}  
-       onHide={() => setModalShow(false)} 
-       productionIdForPreview={productionIdForPreview}
-       selectedProductionData={selectedProductionData}
-       isLoadingIdGenerated={isLoadingIdGenerated}
-    />
+        <PreviewProductionReport
+          show={modalShow}
+          onHide={() => setModalShow(false)}
+          productionIdForPreview={productionIdForPreview}
+          selectedProductionData={selectedProductionData}
+          isLoadingIdGenerated={isLoadingIdGenerated}
+        />
         <div className="row mx-3  reportTableHead ">
           <div className="col-md-1 col-md-1 col-sm-1 col-1 col-xl-1  px-0 my-auto  ">
             <div className=" col-md-12 col-sm-12 col-12 col-xl-12 px-0 right-border-1 h-100 text-center font-size-12  h-100 my-1 ">
@@ -189,10 +181,15 @@ const GenrProductionReportReciept = React.forwardRef(
                             : item.detail}
                         </div>
                         <div className="col-md-2 col-md-2 col-sm-2 col-2 col-xl-2   h-100 font-size-12  text-center  py-1  right-border-2   d-flex justify-content-start align-items-center ">
-                        <i class="fa fa-eye hoverBgColorView" onClick={async ()=>{
-                       await   generateReportOfSpecificId(item.productionId)
-                          setProductionIdForPreview(item.productionId)
-                        }}></i>
+                          <i
+                            class="fa fa-eye hoverBgColorView"
+                            onClick={async () => {
+                              await generateReportOfSpecificId(
+                                item.productionId
+                              );
+                              setProductionIdForPreview(item.productionId);
+                            }}
+                          ></i>
                         </div>
                       </div>
                     </div>
@@ -200,6 +197,33 @@ const GenrProductionReportReciept = React.forwardRef(
                 );
               })}
             </>
+            <div className="row mx-3  reportTableBody bottom-border-2">
+              <div className="col-md-12 px-0">
+                <div className="col-md-7 left-border-2     h-100  font-size-12  text-center  py-2  right-border-2   d-flex justify-content-end align-items-center ">
+                &nbsp;
+                </div>
+                <div className="col-md-3 px-0    h-100  font-size-12  text-center  py-0 right-border-2   d-flex justify-content-center align-items-center ">
+                  <div className="col-md-4  h-100  right-border-2 py-2"> 
+                    <strong style={{ fontWeight: "800" }}> Grand Total </strong>
+                  </div>
+                  <div className="col-md-3 px-0  h-100  right-border-2  py-2 "> 
+               {  GenrProductionGrandTotal.totalPieces}
+                  </div>
+                  <div className="col-md-2 px-0  h-100  right-border-2  py-2 "> 
+       {   GenrProductionGrandTotal.totalBGradePieces}
+                  </div>
+                  <div className="col-md-3 px-0 h-100  py-2 "> 
+         {     GenrProductionGrandTotal.totalAGradePieces}
+                  </div>
+                </div>
+                <div className="col-md-2 px-0    px-0 py-2    h-100  font-size-12  text-center  py-0 right-border-2   d-flex justify-content-center align-items-center ">
+                {   GenrProductionGrandTotal.totalAmount!==undefined && GenrProductionGrandTotal.totalAmount.toFixed(2)}
+                </div>
+                {/* <div className="col-md-2     h-100 font-size-12  text-center  py-1  right-border-2   d-flex justify-content-start align-items-center ">
+                  asdasd
+                </div> */}
+              </div>
+            </div>
           </>
         )}
       </div>
