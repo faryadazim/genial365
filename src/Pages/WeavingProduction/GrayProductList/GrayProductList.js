@@ -1,15 +1,79 @@
 import React, { useState, useEffect } from "react";
-import { endPoint } from '../../../config/Config'
+import { endPoint } from "../../../config/Config";
+
+import Select from "react-select";
 
 import { useSelector } from "react-redux";
 import Loader from "../../../Layout/Loader/Loader";
 import AddNewGrayProductList from "./AddNewGrayProductList";
 import UpdateGrayProduct from "./UpdateGrayProduct";
-import './GrayProductList.css'
+import "./GrayProductList.css";
+const customStyles = {
+  // control: base => ({
+  //   ...base,
+  //   // This line disable the blue border
+
+  // })
+  control: (provided, state, base) => ({
+    ...provided,
+    background: "#fff",
+    borderColor: "#d9e4e8",
+    borderRadius: "none",
+    minHeight: "30px",
+    height: "30px",
+
+    ...base,
+    boxShadow: "none",
+  }),
+  // option: (provided, state) => ({
+  //     ...provided,
+
+  //     borderBottom: "1px  #003a4d",
+  //     color: state.isSelected ? "#f79c74" : "#003a4d",
+  //     background: '#fff',
+
+  // }),
+  // menu: base => ({
+  //     ...base,
+  //     // override border radius to match the box
+  //     borderRadius: 0,
+  //     backgroundColor: 'red',
+  //     marginTop: 0
+  //   }),
+  //   menuList: base => ({
+  //     ...base,
+  //     // kill the white space on first and last option
+  //     backgroundColor: 'red',
+  //     padding: 0
+  //   }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    fontSize: "11px",
+    height: "30px",
+    padding: "0 6px",
+    // background: '#fff',
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: "0px",
+  }),
+  indicatorSeparator: (state) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: "30px",
+  }),
+};
+
+
+
 const GrayProductList = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [ListOfGrayProduct, setListOfGrayProduct] = useState([]);
+  const [listOfGrayProductConst , setListOfGrayProductConst] = useState([])
   const [modalShow, setModalShow] = useState(false);
   const [modalShowForUpdate, setModalShowForUpdate] = useState(false);
   const [isLoading, setisLoading] = useState(true);
@@ -25,10 +89,13 @@ const GrayProductList = () => {
     LoomNumbPieceInBorder96: true,
     LoomNumbRatePerBorderWithDraw96: true,
     LoomNumbRatePerBorderWithoutDraw96: true,
-    status: true
-  }
-  //
-  const [addNewGrayProductValidator, setaddNewGrayProductValidator] = useState(addNewGrayProductValidatorInitialState)
+    status: true,
+  };
+  const [productSortingSelectorOptions , setProductSortingSelectorOptions] = useState([{label:"All Products" , value:"All" } ,{label:"Activate Products" , value:"Activate" } ,{label:"Deactivate Product" , value:"Deactivate" } ,])
+  const [productSortingSelectorValue ,setProductSortingSelectorValue ] = useState(productSortingSelectorOptions[0])
+  const [addNewGrayProductValidator, setaddNewGrayProductValidator] = useState(
+    addNewGrayProductValidatorInitialState
+  );
   const initialUpdatedValidation = {
     PerPieceGrayWeightGram: true,
     graySizeppWidth: true,
@@ -41,9 +108,12 @@ const GrayProductList = () => {
     LoomNumbRatePerBorderWithoutDraw96: true,
     status: true,
     nativingRate76: true,
-    nativingRate96: true
-  }
-  const [updatedGrayProductListValidation, setUpdatedGrayProductListValidation] = useState(initialUpdatedValidation)
+    nativingRate96: true,
+  };
+  const [
+    updatedGrayProductListValidation,
+    setUpdatedGrayProductListValidation,
+  ] = useState(initialUpdatedValidation);
   const newProductInitialState = {
     itemName: "",
     itemSize: "",
@@ -57,9 +127,9 @@ const GrayProductList = () => {
     LoomNumbRatePerBorderWithDraw96: "",
     LoomNumbRatePerBorderWithoutDraw96: "",
     status: "",
-  }
+  };
   const [AddNewProduct, setAddNewProduct] = useState(newProductInitialState);
-  const [updatedGrayProductList, setUpdatedGrayProductList] = useState({})
+  const [updatedGrayProductList, setUpdatedGrayProductList] = useState({});
   const [itemNameOptions, setItemNameOptions] = useState([]);
   const [itemSizeOptions, setItemSizeOptions] = useState([]);
 
@@ -90,7 +160,6 @@ const GrayProductList = () => {
             });
 
             setItemNameOptions(arr);
-
           });
         fetch(url + "api/BorderSizes", {
           method: "GET",
@@ -112,37 +181,75 @@ const GrayProductList = () => {
             setItemSizeOptions(arr2);
             setisLoading(false);
           });
+
+         
+ 
         setListOfGrayProduct(json);
+        setListOfGrayProductConst(json)
       });
   };
 
-
-
   const AddNewProductFunc = () => {
     if (AddNewProduct.itemName == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, itemName: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        itemName: false,
+      });
     } else if (AddNewProduct.itemSize == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, itemSize: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        itemSize: false,
+      });
     } else if (AddNewProduct.PerPieceGrayWeightGram == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, PerPieceGrayWeightGram: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        PerPieceGrayWeightGram: false,
+      });
     } else if (AddNewProduct.graySizeppWidth == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, graySizeppWidth: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        graySizeppWidth: false,
+      });
     } else if (AddNewProduct.graySizeppLength == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, graySizeppLength: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        graySizeppLength: false,
+      });
     } else if (AddNewProduct.LoomNumbPieceInBorder76 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbPieceInBorder76: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbPieceInBorder76: false,
+      });
     } else if (AddNewProduct.LoomNumbRatePerBorderWithDraw76 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithDraw76: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbRatePerBorderWithDraw76: false,
+      });
     } else if (AddNewProduct.LoomNumbRatePerBorderWithoutDraw76 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithoutDraw76: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbRatePerBorderWithoutDraw76: false,
+      });
     } else if (AddNewProduct.LoomNumbPieceInBorder96 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbPieceInBorder96: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbPieceInBorder96: false,
+      });
     } else if (AddNewProduct.LoomNumbRatePerBorderWithDraw96 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithDraw96: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbRatePerBorderWithDraw96: false,
+      });
     } else if (AddNewProduct.LoomNumbRatePerBorderWithoutDraw96 == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, LoomNumbRatePerBorderWithoutDraw96: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        LoomNumbRatePerBorderWithoutDraw96: false,
+      });
     } else if (AddNewProduct.status == "") {
-      setaddNewGrayProductValidator({ ...addNewGrayProductValidator, status: false })
+      setaddNewGrayProductValidator({
+        ...addNewGrayProductValidator,
+        status: false,
+      });
     } else {
       const requestOptions = {
         method: "POST",
@@ -152,18 +259,17 @@ const GrayProductList = () => {
       fetch(url + "api/grayProductLists", requestOptions)
         .then((response) => response.json())
         .then((data) => {
-          fetchAllData()
+          fetchAllData();
           setModalShow(false);
-          setAddNewProduct(newProductInitialState)
-          setaddNewGrayProductValidator(addNewGrayProductValidatorInitialState)
+          setAddNewProduct(newProductInitialState);
+          setaddNewGrayProductValidator(addNewGrayProductValidatorInitialState);
         })
         .catch((err) => {
           console.log("err", err);
         });
     }
-  }
+  };
   const deleteGrayProduct = (e) => {
-
     fetch(`${endPoint}/api/grayProductLists/${e}`, {
       method: "DELETE",
       // headers: {
@@ -178,161 +284,222 @@ const GrayProductList = () => {
         // deleteing Role for this Id
 
         fetchAllData();
-
       })
       .catch((error) => console.log("error", error));
-  }
+  };
   const updateGrayProductList = (e) => {
     e.preventDefault();
-    if (updatedGrayProductList.PerPieceGrayWeightGram === "" || updatedGrayProductList.PerPieceGrayWeightGram === null || updatedGrayProductList.PerPieceGrayWeightGram === undefined) {
-      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, PerPieceGrayWeightGram: false })
-    } else if (updatedGrayProductList.graySizeppWidth === "" || updatedGrayProductList.graySizeppWidth === null || updatedGrayProductList.graySizeppWidth === undefined) {
-      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppWidth: false })
-    } else if (updatedGrayProductList.graySizeppLength === "" || updatedGrayProductList.graySizeppLength === null || updatedGrayProductList.graySizeppLength === undefined) {
-      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppLength: false })
+    if (
+      updatedGrayProductList.PerPieceGrayWeightGram === "" ||
+      updatedGrayProductList.PerPieceGrayWeightGram === null ||
+      updatedGrayProductList.PerPieceGrayWeightGram === undefined
+    ) {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+        PerPieceGrayWeightGram: false,
+      });
+    } else if (
+      updatedGrayProductList.graySizeppWidth === "" ||
+      updatedGrayProductList.graySizeppWidth === null ||
+      updatedGrayProductList.graySizeppWidth === undefined
+    ) {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+        graySizeppWidth: false,
+      });
+    } else if (
+      updatedGrayProductList.graySizeppLength === "" ||
+      updatedGrayProductList.graySizeppLength === null ||
+      updatedGrayProductList.graySizeppLength === undefined
+    ) {
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+        graySizeppLength: false,
+      });
 
-      // loom number piece 
-    } else if ((updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 === "")
-      && (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 === "")) {
+      // loom number piece
+    } else if (
+      (updatedGrayProductList.LoomNumbPieceInBorder76 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 === "") &&
+      (updatedGrayProductList.LoomNumbPieceInBorder96 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 === "")
+    ) {
       setUpdatedGrayProductListValidation({
         ...updatedGrayProductListValidation,
         LoomNumbPieceInBorder76: false,
         LoomNumbPieceInBorder96: false,
-      })
-      // loom number piece 
-    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === "")
-      && (updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === "")) {
-
-
-      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+      });
+      // loom number piece
+    } else if (
+      (updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === null ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === "") &&
+      (updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === null ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === "")
+    ) {
+      if (
+        updatedGrayProductList.LoomNumbPieceInBorder76 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == undefined ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithDraw96: false,
-
-        })
-
-      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        });
+      } else if (
+        updatedGrayProductList.LoomNumbPieceInBorder96 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == "" ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithDraw76: false,
-        })
+        });
       } else {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithDraw76: false,
           LoomNumbRatePerBorderWithDraw96: false,
-
-        })
+        });
       }
 
-
-      // loom number piece 
-
-
-
-    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === "")
-      && (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === "")) {
-
-
-
-      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+      // loom number piece
+    } else if (
+      (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === null ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 ===
+          undefined ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === "") &&
+      (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === null ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 ===
+          undefined ||
+        updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === "")
+    ) {
+      if (
+        updatedGrayProductList.LoomNumbPieceInBorder76 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == undefined ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithoutDraw96: false,
-        })
-
-      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        });
+      } else if (
+        updatedGrayProductList.LoomNumbPieceInBorder96 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == "" ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
-
           LoomNumbRatePerBorderWithoutDraw76: false,
-        })
+        });
       } else {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
           LoomNumbRatePerBorderWithoutDraw96: false,
           LoomNumbRatePerBorderWithoutDraw76: false,
-
-        })
+        });
       }
 
       // --
-
-    } else if ((updatedGrayProductList.nativingRate76 === null || updatedGrayProductList.nativingRate76 === "")
-      && (updatedGrayProductList.nativingRate96 === null || updatedGrayProductList.nativingRate96 === "")) {
-
-
-      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+    } else if (
+      (updatedGrayProductList.nativingRate76 === null ||
+        updatedGrayProductList.nativingRate76 === "") &&
+      (updatedGrayProductList.nativingRate96 === null ||
+        updatedGrayProductList.nativingRate96 === "")
+    ) {
+      if (
+        updatedGrayProductList.LoomNumbPieceInBorder76 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == undefined ||
+        updatedGrayProductList.LoomNumbPieceInBorder76 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           nativingRate96: false,
-
-        })
-
-      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        });
+      } else if (
+        updatedGrayProductList.LoomNumbPieceInBorder96 === null ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == "" ||
+        updatedGrayProductList.LoomNumbPieceInBorder96 == ""
+      ) {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           nativingRate76: false,
-        })
+        });
       } else {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           nativingRate76: false,
           nativingRate96: false,
-
-        })
+        });
       }
-
-
     } else if (updatedGrayProductList.status == "") {
-      setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, status: false })
+      setUpdatedGrayProductListValidation({
+        ...updatedGrayProductListValidation,
+        status: false,
+      });
     } else {
       const updatedRefactoredGrayProduct = {
         grayProduct_id: parseInt(updatedGrayProductList.grayProduct_id),
         itemName: parseInt(updatedGrayProductList.itemNameValue.value),
         itemSize: parseInt(updatedGrayProductList.itemSizeValue.value),
-        PerPieceGrayWeightGram: parseInt(updatedGrayProductList.PerPieceGrayWeightGram),
+        PerPieceGrayWeightGram: parseInt(
+          updatedGrayProductList.PerPieceGrayWeightGram
+        ),
         graySizeppWidth: parseInt(updatedGrayProductList.graySizeppWidth),
         graySizeppLength: parseInt(updatedGrayProductList.graySizeppLength),
-        LoomNumbPieceInBorder76: parseInt(updatedGrayProductList.LoomNumbPieceInBorder76),
-        LoomNumbRatePerBorderWithDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
-        LoomNumbRatePerBorderWithoutDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76),
-        LoomNumbPieceInBorder96: parseInt(updatedGrayProductList.LoomNumbPieceInBorder96),
-        LoomNumbRatePerBorderWithDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw96),
-        LoomNumbRatePerBorderWithoutDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96),
+        LoomNumbPieceInBorder76: parseInt(
+          updatedGrayProductList.LoomNumbPieceInBorder76
+        ),
+        LoomNumbRatePerBorderWithDraw76: parseInt(
+          updatedGrayProductList.LoomNumbRatePerBorderWithDraw76
+        ),
+        LoomNumbRatePerBorderWithoutDraw76: parseInt(
+          updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76
+        ),
+        LoomNumbPieceInBorder96: parseInt(
+          updatedGrayProductList.LoomNumbPieceInBorder96
+        ),
+        LoomNumbRatePerBorderWithDraw96: parseInt(
+          updatedGrayProductList.LoomNumbRatePerBorderWithDraw96
+        ),
+        LoomNumbRatePerBorderWithoutDraw96: parseInt(
+          updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96
+        ),
         status: updatedGrayProductList.status.value,
         nativingRate76: parseFloat(updatedGrayProductList.nativingRate76),
-        nativingRate96: parseFloat(updatedGrayProductList.nativingRate96)
-      }
+        nativingRate96: parseFloat(updatedGrayProductList.nativingRate96),
+      };
       const requestOptions = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updatedRefactoredGrayProduct),
       };
 
-      fetch(`${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduct_id}`, requestOptions)
+      fetch(
+        `${endPoint}api/grayProductLists/${updatedRefactoredGrayProduct.grayProduct_id}`,
+        requestOptions
+      )
         .then((response) => response)
         .then((data) => {
-          setUpdatedGrayProductListValidation(initialUpdatedValidation)
+          setUpdatedGrayProductListValidation(initialUpdatedValidation);
           fetchAllData();
-
-
         })
         .catch((err) => {
           console.log("err", err);
         });
-      setModalShowForUpdate(false)
-      fetchAllData()
+      setModalShowForUpdate(false);
+      fetchAllData();
     }
-  }
+  };
+
+ 
   useEffect(() => {
     fetchAllData();
   }, []);
@@ -344,8 +511,9 @@ const GrayProductList = () => {
       ) : (
         <div
           role="main"
-          className={`right_col  heightOfGray  ${showNavMenu == false ? "right_col-margin-remove " : " "
-            } `}
+          className={`right_col  heightOfGray  ${
+            showNavMenu == false ? "right_col-margin-remove " : " "
+          } `}
         >
           <AddNewGrayProductList
             show={modalShow}
@@ -355,7 +523,8 @@ const GrayProductList = () => {
             onHide={() => setModalShow(false)}
             AddNewProductFunc={AddNewProductFunc}
             itemStatusOptions={itemStatusOptions}
-            setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
+            setItemSizeOptions={setItemSizeOptions}
+            itemSizeOptions={itemSizeOptions}
             addNewGrayProductValidator={addNewGrayProductValidator}
           />
           <UpdateGrayProduct
@@ -363,28 +532,63 @@ const GrayProductList = () => {
             itemNameOptions={itemNameOptions}
             onHide={() => setModalShowForUpdate(false)}
             itemStatusOptions={itemStatusOptions}
-            setItemSizeOptions={setItemSizeOptions} itemSizeOptions={itemSizeOptions}
-            updatedGrayProductList={updatedGrayProductList} setUpdatedGrayProductList={setUpdatedGrayProductList}
+            setItemSizeOptions={setItemSizeOptions}
+            itemSizeOptions={itemSizeOptions}
+            updatedGrayProductList={updatedGrayProductList}
+            setUpdatedGrayProductList={setUpdatedGrayProductList}
             updateGrayProductList={updateGrayProductList}
             updatedGrayProductListValidation={updatedGrayProductListValidation}
-
-            setUpdatedGrayProductListValidation={setUpdatedGrayProductListValidation}
+            setUpdatedGrayProductListValidation={
+              setUpdatedGrayProductListValidation
+            }
           />
-
-
 
           <div className="x_panel">
             {/* <div className="x_title"> */}
 
             <div className="page-title m-0  ">
-              <h1 className="py-2 pl-3 grayListHeading">Gray Product Details</h1>
-
-
+              <div className="col-md-8">
+                {" "}
+                <h1 className="py-2 pl-3 grayListHeading">
+                  Gray Prosduct Details
+                </h1>
+              </div>
+              <div className="col-md-4 pt-2">
+              <Select
+                    // required
+                    className="basic-single"
+                    classNamePrefix="select"
+                    defaultValue={"Active"}
+                    value={productSortingSelectorValue}
+                    onChange={(value) => {
+                   setProductSortingSelectorValue(value)
+                      if (value.value==="All") {
+                        setListOfGrayProduct(listOfGrayProductConst)
+                      } else if(value.value==="Activate") {
+                        let activatedItem = listOfGrayProductConst.filter((EachProduct)=>{
+                          return EachProduct.status==="Activate"
+                           })
+                          
+                           setListOfGrayProduct(activatedItem)
+                      }else{
+                        let DeactivateItem = listOfGrayProductConst.filter((EachProduct)=>{
+                          return EachProduct.status==="Deactivate"
+                           })
+                          
+                           setListOfGrayProduct(DeactivateItem)
+                      }
+            
+                    }}
+                    isSearchable={true}
+                    name="color"
+                    options={productSortingSelectorOptions}
+                    styles={customStyles}
+                  />
+              </div>
             </div>
             <div className="clearfix" />
             {/* </div> */}
             <div className="x_content">
-
               <div className="x_panel  ">
                 <div className="x_content">
                   <div className="table-responsive">
@@ -397,7 +601,6 @@ const GrayProductList = () => {
                             style={{ width: "3%" }}
                           >
                             <div className=" py-1  d-flex justify-content-center  fontSettingForGrayHeader ">
-
                               Sr.
                             </div>
                           </th>
@@ -566,10 +769,10 @@ const GrayProductList = () => {
                                   </div>
                                   <div className="  col-md-5 text-center             ">
                                     <div className="col-md-6 text-center    ">
-                                      {(item.LoomNumbRatePerBorderWithDraw76)}
+                                      {item.LoomNumbRatePerBorderWithDraw76}
                                     </div>
                                     <div className="col-md-6 text-center  removePadding  ">
-                                      {(item.LoomNumbRatePerBorderWithoutDraw76)}
+                                      {item.LoomNumbRatePerBorderWithoutDraw76}
                                     </div>
                                   </div>
                                   <div className="   col-md-3 text-center  removePadding            ">
@@ -588,10 +791,10 @@ const GrayProductList = () => {
                                   </div>
                                   <div className=" py-1 col-md-5 text-center  removePadding     ">
                                     <div className="col-md-6 text-center   removePadding          ">
-                                      {(item.LoomNumbRatePerBorderWithDraw96)}
+                                      {item.LoomNumbRatePerBorderWithDraw96}
                                     </div>
                                     <div className="col-md-6 text-center  removePadding    removeLeftBorder">
-                                      {(item.LoomNumbRatePerBorderWithoutDraw96)}
+                                      {item.LoomNumbRatePerBorderWithoutDraw96}
                                     </div>
                                   </div>
                                   <div className="   col-md-3 text-center  removePadding        ">
@@ -611,28 +814,43 @@ const GrayProductList = () => {
                                             "
                                 style={{ width: "2%" }}
                               >
-                                <i className="fa fa-edit text-common "
+                                <i
+                                  className="fa fa-edit text-common "
                                   onClick={() => {
-
-
                                     setUpdatedGrayProductList({
                                       grayProduct_id: item.grayProduct_id,
-                                      itemNameValue: { label: item.itemName, value: item.itemNameId },
-                                      itemSizeValue: { label: item.itemSize, value: item.itemSizeId },
-                                      PerPieceGrayWeightGram: item.PerPieceGrayWeightGram,
+                                      itemNameValue: {
+                                        label: item.itemName,
+                                        value: item.itemNameId,
+                                      },
+                                      itemSizeValue: {
+                                        label: item.itemSize,
+                                        value: item.itemSizeId,
+                                      },
+                                      PerPieceGrayWeightGram:
+                                        item.PerPieceGrayWeightGram,
                                       graySizeppWidth: item.graySizeppWidth,
                                       graySizeppLength: item.graySizeppLength,
-                                      LoomNumbPieceInBorder76: item.LoomNumbPieceInBorder76,
-                                      LoomNumbRatePerBorderWithDraw76: item.LoomNumbRatePerBorderWithDraw76,
-                                      LoomNumbRatePerBorderWithoutDraw76: item.LoomNumbRatePerBorderWithoutDraw76,
-                                      LoomNumbPieceInBorder96: item.LoomNumbPieceInBorder96,
-                                      LoomNumbRatePerBorderWithDraw96: item.LoomNumbRatePerBorderWithDraw96,
-                                      LoomNumbRatePerBorderWithoutDraw96: item.LoomNumbRatePerBorderWithoutDraw96,
-                                      status: { label: item.status, value: item.status },
+                                      LoomNumbPieceInBorder76:
+                                        item.LoomNumbPieceInBorder76,
+                                      LoomNumbRatePerBorderWithDraw76:
+                                        item.LoomNumbRatePerBorderWithDraw76,
+                                      LoomNumbRatePerBorderWithoutDraw76:
+                                        item.LoomNumbRatePerBorderWithoutDraw76,
+                                      LoomNumbPieceInBorder96:
+                                        item.LoomNumbPieceInBorder96,
+                                      LoomNumbRatePerBorderWithDraw96:
+                                        item.LoomNumbRatePerBorderWithDraw96,
+                                      LoomNumbRatePerBorderWithoutDraw96:
+                                        item.LoomNumbRatePerBorderWithoutDraw96,
+                                      status: {
+                                        label: item.status,
+                                        value: item.status,
+                                      },
                                       nativingRate76: item.nativingRate76,
                                       nativingRate96: item.nativingRate96,
                                     });
-                                    setModalShowForUpdate(true)
+                                    setModalShowForUpdate(true);
                                   }}
                                 ></i>
                                 {/* <i className="fa fa-trash ml-2 pb-1 text-danger"
@@ -649,11 +867,6 @@ const GrayProductList = () => {
               </div>
             </div>
           </div>
-
-
-
-
-
         </div>
       )}
     </>

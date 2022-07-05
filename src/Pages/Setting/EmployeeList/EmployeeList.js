@@ -435,8 +435,7 @@ const EmployeeList = () => {
     } else {
       setDesignationValue(value.value);
       setAddNewEmployee({ ...addNewEmployee, designation: value.value });
-    }
-    console.log(value.value);
+    } 
     //     switch (field) {
     //       case "Designation":
     //         setDesignationValue(value.value);
@@ -610,7 +609,7 @@ const EmployeeList = () => {
           const filterdEmp = ListOfEmployee.filter((emp) => {
             return emp.employee_Id !== emplToUpdate.employee_Id;
           });
-          const unSorted =[...filterdEmp, {
+          const unSorted = [...filterdEmp, {
             employeeSerialNumber: emplToUpdate.employeeSerialNumber,
             address: emplToUpdate.address,
             chartID: emplToUpdate.chartID,
@@ -633,7 +632,7 @@ const EmployeeList = () => {
             employeeCnicBsck: emplToUpdate.employeeCnicBsck,
             recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
             salary: parseFloat(emplToUpdate.salary,)
-          }] 
+          }]
 
 
           var sortedEmpConst = unSorted.sort(
