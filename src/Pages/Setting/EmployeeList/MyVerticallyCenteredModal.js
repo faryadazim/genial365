@@ -2,6 +2,7 @@
 import { Modal, Button } from "react-bootstrap";
 import Creatable from "react-select/creatable";
 import Select from "react-select";
+import { preventMinus } from "../../../config/oreventMinus";
 
 const customStyles = {
   // control: base => ({
@@ -112,7 +113,10 @@ const MyVerticallyCenteredModal = (props) => {
             <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
               <li>
                 <a className="close-link">
-                  <i className="fa fa-close" onClick={props.onHide} />
+                  <i className="fa fa-close" onClick={() => {
+                    props.onHide()
+                    props.setdisableSubmitForUpdatePhoto()
+                  }} />
                 </a>
               </li>
             </ul>
@@ -132,13 +136,10 @@ const MyVerticallyCenteredModal = (props) => {
                     placeholder="ex. Ali A.Khan"
                     value={props.addNewEmployee.name}
                     onChange={
-
                       (e) => {
-                        //  props.changeSubmitButtonCondition()
-                        props.setAddNewEmployee({
-                          ...props.addNewEmployee,
-                          name: e.target.value,
-                        })
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, name: true })
+                        props.setAddNewEmployee({ ...props.addNewEmployee, name: e.target.value })
+
                       }
                     }
                   />
@@ -157,7 +158,7 @@ const MyVerticallyCenteredModal = (props) => {
                     onInput={(er) => er.target.value = er.target.value.slice(0, 13)}
                     value={props.addNewEmployee.cnicNum && Math.max(0, props.addNewEmployee.cnicNum)}
                     onChange={(e) => {
-                      //    props.changeSubmitButtonCondition()
+                      props.setEmployeeListValidator({ ...props.employeeListValidator, cnicNum: true })
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         cnicNum: e.target.value,
@@ -179,7 +180,7 @@ const MyVerticallyCenteredModal = (props) => {
                     required="required"
                     value={props.addNewEmployee.fatherName}
                     onChange={(e) => {
-                      //   props.changeSubmitButtonCondition()
+                      props.setEmployeeListValidator({ ...props.employeeListValidator, fatherName: true })
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         fatherName: e.target.value,
@@ -207,7 +208,7 @@ const MyVerticallyCenteredModal = (props) => {
                         value={props.addNewEmployee.phoneNum1 && Math.max(0, props.addNewEmployee.phoneNum1)}
 
                         onChange={(e) => {
-                          //  props.changeSubmitButtonCondition()
+                          props.setEmployeeListValidator({ ...props.employeeListValidator, phoneNum1: true })
                           props.setAddNewEmployee({
                             ...props.addNewEmployee,
                             phoneNum1: e.target.value,
@@ -238,13 +239,7 @@ const MyVerticallyCenteredModal = (props) => {
                       <input
                         className="form-control"
                         name="number"
-
-
                         type="number"
-
-
-
-
                         onInput={(er) => er.target.value = er.target.value.slice(0, 11)}
                         placeholder="Phone Number 3 (Optional)"
                         value={props.addNewEmployee.phoneNum3 && Math.max(0, props.addNewEmployee.phoneNum3)}
@@ -288,6 +283,7 @@ const MyVerticallyCenteredModal = (props) => {
                     required="required"
                     value={props.addNewEmployee.address}
                     onChange={(e) => {
+                      props.setEmployeeListValidator({ ...props.employeeListValidator, address: true })
                       props.setAddNewEmployee({
                         ...props.addNewEmployee,
                         address: e.target.value,
@@ -348,9 +344,8 @@ const MyVerticallyCenteredModal = (props) => {
                       classNamePrefix="select"
                       value={props.jobStatusValue}       // {jobStatusValue} setJobStatusValue
                       onChange={(value) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, jobStatus: true })
                         props.setJobStatusValue({ label: value.label, value: value.value })
-                        console.log("ee");
-                        //   props.changeSubmitButtonCondition()
                         props.setAddNewEmployee({
                           ...props.addNewEmployee,
                           jobStatus: value.value,
@@ -374,14 +369,13 @@ const MyVerticallyCenteredModal = (props) => {
                     isClearable={false}
 
                     onChange={(value) => {
+                      props.setEmployeeListValidator({ ...props.employeeListValidator, designation: true })
                       props.handleChange(
                         "Designation",
                         value,
                         props.designationValue
                       )
-                    }
-                    }
-                    defaultValue="Not"
+                    }}
                     options={props.designation}
                     value={props.designationValue.value}
                     styles={props.employeeListValidator.designation ? customStyles : customStylesDanger}
@@ -401,14 +395,12 @@ const MyVerticallyCenteredModal = (props) => {
 
                     <Select
                       required
-                      // recruitmentTypeValue={recruitmentTypeValue}
-                      // setrecruitmentTypeValue={setrecruitmentTypeValue}
                       className="basic-single"
                       classNamePrefix="select"
-                      defaultValue={"Monthly"}
                       value={props.recruitmentTypeValue}
 
                       onChange={(value) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, recruitmentType: true })
                         props.setrecruitmentTypeValue({ label: value.label, value: value.value })
                         props.setAddNewEmployee({
                           ...props.addNewEmployee,
@@ -424,20 +416,21 @@ const MyVerticallyCenteredModal = (props) => {
                 </div>
                 {
                   props.recruitmentTypeValue.value == "Weekly" ? <> <label className="col-form-label col-md-2 col-sm-3  label-align">
-                    Weekly Salary <span className="required">*</span>
+                    Weekly Salary
                   </label>
                     <div className="col-md-3 col-sm-8">
                       <div>
                         <input
                           className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}
-                          name="nanr"
+                          name="name"
                           type="number"
+                          onKeyPress={(e) => preventMinus(e)}
+                          min="0"
                           placeholder="ex. 20000"
-                          required="required"
-                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary)}
-                          onInput={(er) => er.target.value = er.target.value.slice(0)}
+                          value={props.addNewEmployee.monthlySalary}
                           onChange={(e) => {
-                            //   props.changeSubmitButtonCondition()
+                            props.setEmployeeListValidator({ ...props.employeeListValidator, monthlySalary: true })
+
                             props.setAddNewEmployee({
                               ...props.addNewEmployee,
                               monthlySalary: e.target.value,
@@ -449,20 +442,20 @@ const MyVerticallyCenteredModal = (props) => {
                     </div>
                   </> : <>
                     <label className="col-form-label col-md-2 col-sm-3  label-align">
-                      {props.recruitmentTypeValue.value}  Salary <span className="required">*</span>
+                      {props.recruitmentTypeValue.value}  Salary
                     </label>
                     <div className="col-md-3 col-sm-8">
                       <div>
                         <input
                           className={props.employeeListValidator.monthlySalary ? "form-control" : "form-control requiredValidateInput"}
-                          name="nanr"
+                          name="name"
                           type="number"
+                          onKeyPress={(e) => preventMinus(e)}
+                          min="0"
                           placeholder="ex. 20000"
-                          required="required"
-                          value={props.addNewEmployee.monthlySalary && Math.max(0, props.addNewEmployee.monthlySalary)}
-                          onInput={(er) => er.target.value = er.target.value.slice(0)}
+                          value={props.addNewEmployee.monthlySalary}
                           onChange={(e) => {
-                            //   props.changeSubmitButtonCondition()
+                            props.setEmployeeListValidator({ ...props.employeeListValidator, monthlySalary: true })
                             props.setAddNewEmployee({
                               ...props.addNewEmployee,
                               monthlySalary: e.target.value,
@@ -494,7 +487,11 @@ const MyVerticallyCenteredModal = (props) => {
                       name="employeePic1"
                       type="file"
                       style={{ height: "33px" }}
-                      onChange={(e) => props.fileHandle1(e)}
+                      onChange={(e) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, employeePic1: true })
+                        props.fileHandle1(e)
+                      }}
+                      disabled={props.disableSubmitForUpdatePhoto ? true : false}
                     />
                   </div>
                 </div>
@@ -509,7 +506,11 @@ const MyVerticallyCenteredModal = (props) => {
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
-                      onChange={props.fileHandle2}
+                      onChange={(e) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, employeePic2: true })
+                        props.fileHandle2(e)
+                      }}
+                      disabled={props.disableSubmitForUpdatePhoto ? true : false}
                     />
                   </div>
                 </div>
@@ -525,7 +526,11 @@ const MyVerticallyCenteredModal = (props) => {
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
-                      onChange={props.fileHandle3}
+                      onChange={(e) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, employeeCnicFront: true })
+                        props.fileHandle3(e)
+                      }}
+                      disabled={props.disableSubmitForUpdatePhoto ? true : false}
                     />
                   </div>
                 </div>
@@ -540,23 +545,33 @@ const MyVerticallyCenteredModal = (props) => {
                       id="formFileSm"
                       type="file"
                       style={{ height: "33px" }}
-                      onChange={props.fileHandle4}
+                      onChange={(e) => {
+                        props.setEmployeeListValidator({ ...props.employeeListValidator, employeeCnicBsck: true })
+                        props.fileHandle4(e)
+                      }}
+                      disabled={props.disableSubmitForUpdatePhoto ? true : false}
                     />
                   </div>
                 </div>
               </div>
-              {props.disableSubmitForUpdatePhoto ? <div className="text-center">Uploading Image Please wait ...</div> : <>   <div className="form-group mt-2 ">
+              {props.disableSubmitForUpdatePhoto ? <div className="text-center"><span className="pr-3">Uploading Image Please wait ...</span>
+
+                <div class="spinner-border spinner-border-sm pr-2" role="status">
+                  <span class="sr-only ">Loading...</span>
+                </div>
+                <div class="spinner-grow spinner-grow-sm" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div> : <>   <div className="form-group mt-2 ">
                 <div className="col-md-6 offset-md-3 pb-2  ">
                   <button
                     type="submit"
-                    // disabled={props.isDisableSubmitButton } 
                     className="btn btn-primary btn-sm px-4"
-                    onClick={(e) => props.AddNewEmployeeServer(e)}
-
-                  >
-                    Submit
+                    onClick={(e) => {
+                      props.setdisableSubmitForUpdatePhoto()
+                      props.AddNewEmployeeServer(e)
+                    }}  >  Submit
                   </button>
-
                 </div>
               </div></>
               }

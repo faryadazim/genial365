@@ -2,11 +2,25 @@ import React from "react";
 import { numberWithCommas } from "../../../config/commaSeperated";
 import '../financeStyle.css'
 const WeaverLadgerReciept = React.forwardRef(
-  ({ LadgerData, grandTotal, dateFrom }, ref) => {
+  ({ LadgerData, grandTotal, dateFrom, dateTo, employeeNameForPrint }, ref) => {
 
     return (
+
+
+
       <div>
-        <div className="x_content mb-3" ref={ref}>
+        <div className="x_content mb-3" ref={ref}> {/*displayPropertyForPrint */}
+          <div className="displayPropertyForPrint">
+
+            <h2 className="text-dark text-center font-weight-bold  ">Ladger Report</h2>
+            <div className="row pb-2">
+              <div className="col-md-4 col-4 pl-5 text-dark  text-center"> Employee Name : <strong className=" text-dark  font-weight-bold "> {employeeNameForPrint}</strong></div>
+              <div className="col-md-4 col-4 text-dark text-center ">  Date From: <strong className="text-dark  font-weight-bold ">  {dateFrom}</strong> </div>
+              <div className="col-md-4 col-4 text-dark  text-center">  Date To :  <strong className="text-dark  font-weight-bold "> {dateTo}</strong> </div>
+            </div>
+          </div>
+
+
           <div className="row mx-3  reportTableHead bottom-border-1 ">
             <div className="col-md-3   col-3   font-size-12      text-center  my-1 px-0">
               <div className="col-md-5   col-5   font-size-12   right-border-1  text-center   px-0">
@@ -141,7 +155,7 @@ const WeaverLadgerReciept = React.forwardRef(
                   <strong> Grand Total{" "}</strong>
                 </div>
                 <div className="col-md-2  col-2     bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
-                  <strong> {   numberWithCommas( (grandTotal.grandTotalDebit).toFixed(2))                       }</strong>
+                  <strong> {numberWithCommas((grandTotal.grandTotalDebit).toFixed(2))}</strong>
                 </div>
                 <div className="col-md-2     col-2     bottom-border-2  font-size-12 py-1 text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
                   <strong>{(grandTotal.grandTotalCredit).toFixed(2)}</strong>

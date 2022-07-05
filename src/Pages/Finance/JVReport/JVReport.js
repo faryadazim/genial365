@@ -55,7 +55,7 @@ const customStyles = {
 const JVReport = () => {
 
   const { state } = useLocation();
-  
+
   const notify = () => toast("Select Employee Or Date correctly!");
   const [JVReportData, setJVReportData] = useState({
     financeMainId: "",
@@ -66,9 +66,9 @@ const JVReport = () => {
     createdBy: "",
     credit: "",
     debit: ""
-    
+
   })
-  
+
   const [dontShowuntillselect, setdontShowuntillselect] = useState(false)
   const [stateToShowReportResult, setStateToShowReportResult] = useState(false)
   const componentRef = useRef();
@@ -137,7 +137,7 @@ const JVReport = () => {
       .then((data) => {
         if (responseStatus == 200) {
           setJVHistoryRecord(data)
-        
+
           setdontShowuntillselect(true)
         } else {
           notify("Something Went wrong Try Again")
@@ -148,8 +148,8 @@ const JVReport = () => {
         console.log(err, "err");
       });
   };
-  const generateReportOfSpecificId = (e , weaverIdInput) => {
-    console.log("e", e ,weaverIdInput);
+  const generateReportOfSpecificId = (e, weaverIdInput) => {
+    console.log("e", e, weaverIdInput);
 
     var myHeaders = new Headers();
     myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
@@ -164,7 +164,7 @@ const JVReport = () => {
       .then(response => response.text())
       .then(result => {
         const data = JSON.parse(result)
-        console.log(data , "---------");
+        console.log(data, "---------");
         setJVReportData({
           financeMainId: e,
           weaverName: data.weaverName,
@@ -179,7 +179,7 @@ const JVReport = () => {
       .catch(error => console.log('error', error));
 
   }
-  
+
   useEffect(() => {
     fetchWeaverOptions()
     if (state !== null) {
@@ -195,10 +195,10 @@ const JVReport = () => {
         credit: state.credit,
         debit: state.debit
       })
-       setStateToShowReportResult(true)
-       setWeaverValue({label:state.weaverName , value: state.weaverId})
+      setStateToShowReportResult(true)
+      setWeaverValue({ label: state.weaverName, value: state.weaverId })
     }
-    
+
   }, []);
 
   return (
@@ -295,13 +295,13 @@ const JVReport = () => {
                         <table className="table table-striped jambo_table bulk_action">
                           <thead>
                             <tr className="headings positionFixed">
-                              <th className="column-title fontStyleForHistoryHead"> Vouch.Date</th>
-                              <th className="column-title text-center fontStyleForHistoryHead">Vouch.Inv</th>
-                              <th className="column-title text-center">
-                                <div className="col-md-6 fontStyleForHistoryHead">Dr</div>
-                                <div className="col-md-6 fontStyleForHistoryHead">Cr</div>
+                              <th className="column-title fontStyleForHistoryHead right-border-1  text-center" width="22%"> Vouch.Date</th>
+                              <th className="column-title text-center fontStyleForHistoryHead right-border-1  text-center "  width="26%">Vouch.Inv</th>
+                              <th className="column-title text-center py-0"  width="52%">
+                                <div className="col-md-6 fontStyleForHistoryHead  right-border-1 text-center " >Dr</div>
+                                <div className="col-md-6 fontStyleForHistoryHead  text-center ">Cr</div>
                               </th>
-                        
+
 
                             </tr>
                           </thead>
@@ -326,10 +326,10 @@ const JVReport = () => {
                                     return <>
                                       <tr className="even pointer">
                                         <td
-                                          className=" "
-                                          onClick={() => { 
-                                            setWeaverValue({label:"just",value:eachRecord.weaverId } )
-                                            generateReportOfSpecificId(eachRecord.jvId ,eachRecord.weaverId );
+                                          className="text-center"
+                                          onClick={() => {
+                                            setWeaverValue({ label: "just", value: eachRecord.weaverId })
+                                            generateReportOfSpecificId(eachRecord.jvId, eachRecord.weaverId);
                                             setStateToShowReportResult(true)
                                           }}
                                         >
@@ -349,9 +349,9 @@ const JVReport = () => {
                                         <td
                                           className=" text-center   "
                                           onClick={() => {
-                                            setWeaverValue({label:"just",value:eachRecord.weaverId } )
+                                            setWeaverValue({ label: "just", value: eachRecord.weaverId })
                                             generateReportOfSpecificId(
-                                              eachRecord.jvId , eachRecord.weaverId 
+                                              eachRecord.jvId, eachRecord.weaverId
                                             );
                                             setStateToShowReportResult(true)
                                           }}
@@ -359,9 +359,9 @@ const JVReport = () => {
                                           {eachRecord.Voucherinv}
                                         </td>
                                         <th className="column-title text-center">
-                                <div className="col-md-6 text-success "> {(eachRecord.debit).toFixed(2)}</div>
-                                <div className="col-md-6  text-danger "> {(eachRecord.credit).toFixed(2)}</div>
-                              </th>
+                                          <div className="col-md-6 text-success text-right"> {(eachRecord.debit).toFixed(2)}</div>
+                                          <div className="col-md-6  text-danger text-right"> {(eachRecord.credit).toFixed(2)}</div>
+                                        </th>
 
                                       </tr>
                                     </>
@@ -385,68 +385,68 @@ const JVReport = () => {
           </div>
 
           {/* Report section  */}
-          
 
 
-              {stateToShowReportResult ? <>
-                <>
-                  <div className="col-md-8">
-                    <div className="x_panel">
-                      <div className="x_title">
-                        <h2 className="pl-2 pt-2">Journal Voucher Report</h2>
-                        <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                          <li>
-                            <ReactToPrint
-                              trigger={() => {
-                                return (
-                                  <button
-                                    className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
-                                  >
-                                    <i className="fa fa-print"></i>
-                                  </button>
-                                );
-                              }}
-                              content={() => componentRef.current}
-                              documentTitle="new docs"
-                              pageStyle="print"
-                            />
-                          </li>
-                          <li>
-                            <button
-                              className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
-                              onClick={() => console.log("print")}
-                            >
-                              <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                            </button>
-                          </li>
-                          <li>
-                            <button
-                              className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                              onClick={() => {
-                                
-                                setModalShowForUpdate(true)
-                                setbackupValueOfUpdate(JVReportData)
-                              }}
-                            >
-                              <i className="fa fa-edit"></i>
-                            </button>
-                          </li>
-                        </ul>
-                        <div className="clearfix" />
-                      </div>
 
-                      <JVReportReciept ref={componentRef}
-                        JVReportData={JVReportData}
+          {stateToShowReportResult ? <>
+            <>
+              <div className="col-md-8">
+                <div className="x_panel">
+                  <div className="x_title">
+                    <h2 className="pl-2 pt-2">Journal Voucher Report</h2>
+                    <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+                      <li>
+                        <ReactToPrint
+                          trigger={() => {
+                            return (
+                              <button
+                                className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                              >
+                                <i className="fa fa-print"></i>
+                              </button>
+                            );
+                          }}
+                          content={() => componentRef.current}
+                          documentTitle="new docs"
+                          pageStyle="print"
+                        />
+                      </li>
+                      <li>
+                        <button
+                          className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
+                          onClick={() => console.log("print")}
+                        >
+                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                          onClick={() => {
 
-                      />
-                    </div>
+                            setModalShowForUpdate(true)
+                            setbackupValueOfUpdate(JVReportData)
+                          }}
+                        >
+                          <i className="fa fa-edit"></i>
+                        </button>
+                      </li>
+                    </ul>
+                    <div className="clearfix" />
                   </div>
-                </></> : <></>}
+
+                  <JVReportReciept ref={componentRef}
+                    JVReportData={JVReportData}
+
+                  />
+                </div>
+              </div>
+            </></> : <></>}
 
 
 
-           
- 
+
+
           <UpdateJVReport
             show={modalShowForUpdate}
             JVReportData={JVReportData}
@@ -456,7 +456,7 @@ const JVReport = () => {
             onHide={() => {
               setJVReportData(backupValueOfUpdate)
               setModalShowForUpdate(false)
-            
+
 
             }}
           />

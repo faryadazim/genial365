@@ -3,6 +3,7 @@ import Creatable from "react-select/creatable";
 import Select from "react-select";
 import { endPoint } from "../../../config/Config";
 import { useState } from "react";
+import { preventMinus } from "../../../config/oreventMinus";
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -132,18 +133,82 @@ const customStylesBorderRemove = {
 };
 const MyVerticallyCenteredModalView = (props) => {
   const url = localStorage.getItem("authUser");
-  const emplEditValidatorInitialState =  { 
+  const emplEditValidatorInitialState = {
     empName: true,
-  cnicNum: true,
-  fatherName: true,
-  address: true,
-  phoneNumber: true,
-  salary: true,
-  cnicFront: true,
-  cnicBack: true,
-  empPic1: true,
-  empPic2: true}
+    cnicNum: true,
+    fatherName: true,
+    address: true,
+    phoneNumber: true,
+    salary: true,
+    cnicFront: true,
+    cnicBack: true,
+    empPic1: true,
+    empPic2: true
+  }
   const [emplEditValidator, setEmplEditValidator] = useState(emplEditValidatorInitialState)
+  const updateFunct = (e) => {
+
+    e.preventDefault();
+
+
+
+
+
+    if (props.selectEmployee.name === "" || props.selectEmployee.name === undefined || props.selectEmployee.name === null ||
+      props.selectEmployee.name === " " || props.selectEmployee.name == "" || props.selectEmployee.name == " ") {
+      setEmplEditValidator({ ...emplEditValidator, empName: false })
+
+    } else if (props.selectEmployee.cnicNum === "" || props.selectEmployee.cnicNum === undefined || props.selectEmployee.cnicNum === null ||
+      props.selectEmployee.cnicNum === " " || props.selectEmployee.cnicNum == "" || props.selectEmployee.cnicNum == " ") {
+      setEmplEditValidator({ ...emplEditValidator, cnicNum: false })
+
+
+    } else if (props.selectEmployee.fatherName === "" || props.selectEmployee.fatherName === undefined || props.selectEmployee.fatherName === null ||
+      props.selectEmployee.fatherName === " " || props.selectEmployee.fatherName == "" || props.selectEmployee.fatherName == " ") {
+      setEmplEditValidator({ ...emplEditValidator, fatherName: false })
+
+
+    } else if (props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null ||
+      props.selectEmployee.address === " " || props.selectEmployee.address == "" || props.selectEmployee.address == " ") {
+      setEmplEditValidator({ ...emplEditValidator, address: false })
+
+
+    } else if (props.selectEmployee.phoneNum1 === "" || props.selectEmployee.phoneNum1 === undefined || props.selectEmployee.phoneNum1 === null ||
+      props.selectEmployee.phoneNum1 === " " || props.selectEmployee.phoneNum1 == "" || props.selectEmployee.phoneNum1 == " ") {
+      setEmplEditValidator({ ...emplEditValidator, phoneNumber: false })
+
+      // } else if (props.selectEmployee.employeeCnicFront === "" || props.selectEmployee.employeeCnicFront === undefined || props.selectEmployee.employeeCnicFront === null ||
+      //   props.selectEmployee.employeeCnicFront === " " || props.selectEmployee.employeeCnicFront == "" || props.selectEmployee.employeeCnicFront == " ") {
+      //   setEmplEditValidator({ ...emplEditValidator, cnicFront: false })
+
+      // } else if (props.selectEmployee.employeeCnicBsck === "" || props.selectEmployee.employeeCnicBsck === undefined || props.selectEmployee.employeeCnicBsck === null ||
+      //   props.selectEmployee.employeeCnicBsck === " " || props.selectEmployee.employeeCnicBsck == "" || props.selectEmployee.employeeCnicBsck == " ") {
+      //   setEmplEditValidator({ ...emplEditValidator, cnicBack: false })
+
+      // } else if (props.selectEmployee.employeePic1 === "" || props.selectEmployee.employeePic1 === undefined || props.selectEmployee.employeePic1 === null ||
+      //   props.selectEmployee.employeePic1 === " " || props.selectEmployee.employeePic1 == "" || props.selectEmployee.employeePic1 == " ") {
+      //   setEmplEditValidator({ ...emplEditValidator, empPic1: false })
+
+      // } else if (props.selectEmployee.employeePic2 === "" || props.selectEmployee.employeePic2 === undefined || props.selectEmployee.employeePic2 === null ||
+      //   props.selectEmployee.employeePic2 === " " || props.selectEmployee.employeePic2 == "" || props.selectEmployee.employeePic2 == " ") {
+      //   setEmplEditValidator({ ...emplEditValidator, empPic2: false })
+
+
+    } else {
+
+      if (props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined || props.selectEmployee.salary === null ||
+        props.selectEmployee.salary === " " || props.selectEmployee.salary == "" || props.selectEmployee.salary == " ") {
+        props.updateEmployeeClouds("SalaryNot");
+      } else {
+        props.updateEmployeeClouds();
+      }
+
+
+      setEmplEditValidator(emplEditValidatorInitialState);
+    }
+
+
+  }
   return (
     <Modal
       {...props}
@@ -219,8 +284,8 @@ const MyVerticallyCenteredModalView = (props) => {
                       //     ? "form-control"
                       //     : "form-control form-control-remove"
                       //   }`}
-                        className={`${props.isEmplEditModeOn ? (emplEditValidator.cnicNum ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                    
+                      className={`${props.isEmplEditModeOn ? (emplEditValidator.cnicNum ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+
                       value={props.selectEmployee.cnicNum}
                       // value={props.addNewEmployee.cnicNum && Math.max(0, props.addNewEmployee.cnicNum)}
                       onChange={(e) => {
@@ -251,7 +316,7 @@ const MyVerticallyCenteredModalView = (props) => {
                       placeholder="ex. Abubakar A.Khan"
                       required="required"
                       className={`${props.isEmplEditModeOn ? (emplEditValidator.fatherName ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                    
+
                       value={props.selectEmployee.fatherName}
                       onChange={(e) => {
                         setEmplEditValidator(emplEditValidatorInitialState)
@@ -281,7 +346,7 @@ const MyVerticallyCenteredModalView = (props) => {
                       placeholder="ex. Street 22 ,City Pakistan 39000"
                       required="required"
                       className={`${props.isEmplEditModeOn ? (emplEditValidator.address ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                    
+
                       value={props.selectEmployee.address}
                       onChange={(e) => {
                         setEmplEditValidator(emplEditValidatorInitialState)
@@ -332,12 +397,12 @@ const MyVerticallyCenteredModalView = (props) => {
                         {props.isEmplEditModeOn ? (
                           <>
                             <input
-                                  className={`${props.isEmplEditModeOn ? (emplEditValidator.empPic1 ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                                  // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
+                              className={`${props.isEmplEditModeOn ? (emplEditValidator.empPic1 ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                              // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
                               id="formFileSm"
                               type="file"
                               style={{ height: "33px" }}
-
+                              disabled={props.disableSubmitForUpdatePhoto ? true : false}
                               onChange={props.fileHandle1ForUpdate}
                             />{" "}
                           </>
@@ -379,11 +444,12 @@ const MyVerticallyCenteredModalView = (props) => {
                         {props.isEmplEditModeOn ? (
                           <>
                             <input
-                           className={`${props.isEmplEditModeOn ? (emplEditValidator.empPic2 ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                           // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
+                              className={`${props.isEmplEditModeOn ? (emplEditValidator.empPic2 ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+                              // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
                               id="formFileSm"
                               type="file"
                               style={{ height: "33px" }}
+                              disabled={props.disableSubmitForUpdatePhoto ? true : false}
                               onChange={props.fileHandle2ForUpdate}
                             />{" "}
                           </>
@@ -418,7 +484,7 @@ const MyVerticallyCenteredModalView = (props) => {
                           }
                           type="number"
                           className={`${props.isEmplEditModeOn ? (emplEditValidator.phoneNumber ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                          
+
                           value={props.selectEmployee.phoneNum1}
                           onChange={(e) => {
                             setEmplEditValidator(emplEditValidatorInitialState)
@@ -433,8 +499,8 @@ const MyVerticallyCenteredModalView = (props) => {
                       <div className="col-md-6">
                         <input
                           className={`${props.isEmplEditModeOn
-                              ? "form-control"
-                              : "form-control form-control-remove"
+                            ? "form-control"
+                            : "form-control form-control-remove"
                             }`}
                           name="number"
                           placeholder="Phone Number 2 (Optional)"
@@ -456,8 +522,8 @@ const MyVerticallyCenteredModalView = (props) => {
                       <div className="col-md-6 pl-0">
                         <input
                           className={`${props.isEmplEditModeOn
-                              ? "form-control"
-                              : "form-control form-control-remove"
+                            ? "form-control"
+                            : "form-control form-control-remove"
                             }`}
                           name="number"
                           type="number"
@@ -476,8 +542,8 @@ const MyVerticallyCenteredModalView = (props) => {
                       <div className="col-md-6">
                         <input
                           className={`${props.isEmplEditModeOn
-                              ? "form-control"
-                              : "form-control form-control-remove"
+                            ? "form-control"
+                            : "form-control form-control-remove"
                             }`}
                           name="number"
                           type="number"
@@ -504,8 +570,8 @@ const MyVerticallyCenteredModalView = (props) => {
                   <div className="col-md-4 col-sm-8 pl-0">
                     <input
                       className={`${props.isEmplEditModeOn
-                          ? "form-control"
-                          : "form-control form-control-remove"
+                        ? "form-control"
+                        : "form-control form-control-remove"
                         }`}
                       name="address"
                       placeholder="ex. Azim Maalic"
@@ -523,8 +589,8 @@ const MyVerticallyCenteredModalView = (props) => {
                   <div className="col-md-4 col-sm-8">
                     <input
                       className={`${props.isEmplEditModeOn
-                          ? "form-control"
-                          : "form-control form-control-remove"
+                        ? "form-control"
+                        : "form-control form-control-remove"
                         }`}
                       name="Phone "
                       placeholder="Reference Phone "
@@ -660,7 +726,7 @@ const MyVerticallyCenteredModalView = (props) => {
                       <label className="col-form-label col-md-2 col-sm-3  label-align">
                         Weekly Salary{" "}
                         {props.isEmplEditModeOn ? (
-                          <span className="required">*</span>
+                          <></>
                         ) : (
                           <>
                             <strong>:</strong>
@@ -670,12 +736,13 @@ const MyVerticallyCenteredModalView = (props) => {
                       <div className="col-md-3 col-sm-8">
                         <div>
                           <input
-                           className={`${props.isEmplEditModeOn ? (emplEditValidator.salary ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                         
-                            name="nanr"
+                            className={`${props.isEmplEditModeOn ? (emplEditValidator.salary ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+
+                            name="name"
                             type="number"
+                            onKeyPress={(e) => preventMinus(e)}
+                            min="0"
                             placeholder="ex. 20000"
-                            required="required"
                             value={props.selectEmployee.salary}
                             onChange={(e) => {
                               setEmplEditValidator(emplEditValidatorInitialState)
@@ -694,7 +761,7 @@ const MyVerticallyCenteredModalView = (props) => {
                       <label className="col-form-label col-md-2 col-sm-3  label-align">
                         Salary{" "}
                         {props.isEmplEditModeOn ? (
-                          <span className="required">*</span>
+                          <></>
                         ) : (
                           <>
                             <strong>:</strong>
@@ -704,13 +771,13 @@ const MyVerticallyCenteredModalView = (props) => {
                       <div className="col-md-3 col-sm-8">
                         <div>
                           <input
-                              className={`${props.isEmplEditModeOn ? (emplEditValidator.salary ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
-                         
-                         
-                            name="nanr"
+                            className={`${props.isEmplEditModeOn ? (emplEditValidator.salary ? "form-control" : "form-control requiredValidateInput") : "form-control form-control-remove"}`}
+
+                            name="name"
                             type="number"
+                            onKeyPress={(e) => preventMinus(e)}
+                            min="0"
                             placeholder="ex. 20000"
-                            required="required"
                             value={props.selectEmployee.salary}
                             onChange={(e) => {
                               setEmplEditValidator(emplEditValidatorInitialState)
@@ -780,6 +847,7 @@ const MyVerticallyCenteredModalView = (props) => {
                                 type="file"
                                 style={{ height: "33px" }}
                                 onChange={props.fileHandle3ForUpdate}
+                                disabled={props.disableSubmitForUpdatePhoto ? true : false}
                               />{" "}
                             </>
                           ) : (
@@ -825,11 +893,11 @@ const MyVerticallyCenteredModalView = (props) => {
                             <>
                               <input
                                 className={`form-control my-2 w-75`}
-                                // className={props.employeeListValidator.employeeCnicBsck ? "form-control " : "form-control requiredValidateInput"}
                                 id="formFileSm"
                                 type="file"
                                 style={{ height: "33px" }}
                                 onChange={props.fileHandle4ForUpdate}
+                                disabled={props.disableSubmitForUpdatePhoto ? true : false}
                               />{" "}
                             </>
                           ) : (
@@ -850,72 +918,30 @@ const MyVerticallyCenteredModalView = (props) => {
                 {props.isEmplEditModeOn ? (
                   <div className="form-group mt-2 ">
                     <div className="col-md-6 offset-md-3 pb-2 " style={{ marginTop: "28px " }}>
-                 
-                 {
-                  !props.disableSubmitForUpdatePhoto? <>  <button
-                  // disabled={props.isDisableSubmitButton }
 
-                  className="btn btn-primary btn-sm px-4  "
-                  onClick={(e) => {
-                    e.preventDefault();
-                    if (props.selectEmployee.name === "" || props.selectEmployee.name === undefined || props.selectEmployee.name === null ||
-                      props.selectEmployee.name === " " || props.selectEmployee.name == "" || props.selectEmployee.name == " ") {
-                      setEmplEditValidator({ ...emplEditValidator, empName: false })
-                      
-                    } else if(props.selectEmployee.cnicNum === "" || props.selectEmployee.cnicNum === undefined || props.selectEmployee.cnicNum === null ||
-                      props.selectEmployee.cnicNum === " " || props.selectEmployee.cnicNum == "" || props.selectEmployee.cnicNum == " "){
-                        setEmplEditValidator({ ...emplEditValidator, cnicNum: false })
-                     
-                     
-                      } else if(props.selectEmployee.fatherName === "" || props.selectEmployee.fatherName === undefined || props.selectEmployee.fatherName === null ||
-                      props.selectEmployee.fatherName === " " || props.selectEmployee.fatherName == "" || props.selectEmployee.fatherName == " "){
-                        setEmplEditValidator({ ...emplEditValidator, fatherName: false })
-                      
-                      
-                      } else if(props.selectEmployee.address === "" || props.selectEmployee.address === undefined || props.selectEmployee.address === null ||
-                      props.selectEmployee.address === " " || props.selectEmployee.address == "" || props.selectEmployee.address == " "){
-                        setEmplEditValidator({ ...emplEditValidator, address: false })
+                      {
+                        !props.disableSubmitForUpdatePhoto ?
+                          <>  <button
+                            // disabled={props.isDisableSubmitButton }
+
+                            className="btn btn-primary btn-sm px-4  "
+                            onClick={(e) => updateFunct(e)}
+                          >
+                            Update
+                          </button></> : <div className="text-center"><span className="pr-3">Uploading Image Please wait ...</span>
+
+<div class="spinner-border spinner-border-sm pr-2" role="status">
+  <span class="sr-only ">Loading...</span>
+</div>
+<div class="spinner-grow spinner-grow-sm" role="status">
+  <span class="sr-only">Loading...</span>
+</div>
+</div> 
+                      }
 
 
-                      } else if(props.selectEmployee.phoneNum1 === "" || props.selectEmployee.phoneNum1 === undefined || props.selectEmployee.phoneNum1 === null ||
-                      props.selectEmployee.phoneNum1 === " " || props.selectEmployee.phoneNum1 == "" || props.selectEmployee.phoneNum1 == " "){
-                        setEmplEditValidator({ ...emplEditValidator, phoneNumber: false })
-                    
-                      } else if(props.selectEmployee.salary === "" || props.selectEmployee.salary === undefined || props.selectEmployee.salary === null ||
-                      props.selectEmployee.salary === " " || props.selectEmployee.salary == "" || props.selectEmployee.salary == " "){
-                        setEmplEditValidator({ ...emplEditValidator, salary: false })
-                    
-                      } else if(props.selectEmployee.employeeCnicFront === "" || props.selectEmployee.employeeCnicFront === undefined || props.selectEmployee.employeeCnicFront === null ||
-                      props.selectEmployee.employeeCnicFront === " " || props.selectEmployee.employeeCnicFront == "" || props.selectEmployee.employeeCnicFront == " "){
-                        setEmplEditValidator({ ...emplEditValidator, cnicFront: false })
-                    
-                      } else if(props.selectEmployee.employeeCnicBsck === "" || props.selectEmployee.employeeCnicBsck === undefined || props.selectEmployee.employeeCnicBsck === null ||
-                      props.selectEmployee.employeeCnicBsck === " " || props.selectEmployee.employeeCnicBsck == "" || props.selectEmployee.employeeCnicBsck == " "){
-                        setEmplEditValidator({ ...emplEditValidator, cnicBack: false })
-                    
-                      } else if(props.selectEmployee.employeePic1 === "" || props.selectEmployee.employeePic1 === undefined || props.selectEmployee.employeePic1 === null ||
-                      props.selectEmployee.employeePic1 === " " || props.selectEmployee.employeePic1 == "" || props.selectEmployee.employeePic1 == " "){
-                        setEmplEditValidator({ ...emplEditValidator, empPic1: false })
-                    
-                      } else if(props.selectEmployee.employeePic2 === "" || props.selectEmployee.employeePic2 === undefined || props.selectEmployee.employeePic2 === null ||
-                      props.selectEmployee.employeePic2 === " " || props.selectEmployee.employeePic2 == "" || props.selectEmployee.employeePic2 == " "){
-                        setEmplEditValidator({ ...emplEditValidator, empPic2: false })
-                    
-                    
-                      } else {
-                      props.updateEmployeeClouds();
-                    setEmplEditValidator(emplEditValidatorInitialState);
-                    }
 
-                  }}
-                >
-                  Update
-                </button></>:<></>
-                 }
-                 
-                 
-                 
-                    
+
                     </div>
                   </div>
                 ) : (

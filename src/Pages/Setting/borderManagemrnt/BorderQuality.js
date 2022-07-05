@@ -165,9 +165,9 @@ const BorderQuality = ({ setisLoadBorderQuality }) => {
             <table className="table table-striped jambo_table bulk_action">
               <thead>
                 <tr className="headings">
-                  <th className="column-title"> Sr. </th>
-                  <th className="column-title">Border Design</th>
-                  <th className="column-title text-center" width="20%">
+                  <th className="column-title  right-border-1 text-center"  width="10%"> Sr. </th>
+                  <th className="column-title right-border-1 text-center">Border Design</th>
+                  <th className="column-title text-center">
                     Action{" "}
                   </th>
                 </tr>

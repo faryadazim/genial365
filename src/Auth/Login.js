@@ -74,13 +74,8 @@ const Login = ({ setisLogin, isLogin, fetchNavigation , setShowMainLoader  }) =>
                       var urlencoded = new URLSearchParams();
                       urlencoded.append("username", logInAuth.username);
                       urlencoded.append("password", logInAuth.password);
-                      urlencoded.append("grant_type", "password");
-
-                      var urlencoded = new URLSearchParams();
-                      urlencoded.append("username", logInAuth.username);
-                      urlencoded.append("password", logInAuth.password);
-                      urlencoded.append("grant_type", "password");
-
+                      urlencoded.append("grant_type", "password"); 
+                      
                       fetch(endPoint + "token", {
                         method: "POST",
                         headers: {

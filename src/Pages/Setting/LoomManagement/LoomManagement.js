@@ -282,13 +282,13 @@ const LoomManagement = () => {
                   <table className="table  jambo_table  ">
                     <thead>
                       <tr className="headings">
-                        <th className="column-title text-center">
+                        <th className="column-title text-center   right-border-1  text-center">
                           Loom Number{" "}
                         </th>
-                        <th className="column-title text-center">Size </th>
-                        <th className="column-title text-center">Draw Box </th>
-                        <th className="column-title text-center">Jacquard </th>
-                        <th className="column-title text-center">Action </th>
+                        <th className="column-title text-center   right-border-1  text-center">Size </th>
+                        <th className="column-title text-center   right-border-1  text-center">Draw Box </th>
+                        <th className="column-title text-center   right-border-1  text-center">Jacquard </th>
+                        <th className="column-title text-center text-center">Action </th>
                       </tr>
                     </thead>
 

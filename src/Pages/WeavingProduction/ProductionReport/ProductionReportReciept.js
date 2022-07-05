@@ -6,6 +6,7 @@ const ProductionReportReciept = React.forwardRef(({ selectedProductionData }, re
   return (
     <div>
       <div className="x_content" ref={ref}>
+      <h2 className="text-dark text-center font-weight-bold displayPropertyForPrint"> Production Report </h2>
         <div className="row my-2 ">
           <div className=" col-md-6 col-sm-6 col-6 col-xl-6 col-sm-6 col-6 col-xl-6 px-5 text-customBlue font-weight-400 mb-2  bg- ">
             <div className="row">

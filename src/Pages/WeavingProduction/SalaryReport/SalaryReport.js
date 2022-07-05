@@ -25,6 +25,8 @@ const SalaryReport = () => {
     grandFinalSumary: { grandTotal: "", paidAmount: "" }
   })
 
+  const [dataToPrint , setDataToPrint] = useState({})
+
   const [notDataAvailable, setNotDataAvailable] = useState(true)
   const fetchReportData = () => {
     let responseStatus;
@@ -149,6 +151,7 @@ const SalaryReport = () => {
                         <button
                           className="btn btn-sm btn-customOrange pl-3"
                           onClick={(e) => {
+                            setDataToPrint({dateFrom , dateTo})
                             e.preventDefault();
                             fetchReportData()
                           }}
@@ -177,7 +180,7 @@ const SalaryReport = () => {
                         );
                       }}
                       content={() => componentRef.current}
-                      documentTitle="new docs"
+                      documentTitle="Salary Report"
                       pageStyle="print"
                     />
                   </li>
@@ -195,6 +198,7 @@ const SalaryReport = () => {
 
                 <SalaryReportReciept ref={componentRef}
                   salaryDetailReport={salaryDetailReport} notDataAvailable={notDataAvailable}
+                  dataToPrint={dataToPrint}
                 />
 
               </div></>

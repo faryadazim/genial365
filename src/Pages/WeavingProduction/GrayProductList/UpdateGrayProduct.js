@@ -2,7 +2,7 @@ import React from "react";
 import Select from "react-select";
 import { Modal, Button } from "react-bootstrap";
 
-import {preventMinus}  from '../../../config/oreventMinus'
+import { preventMinus } from '../../../config/oreventMinus'
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -61,11 +61,11 @@ const customStyles = {
     height: "30px",
   }),
 };
- 
+
 const UpdateGrayProduct = (props) => {
 
 
-  
+
   return (
     <Modal
       {...props}
@@ -156,8 +156,8 @@ const UpdateGrayProduct = (props) => {
                         ? "form-control"
                         : "form-control requiredValidateInput"
                     }
-                    type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
+                    type="number"
+                    onKeyPress={(e) => { preventMinus(e) }}
                     min="0"
                     name="nanr"
                     placeholder="ex. 459.08 Gram"
@@ -189,9 +189,9 @@ const UpdateGrayProduct = (props) => {
                             ? "form-control"
                             : "form-control requiredValidateInput"
                         }
-                        type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                        type="number"
+                        onKeyPress={(e) => { preventMinus(e) }}
+                        min="0"
                         placeholder="Width"
                         value={props.updatedGrayProductList.graySizeppWidth}
                         onChange={(e) => {
@@ -216,9 +216,9 @@ const UpdateGrayProduct = (props) => {
                             : "form-control requiredValidateInput"
                         }
                         name="number"
-                       type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                        type="number"
+                        onKeyPress={(e) => { preventMinus(e) }}
+                        min="0"
                         placeholder="Length"
                         value={props.updatedGrayProductList.graySizeppLength}
                         onChange={(e) => {
@@ -240,18 +240,14 @@ const UpdateGrayProduct = (props) => {
               <div className="container">
                 <div className="row ">
                   <div className="col-md-12 text-center ">
-                    <h4 className="text-danger font-weight-bolder">
-                      Loom No 76
-                    </h4>
+                    <h4 className="text-danger font-weight-bolder">   Loom No 76  </h4>
                   </div>
                 </div>
                 <div className="row ">
                   <div className="col-md-12">
                     <div className="field item form-group">
                       <div className="col-md-12 col-sm-12">
-                        <label className="col-form-label col-md-3  col-sm-3  label-align ">
-                          No of Piece in one border
-                        </label>
+                        <label className="col-form-label col-md-3  col-sm-3  label-align ">  No of Piece in one border   </label>
                         <div className="col-md-3  px-1 ">
                           <input
                             className={
@@ -261,9 +257,9 @@ const UpdateGrayProduct = (props) => {
                                 : "form-control requiredValidateInput"
                             }
                             name="number"
-                            type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="Ex. Grams"
                             value={
                               props.updatedGrayProductList
@@ -293,9 +289,9 @@ const UpdateGrayProduct = (props) => {
                                 ? "form-control  "
                                 : "form-control requiredValidateInput"
                             }
-                             type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="Nativing Rate..."
                             value={props.updatedGrayProductList.nativingRate76}
                             onChange={(e) => {
@@ -408,9 +404,9 @@ const UpdateGrayProduct = (props) => {
                                 ? "form-control"
                                 : "form-control requiredValidateInput"
                             }
-                             type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="123..."
                             value={
                               props.updatedGrayProductList
@@ -440,9 +436,9 @@ const UpdateGrayProduct = (props) => {
                                 ? "form-control"
                                 : "form-control requiredValidateInput"
                             }
-                           type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="Nativing Rate..."
                             value={props.updatedGrayProductList.nativingRate96}
                             onChange={(e) => {
@@ -478,9 +474,9 @@ const UpdateGrayProduct = (props) => {
                                 : "form-control requiredValidateInput"
                             }
                             name="number"
-                            type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="With Draw"
                             value={
                               props.updatedGrayProductList
@@ -510,9 +506,9 @@ const UpdateGrayProduct = (props) => {
                                 : "form-control requiredValidateInput"
                             }
                             name="number"
-                      type="number" 
-                    onKeyPress={(e)=>{preventMinus(e)}}
-                    min="0"
+                            type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="Without Draw"
                             value={
                               props.updatedGrayProductList

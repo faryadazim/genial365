@@ -5,6 +5,8 @@ const JVReportReciept = React.forwardRef(({ JVReportData }, ref) => {
   return (
     <div>
       <div className="x_content" ref={ref}>
+        <div className="displayPropertyForPrint pb-2"> 
+          <h2 className="text-dark text-center font-weight-bold  ">Journal Voucher Report</h2></div>
         <div className="row">
           <div
             className="col-md-6 col   col-6  text-dark px-4 "

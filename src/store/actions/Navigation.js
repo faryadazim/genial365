@@ -10,12 +10,14 @@ export const doGetNavigation = (  setShowMainLoader) => async (dispatch) => {
       const data =await  axios.get(api , { headers: {"Authorization" : token} }).then(res => {
      
         setShowMainLoader(false);
+   
           return res.data ;
         }) 
         .catch((error) => {
             console.log(error)
-        });
-  
+        }); 
+        localStorage.setItem("userName", data.userName);
+        localStorage.setItem("roleName", data.RoleName);
       await  dispatch({
             type: "GET_NAV",
             payload: data,

@@ -23,6 +23,7 @@ import AddModules from "./Pages/Role/AddModules";
 import RolePermission from "./Pages/Role/RolePermission.js";
 import Loader from "./Layout/Loader/Loader";
 import EmployeeList from "./Pages/Setting/EmployeeList/EmployeeList";
+import PartyList from "./Pages/Setting/partyList/PartyList";
 import LoomManagement from "./Pages/Setting/LoomManagement/LoomManagement";
 import ProductionFaults from "./Pages/Setting/ShiftFaults/ProductionFaults";
 import ProductionReport from "./Pages/WeavingProduction/ProductionReport/ProductionReport";
@@ -39,6 +40,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { doGetNavigation } from "./store/actions/Navigation";
 import TransactionReport from "./Pages/Finance/TransactionReport/TransactionReport";
 import GatePassForm from "./Pages/GatePass/GatePassForm/GatePassForm";
+import GatePassReport from "./Pages/GatePass/GatePassReport/GatePassReport";
+import ColorConfig from "./Pages/Setting/ColorConfig/ColorConfig";
+
+
+var day = new Date().toLocaleDateString(undefined, { day: "2-digit" });
+var month = new Date().toLocaleDateString(undefined, { month: "2-digit" });
+var year = new Date().toLocaleDateString(undefined, { year: "numeric" });
+const dateToday = new Date().toISOString().slice(0, 10)
+
 
 
 function App() {
@@ -59,16 +69,35 @@ function App() {
     })
   }
 
+
+  function convertToSimple(str) {
+    var date = new Date(str),
+      mnth = ("0" + (date.getMonth() + 1)).slice(-2),
+      day = ("0" + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join("-");
+  }
+
+
   useEffect(() => {
     localStorage.setItem("authUser", endPoint);
-    var newRetrived = localStorage.getItem("access_token");
+    var newRetrived = localStorage.getItem("access_token"); 
     if (newRetrived) {
-      setisLogin(true);
+    var  authObject =JSON.parse(newRetrived)
+//  convertToSimple(authObject[".issued"])=== dateToday 
+
+
+
+ if( convertToSimple(authObject[".expires"])<=dateToday ||  convertToSimple(authObject[".expires"])===dateToday  ){
+   setisLogin(false);
+
+ }else{
+  setisLogin(true);
+ }
     }
     dispatch(doGetNavigation(setShowMainLoader))
     let Connected = window.navigator.onLine;
     if (!Connected) {
-      alert('Connection available');
+      alert('Connection not available');
     }
   }, []);
 
@@ -207,6 +236,18 @@ function App() {
                     <Route
                       path="GatePassForm"
                       element={< GatePassForm />}
+                    />
+                    <Route
+                      path="GatePassReport"
+                      element={< GatePassReport />}
+                    />
+                    <Route
+                      path="PartyList"
+                      element={< PartyList />}
+                    />
+                    <Route
+                      path="ColorConfig"
+                      element={< ColorConfig />}
                     />
 
                   </Routes>

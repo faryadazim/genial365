@@ -10,7 +10,7 @@ const Footer = () => {
         }  `}
       >
         <div className="pull-right">
-          Weaving - Management System by{" "}
+          Imaad Weaving - ERP by{" "}
           <a href="www.technupur.com">Technupur</a>
         </div>
         <div className="clearfix" />

@@ -40,8 +40,8 @@ const GrayProductList = () => {
     LoomNumbRatePerBorderWithDraw96: true,
     LoomNumbRatePerBorderWithoutDraw96: true,
     status: true,
-    nativingRate76:true,
-    nativingRate96:true
+    nativingRate76: true,
+    nativingRate96: true
   }
   const [updatedGrayProductListValidation, setUpdatedGrayProductListValidation] = useState(initialUpdatedValidation)
   const newProductInitialState = {
@@ -81,10 +81,8 @@ const GrayProductList = () => {
         })
           .then((response) => response.json())
           .then((data) => {
-            console.log(data);
             var arr = [];
             data.map((item) => {
-              console.log(item);
               arr.push({
                 label: item.borderQuality1,
                 value: item.borderQuality_id,
@@ -151,8 +149,6 @@ const GrayProductList = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(AddNewProduct),
       };
-
-      console.log("Its new Product Func", AddNewProduct);
       fetch(url + "api/grayProductLists", requestOptions)
         .then((response) => response.json())
         .then((data) => {
@@ -162,7 +158,7 @@ const GrayProductList = () => {
           setaddNewGrayProductValidator(addNewGrayProductValidatorInitialState)
         })
         .catch((err) => {
-          console.log("err front End", err);
+          console.log("err", err);
         });
     }
   }
@@ -188,27 +184,27 @@ const GrayProductList = () => {
   }
   const updateGrayProductList = (e) => {
     e.preventDefault();
-    if (updatedGrayProductList.PerPieceGrayWeightGram === "" || updatedGrayProductList.PerPieceGrayWeightGram === null || updatedGrayProductList.PerPieceGrayWeightGram === undefined || updatedGrayProductList.PerPieceGrayWeightGram == 0) {
+    if (updatedGrayProductList.PerPieceGrayWeightGram === "" || updatedGrayProductList.PerPieceGrayWeightGram === null || updatedGrayProductList.PerPieceGrayWeightGram === undefined) {
       setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, PerPieceGrayWeightGram: false })
-    } else if (updatedGrayProductList.graySizeppWidth === "" || updatedGrayProductList.graySizeppWidth === null || updatedGrayProductList.graySizeppWidth === undefined || updatedGrayProductList.graySizeppWidth == 0) {
+    } else if (updatedGrayProductList.graySizeppWidth === "" || updatedGrayProductList.graySizeppWidth === null || updatedGrayProductList.graySizeppWidth === undefined) {
       setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppWidth: false })
-    } else if (updatedGrayProductList.graySizeppLength === "" || updatedGrayProductList.graySizeppLength === null || updatedGrayProductList.graySizeppLength === undefined || updatedGrayProductList.graySizeppLength == 0) {
+    } else if (updatedGrayProductList.graySizeppLength === "" || updatedGrayProductList.graySizeppLength === null || updatedGrayProductList.graySizeppLength === undefined) {
       setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, graySizeppLength: false })
 
       // loom number piece 
-    } else if ((updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 === "" || updatedGrayProductList.LoomNumbPieceInBorder76 == 0)
-      && (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 === "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0)) {
+    } else if ((updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 === "")
+      && (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 === "")) {
       setUpdatedGrayProductListValidation({
         ...updatedGrayProductListValidation,
         LoomNumbPieceInBorder76: false,
         LoomNumbPieceInBorder96: false,
       })
       // loom number piece 
-    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 == 0)
-      && (updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 == 0)) {
+    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw76 === "")
+      && (updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithDraw96 === "")) {
 
 
-      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
@@ -216,13 +212,13 @@ const GrayProductList = () => {
 
         })
 
-      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithDraw76: false,
         })
-      } else { 
+      } else {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
@@ -237,19 +233,19 @@ const GrayProductList = () => {
 
 
 
-    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 == 0)
-      && (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === "" || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 == 0)) {
+    } else if ((updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === "")
+      && (updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === null || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76 === undefined || updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96 === "")) {
 
 
 
-      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
           LoomNumbRatePerBorderWithoutDraw96: false,
         })
 
-      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
 
@@ -257,56 +253,48 @@ const GrayProductList = () => {
           LoomNumbRatePerBorderWithoutDraw76: false,
         })
       } else {
-        console.log("something wriong boht");
         setUpdatedGrayProductListValidation({
           ...updatedGrayProductListValidation,
-
           LoomNumbRatePerBorderWithoutDraw96: false,
           LoomNumbRatePerBorderWithoutDraw76: false,
 
         })
       }
 
-// --
+      // --
 
-    } else if ((updatedGrayProductList.nativingRate76 === null || updatedGrayProductList.nativingRate76 === "" || updatedGrayProductList.nativingRate76 == 0)
-    && (updatedGrayProductList.nativingRate96 === null || updatedGrayProductList.nativingRate96 === "" || updatedGrayProductList.nativingRate96 == 0)) {
+    } else if ((updatedGrayProductList.nativingRate76 === null || updatedGrayProductList.nativingRate76 === "")
+      && (updatedGrayProductList.nativingRate96 === null || updatedGrayProductList.nativingRate96 === "")) {
 
 
-    if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == 0 || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
-      setUpdatedGrayProductListValidation({
-        ...updatedGrayProductListValidation,
+      if (updatedGrayProductList.LoomNumbPieceInBorder76 === null || updatedGrayProductList.LoomNumbPieceInBorder76 == undefined || updatedGrayProductList.LoomNumbPieceInBorder76 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
 
-        nativingRate96: false,
+          nativingRate96: false,
 
-      })
+        })
 
-    } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == 0 || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
-      setUpdatedGrayProductListValidation({
-        ...updatedGrayProductListValidation,
+      } else if (updatedGrayProductList.LoomNumbPieceInBorder96 === null || updatedGrayProductList.LoomNumbPieceInBorder96 == "" || updatedGrayProductList.LoomNumbPieceInBorder96 == "") {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
 
-        nativingRate76: false,
-      })
-    } else { 
-      setUpdatedGrayProductListValidation({
-        ...updatedGrayProductListValidation,
+          nativingRate76: false,
+        })
+      } else {
+        setUpdatedGrayProductListValidation({
+          ...updatedGrayProductListValidation,
 
-        nativingRate76: false,
-        nativingRate96: false,
+          nativingRate76: false,
+          nativingRate96: false,
 
-      })
-    }
-// ---
+        })
+      }
 
 
     } else if (updatedGrayProductList.status == "") {
-      console.log("eits empty status");
       setUpdatedGrayProductListValidation({ ...updatedGrayProductListValidation, status: false })
-
     } else {
-
-
-
       const updatedRefactoredGrayProduct = {
         grayProduct_id: parseInt(updatedGrayProductList.grayProduct_id),
         itemName: parseInt(updatedGrayProductList.itemNameValue.value),
@@ -316,7 +304,7 @@ const GrayProductList = () => {
         graySizeppLength: parseInt(updatedGrayProductList.graySizeppLength),
         LoomNumbPieceInBorder76: parseInt(updatedGrayProductList.LoomNumbPieceInBorder76),
         LoomNumbRatePerBorderWithDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
-        LoomNumbRatePerBorderWithoutDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw76),
+        LoomNumbRatePerBorderWithoutDraw76: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76),
         LoomNumbPieceInBorder96: parseInt(updatedGrayProductList.LoomNumbPieceInBorder96),
         LoomNumbRatePerBorderWithDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithDraw96),
         LoomNumbRatePerBorderWithoutDraw96: parseInt(updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96),
@@ -324,9 +312,6 @@ const GrayProductList = () => {
         nativingRate76: parseFloat(updatedGrayProductList.nativingRate76),
         nativingRate96: parseFloat(updatedGrayProductList.nativingRate96)
       }
-      console.log(updatedRefactoredGrayProduct, "data to be updated");
-      // 
-
       const requestOptions = {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -391,12 +376,12 @@ const GrayProductList = () => {
           <div className="x_panel">
             {/* <div className="x_title"> */}
 
-              <div className="page-title m-0  "> 
-                  <h1 className="py-2 pl-3 grayListHeading">Gray Product Details</h1>
-               
-                
-              </div>
-              <div className="clearfix" />
+            <div className="page-title m-0  ">
+              <h1 className="py-2 pl-3 grayListHeading">Gray Product Details</h1>
+
+
+            </div>
+            <div className="clearfix" />
             {/* </div> */}
             <div className="x_content">
 
@@ -408,7 +393,7 @@ const GrayProductList = () => {
                         <tr className="headings-for-Gray-Product-Table">
                           <th
                             className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
-                                         removeLeftBorder  removeTopBorder text-center"
+                                         removeLeftBorder  removeTopBorder text-center removePadding"
                             style={{ width: "3%" }}
                           >
                             <div className=" py-1  d-flex justify-content-center  fontSettingForGrayHeader ">
@@ -442,7 +427,7 @@ const GrayProductList = () => {
                             style={{ width: "15px" }}
                           >
                             <div>
-                              <div className="col-md-12 py-1 fontSettingForGrayHeader ">
+                              <div className="col-md-12 removePadding py-1 fontSettingForGrayHeader px-0 ">
                                 Gray Size Pile to Pile
                               </div>
                               <div className="col-md-6 border fontSettingForGrayHeader  border-primary removeLeftBorder removeRightBorder removeBottomBorder  py-1 ">
@@ -626,7 +611,7 @@ const GrayProductList = () => {
                                             "
                                 style={{ width: "2%" }}
                               >
-                                <i className="fa fa-edit text-common"
+                                <i className="fa fa-edit text-common "
                                   onClick={() => {
 
 
@@ -650,9 +635,9 @@ const GrayProductList = () => {
                                     setModalShowForUpdate(true)
                                   }}
                                 ></i>
-                                <i className="fa fa-trash ml-2 pb-1 text-danger"
+                                {/* <i className="fa fa-trash ml-2 pb-1 text-danger"
 
-                                  onClick={() => deleteGrayProduct(item.grayProduct_id)}></i>
+                                  onClick={() => deleteGrayProduct(item.grayProduct_id)}></i> */}
                               </td>
                             </tr>
                           );

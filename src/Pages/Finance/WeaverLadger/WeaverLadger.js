@@ -100,7 +100,7 @@ const WeaverLadger = () => {
   const [dateFrom, setdateFrom] = useState(dateToday);
   const [dateTo, setdateTo] = useState(dateToday);
   const [isLoadingSelector, setIsLoadingSelector] = useState(true);
-
+  const [employeeNameForPrint , setEmployeeNameForPrint] =useState("---")
   const [employeeWeaverOptions, setEmployeeWeaverOptions] = useState([]);
   const [employeeWeaverValue, setEmployeeWeaverValue] = useState({
     label: "",
@@ -324,10 +324,12 @@ const WeaverLadger = () => {
                     <button
                       className="btn btn-sm btn-customOrange pl-3"
                       onClick={(e) => {
+                           setEmployeeNameForPrint( employeeWeaverValue.label)
                         e.preventDefault();
 
                         fetchLadger()
                       }}
+              
                     >
                       Search <i className="fa fa-search pl-3 pr-2"></i>
                     </button>
@@ -365,7 +367,7 @@ const WeaverLadger = () => {
               {/* </div> */}
               <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
                 grandTotal={grandTotal} selectValidation={selectValidation}
-                dateFrom={dateFrom}
+                dateFrom={dateFrom}  dateTo={dateTo} employeeNameForPrint={employeeNameForPrint}  
               />
               {/* </div> */}
             </div>

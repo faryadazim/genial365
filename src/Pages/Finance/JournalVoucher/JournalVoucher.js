@@ -62,7 +62,7 @@ const JournalVoucher = () => {
   const [dateSelected, setDateSelected] = useState(dateToday);
   const [lodgerBalanceDontShowAtStart, setLodgerBalanceDontShowAtStart] =
     useState(true);
-const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
+  const [disableSaveButtonInitial, setDisableSaveButtonInitial] = useState(true)
   const [formValidator, setFormValidator] = useState({
     description: true,
     debit: true,
@@ -74,7 +74,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
     description: "",
     debit: 0,
     credit: 0,
-  }); 
+  });
 
   const fetchWeaverOptions = () => {
     var myHeaders = new Headers();
@@ -175,7 +175,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
         redirect: "follow",
       };
 
-   return   fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
+      return fetch(`${endPoint}api/PostJV?weaverId=${weaverValue.value}`, requestOptions)
         .then((response) => response.text())
         .then((result) => {
           fetchLadgerBalance(weaverValue.value);
@@ -186,7 +186,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
             credit: true,
 
           })
-          console.log(JSON.parse(result) , "ADDED");
+          console.log(JSON.parse(result), "ADDED");
           notify();
           return (JSON.parse(result))
 
@@ -296,7 +296,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                   </label>
                   <div className="col-md-8 col-sm-8">
                     <textarea
-                      class="form-control form-control-sm py-1"
+                      class="form-control form-control-sm"
                       id="exampleFormControlTextarea3"
                       rows="1"
                     ></textarea>
@@ -342,7 +342,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
                       style={{ width: "40%" }}
                     >
-                      <div className=" py-1 d-flex justify-content-center ">
+                      <div className=" d-flex justify-content-center ">
                         Description
                       </div>
                     </th>
@@ -351,7 +351,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
                       style={{ width: "20%" }}
                     >
-                      <div className=" py-1 d-flex justify-content-center ">
+                      <div className=" d-flex justify-content-center ">
                         Debit
                       </div>
                     </th>
@@ -360,7 +360,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
                       style={{ width: "20%" }}
                     >
-                      <div className=" py-1 d-flex justify-content-center ">
+                      <div className=" d-flex justify-content-center ">
                         Credit
                       </div>
                     </th>
@@ -369,7 +369,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
                       style={{ width: "20%" }}
                     >
-                      <div className=" py-1 d-flex justify-content-center ">
+                      <div className=" d-flex justify-content-center ">
                         Balance
                       </div>
                     </th>
@@ -385,9 +385,9 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         paddingLeft: "2px",
                       }}
                     >
-                      <div className=" py-1">
+                      <div className="">
                         <input
-                          className={formValidator.description?"form-control":"form-control requiredValidateInput "}
+                          className={formValidator.description ? "form-control" : "form-control requiredValidateInput "}
                           type="text"
                           value={jvFormBody.description}
                           onChange={(e) => {
@@ -407,11 +407,11 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         paddingLeft: "2px",
                       }}
                     >
-                      <div className=" py-1">
+                      <div className="">
                         <input
-                          className={formValidator.debit?"form-control":"form-control requiredValidateInput "}
+                          className={formValidator.debit ? "form-control" : "form-control requiredValidateInput "}
                           type="number"
-                          value={jvFormBody.debit  && Math.max(0,jvFormBody.debit)}
+                          value={jvFormBody.debit && Math.max(0, jvFormBody.debit)}
                           onChange={(e) => {
                             setjvFormBody({
                               ...jvFormBody,
@@ -430,11 +430,11 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         paddingLeft: "2px",
                       }}
                     >
-                      <div className=" py-1">
+                      <div className="">
                         <input
-                          className={formValidator.credit?"form-control":"form-control requiredValidateInput "}
+                          className={formValidator.credit ? "form-control" : "form-control requiredValidateInput "}
                           type="number"
-                          value={jvFormBody.credit    && Math.max(0,jvFormBody.credit )}
+                          value={jvFormBody.credit && Math.max(0, jvFormBody.credit)}
                           onChange={(e) => {
                             setjvFormBody({
                               ...jvFormBody,
@@ -453,7 +453,7 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
                         paddingLeft: "2px",
                       }}
                     >
-                      <div className=" py-1">
+                      <div className="">
                         <input
                           className="form-control"
                           type="text"
@@ -493,28 +493,29 @@ const [disableSaveButtonInitial , setDisableSaveButtonInitial ] = useState(true)
 
                     }}
                   >
-                    Save And New 
+                    Save And New
                   </button>
                   <button
                     className="btn btn-sm btn-primary  "
                     style={{ width: "110px" }}
                     disabled={disableSaveButtonInitial}
-                    onClick={async() => {
-                   const resp = await   saveJVForm();
-              console.log(resp , "-0-----");
-                     navigate('/JournalVoucherReport', { state: {
-                       date:resp.financeNew.voucher_date,
-                       voucherInv:resp.financeNew.voucher_inv,
-                       description:resp.financeEntry.description,
-                       debit:resp.financeEntry.debit,
-                       credit:resp.financeEntry.credit,
-                       weaverId:weaverValue.value ,
-                       financeMainId:resp.financeNew.finance_main_id,
-                       weaverName:weaverValue.label  , 
-                       createdBy:resp.createdBy,
-                      }
-                      
-                     } );
+                    onClick={async () => {
+                      const resp = await saveJVForm();
+                      console.log(resp, "-0-----");
+                      navigate('/JournalVoucherReport', {
+                        state: {
+                          date: resp.financeNew.voucher_date,
+                          voucherInv: resp.financeNew.voucher_inv,
+                          description: resp.financeEntry.description,
+                          debit: resp.financeEntry.debit,
+                          credit: resp.financeEntry.credit,
+                          weaverId: weaverValue.value,
+                          financeMainId: resp.financeNew.finance_main_id,
+                          weaverName: weaverValue.label,
+                          createdBy: resp.createdBy,
+                        }
+
+                      });
 
                     }}
                   >

@@ -5,15 +5,9 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { useSelector } from "react-redux";
-
-
+import { endPoint } from '../../config/Config.js'
+import axios from "axios";
 import Select from "react-select";
-
-
-
-
-
-
 
 const customStyles = {
   // control: base => ({
@@ -65,24 +59,40 @@ const RolePermission = () => {
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
   const [isLoading, setisLoading] = useState(false);
-  const [pagePermissionList, setpagePermissionList] = useState([])
 
+  const [pagePermissionList, setpagePermissionList] = useState([])
+  const [reRenderApp, setReRenderApp] = useState(false)
 
   const [roleValue, setRoleVAlue] = useState("");
   const [roleOptions, setRoleOptions] = useState([]);
 
-  const [RoleToBeSearch, setRoleToBeSearch] = useState("4f9d320b4b9f4d61b2589686b65180f6")
+  const [RoleToBeSearch, setRoleToBeSearch] = useState("")
 
 
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const fetchRollData = () => {
+    fetch(url + "api/Roles", {
+      method: "GET",
+      headers: {
+        // Authorization: "bearer" + " " + e,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    }).then((response) => {
+      response.json().then((data) => {
+        var arr = []
+        data.map((item) => {
+          arr.push({ label: item.Name, value: item.Id })
+        })
+        setRoleOptions(arr)
+      });
+    })
+  }
 
 
-
-  const fetchAllData = () => {
-
-    fetch(url + `api/PagePermissions?roleId=${RoleToBeSearch}`, {
+  const fetchAllData = (e) => {
+    fetch(url + `api/PagePermissions?roleId=${e}`, {
       method: "GET",
       headers: {
         // Authorization: "bearer" + " " + e,
@@ -95,30 +105,51 @@ const RolePermission = () => {
           var sorted = data.sort(
             (a, b) => a.module_name.localeCompare(b.module_name)
           );
-
-
           setpagePermissionList(sorted)
-          fetch(url + "api/Roles", {
-            method: "GET",
-            headers: {
-              // Authorization: "bearer" + " " + e,
-              "Content-Type": "application/x-www-form-urlencoded",
-            },
-          }).then((response) => {
-            response.json().then((data) => {
-              var arr = []
-              data.map((item) => {
-                arr.push({ label: item.Name, value: item.Id })
-              })
-              setRoleOptions(arr)
-            });
-          })
-
+          setReRenderApp(!reRenderApp)
+          fetchRollData()
         });
       })
       .catch((error) => console.log("error", error));
   }
-  useEffect(() => { fetchAllData() }, []);
+
+
+  const updatePagePermission = async (pagePermissionState) => {
+    var data = JSON.stringify({
+      "PermissionId": pagePermissionState.pagePermissionId,
+      "RoleId": RoleToBeSearch,
+      "PageId": pagePermissionState.pageID,
+      "EditPermission": pagePermissionState.EditPermission,
+      "viewPermission": pagePermissionState.viewPermission,
+      "DelPermission": pagePermissionState.DelPermission,
+      "AddPermission": pagePermissionState.AddPermission,
+    });
+
+    console.log(JSON.parse(data));
+    var config = {
+      method: 'put',
+      url: `${endPoint}api/updatePagePermissions?roleId=${RoleToBeSearch}`,
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
+
+    await axios(config)
+      .then(function (response) {
+        if (response.status === 200) {
+          console.log("updated SuccesFully ");
+          fetchAllData(RoleToBeSearch)
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+  useEffect(() => {
+    fetchAllData()
+  }, []);
 
   return (
     <>
@@ -139,7 +170,7 @@ const RolePermission = () => {
                 {/* <Form.Select
                   aria-label="Default select example"
                   className="form-control text-center w-75" 
-                >
+                >fetchAllData
                   
                   <option value="1">Admin</option>
                   <option value="3">Cashier</option>
@@ -151,16 +182,16 @@ const RolePermission = () => {
                   className="basic-single"
                   classNamePrefix="select"
                   defaultValue={"Active"}
-                  value={roleValue.value}
+                  value={roleValue}
                   onChange={(value) => {
-
+                    setRoleVAlue(value)
                     setRoleToBeSearch(value.value)
-                    fetchAllData()
+                    fetchAllData(value.value)
                   }}
                   isSearchable={true}
                   name="color"
                   options={roleOptions}
-                  // styles={customStyles}
+                  styles={customStyles}
                 />
 
               </div>
@@ -234,22 +265,21 @@ const RolePermission = () => {
             </Modal>
 
             {/* Model  */}
-
-            <div className="x_panel">
+            {RoleToBeSearch === "" ? <div className="text-center">Select Any Role</div> : <>   <div className="x_panel">
               <div className="x_content">
                 <div className="table-responsive">
                   <table className="table  jambo_table  ">
                     <thead>
                       <tr className="headings">
-                        <th className="column-title text-center" width="334px">
+                        <th className="column-title text-center" width="40%">
                           {" "}
                           Title{" "}
                         </th>
-                        <th className="column-title text-center">View </th>
-                        <th className="column-title text-center">Delete </th>
-                        <th className="column-title text-center">Add </th>
-                        <th className="column-title text-center">Edit </th>
-                        {/* <th className="column-title text-center">Update </th> */}
+                        <th className="column-title text-center" width="12%">View </th>
+                        <th className="column-title text-center" width="12%">Delete </th>
+                        <th className="column-title text-center" width="12%">Add </th>
+                        <th className="column-title text-center" width="12%">Edit </th>
+                        <th className="column-title text-center" width="12%">Update </th>
                       </tr>
                     </thead>
 
@@ -290,6 +320,7 @@ const RolePermission = () => {
                                               pageID: arr.pageID,
                                               page_id: arr.page_id,
                                               pageName: arr.pageName,
+                                              pagePermissionId: arr.pagePermissionId,
                                               pageURL: arr.pageURL,
                                               AddPermission: arr.AddPermission,
                                               DelPermission: arr.DelPermission,
@@ -324,6 +355,7 @@ const RolePermission = () => {
                                               pageID: arr.pageID,
                                               page_id: arr.page_id,
                                               pageName: arr.pageName,
+                                              pagePermissionId: arr.pagePermissionId,
                                               pageURL: arr.pageURL,
                                               AddPermission: arr.AddPermission,
                                               DelPermission: (arr.DelPermission === 'true' ? "false" : "true"),
@@ -331,11 +363,8 @@ const RolePermission = () => {
                                               viewPermission: arr.viewPermission,
                                             }].sort((a, b) => a.pageName.localeCompare(b.pageName))
                                           }];
-
-
                                           const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
-                                            (a, b) => a.module_name.localeCompare(b.module_name)
-                                          );
+                                            (a, b) => a.module_name.localeCompare(b.module_name));
                                           setpagePermissionList(updatedFilteredDataSorted);
 
 
@@ -363,6 +392,7 @@ const RolePermission = () => {
                                               pageID: arr.pageID,
                                               page_id: arr.page_id,
                                               pageName: arr.pageName,
+                                              pagePermissionId: arr.pagePermissionId,
                                               pageURL: arr.pageURL,
                                               AddPermission: (arr.AddPermission === 'true' ? "false" : "true"),
                                               DelPermission: arr.DelPermission,
@@ -370,21 +400,11 @@ const RolePermission = () => {
                                               viewPermission: arr.viewPermission,
                                             }].sort((a, b) => a.pageName.localeCompare(b.pageName))
                                           }];
-
                                           const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
-                                            (a, b) => a.module_name.localeCompare(b.module_name)
-                                          );
+                                            (a, b) => a.module_name.localeCompare(b.module_name));
                                           setpagePermissionList(updatedFilteredDataSorted);
-
-
-
-
-                                        }}
-
-                                      />
-
+                                        }} />
                                     </td><td className=" text-center ">
-
                                       <input
                                         type="checkbox"
                                         className="flat"
@@ -402,6 +422,7 @@ const RolePermission = () => {
                                               pageID: arr.pageID,
                                               page_id: arr.page_id,
                                               pageName: arr.pageName,
+                                              pagePermissionId: arr.pagePermissionId,
                                               pageURL: arr.pageURL,
                                               AddPermission: arr.AddPermission,
                                               DelPermission: arr.DelPermission,
@@ -409,69 +430,31 @@ const RolePermission = () => {
                                               viewPermission: arr.viewPermission,
                                             }].sort((a, b) => a.pageName.localeCompare(b.pageName))
                                           }];
-
-
-
                                           const updatedFilteredDataSorted = updatedFilteredDataUnsorted.sort(
                                             (a, b) => a.module_name.localeCompare(b.module_name)
                                           );
                                           setpagePermissionList(updatedFilteredDataSorted);
-
-
                                         }}
                                       />
 
                                     </td>
-
+                                    <td className=" text-center ">
+                                      <i class="fa fa-refresh" aria-hidden="true" onClick={() => updatePagePermission(arr)}></i>
+                                    </td>
                                   </tr>
                                 </>
                               })
                             }
-
-
                           </>
                         );
                       })}
                     </tbody>
                   </table>
-
-                  {/* <div className="  d-flex justify-content-between pr-3 pt-2">
-                    <div className="d-flex  ml-3 mb-3">
-                      <span className="pt-1 pr-2">Show</span>
-                      <div className="wisthOfOtions">
-
-
-                      ----------
-                        {" "}  
-                              ---------
-                        <Form.Select
-                          onChange={(e) =>
-                            postsPerPage(parseInt(e.target.value))
-                          }
-                          aria-label="Default select example"
-                          className="form-control  wisthOfOtions"
-                        >
-                          <option value="5">5</option>
-                          <option value="10">10</option>
-                          <option value="20">20</option>
-                          <option value="25">25</option>
-                        </Form.Select>
-                      </div>
-                      <span className="pt-1 pl-2">Entities</span>
-                    </div>
-                    <Pagination
-                      postsPerPage={postsPerPage}
-                      totalPosts={UserRegistered.length}
-                      paginate={paginate}
-                    />
-                  </div> */}
-
-                  {/* Pagination  */}
-
-                  {/* Pagination  */}
+                  {/* <button className="btn btn-sm btn-primary" onClick={()=>{console.log(pagePermissionList)}}> Console</button> */}
                 </div>
               </div>
-            </div>
+            </div></>}
+
           </div>
         </>
       )}

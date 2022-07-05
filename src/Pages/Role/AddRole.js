@@ -6,7 +6,8 @@ import { Modal } from "react-bootstrap";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import {endPoint} from '../../config/Config'
-const AddRole = ({pagePermission}) => {
+const AddRole = ({pagePermission ,}) => {
+  console.log("permission inside Controller" , pagePermission);
   const showNavMenu = useSelector((state) => state.NavState);
   const URL = localStorage.getItem("authUser");
   const [isLoading, setisLoading] = useState(true);
@@ -377,7 +378,8 @@ const AddRole = ({pagePermission}) => {
                               width="20%"
                               className="a-right a-right     text-center"
                             >
-                              <i
+
+{pagePermission.EditPermission==="true"?<i
                                 className="fa fa-edit"
                                 onClick={() => {
                                   handleShow();
@@ -386,7 +388,9 @@ const AddRole = ({pagePermission}) => {
                                     name: Role.Name,
                                   });
                                 }}
-                              ></i>{" "}
+                              ></i>:<></>
+                      }
+                              {" "}
                               <i
                                 className="fa fa-trash-o pl-3"
                                 onClick={() => {

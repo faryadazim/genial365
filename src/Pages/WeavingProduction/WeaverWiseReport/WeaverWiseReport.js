@@ -112,7 +112,7 @@ const WeaverWiseReport = () => {
   const [employeeWeaverValue, setEmployeeWeaverValue] = useState({ label: "", value: "" })
   const [WeaverWiseReportData, setWeaverWiseReportData] = useState([])
 const [weaverValueValidator , setWeaverValueValidator] = useState(true)
-
+const [weaverDataForPrint ,setWeaverDataForPrint ] = useState({})
 
   const fetchWeaverList = () => {
     var myHeaders = new Headers();
@@ -289,9 +289,15 @@ if (employeeWeaverValue.value==0 ||employeeWeaverValue.value==undefined ||employ
                         <button
                           className="btn btn-sm btn-customOrange pl-3"
                           onClick={(e) => {
+                            setWeaverDataForPrint({
+                              weaverName:employeeWeaverValue.label,
+                              dateFrom:dateFrom,
+                              dateTo:dateTo
+                            })
                             e.preventDefault();
                             fetchReportData() 
                           }}
+                      
                         >
                           Search <i className="fa fa-search pl-3 pr-2"></i>
                         </button>
@@ -333,7 +339,7 @@ if (employeeWeaverValue.value==0 ||employeeWeaverValue.value==undefined ||employ
 
           <WeaverWiseReportReciept ref={componentRef}
             WeaverWiseReportData={WeaverWiseReportData}
-            summaryFinal={summaryFinal}
+            summaryFinal={summaryFinal}  weaverDataForPrint={weaverDataForPrint}
           />
         </div>
             </div>

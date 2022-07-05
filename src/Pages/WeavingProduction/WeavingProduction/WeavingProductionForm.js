@@ -18,6 +18,7 @@ const WeavingProductionForm = () => {
   const notifyAdd = () => toast("Production Role added Successfully!");
   const notifyIssue = () => toast("Something Went wrong!");
   const notifyNoBorder = () => toast("No of Border is not valid!");
+  const notifyProductStatus = () => toast("Invalid Product");
   // Parent Personal State
   const showNavMenu = useSelector((state) => state.NavState);
   const currentID = useSelector((state) => state.IdToBeUpdate);
@@ -36,7 +37,7 @@ const WeavingProductionForm = () => {
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
   const [allLoomLists, setAllLoomLists] = useState([]);
-
+const [grayProductStatus , setGrayProductStatus ] = useState("")
 
   //state for DropDownSearchableSelector
   const [loomListOptions, setLoomListOptions] = useState([]);
@@ -46,8 +47,7 @@ const WeavingProductionForm = () => {
   const [borderSizeOptions, setBorderSizeOptions] = useState([]);
   const [borderSizeValue, setBorderSizeValue] = useState({})
   // state to store form data in database 
-
-
+ 
   const [rollDetail, setrollDetail] = useState({
     //rollNo: "85",
     date: dateToday,
@@ -416,9 +416,9 @@ const WeavingProductionForm = () => {
       updateNumberOfPieceOneBorderInput.QualityId == "" ||
       updateNumberOfPieceOneBorderInput.LoomSize == ""
     ) {
-      console.log(
-        "unable to fetch rate of border due to unavailability of required credientials"
-      );
+      // console.log(
+      //   "unable to fetch rate of border due to unavailability of required credientials"
+      // );
     } else {
       fetch(
         `${url}api/loomDetailWPF?LoomSize=${updateNumberOfPieceOneBorderInput.LoomSize}&BorderSizeId=${updateNumberOfPieceOneBorderInput.BorderSizeId}&BorderQualityId=${updateNumberOfPieceOneBorderInput.QualityId}`,
@@ -437,18 +437,21 @@ const WeavingProductionForm = () => {
         .then((result) => {
           console.log(result);
 
-          if (result == null || result == "" || result == undefined) {
-            console.log("not available");
+          if (result == null || result == "" || result == undefined) { 
             setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
-          } else {
-            console.log("this is what im searching , ", result);
+          } else { 
             setLoomDetail({
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
               grayProductId: result.grayProductId
-            });
-            console.log(result, "its for testing in wpf");
-            console.log("number odf pieceec dup akisdfaf", loomDetail);
+            }); 
+
+            setGrayProductStatus(result.productStatus)
+            if (result.productStatus==="Deactivate") {
+              
+              notifyProductStatus()
+            }
+
             if (loomDetail.drawBox == "Yes") {
               setratePerBorderTempState(result.rateDrawBox);
               console.log("testing why result is zero");
@@ -502,7 +505,7 @@ const WeavingProductionForm = () => {
   };
 
   const stepOneValidationFunct = () => {
-  
+
     if (rollDetail.rollWeight == "") {
       setStepOneValidator({ ...stepOneValidator, rollWeightValidate: false })
     } else if (rollDetail.loomNumber == "") {
@@ -511,9 +514,11 @@ const WeavingProductionForm = () => {
       setStepOneValidator({ ...stepOneValidator, qualityValidate: false })
     } else if (rollDetail.Size == "") {
       setStepOneValidator({ ...stepOneValidator, sizeValidate: false })
+    } else if (grayProductStatus==="" || grayProductStatus==="Deactivate") {
+      notifyProductStatus()
     } else if (loomDetail.NumOfPieceOneBorder == "" || loomDetail.NumOfPieceOneBorder == " " || loomDetail.NumOfPieceOneBorder === "--" || loomDetail.NumOfPieceOneBorder === undefined || loomDetail.NumOfPieceOneBorder === null || loomDetail.NumOfPieceOneBorder === 0) {
-      console.log("no of border are not bsdk");
       notifyNoBorder()
+  
       // ---------program number validation removed 
 
       // } else if (rollDetail.programNumber == "") {
@@ -595,8 +600,8 @@ const WeavingProductionForm = () => {
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
-  function updateNativingName(i, value, label) { 
-    if (value===-1 && label===-1) {
+  function updateNativingName(i, value, label) {
+    if (value === -1 && label === -1) {
       var arr_data = shiftTotalState;
       arr_data[i].nativingSelectorValue = {};
       arr_data[i].nativing = "";
@@ -666,17 +671,15 @@ const WeavingProductionForm = () => {
     setReRender(!reRender);
   }
   const removeShift = (i) => {
-// var shiftArray = shiftTotalState;
-  // var arrayToRemove=  shiftArray.findIndex(i);
-  
-  var arr_data = shiftTotalState.filter((eachShift)=>{
- return (shiftTotalState.indexOf(eachShift)!==i);
-    
-  });
- 
-  // console.log("array to remove -- " ,arr_data);
-      setShiftTotalState(arr_data);
-   setReRender(!reRender);
+
+    var arr_data = shiftTotalState.filter((eachShift) => {
+      return (shiftTotalState.indexOf(eachShift) !== i);
+
+    });
+
+    // console.log("array to remove -- " ,arr_data);
+    setShiftTotalState(arr_data);
+    setReRender(!reRender);
   }
 
   function updateGrandTotalValue() {
@@ -701,7 +704,7 @@ const WeavingProductionForm = () => {
   }
 
   const stepTwoValidationFunct = async () => {
- 
+
     await shiftTotalState.map((eachShift, i) => {
       var arr_data = shiftTotalState;
 
@@ -807,7 +810,7 @@ const WeavingProductionForm = () => {
       console.log("Go Next");
       setThirdStep("active");
       setSecondStep("done");
-   dispatch(setNavMd());
+      dispatch(setNavMd());
     } else {
       console.log("Cannt Go Next ");
     }
@@ -1107,8 +1110,9 @@ const WeavingProductionForm = () => {
           drawBox: data.loomLabelId.loomDrawBox,
           NumOfPieceOneBorder: data.piece_in_one_border,
           grayProductId: data.grayProduct_id
-        });
 
+        });
+        // setProductStatus()
         setShiftTotalState(data.shiftData.map((eachShift, i) => {
 
 
@@ -1356,7 +1360,7 @@ const WeavingProductionForm = () => {
                 ) : (
                   ""
                 )}
- 
+
                 {thirdStep == "active" ? (
                   <div className="container text-center px-2 mt-5">
                     <div className=" ">
@@ -1373,7 +1377,7 @@ const WeavingProductionForm = () => {
                       <button
                         className="btn btn-primary btn-sm  px-4"
                         onClick={() => {
-                          dispatch(setNavSm()); 
+                          dispatch(setNavSm());
                           setThirdStep("done");
                           setSecondStep("active");
                         }}
@@ -1396,7 +1400,7 @@ const WeavingProductionForm = () => {
                   </div>
                 ) : (
                   ""
-                )} 
+                )}
                 {FourthStep == "active" ? (
                   <div className="container text-center px-2   my-1  ">
                     <div className=" ">

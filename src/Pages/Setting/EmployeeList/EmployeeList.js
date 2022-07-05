@@ -238,6 +238,7 @@ const EmployeeList = () => {
 
   const AddNewEmployeeServer = (e) => {
     e.preventDefault();
+
     console.log(addNewEmployee);
     if (addNewEmployee.name === "") {
       setEmployeeListValidator({ ...employeeListValidator, name: false });
@@ -261,31 +262,31 @@ const EmployeeList = () => {
         ...employeeListValidator,
         recruitmentType: false,
       });
-    } else if (addNewEmployee.monthlySalary === "") {
-      setEmployeeListValidator({
-        ...employeeListValidator,
-        monthlySalary: false,
-      });
-    } else if (addNewEmployee.employeePic1 === "") {
-      setEmployeeListValidator({
-        ...employeeListValidator,
-        employeePic1: false,
-      });
-    } else if (addNewEmployee.employeePic2 === "") {
-      setEmployeeListValidator({
-        ...employeeListValidator,
-        employeePic2: false,
-      });
-    } else if (addNewEmployee.employeeCnicFront === "") {
-      setEmployeeListValidator({
-        ...employeeListValidator,
-        employeeCnicFront: false,
-      });
-    } else if (addNewEmployee.employeeCnicBsck === "") {
-      setEmployeeListValidator({
-        ...employeeListValidator,
-        employeeCnicBsck: false,
-      });
+      // } else if (addNewEmployee.monthlySalary === "") {
+      //   setEmployeeListValidator({
+      //     ...employeeListValidator,
+      //     monthlySalary: false,
+      //   });
+      // } else if (addNewEmployee.employeePic1 === "") {
+      //   setEmployeeListValidator({
+      //     ...employeeListValidator,
+      //     employeePic1: false,
+      //   });
+      // } else if (addNewEmployee.employeePic2 === "") {
+      //   setEmployeeListValidator({
+      //     ...employeeListValidator,
+      //     employeePic2: false,
+      //   });
+      // } else if (addNewEmployee.employeeCnicFront === "") {
+      //   setEmployeeListValidator({
+      //     ...employeeListValidator,
+      //     employeeCnicFront: false,
+      //   });
+      // } else if (addNewEmployee.employeeCnicBsck === "") {
+      //   setEmployeeListValidator({
+      //     ...employeeListValidator,
+      //     employeeCnicBsck: false,
+      //   });
     } else {
       var myHeaders = new Headers();
       myHeaders.append(
@@ -295,26 +296,58 @@ const EmployeeList = () => {
       );
       myHeaders.append("Content-Type", "application/json");
 
-      var raw = JSON.stringify({
-        name: addNewEmployee.name,
-        fatherName: addNewEmployee.fatherName,
-        phoneNum1: addNewEmployee.phoneNum1,
-        phoneNum2: addNewEmployee.phoneNum2,
-        phoneNum3: addNewEmployee.phoneNum3,
-        homePhoneNum: addNewEmployee.homePhoneNum,
-        cnicNum: addNewEmployee.cnicNum,
-        address: addNewEmployee.address,
-        referenceName: addNewEmployee.referenceName,
-        referencePhoneNum: addNewEmployee.referencePhoneNum,
-        jobStatus: addNewEmployee.jobStatus,
-        designation: parseInt(addNewEmployee.designation),
-        employeePic1: addNewEmployee.employeePic1,
-        employeePic2: addNewEmployee.employeePic2,
-        employeeCnicFront: addNewEmployee.employeeCnicFront,
-        employeeCnicBsck: addNewEmployee.employeeCnicBsck,
-        recruitmentType: addNewEmployee.recruitmentType,
-        salary: parseFloat(addNewEmployee.monthlySalary),
-      });
+      var raw;
+
+      if (addNewEmployee.monthlySalary === "") {
+
+        raw = JSON.stringify({
+          name: addNewEmployee.name,
+          fatherName: addNewEmployee.fatherName,
+          phoneNum1: addNewEmployee.phoneNum1,
+          phoneNum2: addNewEmployee.phoneNum2,
+          phoneNum3: addNewEmployee.phoneNum3,
+          homePhoneNum: addNewEmployee.homePhoneNum,
+          cnicNum: addNewEmployee.cnicNum,
+          address: addNewEmployee.address,
+          referenceName: addNewEmployee.referenceName,
+          referencePhoneNum: addNewEmployee.referencePhoneNum,
+          jobStatus: addNewEmployee.jobStatus,
+          designation: parseInt(addNewEmployee.designation),
+          employeePic1: addNewEmployee.employeePic1,
+          employeePic2: addNewEmployee.employeePic2,
+          employeeCnicFront: addNewEmployee.employeeCnicFront,
+          employeeCnicBsck: addNewEmployee.employeeCnicBsck,
+          recruitmentType: addNewEmployee.recruitmentType,
+          salary: 0,
+        });
+
+      } else {
+        raw = JSON.stringify({
+          name: addNewEmployee.name,
+          fatherName: addNewEmployee.fatherName,
+          phoneNum1: addNewEmployee.phoneNum1,
+          phoneNum2: addNewEmployee.phoneNum2,
+          phoneNum3: addNewEmployee.phoneNum3,
+          homePhoneNum: addNewEmployee.homePhoneNum,
+          cnicNum: addNewEmployee.cnicNum,
+          address: addNewEmployee.address,
+          referenceName: addNewEmployee.referenceName,
+          referencePhoneNum: addNewEmployee.referencePhoneNum,
+          jobStatus: addNewEmployee.jobStatus,
+          designation: parseInt(addNewEmployee.designation),
+          employeePic1: addNewEmployee.employeePic1,
+          employeePic2: addNewEmployee.employeePic2,
+          employeeCnicFront: addNewEmployee.employeeCnicFront,
+          employeeCnicBsck: addNewEmployee.employeeCnicBsck,
+          recruitmentType: addNewEmployee.recruitmentType,
+          salary: parseFloat(addNewEmployee.monthlySalary),
+        });
+
+      }
+
+
+
+
 
       var requestOptions = {
         method: "POST",
@@ -510,36 +543,60 @@ const EmployeeList = () => {
       .catch((error) => console.log("error", error));
   };
   const updateEmployeeClouds = (e) => {
+    var raw
+
+    if (e === "SalaryNot") {
+      raw = JSON.stringify({
+
+        employee_Id: emplToUpdate.employee_Id,
+        name: emplToUpdate.name,
+        fatherName: emplToUpdate.fatherName,
+        phoneNum1: emplToUpdate.phoneNum1,
+        phoneNum2: emplToUpdate.phoneNum2,
+        phoneNum3: emplToUpdate.phoneNum3,
+        homePhoneNum: emplToUpdate.homePhoneNum,
+        cnicNum: emplToUpdate.cnicNum,
+        address: emplToUpdate.address,
+        referenceName: emplToUpdate.referenceName,
+        referencePhoneNum: emplToUpdate.referencePhoneNum,
+        jobStatus: emplToUpdate.jobStatusValueUpdate.value,
+        designation: emplToUpdate.designationValueUpdate.value,
+        employeePic1: emplToUpdate.employeePic1,
+        employeePic2: emplToUpdate.employeePic2,
+        employeeCnicFront: emplToUpdate.employeeCnicFront,
+        employeeCnicBsck: emplToUpdate.employeeCnicBsck,
+        recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
+        salary: 0,
+        chart_id: emplToUpdate.chartID,
+      });
+    } else {
+      raw = JSON.stringify({
+        employee_Id: emplToUpdate.employee_Id,
+        name: emplToUpdate.name,
+        fatherName: emplToUpdate.fatherName,
+        phoneNum1: emplToUpdate.phoneNum1,
+        phoneNum2: emplToUpdate.phoneNum2,
+        phoneNum3: emplToUpdate.phoneNum3,
+        homePhoneNum: emplToUpdate.homePhoneNum,
+        cnicNum: emplToUpdate.cnicNum,
+        address: emplToUpdate.address,
+        referenceName: emplToUpdate.referenceName,
+        referencePhoneNum: emplToUpdate.referencePhoneNum,
+        jobStatus: emplToUpdate.jobStatusValueUpdate.value,
+        designation: emplToUpdate.designationValueUpdate.value,
+        employeePic1: emplToUpdate.employeePic1,
+        employeePic2: emplToUpdate.employeePic2,
+        employeeCnicFront: emplToUpdate.employeeCnicFront,
+        employeeCnicBsck: emplToUpdate.employeeCnicBsck,
+        recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
+        salary: emplToUpdate.salary,
+        chart_id: emplToUpdate.chartID,
+      });
+    }
     var myHeaders = new Headers();
     myHeaders.append(
-      "Authorization",
-      `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
-    );
+      "Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
     myHeaders.append("Content-Type", "application/json");
-
-    var raw = JSON.stringify({
-      employee_Id: emplToUpdate.employee_Id,
-      name: emplToUpdate.name,
-      fatherName: emplToUpdate.fatherName,
-      phoneNum1: emplToUpdate.phoneNum1,
-      phoneNum2: emplToUpdate.phoneNum2,
-      phoneNum3: emplToUpdate.phoneNum3,
-      homePhoneNum: emplToUpdate.homePhoneNum,
-      cnicNum: emplToUpdate.cnicNum,
-      address: emplToUpdate.address,
-      referenceName: emplToUpdate.referenceName,
-      referencePhoneNum: emplToUpdate.referencePhoneNum,
-      jobStatus: emplToUpdate.jobStatusValueUpdate.value,
-      designation: emplToUpdate.designationValueUpdate.value,
-      employeePic1: emplToUpdate.employeePic1,
-      employeePic2:  emplToUpdate.employeePic2,
-      employeeCnicFront:  emplToUpdate.employeeCnicFront,
-      employeeCnicBsck:  emplToUpdate.employeeCnicBsck,
-      recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
-      salary: emplToUpdate.salary,
-      chart_id: emplToUpdate.chartID,
-    });
-
     var requestOptions = {
       method: "PUT",
       headers: myHeaders,
@@ -550,15 +607,11 @@ const EmployeeList = () => {
     fetch(`${endPoint}api/employeeLists`, requestOptions)
       .then((response) => {
         if (response.status === 200) {
-          console.log("updatedSuccessFully");
           const filterdEmp = ListOfEmployee.filter((emp) => {
             return emp.employee_Id !== emplToUpdate.employee_Id;
           });
-
-
-
-
-          setListOfEmployee([...filterdEmp, {
+          const unSorted =[...filterdEmp, {
+            employeeSerialNumber: emplToUpdate.employeeSerialNumber,
             address: emplToUpdate.address,
             chartID: emplToUpdate.chartID,
             employee_Id: emplToUpdate.employee_Id,
@@ -574,13 +627,23 @@ const EmployeeList = () => {
             jobStatus: emplToUpdate.jobStatusValueUpdate.value,
             designation: emplToUpdate.designationValueUpdate.value,
             designationName: emplToUpdate.designationValueUpdate.label,
-            employeePic1:emplToUpdate.employeePic1,
+            employeePic1: emplToUpdate.employeePic1,
             employeePic2: emplToUpdate.employeePic2,
-            employeeCnicFront:emplToUpdate.employeeCnicFront,
-            employeeCnicBsck:emplToUpdate.employeeCnicBsck,
+            employeeCnicFront: emplToUpdate.employeeCnicFront,
+            employeeCnicBsck: emplToUpdate.employeeCnicBsck,
             recruitmentType: emplToUpdate.recruitmentTypeValueUpdate.value,
             salary: parseFloat(emplToUpdate.salary,)
-          }])
+          }] 
+
+
+          var sortedEmpConst = unSorted.sort(
+            (a, b) => a.name.localeCompare(b.name)
+          );
+          setListOfEmployee(sortedEmpConst)
+
+
+
+
         } else {
           console.log("Something went wrong");
         }
@@ -597,7 +660,6 @@ const EmployeeList = () => {
 
   const searchItem = (e) => {
     var allData = allEmpListConst;
-    console.log(e);
     setListOfEmployee(allEmpListConst);
     var filteredData = allData.filter((obj) => {
       var data = Object.keys(obj)
@@ -638,7 +700,9 @@ const EmployeeList = () => {
               fileHandle2={fileHandle2}
               fileHandle3={fileHandle3}
               fileHandle4={fileHandle4}
+              setEmployeeListValidator={setEmployeeListValidator}
               onHide={() => {
+                setdisableSubmitForUpdatePhoto(false)
                 setModalShow(false);
                 setAddNewEmployee({
                   name: "",
@@ -666,6 +730,7 @@ const EmployeeList = () => {
                 setrecruitmentTypeValue("");
               }}
               disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
+              setdisableSubmitForUpdatePhoto={setdisableSubmitForUpdatePhoto}
               jobStatus={jobStatus}
               recruitmentType={recruitmentType}
               jobStatusValue={jobStatusValue}
@@ -686,7 +751,7 @@ const EmployeeList = () => {
               onHide={() => {
                 setIsEmplEditModeOn(false)
                 setModalShowView(false)
-                
+
               }}
               disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
               isEmplEditModeOn={isEmplEditModeOn}
@@ -758,31 +823,31 @@ const EmployeeList = () => {
                   <table className="table table-striped jambo_table bulk_action">
                     <thead>
                       <tr className="headings fontWeight300">
-                        <th className="column-title fontWeight300 "> Sr. </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="7%"> Sr. </th>
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="12%">
                           Emp.Name
                         </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300   right-border-1 text-center " width="8%">
                           FatherName
                         </th>
-                        <th className="column-title fontWeight300 ">CNIC</th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="12%">CNIC</th>
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="12%">
                           Address
                         </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300   right-border-1 text-center " width="5%">
                           Designation
                         </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300   right-border-1 text-center " width="7%">
                           Recruitment
                         </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300   right-border-1 text-center ">
                           Salary
                         </th>
-                        <th className="column-title fontWeight300 ">Phone</th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300    right-border-1 text-center">Phone</th>
+                        <th className="column-title fontWeight300    right-border-1 text-center">
                           Status
                         </th>
-                        <th className="column-title fontWeight300 ">
+                        <th className="column-title fontWeight300   right-border-1 text-center ">
                           Action
                         </th>
                       </tr>
@@ -792,7 +857,7 @@ const EmployeeList = () => {
                       {ListOfEmployee.map((item, index) => {
                         return (
                           <tr className="even pointer" key={item.employee_Id}>
-                            <td className=" ">{index + 1}</td>
+                            <td className=" ">{item.employeeSerialNumber}</td>
                             <td className=" ">{item.name}</td>
                             <td className=" ">{item.fatherName}</td>
                             <td className=" text-right">{item.cnicNum}</td>

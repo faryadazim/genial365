@@ -61,7 +61,13 @@ const GenrProductionReport = () => {
   const [dateEnd, setdateEnd] = useState(dateToday);
   const [GenrProductionReportData, setGenrProductionReportData] = useState([]);
   const [GenrProductionGrandTotal, setGenrProductionGrandTotal] = useState({});
-  
+  const shiftOptions = [
+    { label: "All", value: "Shift All" },
+    { label: "Shift A", value: "Shift A" },
+    { label: "Shift B", value: "Shift B" },
+    { label: "Shift C", value: "Shift C" },
+  ];
+  const [shiftValue, setShiftValue] = useState(shiftOptions[0]);
   const [productValue, setProductValue] = useState({
     borderID: 0,
     borderSizeID: 0,
@@ -70,6 +76,7 @@ const GenrProductionReport = () => {
     label: "All",
     value: "0-0",
   });
+  const [dataForPrint, setDataForPrint] = useState({});
   const [productSelectorOptions, setProductSelectorOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const fetchProductListSelector = () => {
@@ -101,8 +108,7 @@ const GenrProductionReport = () => {
       .catch((error) => console.log("error", error));
   };
   const fetchReportData = () => {
-    // console.log("data" , `${endPoint}api/ProductionReport?dateToFind=${dateFrom}T00:00:00&dateToEnd=${dateEnd}T00:00:00&BorderID=${productValue.borderID}&BorderSize=${productValue.borderSizeID}`);
-    var myHeaders = new Headers();
+   var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`
@@ -112,30 +118,39 @@ const GenrProductionReport = () => {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
-    };
-
+    }; 
     fetch(
-      `${endPoint}api/ProductionReport?dateToFind=${dateFrom}T00:00:00&dateToEnd=${dateEnd}T00:00:00&BorderID=${productValue.borderID}&BorderSize=${productValue.borderSizeID}`,
+      `${endPoint}api/ProductionReport?dateToFind=${dateFrom}T00:00:00&dateToEnd=${dateEnd}T00:00:00&BorderID=${productValue.borderID}&BorderSize=${productValue.borderSizeID}&shftSelected=${shiftValue.value}`,
       requestOptions
     )
       .then((response) => response.json())
-      .then((result) => {
-        setGenrProductionReportData(result)
-        var totalPieces=0;
-        var totalBGradePieces =0;
-        var totalAGradePieces =0;
-        var totalAmount =0;
+      .then((result) => { 
+        var sorted = result.sort(
+          (a, b) => a.loomNumber.localeCompare(b.loomNumber)
+        );
+ 
+        setGenrProductionReportData(sorted);
+        var totalPieces = 0;
+        var totalBGradePieces = 0;
+        var totalAGradePieces = 0;
+        var totalAmount = 0;
+        var totalProductions = 0;
 
-        result.map((EachProduction)=>{
-          totalPieces=totalPieces+EachProduction.bGradePieces;
-            totalBGradePieces =totalBGradePieces + EachProduction.bGradePieces
-          totalAGradePieces =totalAGradePieces + EachProduction.aGradePieces
-          totalAmount =totalAmount + EachProduction.amount
-
-        }) 
-        setGenrProductionGrandTotal({totalPieces , totalBGradePieces , totalAGradePieces ,totalAmount})
-      } 
-      )
+        result.map((EachProduction) => {
+          totalAmount = totalAmount + EachProduction.amount;
+          totalAGradePieces = totalAGradePieces + EachProduction.aGradePieces;
+          totalProductions = totalProductions + 1;
+          totalPieces = totalPieces + EachProduction.totalPieces;
+          totalBGradePieces = totalBGradePieces + EachProduction.bGradePieces;
+        });
+        setGenrProductionGrandTotal({
+          totalPieces,
+          totalBGradePieces,
+          totalAGradePieces,
+          totalAmount,
+          totalProductions,
+        });
+      })
       .catch((error) => console.log("error", error));
   };
   useEffect(() => {
@@ -173,40 +188,65 @@ const GenrProductionReport = () => {
                     <form>
                       {/* <span className="section">Personal Info</span> */}
                       <div className="field item form-group">
-                        <div className="col-md-4">
-                          <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
-                            Select Product
-                          </label>
-
-                          <div className="col-md-8">
-                            <Select
-                              required
-                              className="basic-single"
-                              classNamePrefix="select"
-                              defaultValue={"Active"}
-                              value={productSelectedValue}
-                              onChange={(value) => {
-                                setProductSelectedValue({
-                                  label: value.label,
-                                  value: value.value,
-                                });
-                                const arrForBorderSizeIds =
-                                  value.value.split("-");
-                                setProductValue({
-                                  borderID: parseInt(arrForBorderSizeIds[0]),
-                                  borderSizeID: parseInt(
-                                    arrForBorderSizeIds[1]
-                                  ),
-                                });
-                              }}
-                              isSearchable={true}
-                              name="color"
-                              options={productSelectorOptions}
-                              styles={customStyles}
-                            />
+                        <div className="col-md-6">
+                          <div className="col-md-5">
+                            <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
+                              Select Shift
+                            </label>
+                            <div className="col-md-8">
+                              <Select
+                                required
+                                className="basic-single"
+                                classNamePrefix="select"
+                                defaultValue={"Active"}
+                                value={shiftValue}
+                                onChange={(value) => {
+                                  setShiftValue({
+                                    label: value.label,
+                                    value: value.value,
+                                  });
+                                }}
+                                isSearchable={true}
+                                name="color"
+                                options={shiftOptions}
+                                styles={customStyles}
+                              />
+                            </div>
+                          </div>
+                          <div className="col-md-7">
+                            <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
+                              Select Product
+                            </label>
+                            <div className="col-md-9">
+                              <Select
+                                required
+                                className="basic-single"
+                                classNamePrefix="select"
+                                defaultValue={"Active"}
+                                value={productSelectedValue}
+                                onChange={(value) => {
+                                  setProductSelectedValue({
+                                    label: value.label,
+                                    value: value.value,
+                                  });
+                                  const arrForBorderSizeIds =
+                                    value.value.split("-");
+                                  setProductValue({
+                                    borderID: parseInt(arrForBorderSizeIds[0]),
+                                    borderSizeID: parseInt(
+                                      arrForBorderSizeIds[1]
+                                    ),
+                                  });
+                                }}
+                                isSearchable={true}
+                                name="color"
+                                options={productSelectorOptions}
+                                styles={customStyles}
+                              />
+                            </div>
                           </div>
                         </div>
-                        <div className="col-md-8 px-0">
+                        <div className="col-md-6 px-0">
                           <div className="col-md-5 px-0 ">
                             <label className="col-form-label col-md-3 col-sm-3  label-align px-0">
                               Start Date
@@ -239,13 +279,20 @@ const GenrProductionReport = () => {
                           </div>
                           <div className="col-md-2 px-0 ">
                             <button
-                              className="btn btn-sm btn-customOrange pl-3"
+                              className="btn btn-sm btn-customOrange px-2 py-1/2"
                               onClick={(e) => {
+                                //  ,
+                                setDataForPrint({
+                                 shiftValue,
+                                  productName: productSelectedValue.label,
+                                  dateFrom,
+                                  dateEnd: dateEnd,
+                                });
                                 e.preventDefault();
                                 fetchReportData();
                               }}
                             >
-                              Search <i className="fa fa-search pl-3 pr-2"></i>
+                              Search <i className="fa fa-search  "></i>
                             </button>
                           </div>
                         </div>
@@ -269,12 +316,12 @@ const GenrProductionReport = () => {
                         />
                       </li>
                       <li>
-                        <button
+                        {/* <button
                           className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
                           onClick={() => console.log("print")}
                         >
                           <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                        </button>
+                        </button> */}
                       </li>
                     </ul>
 
@@ -282,6 +329,7 @@ const GenrProductionReport = () => {
                       ref={componentRef}
                       GenrProductionReportData={GenrProductionReportData}
                       GenrProductionGrandTotal={GenrProductionGrandTotal}
+                      dataForPrint={dataForPrint}
                     />
                   </div>
                 </div>

@@ -10,13 +10,13 @@ import { setNavMd } from "../store/actions/NavState";
 
 
 const Nav = ({ navigationResult, isLogin }) => {
-  const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
+  // const [multiLevelDropDown, setMultiLevelDropSown] = useState(false)
   const showNavMenu = useSelector((state) => state.NavState);
   const [currentBlock, setCurrentBlock] = useState(1);
   const showNavResult = useSelector((state) => state.NavReducer.data);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("navigationResult.navigationResult" , );
+  useEffect(() => { 
+    console.log("nav data inside navigation Bar " , navigationResult);
   }, []);
 
   return (
@@ -32,11 +32,9 @@ const Nav = ({ navigationResult, isLogin }) => {
                     {/* Logo */}
                     <div className="navbar nav_title" style={{ border: 0 }}>
                       <a href="#" className="site_title">
-                        <img src="images/logo.svg" alt className="md-logo" />
+                        <img src="images/logo.svg" alt="no available" className="md-logo" />
                         <img
-                          src="images/logo_icon.svg"
-                          alt
-                          className="sm-logo"
+                          src="images/logo_icon.svg"   alt="no available"   className="sm-logo"
                         />
                       </a>
                     </div>
