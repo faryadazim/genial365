@@ -13,8 +13,8 @@ const WeavingProductionForm = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
   const url = localStorage.getItem("authUser");
-  const userId = localStorage.getItem("loginId");
-
+  const userId =  localStorage.getItem("userName");
+  const [disableSaveButton, setdisableSaveButton] = useState(false)
   const notifyAdd = () => toast("Production Role added Successfully!");
   const notifyIssue = () => toast("Something Went wrong!");
   const notifyNoBorder = () => toast("No of Border is not valid!");
@@ -423,6 +423,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       fetch(
         `${url}api/loomDetailWPF?LoomSize=${updateNumberOfPieceOneBorderInput.LoomSize}&BorderSizeId=${updateNumberOfPieceOneBorderInput.BorderSizeId}&BorderQualityId=${updateNumberOfPieceOneBorderInput.QualityId}`,
         {
+       
           method: "GET",
           // headers: {
           //   Authorization:
@@ -929,11 +930,13 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
 
     fetch(endPoint + "api/Production", requestOptions)
       .then(response => {
-        if (response.status == 200) {
+        if (response.status === 200) {
           notifyAdd()
+          setdisableSaveButton(false)
           return response
         } else {
           notifyIssue()
+          setdisableSaveButton(false)
         }
       })
 
@@ -1193,6 +1196,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       });
   };
 
+  // step four state 
   // ----------------------------------
   useEffect(() => {
   }, [finalStepRequired]);
@@ -1434,7 +1438,11 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
                             onClick={() => { postUserDraft() }}>
                             Draft <i className="fa fa-stack-exchange pl-2"> </i>
                           </button>
-                            <button className="btn btn-success btn-sm  px-4   " onClick={() => saveWeavingProductionForm()}>
+                            <button className="btn btn-success btn-sm  px-4   " 
+                            disabled={disableSaveButton}
+                            onClick={() => {
+                              setdisableSaveButton(true)
+                              saveWeavingProductionForm()}}>
 
                               Save <i className="fa fa-save pl-2 "> </i>
                             </button> </> : <>
