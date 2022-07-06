@@ -289,6 +289,7 @@ const GrayProductList = () => {
   };
   const updateGrayProductList = (e) => {
     e.preventDefault();
+    console.log(updatedGrayProductList , "-----------");
     if (
       updatedGrayProductList.PerPieceGrayWeightGram === "" ||
       updatedGrayProductList.PerPieceGrayWeightGram === null ||
@@ -457,19 +458,19 @@ const GrayProductList = () => {
         LoomNumbPieceInBorder76: parseInt(
           updatedGrayProductList.LoomNumbPieceInBorder76
         ),
-        LoomNumbRatePerBorderWithDraw76: parseInt(
+        LoomNumbRatePerBorderWithDraw76: parseFloat(
           updatedGrayProductList.LoomNumbRatePerBorderWithDraw76
         ),
-        LoomNumbRatePerBorderWithoutDraw76: parseInt(
+        LoomNumbRatePerBorderWithoutDraw76: parseFloat(
           updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw76
         ),
         LoomNumbPieceInBorder96: parseInt(
           updatedGrayProductList.LoomNumbPieceInBorder96
         ),
-        LoomNumbRatePerBorderWithDraw96: parseInt(
+        LoomNumbRatePerBorderWithDraw96: parseFloat(
           updatedGrayProductList.LoomNumbRatePerBorderWithDraw96
         ),
-        LoomNumbRatePerBorderWithoutDraw96: parseInt(
+        LoomNumbRatePerBorderWithoutDraw96: parseFloat(
           updatedGrayProductList.LoomNumbRatePerBorderWithoutDraw96
         ),
         status: updatedGrayProductList.status.value,
@@ -769,14 +770,14 @@ const GrayProductList = () => {
                                   </div>
                                   <div className="  col-md-5 text-center             ">
                                     <div className="col-md-6 text-center    ">
-                                      {item.LoomNumbRatePerBorderWithDraw76}
+                                      {item.LoomNumbRatePerBorderWithDraw76!==null && (item.LoomNumbRatePerBorderWithDraw76).toFixed(2)}
                                     </div>
                                     <div className="col-md-6 text-center  removePadding  ">
-                                      {item.LoomNumbRatePerBorderWithoutDraw76}
+                                      {item.LoomNumbRatePerBorderWithoutDraw76!==null && (item.LoomNumbRatePerBorderWithoutDraw76).toFixed(2)}
                                     </div>
                                   </div>
                                   <div className="   col-md-3 text-center  removePadding            ">
-                                    {item.nativingRate76}
+                                    {item.nativingRate76!==null && (item.nativingRate76).toFixed(2)}
                                   </div>
                                 </div>
                               </td>
@@ -791,14 +792,14 @@ const GrayProductList = () => {
                                   </div>
                                   <div className=" py-1 col-md-5 text-center  removePadding     ">
                                     <div className="col-md-6 text-center   removePadding          ">
-                                      {item.LoomNumbRatePerBorderWithDraw96}
+                                      {item.LoomNumbRatePerBorderWithDraw96!==null && (item.LoomNumbRatePerBorderWithDraw96).toFixed(2)}
                                     </div>
                                     <div className="col-md-6 text-center  removePadding    removeLeftBorder">
-                                      {item.LoomNumbRatePerBorderWithoutDraw96}
+                                      {item.LoomNumbRatePerBorderWithoutDraw96!==null && (item.LoomNumbRatePerBorderWithoutDraw96).toFixed(2)}
                                     </div>
                                   </div>
                                   <div className="   col-md-3 text-center  removePadding        ">
-                                    {item.nativingRate96}
+                                    {item.nativingRate96!==null && (item.nativingRate96).toFixed(2)}
                                   </div>
                                 </div>
                               </td>

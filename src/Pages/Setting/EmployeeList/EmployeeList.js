@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 // import {  Button } from "bootstrap";
 import Loader from "../../../Layout/Loader/Loader";
+import Select from "react-select";
 
 import ShowSingleEmployee from "./ShowSingleEmployee";
 import { useSelector } from "react-redux";
@@ -9,6 +10,67 @@ import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import MyVerticallyCenteredModalView from "./MyVerticallyCenteredModalView.js";
 import { toast, ToastContainer } from "react-toastify";
 import { endPoint } from "../../../config/Config";
+const customStyles = {
+  // control: base => ({
+  //   ...base,
+  //   // This line disable the blue border
+
+  // })
+  control: (provided, state, base) => ({
+    ...provided,
+    background: "#fff",
+    borderColor: "#d9e4e8",
+    borderRadius: "none",
+    minHeight: "30px",
+    height: "30px",
+
+    ...base,
+    boxShadow: "none",
+  }),
+  // option: (provided, state) => ({
+  //     ...provided,
+
+  //     borderBottom: "1px  #003a4d",
+  //     color: state.isSelected ? "#f79c74" : "#003a4d",
+  //     background: '#fff',
+
+  // }),
+  // menu: base => ({
+  //     ...base,
+  //     // override border radius to match the box
+  //     borderRadius: 0,
+  //     backgroundColor: 'red',
+  //     marginTop: 0
+  //   }),
+  //   menuList: base => ({
+  //     ...base,
+  //     // kill the white space on first and last option
+  //     backgroundColor: 'red',
+  //     padding: 0
+  //   }),
+  valueContainer: (provided, state) => ({
+    ...provided,
+    fontSize: "11px",
+    height: "30px",
+    padding: "0 6px",
+    // background: '#fff',
+  }),
+
+  input: (provided, state) => ({
+    ...provided,
+    margin: "0px",
+  }),
+  indicatorSeparator: (state) => ({
+    display: "none",
+  }),
+  indicatorsContainer: (provided, state) => ({
+    ...provided,
+    height: "30px",
+  }),
+};
+
+
+
 
 const EmployeeList = () => {
   const notifyAdd = () => toast("Employee Added Successfully");
@@ -18,9 +80,13 @@ const EmployeeList = () => {
   const [modalShow, setModalShow] = useState(false);
   const [ListOfEmployee, setListOfEmployee] = useState([]);
   const [allEmpListConst, setAllEmpListConst] = useState([]);
+  const [employeeStatusState, setEmployeeStatusState] = useState([])
   const [isLoading, setisLoading] = useState(true);
   const showNavMenu = useSelector((state) => state.NavState);
-
+  const [statusFilterOptions, setStatusFilterOptions] = useState([
+    { label: "All", value: "All" }, { label: "Active", value: "Active" }, { label: "Left", value: "Left" }
+  ])
+  const [statusFilterValue, setStatusFilterValue] = useState(statusFilterOptions[0])
 
 
   const employeeInitialState = {
@@ -203,10 +269,10 @@ const EmployeeList = () => {
       },
     })
       .then((response) => {
-        response.json().then((data) => {
-          console.log(data, "success");
+        response.json().then((data) => { 
           setListOfEmployee(data);
           setAllEmpListConst(data);
+          setEmployeeStatusState(data)
 
           // ----- Setting Employee List ------
           fetch(url + "api/employeeDesignations", {
@@ -435,7 +501,7 @@ const EmployeeList = () => {
     } else {
       setDesignationValue(value.value);
       setAddNewEmployee({ ...addNewEmployee, designation: value.value });
-    } 
+    }
     //     switch (field) {
     //       case "Designation":
     //         setDesignationValue(value.value);
@@ -673,6 +739,26 @@ const EmployeeList = () => {
     setListOfEmployee(filteredData);
   };
 
+  const updateEmployeeStatusBase = (e) => {
+    let filterData;
+    if (e.value === "All") {
+      filterData = employeeStatusState
+    } else if (e.value === "Active") {
+      filterData = employeeStatusState.filter((EachEmp) => { 
+         return EachEmp.jobStatus==="Active"
+      })
+    } else if (e.value === "Left") {
+      filterData = employeeStatusState.filter((EachEmp) => {
+       return EachEmp.jobStatus==="Left" 
+      })
+    } 
+    var sorted = filterData.sort(
+      (a, b) => a.name.localeCompare(b.name)
+    );
+    setListOfEmployee(sorted)
+    setAllEmpListConst(sorted)
+    
+  }
   return (
     <>
       {isLoading ? (
@@ -783,12 +869,12 @@ const EmployeeList = () => {
               </div> */}
               <div className="col-md-6 pl-0">
                 {" "}
-                <div className=" mb-2">
+                <div className=" mb-0">
                   {" "}
                   <input
                     type="text"
                     placeholder="Search Filter"
-                    className="form-control "
+                    className="form-control height-button mt-2 "
                     onChange={(e) => searchItem((e.target.value).toLowerCase())}
                   />
                 </div>
@@ -796,26 +882,34 @@ const EmployeeList = () => {
 
               {/* </div> */}
             </div>
-            <div className="col-md-6 text-right pr-0">
-              <button
-                className="btn btn-success  mt-2 btn-sm   px-2 mr-0"
+            <div className="col-md-6    pr-0 ">
+              <div className="col-md-4"></div>
+              <div className="col-md-5 p-0 pr-2 mt-2">      <Select
+                // required
+                className="basic-single"
+                classNamePrefix="select"
+                defaultValue={"Active"}
+                value={statusFilterValue}
+                onChange={(value) => {
+                  setStatusFilterValue(value)
+                  updateEmployeeStatusBase(value)
+                  console.log("changed");
+                }}
+                isSearchable={true}
+                name="color"
+                options={statusFilterOptions}
+                styles={customStyles}
+              /></div>
+              <div className="col-md-3 p-0">    <button
+                className="btn btn-success  mt-2 btn-sm   px-2 mr-0 w-100 height-button "
                 onClick={() => setModalShow(true)}
               >
-                Add New Employee
+                Add New  
                 <i className="ml-2 fa fa-plus-square"></i>
-              </button>
+              </button> </div>
+
             </div>
-            {/* {showSingleUser ? (
-              <ShowSingleEmployee
-                setUpdateSelectorList={setUpdateSelectorList}
-                updateSelectorList={updateSelectorList}
-                componentUpdater={componentUpdater}
-                setComponentUpdater={setComponentUpdater}
-                fetchAllData={fetchAllData}
-                singleUserId={singleUserId}
-                setShowSingleUSer={setShowSingleUSer}
-              />
-            ) : ( */}
+
             <div className="x_panel">
               <div className="x_content">
                 <div className="table-responsive">

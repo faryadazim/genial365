@@ -147,6 +147,48 @@ const RolePermission = () => {
         console.log(error);
       });
   }
+  const updatePermissions = () => {
+    let tat=[];
+    pagePermissionList.map((eachMod) => {
+    eachMod.pages.map((eachPage) => {
+        tat.push( {
+          "PermissionId":eachPage.pagePermissionId ,
+          "PageId":  eachPage.pageID,
+          "AddPermission": eachPage.AddPermission,
+          "viewPermission": eachPage.viewPermission,
+          "EditPermission": eachPage.EditPermission,
+          "DelPermission": eachPage.DelPermission
+        })
+      })
+    })
+
+    console.log(tat, "--------");
+
+
+
+    var data = JSON.stringify({
+    "roleId": RoleToBeSearch, 
+      "pages": tat
+    });
+
+    var config = {
+      method: 'put',
+      url: `${endPoint}api/PutPagePermissionAll`,
+      headers: {
+        'Authorization': `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        'Content-Type': 'application/json'
+      },
+      data: data
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
   useEffect(() => {
     fetchAllData()
   }, []);
@@ -165,18 +207,9 @@ const RolePermission = () => {
               } `}
             role="main"
           >
-            <div className="field item form-group d-flex justify-content-center ">
-              <div className="col-md-6 col-sm-6   d-flex justify-content-around align-items-center">
-                {/* <Form.Select
-                  aria-label="Default select example"
-                  className="form-control text-center w-75" 
-                >fetchAllData
-                  
-                  <option value="1">Admin</option>
-                  <option value="3">Cashier</option>
-                  <option value="2">USer</option>
-               
-                </Form.Select> */}
+            <div className="field item form-group d-flex justify-content-center">
+              <div className="col-md-8 col-sm-8   d-flex justify-content-around align-items-center pl-0" style={{ paddingRight: "40%" }}>
+
                 <Select
                   required
                   className="basic-single"
@@ -193,6 +226,12 @@ const RolePermission = () => {
                   options={roleOptions}
                   styles={customStyles}
                 />
+
+              </div>
+              <div className="col-md-4  text-right px-0">
+                <button className="btn btn-info btn-sm mb-0 px-3 " onClick={() => { updatePermissions() }}>
+                  Update
+                </button>
 
               </div>
             </div>
