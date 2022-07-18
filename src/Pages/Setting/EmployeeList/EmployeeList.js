@@ -51,9 +51,9 @@ const EmployeeList = () => {
     recruitmentType: "",
     weeklySalary: "",
     monthlySalary: "",
-  }; 
-  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({}); 
-  const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState); 
+  };
+  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({});
+  const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState);
   const url = localStorage.getItem("authUser");
   const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] = useState(false);
   const [modalShowView, setModalShowView] = useState(false)
@@ -67,7 +67,7 @@ const EmployeeList = () => {
   ];
 
   const [updateSelectorList, setUpdateSelectorList] = useState(false);
-  const [jobStatusValue, setJobStatusValue] = useState({}); 
+  const [jobStatusValue, setJobStatusValue] = useState({});
   const employeeListValidatorInitialState = {
     name: true,
     fatherName: true,
@@ -261,7 +261,7 @@ const EmployeeList = () => {
       setEmployeeListValidator({
         ...employeeListValidator,
         recruitmentType: false,
-      }); 
+      });
     } else if (addNewEmployee.employeePic1 === "") {
       setEmployeeListValidator({
         ...employeeListValidator,
@@ -353,12 +353,13 @@ const EmployeeList = () => {
 
       fetch(`${endPoint}api/employeeLists`, requestOptions)
         .then((response) => {
-          if(response.status===200){
+          if (response.status === 200) {
             toast.success("Employee added successfully")
-          }else{
+          } else {
             toast.error("Something went wrong")
           }
-          return response.json()})
+          return response.json()
+        })
         .then((result) => {
           setAddNewEmployee({
             name: "",
@@ -389,11 +390,12 @@ const EmployeeList = () => {
           setJobStatusValue("");
           setrecruitmentTypeValue("");
           setUpdateSelectorList(!updateSelectorList);
-       
+
         })
         .catch((error) => {
           toast.error("Something went wrong")
-          console.log("error", error)});
+          console.log("error", error)
+        });
     }
   };
 
@@ -643,7 +645,7 @@ const EmployeeList = () => {
           );
           setListOfEmployee(sortedEmpConst)
           setEmployeeStatusState(sortedEmpConst)
-            setAllEmpListConst(sortedEmpConst)
+          setAllEmpListConst(sortedEmpConst)
           setStatusFilterValue(statusFilterOptions[0])
           toast.success(
             "Employee updated successfully")

@@ -1,67 +1,9 @@
 import React from "react";
 import Select from "react-select";
-import { Modal, Button } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 import { preventMinus } from '../../../config/oreventMinus'
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
-
-    ...base,
-    boxShadow: "none",
-  }),
-  // option: (provided, state) => ({
-  //     ...provided,
-
-  //     borderBottom: "1px  #003a4d",
-  //     color: state.isSelected ? "#f79c74" : "#003a4d",
-  //     background: '#fff',
-
-  // }),
-  // menu: base => ({
-  //     ...base,
-  //     // override border radius to match the box
-  //     borderRadius: 0,
-  //     backgroundColor: 'red',
-  //     marginTop: 0
-  //   }),
-  //   menuList: base => ({
-  //     ...base,
-  //     // kill the white space on first and last option
-  //     backgroundColor: 'red',
-  //     padding: 0
-  //   }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    fontSize: "11px",
-    height: "30px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
-
+import { customStyles } from "../../../config/react-select-style";
 const UpdateGrayProduct = (props) => {
 
 
@@ -328,6 +270,8 @@ const UpdateGrayProduct = (props) => {
                             }
                             name="number"
                             type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="With Draw"
                             value={
                               props.updatedGrayProductList
@@ -358,6 +302,8 @@ const UpdateGrayProduct = (props) => {
                             }
                             name="number"
                             type="number"
+                            onKeyPress={(e) => { preventMinus(e) }}
+                            min="0"
                             placeholder="Without Draw xx"
                             value={
                               props.updatedGrayProductList

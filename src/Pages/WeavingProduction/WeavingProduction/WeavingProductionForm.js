@@ -13,7 +13,7 @@ const WeavingProductionForm = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
   const url = localStorage.getItem("authUser");
-  const userId =  localStorage.getItem("userName");
+  const userId = localStorage.getItem("userName");
   const [disableSaveButton, setdisableSaveButton] = useState(false)
   const notifyAdd = () => toast("Production Role added Successfully!");
   const notifyIssue = () => toast("Something Went wrong!");
@@ -37,7 +37,7 @@ const WeavingProductionForm = () => {
   const dateToday = `${year}-${month}-${day}`;
   const [isLoading, setisLoading] = useState(true);
   const [allLoomLists, setAllLoomLists] = useState([]);
-const [grayProductStatus , setGrayProductStatus ] = useState("")
+  const [grayProductStatus, setGrayProductStatus] = useState("")
 
   //state for DropDownSearchableSelector
   const [loomListOptions, setLoomListOptions] = useState([]);
@@ -47,7 +47,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
   const [borderSizeOptions, setBorderSizeOptions] = useState([]);
   const [borderSizeValue, setBorderSizeValue] = useState({})
   // state to store form data in database 
- 
+
   const [rollDetail, setrollDetail] = useState({
     //rollNo: "85",
     date: dateToday,
@@ -231,18 +231,18 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
     // Fetching loom list number 
 
     var myHeadersLoom = new Headers();
-    myHeadersLoom.append("Authorization",`bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
-    
+    myHeadersLoom.append("Authorization", `bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+
     var requestOptions = {
       method: 'GET',
       headers: myHeadersLoom,
       redirect: 'follow'
     };
-    
+
     fetch(`${endPoint}api/LoomListsOptions`, requestOptions)
       .then(response => response.json())
       .then(result => {
-        setLoomListOptions(result); 
+        setLoomListOptions(result);
       })
       .catch(error => console.log('error', error));
 
@@ -261,7 +261,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       dispatch(updateCurrentId(null))
 
     }
- 
+
     // Step One Dropdown List fetching from api/backend
     fetch(url + "api/LoomListsCore", {
       method: "GET",
@@ -274,14 +274,14 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       .then((data) => {
         console.log(data);
         setAllLoomLists(data);
-//         var arrForLoom = [];
-//         data.map((item) => {
-//           arrForLoom.push({
-//             label: item.loomNumber,
-//             value: item.loom_id,
-//           });
-//         });
-// console.log(arrForLoom ,"-------loom options" );
+        //         var arrForLoom = [];
+        //         data.map((item) => {
+        //           arrForLoom.push({
+        //             label: item.loomNumber,
+        //             value: item.loom_id,
+        //           });
+        //         });
+        // console.log(arrForLoom ,"-------loom options" );
         // setLoomListOptions(arrForLoom);
       });
     // fetching BorderSize
@@ -446,7 +446,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       fetch(
         `${url}api/loomDetailWPF?LoomSize=${updateNumberOfPieceOneBorderInput.LoomSize}&BorderSizeId=${updateNumberOfPieceOneBorderInput.BorderSizeId}&BorderQualityId=${updateNumberOfPieceOneBorderInput.QualityId}`,
         {
-       
+
           method: "GET",
           // headers: {
           //   Authorization:
@@ -461,18 +461,18 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
         .then((result) => {
           console.log(result);
 
-          if (result == null || result == "" || result == undefined) { 
+          if (result == null || result == "" || result == undefined) {
             setLoomDetail({ ...loomDetail, NumOfPieceOneBorder: "--" });
-          } else { 
+          } else {
             setLoomDetail({
               ...loomDetail,
               NumOfPieceOneBorder: result.noOfPieceInOneBorder,
               grayProductId: result.grayProductId
-            }); 
+            });
 
             setGrayProductStatus(result.productStatus)
-            if (result.productStatus==="Deactivate") {
-              
+            if (result.productStatus === "Deactivate") {
+
               notifyProductStatus()
             }
 
@@ -538,11 +538,11 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       setStepOneValidator({ ...stepOneValidator, qualityValidate: false })
     } else if (rollDetail.Size == "") {
       setStepOneValidator({ ...stepOneValidator, sizeValidate: false })
-    } else if (grayProductStatus==="" || grayProductStatus==="Deactivate") {
+    } else if (grayProductStatus === "" || grayProductStatus === "Deactivate") {
       notifyProductStatus()
     } else if (loomDetail.NumOfPieceOneBorder == "" || loomDetail.NumOfPieceOneBorder == " " || loomDetail.NumOfPieceOneBorder === "--" || loomDetail.NumOfPieceOneBorder === undefined || loomDetail.NumOfPieceOneBorder === null || loomDetail.NumOfPieceOneBorder === 0) {
       notifyNoBorder()
-  
+
       // ---------program number validation removed 
 
       // } else if (rollDetail.programNumber == "") {
@@ -609,16 +609,13 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
     arr_data[i].noOfBorder = parseInt(value);
     arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
     arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - shiftTotalState[i].bGradePiece);
-    arr_data[i].totalAmount = (parseFloat((parseFloat(shiftTotalState[i].ratePerBorder) / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
-    console.log(  parseInt(value).toFixed(2) , "no-of-border");
-    console.log(  shiftTotalState[i].aGradePieces , "a-grade-piece");
-    console.log( loomDetail.NumOfPieceOneBorder , "no-ofpiece in-one-border");
-    console.log( shiftTotalState[i].ratePerBorder , "rate-per-border");
+    arr_data[i].totalAmount = (parseFloat((parseFloat(shiftTotalState[i].ratePerBorder) / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces)).toFixed(2);
+
     setShiftTotalState(arr_data);
 
     setReRender(!reRender);
   }
-  function updateWeaverNAme(i, value, label) { 
+  function updateWeaverNAme(i, value, label) {
     var arr_data = shiftTotalState;
 
     arr_data[i].weaverSelectorValue = { label: label, value: value };
@@ -653,21 +650,10 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
     setReRender(!reRender);
   }
   function updateBGradePiece(i, value) {
-    console.log("b garade testing");
     var arr_data = shiftTotalState;
     arr_data[i].bGradePiece = parseInt(value);
     arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - value);
-
-
-    //  arr_data[i].totalAmount = parseInt((parseInt(shiftTotalState[i].ratePerBorder) / 
-    // parseInt(loomDetail.NumOfPieceOneBorder)) * (parseInt(shiftTotalState[i].totalPiece -(value))) + parseInt(shiftTotalState[i].updateExtraAmountAmount));
     arr_data[i].totalAmount = (((shiftTotalState[i].ratePerBorder) / (loomDetail.NumOfPieceOneBorder)) * (parseInt(shiftTotalState[i].totalPiece - (value))) + shiftTotalState[i].extraAmount.amount).toFixed(2);
-
-
-
-
-
-
     setShiftTotalState(arr_data);
     setReRender(!reRender);
   }
@@ -1232,7 +1218,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
         className={`top_nav  bg-light  px-4 py-4 pt-5 ${showNavMenu == false ? "right_col-margin-remove" : " "}  `}   >
         <div className="x_panel mt-2">
           <div className="x_title">
-            <h2 className="mt-3 ml-2">Weaving Production Form</h2>
+            <h2 className="mt-3 ml-2"><i className="fa fa-edit"></i>&nbsp; Weaving Production Form</h2>
             <div className="clearfix" />
           </div>
           <div className="x_content mb-3">
@@ -1463,11 +1449,12 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
                             onClick={() => { postUserDraft() }}>
                             Draft <i className="fa fa-stack-exchange pl-2"> </i>
                           </button>
-                            <button className="btn btn-success btn-sm  px-4   " 
-                            disabled={disableSaveButton}
-                            onClick={() => {
-                              setdisableSaveButton(true)
-                              saveWeavingProductionForm()}}>
+                            <button className="btn btn-success btn-sm  px-4   "
+                              disabled={disableSaveButton}
+                              onClick={() => {
+                                setdisableSaveButton(true)
+                                saveWeavingProductionForm()
+                              }}>
 
                               Save <i className="fa fa-save pl-2 "> </i>
                             </button> </> : <>
