@@ -5,9 +5,8 @@ import { Button } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import Pagination from "./Pagination";
-import { ToastContainer, toast } from "react-toastify";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux"; 
 // import {
 //   fetchAllUser,
 //   deleteUser,

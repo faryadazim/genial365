@@ -125,11 +125,13 @@ const GenrProductionReport = () => {
     )
       .then((response) => response.json())
       .then((result) => { 
-        var sorted = result.sort(
-          (a, b) => a.loomNumber.localeCompare(b.loomNumber)
-        );
+        // var sorted = result.sort(
+        //   (a, b) => a.loomNumber.localeCompare(b.loomNumber)
+        // );
+        result.sort((a,b) => (parseInt(a.loomNumber) > parseInt(b.loomNumber)) ? 1 : ((parseInt(b.loomNumber) > parseInt(a.loomNumber)) ? -1 : 0));
  
-        setGenrProductionReportData(sorted);
+ console.log(result , "--------sorted -------");
+        setGenrProductionReportData(result);
         var totalPieces = 0;
         var totalBGradePieces = 0;
         var totalAGradePieces = 0;

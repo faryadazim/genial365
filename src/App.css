@@ -718,10 +718,10 @@ td {
   padding-left: 0px !important;
   padding-right: 0px !important;
 }
-
+/* 
 .form-control-remove {
   border: 0px !important;
-}
+} */
 
 .table td,
 .table th {
@@ -798,3 +798,16 @@ input:disabled {
 .height-button{
   height:29px !important;
 }
+
+
+
+/* navigation header style  */
+.navbar-nav{
+  background-color: #003a4d !important;
+}
+
+
+/* 
+.page-title-bar{
+  background-color: red !important;
+} */

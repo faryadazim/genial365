@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import Select from "react-select";
+
+
 import "./LittleLoader.css";
 import { preventMinus } from '../../../config/oreventMinus.js'
 
+import Select, { components , createFilter  } from "react-select";
+const { ValueContainer, Placeholder } = components;
 const customStyles = {
   // control: base => ({
   //   ...base,
@@ -25,6 +28,7 @@ const customStyles = {
     borderBottom: "1px  #003a4d",
     color: state.isSelected ? "#f79c74" : "#003a4d",
     background: "#fff",
+    textAlign: "left",
   }),
   valueContainer: (provided, state) => ({
     ...provided,
@@ -43,6 +47,11 @@ const customStyles = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: "28px",
+  //  background:"red",
+  //  padding:"0px",
+  //  width:
+  //  margin:"0px"
+    
   }),
 };
 
@@ -81,9 +90,9 @@ const customStylesDanger = {
   indicatorsContainer: (provided, state) => ({
     ...provided,
     height: "28px",
+    
   }),
 };
-
 const WeavingProductionFormStepOne = ({
   isLoading, loomDetail, rollDetail, FetchListSelector, updateNumbOfPieceInBorderFunc,
   loomDetailsUpdate, setrollDetail, loomListOptions, setLoomDetailsUpdate,
@@ -94,8 +103,7 @@ const WeavingProductionFormStepOne = ({
 
 
   useEffect(() => {
-    FetchListSelector();
-    console.log(rollDetail);
+    FetchListSelector(); 
 
   }, []);
 
@@ -176,12 +184,10 @@ const WeavingProductionFormStepOne = ({
                       Loom Number<span className="required">*</span>
                     </label>
                     <div className="col-md-6 col-sm-6">
-                      <Select
-                        required
+                      {/* <Select
                         className="basic-single"
                         classNamePrefix="select"
                         isSearchable={true}
-                        name="color"
                         options={loomListOptions}
                         styles={stepOneValidator.loomNumberValidate ? customStyles : customStylesDanger}
                         value={loomListValue}
@@ -189,9 +195,41 @@ const WeavingProductionFormStepOne = ({
                           setrollDetail({ ...rollDetail, loomNumber: e.value });
                           setLoomDetailsUpdate(!loomDetailsUpdate)
                           updateLoomDetails(e.value);
-                          setLoomListValue({ label: e.label, value: e.value })
+                          setLoomListValue(e)
                         }}
+                      /> */}
+
+                      <Select
+                      //  getOptionValue={(opt) => opt.id} 
+                        filterOption={createFilter({ matchFrom: "start" })}
+                        className="basic-single"
+                        classNamePrefix="select"
+                        value={loomListValue} 
+                        options={loomListOptions} 
+                        // getOptionLabel={(opt) => `${opt.label}`} 
+                        // components={{
+                        //   ValueContainer: CustomValueContainer
+                        // }}
+
+                        onChange={(e) =>
+                         {  setLoomListValue(e) 
+                          setrollDetail({ ...rollDetail, loomNumber: e.value });
+                          setLoomDetailsUpdate(!loomDetailsUpdate)
+                          updateLoomDetails(e.value);
+                        }
+                        }
+                        isSearchable={true}
+                        name="color"
+                        styles={stepOneValidator.loomNumberValidate ? customStyles : customStylesDanger}
                       />
+
+
+
+
+
+
+
+
                     </div>
                   </div>
                   <div className="field item form-group">

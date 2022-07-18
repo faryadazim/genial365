@@ -227,7 +227,30 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
 
   }
   const FetchListSelector = async () => {
+
     // Fetching loom list number 
+
+    var myHeadersLoom = new Headers();
+    myHeadersLoom.append("Authorization",`bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
+    
+    var requestOptions = {
+      method: 'GET',
+      headers: myHeadersLoom,
+      redirect: 'follow'
+    };
+    
+    fetch(`${endPoint}api/LoomListsOptions`, requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        setLoomListOptions(result); 
+      })
+      .catch(error => console.log('error', error));
+
+
+
+
+
+
     // fetching and setting loom name  
     if (idToUpdateProductionTable == null) {
       await fetchNewRoleName()
@@ -238,7 +261,7 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       dispatch(updateCurrentId(null))
 
     }
-
+ 
     // Step One Dropdown List fetching from api/backend
     fetch(url + "api/LoomListsCore", {
       method: "GET",
@@ -251,15 +274,15 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
       .then((data) => {
         console.log(data);
         setAllLoomLists(data);
-        var arrForLoom = [];
-        data.map((item) => {
-          arrForLoom.push({
-            label: item.loomNumber,
-            value: item.loom_id,
-          });
-        });
-
-        setLoomListOptions(arrForLoom);
+//         var arrForLoom = [];
+//         data.map((item) => {
+//           arrForLoom.push({
+//             label: item.loomNumber,
+//             value: item.loom_id,
+//           });
+//         });
+// console.log(arrForLoom ,"-------loom options" );
+        // setLoomListOptions(arrForLoom);
       });
     // fetching BorderSize
 
@@ -586,14 +609,16 @@ const [grayProductStatus , setGrayProductStatus ] = useState("")
     arr_data[i].noOfBorder = parseInt(value);
     arr_data[i].totalPiece = parseInt(loomDetail.NumOfPieceOneBorder * value);
     arr_data[i].aGradePieces = parseInt(shiftTotalState[i].totalPiece - shiftTotalState[i].bGradePiece);
-    arr_data[i].totalAmount = (parseFloat((shiftTotalState[i].ratePerBorder / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
+    arr_data[i].totalAmount = (parseFloat((parseFloat(shiftTotalState[i].ratePerBorder) / loomDetail.NumOfPieceOneBorder) * shiftTotalState[i].aGradePieces + parseInt(value))).toFixed(2);
+    console.log(  parseInt(value).toFixed(2) , "no-of-border");
+    console.log(  shiftTotalState[i].aGradePieces , "a-grade-piece");
+    console.log( loomDetail.NumOfPieceOneBorder , "no-ofpiece in-one-border");
+    console.log( shiftTotalState[i].ratePerBorder , "rate-per-border");
     setShiftTotalState(arr_data);
 
     setReRender(!reRender);
   }
-  function updateWeaverNAme(i, value, label) {
-    console.log("weaver test");
-
+  function updateWeaverNAme(i, value, label) { 
     var arr_data = shiftTotalState;
 
     arr_data[i].weaverSelectorValue = { label: label, value: value };

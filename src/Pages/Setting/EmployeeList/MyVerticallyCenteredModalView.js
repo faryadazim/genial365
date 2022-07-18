@@ -220,7 +220,7 @@ const MyVerticallyCenteredModalView = (props) => {
         {" "}
         <div className="x_panel mb-0">
           <div className="x_title">
-            <h2 className="pl-2 pt-2">Employee Detail </h2>
+          <h2 className="pl-2 pt-2">   <i className='fa fa-edit'></i>&nbsp;Edit Employee</h2>
             <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
               <li>
                 <a className="close-link">
@@ -922,21 +922,20 @@ const MyVerticallyCenteredModalView = (props) => {
                       {
                         !props.disableSubmitForUpdatePhoto ?
                           <>  <button
-                            // disabled={props.isDisableSubmitButton }
 
-                            className="btn btn-primary btn-sm px-4  "
+                            className="btn btn-primary btn-sm px-4  mt-3"
                             onClick={(e) => updateFunct(e)}
                           >
-                            Update
+                            Submit
                           </button></> : <div className="text-center"><span className="pr-3">Uploading Image Please wait ...</span>
 
-<div class="spinner-border spinner-border-sm pr-2" role="status">
-  <span class="sr-only ">Loading...</span>
-</div>
-<div class="spinner-grow spinner-grow-sm" role="status">
-  <span class="sr-only">Loading...</span>
-</div>
-</div> 
+                            <div class="spinner-border spinner-border-sm pr-2" role="status">
+                              <span class="sr-only ">Loading...</span>
+                            </div>
+                            <div class="spinner-grow spinner-grow-sm" role="status">
+                              <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
                       }
 
 

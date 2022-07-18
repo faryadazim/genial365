@@ -88,8 +88,7 @@ const PreviewProductionReport = (props) => {
                               Quality{" "}
                             </div>
                             <div className=" col-md-6 col-sm-6 col-6 col-xl-6 text-right">
-                              {props.selectedProductionData.borderQualityLabelId
-                                .label == null
+                              {props.selectedProductionData.borderQualityLabelId  == null
                                 ? "--"
                                 : props.selectedProductionData
                                     .borderQualityLabelId.label}
@@ -100,8 +99,7 @@ const PreviewProductionReport = (props) => {
                               Size{" "}
                             </div>
                             <div className=" col-md-6 col-sm-6 col-6 col-xl-6 text-right">
-                              {props.selectedProductionData.borderSizeLabelId
-                                .label == null
+                              {props.selectedProductionData.borderSizeLabelId == null
                                 ? "--"
                                 : props.selectedProductionData.borderSizeLabelId
                                     .label}
@@ -427,7 +425,7 @@ const PreviewProductionReport = (props) => {
                               .required_per_piece_a_weight -
                             props.selectedProductionData
                               .current_per_piece_a_weight
-                          ).toFixed(2)}
+                          ).toFixed(2)}  
                         </div>
                       </div>
                       <div className="row mx-3  reportTableBody bottom-border-2">
@@ -443,7 +441,7 @@ const PreviewProductionReport = (props) => {
                         <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">
                           {props.selectedProductionData.required_length_p_to_p -
                             props.selectedProductionData
-                              .pile_to_pile_length}{" "}
+                              .pile_to_pile_length}{" "} 
                         </div>
                       </div>
                       <div className="row mx-3  reportTableBody bottom-border-2">
@@ -459,7 +457,7 @@ const PreviewProductionReport = (props) => {
                         <div className=" col-md-3 col-sm-3 col-3 col-xl-3 px-0 py-auto right-border-2  py-1  text-right px-2">
                           {props.selectedProductionData.required_width_p_to_p -
                             props.selectedProductionData
-                              .pile_to_pile_width}{" "}
+                              .pile_to_pile_width}{" "}  
                         </div>
                       </div>
                       <div className="row mx-3  reportTableBody bottom-border-2 mb-4">

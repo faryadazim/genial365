@@ -8,19 +8,20 @@ import Pagination from "./Pagination";
 import { ToastContainer, toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { fetchAllUser } from "../../store/actions/RoleManagement/userAction";
+// import {
+//   fetchAllUser,
+//   deleteUser,
+// } from "../../store/actions/RoleManagement/userAction";
 const AddUser = () => {
-  const dispatch = useDispatch();
-  const DAta = useSelector((state) => state.users);
-  console.log(DAta, "Data of user in redux in user compoent");
   const url = localStorage.getItem("authUser");
   const showNavMenu = useSelector((state) => state.NavState);
-
+  // const userData = useSelector((state)=>state)
   const [displayUserRegBox, setdisplayUserRegBox] = useState(true);
   const [isLoading, setisLoading] = useState(true);
   const [UserRegistered, setUserRegistered] = useState([{}]);
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage, setpostsPerPage] = useState(5);
+  const [showPassword, setshowPassword] = useState("password")
   const [repeatPassword, setRepeatPassword] = useState("");
   const [userRegisteredAdd, setuserRegisteredAdd] = useState({
     userName: "",
@@ -35,70 +36,128 @@ const AddUser = () => {
 
   const [Roles, setRoles] = useState([]);
   const [selectedRole, setSelectedRole] = useState();
+  // const dispatch = useDispatch();
 
+  // const allUserData = useSelector((state) => state.UserReducer);
+  // console.log(allUserData);
   // Change page
-  // const paginate = (pageNumber) => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   //   Edit Model
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   // Get current posts
-  // const indexOfLastPost = currentPage * postsPerPage;
-  // const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  // const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = UserRegistered.slice(indexOfFirstPost, indexOfLastPost);
 
   const notifyDelete = () => toast("Deleted Successfully!");
   const notifyAdd = () => toast("User Created Successfully!");
 
-  const fetchAllData = async () => {
-    // fetchUser
-    await fetch(url + "/api/Users")
+  // const fetchAllData = () => {
+  //   fetch(url + "/api/Users")
+  //     .then((response) => response.json())
+  //     .then((json) => {
+  //       console.log(json);
+  //       setUserRegistered(json);
+
+
+  //       // fetching list of role 
+  //       fetch(url + "/api/Roles")
+  //         .then((response) => response.json())
+  //         .then((role) => {
+  //           setRoles(role);
+  //           setSelectedRole(role[0].Id)
+  //           setisLoading(false);
+  //         });
+  //     });
+
+  // };
+
+  const fetchAllData = () => {
+    fetch(url + "/api/Users", {
+      method: "GET",
+      headers: {
+        Authorization:
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    })
       .then((response) => response.json())
       .then((json) => {
         console.log(json);
         setUserRegistered(json);
-          setisLoading(false);
+
+
+        // fetching List of Role 
+        fetch(url + "/api/Roles", {
+          method: "GET",
+          headers: {
+            Authorization:
+              `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+        })
+          .then((response) => response.json())
+          .then((role) => {
+            setRoles(role);
+            setSelectedRole(role[0].Id)
+            setisLoading(false);
+          });
       });
-     
-    // fetchingRole List
-    setUserRegistered(DAta);
-    await fetch(url + "/api/Roles")
-      .then((response) => response.json())
-      .then((role) => {
-        setRoles(role);
-      });
 
-  
   };
+  // const AddUserRegistered = () => { 
+  //   const requestOptions = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json" },
+  //     body: JSON.stringify(userRegisteredAdd),
+  //   };
 
-  const deleteUser = (e) => {
-    console.log(e, "Delte this one");
-    //
+  //   fetch(url + "/api/Users", requestOptions)
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       console.log("user created" , data , selectedRole);
+  //       const requestOptionsForRole = {
+  //         method: "POST",
+  //         headers: { "Content-Type": "application/json" },
+  //         body: JSON.stringify({
+  //           UserId: data.Id,
+  //           RoleId: selectedRole,
+  //         }),
+  //       };
+  //       fetch(url + "/api/UserRoles", requestOptionsForRole)
+  //         .then((response) => response.json())
+  //         .then((data) => {
+  //           console.log("success", data);
+  //           setuserRegisteredAdd({
+  //             userName: "",
+  //             password: "",
+  //             phoneNumber: "",
+  //             email: "",
+  //           });
+  //           fetchAllData();
+  //           setRepeatPassword("");
+  //           notifyAdd();
+  //         })
+  //         .catch((err) => {
+  //           console.log("err", err);
+  //         });
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //     });
+  // };
 
-    fetch(`${url}/api/Users/${e}`, {
-      method: "DELETE",
-      // headers: {
-      //   Authorization:
-      //     JSON.parse(localStorage.getItem("authUser")).token_type +
-      //     " " +
-      //     JSON.parse(localStorage.getItem("authUser")).access_token,
-      //   "Content-Type": "application/x-www-form-urlencoded",
-      // },
-    })
-      .then((response) => {
-        // deleteing Role for this Id
-
-        fetchAllData();
-        notifyDelete();
-      })
-      .catch((error) => console.log("error", error));
-  };
   const AddUserRegistered = () => {
-    console.log("user", selectedRole, userRegisteredAdd);
     const requestOptions = {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        Authorization:
+          `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`,
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(userRegisteredAdd),
     };
 
@@ -116,7 +175,6 @@ const AddUser = () => {
         fetch(url + "/api/UserRoles", requestOptionsForRole)
           .then((response) => response.json())
           .then((data) => {
-            console.log("success", data);
             setuserRegisteredAdd({
               userName: "",
               password: "",
@@ -135,6 +193,8 @@ const AddUser = () => {
         console.log("err", err);
       });
   };
+
+
   const UpdateUserRegistered = () => {
     console.log("Update DAta", currentEditUser, selectedRole);
 
@@ -152,18 +212,54 @@ const AddUser = () => {
         // },
       }
     )
-      .then((response) => {
-        console.log(response);
+      .then((response) => { 
         fetchAllData();
+      })
+      .catch((error) => console.log("error", error));
+  };
+  // const deleteUser = (e) => {
+  //   console.log(e, "Delte this one");
+  //   //
+
+  //   fetch(`${url}/api/Users/${e}`, {
+  //     method: "DELETE",
+  //     // headers: {
+  //     //   Authorization:
+  //     //     JSON.parse(localStorage.getItem("authUser")).token_type +
+  //     //     " " +
+  //     //     JSON.parse(localStorage.getItem("authUser")).access_token,
+  //     //   "Content-Type": "application/x-www-form-urlencoded",
+  //     // },
+  //   })
+  //     .then((response) => {
+  //       // deleteing Role for this Id
+
+  //    fetchAllData();
+  //       notifyDelete();
+  //     })
+  //     .catch((error) => console.log("error", error));
+  // };
+  const deleteUser = (e) => {
+    fetch(`${url}/api/Users/${e}`, {
+      method: "DELETE",
+      // headers: {
+      //   Authorization:
+      //     JSON.parse(localStorage.getItem("authUser")).token_type +
+      //     " " +
+      //     JSON.parse(localStorage.getItem("authUser")).access_token,
+      //   "Content-Type": "application/x-www-form-urlencoded",
+      // },
+    })
+      .then((response) => {
+        // deleteing Role for this Id 
+        fetchAllData();
+        notifyDelete();
       })
       .catch((error) => console.log("error", error));
   };
 
   useEffect(() => {
     fetchAllData();
-    dispatch(fetchAllUser());
-    console.log(UserRegistered , "aAbw");
-    console.log(DAta, "Data of user in redux in user compoent ");
   }, []);
 
   return (
@@ -176,9 +272,8 @@ const AddUser = () => {
         <>
           {" "}
           <div
-            className={`right_col  h-100  ${
-              showNavMenu === false ? "footer-margin-remove" : " "
-            } `}
+            className={`right_col  h-100  ${showNavMenu === false ? "footer-margin-remove" : " "
+              } `}
             role="main"
           >
             {/* Registration Form  */}
@@ -227,7 +322,6 @@ const AddUser = () => {
                                 userName: e.target.value,
                               })
                             }
-                            required="required"
                           />
                         </div>
                       </div>
@@ -240,7 +334,6 @@ const AddUser = () => {
                           <input
                             className="form-control"
                             name="email"
-                            required="required"
                             type="email"
                             value={userRegisteredAdd.email}
                             onChange={(e) =>
@@ -260,7 +353,7 @@ const AddUser = () => {
                         <div className="col-md-6 col-sm-6">
                           <input
                             className="form-control"
-                            type="password"
+                            type={showPassword ? "password" : "text"}
                             id="password1"
                             name="password"
                             pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}"
@@ -276,14 +369,14 @@ const AddUser = () => {
                           />
                           <span
                             style={{ position: "absolute", right: 15, top: 7 }}
-                            onClick="hideshow()"
+                            onClick={() => { setshowPassword(!showPassword) }}
                           >
                             <i id="slash" className="fa fa-eye-slash" />
                             <i id="eye" className="fa fa-eye" />
                           </span>
                         </div>
                       </div>
-                      <div className="field item form-group">
+                      {/* <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
                           Repeat Password<span className="required">*</span>
                         </label>
@@ -293,12 +386,11 @@ const AddUser = () => {
                             type="password"
                             name="password2"
                             data-validate-linked="password"
-                            required="required"
                             value={repeatPassword}
                             onChange={(e) => setRepeatPassword(e.target.value)}
                           />
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="field item form-group">
                         <label className="col-form-label col-md-3 col-sm-3  label-align">
@@ -308,6 +400,7 @@ const AddUser = () => {
                           <Form.Select
                             aria-label="Default select example"
                             className="form-control text-center w-50"
+                            value={selectedRole}
                             onChange={(e) => setSelectedRole(e.target.value)}
                           >
                             {Roles.map((item) => {
@@ -376,7 +469,6 @@ const AddUser = () => {
                       data-validate-words={2}
                       name="name"
                       placeholder="ex. Ali A.Khan"
-                      required="required"
                       value={currentEditUser.userName}
                       onChange={(e) =>
                         setcurrentEditUser({
@@ -395,7 +487,6 @@ const AddUser = () => {
                     <input
                       className="form-control"
                       name="email"
-                      required="required"
                       type="email"
                       value={currentEditUser.email}
                       onChange={(e) =>
@@ -464,7 +555,7 @@ const AddUser = () => {
                     </thead>
 
                     <tbody>
-                      {/* {UserRegistered.map((user, index) => {
+                      {currentPosts.map((user, index) => {
                         return (
                           <tr className="even pointer">
                             <td className=" ">{index + 1}</td>
@@ -486,17 +577,18 @@ const AddUser = () => {
                               <i
                                 className="fa fa-trash-o"
                                 onClick={() => {
-                                  deleteUser(user.id);
+                                  deleteUser(user.id)
+                                  // dispatch(deleteUser(user.id));
                                 }}
                               ></i>{" "}
                             </td>
                           </tr>
                         );
-                      })} */}
+                      })}
                     </tbody>
                   </table>
 
-                  {/* <div className="  d-flex justify-content-between pr-3 pt-2">
+                  <div className="  d-flex justify-content-between pr-3 pt-2">
                     <div className="d-flex  ml-3 mb-3">
                       <span className="pt-1 pr-2">Show</span>
                       <div className="wisthOfOtions">
@@ -521,7 +613,7 @@ const AddUser = () => {
                       totalPosts={UserRegistered.length}
                       paginate={paginate}
                     />
-                  </div> */}
+                  </div>
 
                   {/* Pagination  */}
 

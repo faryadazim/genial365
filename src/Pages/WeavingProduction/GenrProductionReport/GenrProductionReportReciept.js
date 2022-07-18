@@ -30,7 +30,7 @@ const GenrProductionReportReciept = React.forwardRef(
           console.log(err, "err");
         });
     };
-console.log(dataForPrint , "data to print");
+    console.log(dataForPrint, "data to print");
     return (
       <div className="x_content mb-3 " ref={ref}>
         <PreviewProductionReport
@@ -46,7 +46,7 @@ console.log(dataForPrint , "data to print");
 
           <h2 className="text-dark text-center font-weight-bold  ">General Production Report</h2>
           <div className="row pb-2">
-            <div className="col-md-4 col-3 text-dark  text-center">  Shift :  <strong className="text-dark  font-weight-bold ">  {dataForPrint.shiftValue===undefined?null:dataForPrint.shiftValue.label}</strong> </div>
+            <div className="col-md-4 col-3 text-dark  text-center">  Shift :  <strong className="text-dark  font-weight-bold ">  {dataForPrint.shiftValue === undefined ? null : dataForPrint.shiftValue.label}</strong> </div>
             <div className="col-md-4 col-3  text-dark  text-center"> Product: <strong className=" text-dark  font-weight-bold "> {dataForPrint.productName}</strong></div>
             <div className="col-md-4 col-3 text-dark text-center ">  Date From: <strong className="text-dark  font-weight-bold ">  {dataForPrint.dateFrom}</strong> </div>
             <div className="col-md-4 col-3 text-dark  text-center">  Date To :  <strong className="text-dark  font-weight-bold ">  {dataForPrint.dateEnd}</strong> </div>
@@ -139,7 +139,7 @@ console.log(dataForPrint , "data to print");
                 return (
                   <>
                     <div className="row mx-3  reportTableBody bottom-border-2">
-                      <div className="col-md-1 col-1  font-size-12  left-border-2   right-border-2   py-1   d-flex justify-content-center align-items-center ">
+                      <div className="col-md-1 col-1  font-size-12  left-border-2-bolder   right-border-2   py-1   d-flex justify-content-center align-items-center ">
                         {item.loomNumber}
                       </div>
                       <div className="col-md-1 col-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-start align-items-center ">
@@ -151,6 +151,7 @@ console.log(dataForPrint , "data to print");
                           item.programNumber === ""
                           ? "--"
                           : item.programNumber}
+                          
                       </div>
                       <div className="col-md-2 col-2 p-0   font-size-12  text-center    d-flex justify-content-center align-items-center ">
                         <div className="   col-md-8 col-8 right-border-2 p-0  py-1 h-100">
@@ -197,7 +198,7 @@ console.log(dataForPrint , "data to print");
                             ? "--"
                             : item.detail}
                         </div> */}
-                        <div className="col-md-4  col-4    h-100 font-size-12  text-center  py-1  right-border-2   d-flex justify-content-center align-items-center  ">
+                        <div className="col-md-4  col-4    h-100 font-size-12  text-center  py-1  right-border-2-bolder   d-flex justify-content-center align-items-center  ">
                           <i
                             class="fa fa-eye hoverBgColorView  removeInPrintMedia"
                             onClick={async () => {
@@ -210,13 +211,44 @@ console.log(dataForPrint , "data to print");
                         </div>
                       </div>
                     </div>
+
+                    {/* fault line row  */}
+                    <div className="row mx-3  reportTableBody bottom-border-2-bolder ">
+                      <div className="col-md-1 col-1  font-size-12  left-border-2-bolder   right-border-2   py-1   d-flex justify-content-center align-items-center ">
+                        <strong className="text-danger">  Faults List</strong>
+                      </div>
+                      <div className="col-md-5 col-5    font-size-12  text-left  py-1  right-border-2   d-flex justify-content-start align-items-center ">
+                     {item.faults}
+                                  
+                      </div>
+
+                      {/* <div className="col-md-1 col-1    font-size-12  text-center  py-1  right-border-2   d-flex justify-content-end align-items-center ">
+                        <strong>Difference</strong>
+                      </div> */}
+
+
+                      <div className="col-md-2 col-2   font-size-12    py-1  right-border-2   d-flex justify-content-start align-items-center ">
+                        <strong> Width Difference :</strong>  {item.widthDiffrerence}
+                      </div>
+                      <div className="col-md-2 col-2   font-size-12    py-1  right-border-2   d-flex justify-content-start align-items-center ">
+                        <strong>  Length Difference :</strong> {item.lengthDiffrerence}
+                      </div>
+                      <div className="col-md-2 col-2   font-size-12    py-1  right-border-2-bolder   d-flex justify-content-start align-items-center ">
+                        <strong> Weight Difference :</strong>  {item.weighthDiffrerence}
+                      </div>
+
+                    </div>
+                    {/* fault line row  */}
+
+
+
                   </>
                 );
               })}
             </>
             <div className="row mx-3  reportTableBody bottom-border-2-bolder top-border-2  ">
               <div className="col-md-12 col-12 px-0">
-                <div className="col-md-2 col-2 left-border-2     h-100  font-size-12  text-center  py-2  right-border-2      d-flex justify-content-end align-items-center ">
+                <div className="col-md-2 col-2 left-border-2-bolder    h-100  font-size-12  text-center  py-2  right-border-2-bolder      d-flex justify-content-end align-items-center ">
                   <div className="col-md-12 col-12 h-100         ">
                     <strong> Total Productions :</strong>{" "}
                     {numberWithCommas(
@@ -224,20 +256,20 @@ console.log(dataForPrint , "data to print");
                     )}
                   </div>
                 </div>
-                <div className="col-md-5  col-5 h-100  font-size-12  text-center  py-2   right-border-2    d-flex justify-content-end align-items-center ">
+                <div className="col-md-5  col-5 h-100  font-size-12  text-center  py-2   right-border-2-bolder    d-flex justify-content-end align-items-center ">
                   &nbsp;
                 </div>
                 <div className="col-md-3 px-0 col-3   h-100  font-size-12  text-center  py-0   d-flex justify-content-center align-items-center ">
-                  <div className="col-md-4 col-4 h-100 col-4   py-2  right-border-2  ">
+                  <div className="col-md-4 col-4 h-100 col-4   py-2  right-border-2-bolder  ">
                     <strong style={{ fontWeight: "900" }}> Total </strong>
                   </div>
-                  <div className="col-md-3 px-0 col-3 h-100  py-2 text-right pr-1  right-border-2 ">
+                  <div className="col-md-3 px-0 col-3 h-100  py-2 text-right pr-1  right-border-2-bolder ">
                     <strong>
                       {" "}
                       {numberWithCommas(GenrProductionGrandTotal.totalPieces)}
                     </strong>
                   </div>
-                  <div className="col-md-2 col-2 px-0 col-2 h-100  py-2     text-right pr-1  right-border-2 ">
+                  <div className="col-md-2 col-2 px-0 col-2 h-100  py-2     text-right pr-1  right-border-2-bolder ">
                     <strong>
                       {" "}
                       {numberWithCommas(
@@ -245,7 +277,7 @@ console.log(dataForPrint , "data to print");
                       )}
                     </strong>
                   </div>
-                  <div className="col-md-3 col-3 px-0 h-100  py-2 pr-1  text-right  right-border-2 ">
+                  <div className="col-md-3 col-3 px-0 h-100  py-2 pr-1  text-right  right-border-2-bolder ">
                     <strong>
                       {" "}
                       {numberWithCommas(
@@ -254,7 +286,7 @@ console.log(dataForPrint , "data to print");
                     </strong>
                   </div>
                 </div>
-                <div className="col-md-2 col-2 px-0    px-0      h-100  font-size-12  text-center  py-0 right-border-2   d-flex justify-content-center align-items-center ">
+                <div className="col-md-2 col-2 px-0    px-0      h-100  font-size-12  text-center  py-0 right-border-2-bolder   d-flex justify-content-center align-items-center ">
                   {/* {GenrProductionGrandTotal.totalAmount !== undefined &&
                     GenrProductionGrandTotal.totalAmount.toFixed(2)} */}
 
@@ -267,7 +299,7 @@ console.log(dataForPrint , "data to print");
                       )}
                     </strong>
                   </div>
-                  <div className="col-md-4   col-4    font-size-12  text-center   py-2   left-border-2    d-flex justify-content-end align-items-center ">
+                  <div className="col-md-4   col-4    font-size-12  text-center   py-2   left-border-2-bolder    d-flex justify-content-end align-items-center ">
                     &nbsp;
                   </div>
                 </div>

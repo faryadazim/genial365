@@ -839,21 +839,20 @@
   margin-left: 70px;
   z-index: 2;
 }
-.container.body .page-title-bar.right_col-margin-remove {
-  background-color: white;
-  /*padding: 10px 20px 0;*/
+/* .container.body .page-title-bar.right_col-margin-remove {
+  background-color: white; 
   color: #2ab4c0 !important;
   padding-top: 70px;
   padding-left: 18px;
   padding-bottom: 16px;
   margin-left: 70px;
   z-index: 2;
-}
+} */
 
-.container.body .page-title-bar.right_col-margin-remove span {
+/* .container.body .page-title-bar.right_col-margin-remove span {
   font-size: 22px;
   font-weight: 700 !important;
-}
+} */
 .nav-sm .navbar.nav_title {
   width: 70px;
   text-align: center;
@@ -1121,10 +1120,41 @@ body .container.body .right_col {
   margin-left: 230px;
 }
 
-.nav-md .container.body .page-title-bar {
+/* .nav-md .container.body .page-title-bar {
+  background-color: white;
+  color: #2ab4c0 !important;
+  padding-top: 70px;
+  padding-left: 18px;
+  padding-bottom: 16px;
+  margin-left: 230px;
+} */
+
+/* .nav-md .container.body .page-title-bar span {
+  font-size: 22px;
+  font-weight: 700 !important;
+} */
+
+
+
+.container.body .page-title-bar.right_col-margin-remove {
   background-color: white;
   /*padding: 10px 20px 0;*/
   color: #2ab4c0 !important;
+  padding-top: 70px;
+  padding-left: 18px;
+  padding-bottom: 16px;
+  margin-left: 70px;
+  z-index: 2;
+}
+
+.container.body .page-title-bar.right_col-margin-remove span {
+  font-size: 22px;
+  font-weight: 700 !important;
+}
+.nav-md .container.body .page-title-bar {
+  background-color: white;
+  /*padding: 10px 20px 0;*/
+  color: #f79c74 !important;
   padding-top: 70px;
   padding-left: 18px;
   padding-bottom: 16px;
@@ -1135,6 +1165,7 @@ body .container.body .right_col {
   font-size: 22px;
   font-weight: 700 !important;
 }
+
 
 .custom_tables .form-control {
   height: 26px;

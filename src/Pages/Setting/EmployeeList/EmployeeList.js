@@ -10,65 +10,7 @@ import MyVerticallyCenteredModal from "./MyVerticallyCenteredModal";
 import MyVerticallyCenteredModalView from "./MyVerticallyCenteredModalView.js";
 import { toast, ToastContainer } from "react-toastify";
 import { endPoint } from "../../../config/Config";
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
-
-    ...base,
-    boxShadow: "none",
-  }),
-  // option: (provided, state) => ({
-  //     ...provided,
-
-  //     borderBottom: "1px  #003a4d",
-  //     color: state.isSelected ? "#f79c74" : "#003a4d",
-  //     background: '#fff',
-
-  // }),
-  // menu: base => ({
-  //     ...base,
-  //     // override border radius to match the box
-  //     borderRadius: 0,
-  //     backgroundColor: 'red',
-  //     marginTop: 0
-  //   }),
-  //   menuList: base => ({
-  //     ...base,
-  //     // kill the white space on first and last option
-  //     backgroundColor: 'red',
-  //     padding: 0
-  //   }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    fontSize: "11px",
-    height: "30px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
-
+import { customStyles } from "../../../config/react-select-style";
 
 
 
@@ -109,30 +51,23 @@ const EmployeeList = () => {
     recruitmentType: "",
     weeklySalary: "",
     monthlySalary: "",
-  };
-  // const [showSingleUser, setShowSingleUSer] = useState(false);
-  // const [singleUserId, setSingleUserId] = useState("");
-  // const [roleValue, setRoleVAlue] = useState("Active");
-  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({});
-  // const [stateUpdater, setStateUpdater] = useState(true);
-  const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState);
-  // const [componentUpdater, setComponentUpdater] = useState(true);
+  }; 
+  const [recruitmentTypeValue, setrecruitmentTypeValue] = useState({}); 
+  const [addNewEmployee, setAddNewEmployee] = useState(employeeInitialState); 
   const url = localStorage.getItem("authUser");
   const [disableSubmitForUpdatePhoto, setdisableSubmitForUpdatePhoto] = useState(false);
   const [modalShowView, setModalShowView] = useState(false)
   const recruitmentType = [
     { label: "Weekly", value: "Weekly" },
     { label: "Monthly", value: "Monthly" },
-    { label: "Contract", value: "Contract" },
-  ];
+    { label: "Contract", value: "Contract" }];
   const jobStatus = [
     { label: "Active", value: "Active" },
     { label: "Left", value: "Left" },
   ];
 
   const [updateSelectorList, setUpdateSelectorList] = useState(false);
-  const [jobStatusValue, setJobStatusValue] = useState({});
-  // const [listOfEmployeeName, setListOfEmployeeName] = useState([]);
+  const [jobStatusValue, setJobStatusValue] = useState({}); 
   const employeeListValidatorInitialState = {
     name: true,
     fatherName: true,
@@ -159,7 +94,6 @@ const EmployeeList = () => {
   );
   const [emplToUpdate, setEmployeeToUpdate] = useState({})
 
-  // const [selectEmployee, setselectEmployee] = useState({})
   const [isEmplEditModeOn, setIsEmplEditModeOn] = useState(false)
   const fileHandle1 = (e) => {
     console.log("emploeyeee pic 1");
@@ -269,7 +203,7 @@ const EmployeeList = () => {
       },
     })
       .then((response) => {
-        response.json().then((data) => { 
+        response.json().then((data) => {
           setListOfEmployee(data);
           setAllEmpListConst(data);
           setEmployeeStatusState(data)
@@ -327,32 +261,27 @@ const EmployeeList = () => {
       setEmployeeListValidator({
         ...employeeListValidator,
         recruitmentType: false,
+      }); 
+    } else if (addNewEmployee.employeePic1 === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeePic1: false,
       });
-      // } else if (addNewEmployee.monthlySalary === "") {
-      //   setEmployeeListValidator({
-      //     ...employeeListValidator,
-      //     monthlySalary: false,
-      //   });
-      // } else if (addNewEmployee.employeePic1 === "") {
-      //   setEmployeeListValidator({
-      //     ...employeeListValidator,
-      //     employeePic1: false,
-      //   });
-      // } else if (addNewEmployee.employeePic2 === "") {
-      //   setEmployeeListValidator({
-      //     ...employeeListValidator,
-      //     employeePic2: false,
-      //   });
-      // } else if (addNewEmployee.employeeCnicFront === "") {
-      //   setEmployeeListValidator({
-      //     ...employeeListValidator,
-      //     employeeCnicFront: false,
-      //   });
-      // } else if (addNewEmployee.employeeCnicBsck === "") {
-      //   setEmployeeListValidator({
-      //     ...employeeListValidator,
-      //     employeeCnicBsck: false,
-      //   });
+    } else if (addNewEmployee.employeePic2 === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeePic2: false,
+      });
+    } else if (addNewEmployee.employeeCnicFront === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeeCnicFront: false,
+      });
+    } else if (addNewEmployee.employeeCnicBsck === "") {
+      setEmployeeListValidator({
+        ...employeeListValidator,
+        employeeCnicBsck: false,
+      });
     } else {
       var myHeaders = new Headers();
       myHeaders.append(
@@ -423,7 +352,13 @@ const EmployeeList = () => {
       };
 
       fetch(`${endPoint}api/employeeLists`, requestOptions)
-        .then((response) => response.text())
+        .then((response) => {
+          if(response.status===200){
+            toast.success("Employee added successfully")
+          }else{
+            toast.error("Something went wrong")
+          }
+          return response.json()})
         .then((result) => {
           setAddNewEmployee({
             name: "",
@@ -454,9 +389,11 @@ const EmployeeList = () => {
           setJobStatusValue("");
           setrecruitmentTypeValue("");
           setUpdateSelectorList(!updateSelectorList);
-          notifyAdd();
+       
         })
-        .catch((error) => console.log("error", error));
+        .catch((error) => {
+          toast.error("Something went wrong")
+          console.log("error", error)});
     }
   };
 
@@ -672,7 +609,7 @@ const EmployeeList = () => {
     fetch(`${endPoint}api/employeeLists`, requestOptions)
       .then((response) => {
         if (response.status === 200) {
-          const filterdEmp = ListOfEmployee.filter((emp) => {
+          const filterdEmp = employeeStatusState.filter((emp) => {
             return emp.employee_Id !== emplToUpdate.employee_Id;
           });
           const unSorted = [...filterdEmp, {
@@ -705,18 +642,25 @@ const EmployeeList = () => {
             (a, b) => a.name.localeCompare(b.name)
           );
           setListOfEmployee(sortedEmpConst)
-
-
-
-
+          setEmployeeStatusState(sortedEmpConst)
+            setAllEmpListConst(sortedEmpConst)
+          setStatusFilterValue(statusFilterOptions[0])
+          toast.success(
+            "Employee updated successfully")
         } else {
-          console.log("Something went wrong");
+          toast.error(
+            "Something went wrong")
         }
 
         return response.text();
       })
       .then((result) => setModalShowView(false))
-      .catch((error) => console.log("error", error));
+      .catch((error) => {
+        toast.error(
+          "Something went wrong")
+        console.log("error", error)
+      });
+    setIsEmplEditModeOn(false)
   };
 
   useEffect(() => {
@@ -744,20 +688,21 @@ const EmployeeList = () => {
     if (e.value === "All") {
       filterData = employeeStatusState
     } else if (e.value === "Active") {
-      filterData = employeeStatusState.filter((EachEmp) => { 
-         return EachEmp.jobStatus==="Active"
+      filterData = employeeStatusState.filter((EachEmp) => {
+        return EachEmp.jobStatus === "Active"
       })
     } else if (e.value === "Left") {
       filterData = employeeStatusState.filter((EachEmp) => {
-       return EachEmp.jobStatus==="Left" 
+        return EachEmp.jobStatus === "Left"
       })
-    } 
+    }
     var sorted = filterData.sort(
       (a, b) => a.name.localeCompare(b.name)
     );
     setListOfEmployee(sorted)
     setAllEmpListConst(sorted)
-    
+
+
   }
   return (
     <>
@@ -768,14 +713,18 @@ const EmployeeList = () => {
         </>
       ) : (
         <>
-          {" "}
+          <div
+            className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+              }   `}
+          >
+            <span>&nbsp; Employees Management</span>
+          </div>
           <div
             role="main"
             className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "
               } `}
           >
 
-            {/* Add New Employee  */}
             <MyVerticallyCenteredModal
               show={modalShow}
               AddNewEmployeeServer={AddNewEmployeeServer}
@@ -829,7 +778,7 @@ const EmployeeList = () => {
               employeeListValidator={employeeListValidator}
             />
 
-            {/* View Employee Detail  */}
+
             <MyVerticallyCenteredModalView
               show={modalShowView}
               emplToUpdate={emplToUpdate}
@@ -840,6 +789,7 @@ const EmployeeList = () => {
               }}
               disableSubmitForUpdatePhoto={disableSubmitForUpdatePhoto}
               isEmplEditModeOn={isEmplEditModeOn}
+              setIsEmplEditModeOn={setIsEmplEditModeOn}
               selectEmployee={emplToUpdate}
               setEmployeeToUpdate={setEmployeeToUpdate}
               designation={designation} jobStatus={jobStatus} recruitmentType={recruitmentType}
@@ -850,72 +800,59 @@ const EmployeeList = () => {
               fileHandle3ForUpdate={fileHandle3ForUpdate}
               fileHandle4ForUpdate={fileHandle4ForUpdate}
             />
-            <div className="col-md-6 px-0 ">
-              {/* <div className="form-group row  w-100"> */}
-              {/* <div className="col-md-6">
-                {" "}
-                <div className=" ">
-                  <Selector
-                    setStateUpdater={setStateUpdater}
-                    stateUpdater={stateUpdater}
-                    listOfEmployeeName={listOfEmployeeName}
-                    fetchEmployeeByDemand={fetchEmployeeByDemand}
-                    setSingleUserId={setSingleUserId}
-                    setModalShow={setModalShow}
-                    componentUpdater={componentUpdater}
-                    updateSelectorList={updateSelectorList}
-                  />
-                </div>
-              </div> */}
-              <div className="col-md-6 pl-0">
-                {" "}
-                <div className=" mb-0">
-                  {" "}
-                  <input
-                    type="text"
-                    placeholder="Search Filter"
-                    className="form-control height-button mt-2 "
-                    onChange={(e) => searchItem((e.target.value).toLowerCase())}
-                  />
-                </div>
-              </div>
 
-              {/* </div> */}
-            </div>
-            <div className="col-md-6    pr-0 ">
-              <div className="col-md-4"></div>
-              <div className="col-md-5 p-0 pr-2 mt-2">      <Select
-                // required
-                className="basic-single"
-                classNamePrefix="select"
-                defaultValue={"Active"}
-                value={statusFilterValue}
-                onChange={(value) => {
-                  setStatusFilterValue(value)
-                  updateEmployeeStatusBase(value)
-                  console.log("changed");
-                }}
-                isSearchable={true}
-                name="color"
-                options={statusFilterOptions}
-                styles={customStyles}
-              /></div>
-              <div className="col-md-3 p-0">    <button
-                className="btn btn-success  mt-2 btn-sm   px-2 mr-0 w-100 height-button "
-                onClick={() => setModalShow(true)}
-              >
-                Add New  
-                <i className="ml-2 fa fa-plus-square"></i>
-              </button> </div>
+            <div className="x_panel  ">
+              <div className="x_content ">
+                <span className="section">
+                  <div className="row px-2  pt-3">
+                    <div className="col-5 ">
+                      <i className='fa fa-list'></i>&nbsp;Listing
+                    </div>
+                    <div className="col-7 text-right px-0 ">
+                      <div className="col-md-5"> <input
+                        type="text"
+                        placeholder="Search Filter"
+                        className="form-control height-button   "
+                        onChange={(e) => searchItem((e.target.value).toLowerCase())}
+                      /></div>
+                      <div className="col-md-4  text-left ">
+                        <Select
+                          className="basic-single"
+                          classNamePrefix="select"
+                          defaultValue={"Active"}
+                          value={statusFilterValue}
+                          onChange={(value) => {
+                            setStatusFilterValue(value)
+                            updateEmployeeStatusBase(value)
+                          }}
+                          isSearchable={true}
+                          name="color"
+                          options={statusFilterOptions}
+                          styles={customStyles}
+                        /></div>
+                      <div className="col-md-3 pr-4">
+                        <button
+                          className="btn     btn-sm   px-2 mr-0 w-100 height-button "
+                          onClick={() => setModalShow(true)}
+                          style={{ backgroundColor: ' #f79c74 ', color: "white", borderRadius: "20px " }}
 
-            </div>
+                        >
+                          Add New
+                          <i className="ml-2 fa fa-plus-square"></i>
+                        </button>
+                      </div>
+                    </div>
 
-            <div className="x_panel">
-              <div className="x_content">
-                <div className="table-responsive">
+
+
+
+                  </div>
+                </span>
+
+                <div className="table-responsive px-3 pb-2">
                   <table className="table table-striped jambo_table bulk_action">
                     <thead>
-                      <tr className="headings fontWeight300">
+                      <tr className="headings  ">
                         <th className="column-title fontWeight300    right-border-1 text-center" width="7%"> Sr. </th>
                         <th className="column-title fontWeight300    right-border-1 text-center" width="12%">
                           Emp.Name
@@ -933,14 +870,14 @@ const EmployeeList = () => {
                         <th className="column-title fontWeight300   right-border-1 text-center " width="7%">
                           Recruitment
                         </th>
-                        <th className="column-title fontWeight300   right-border-1 text-center ">
+                        <th className="column-title fontWeight300   right-border-1 text-center " width="9%">
                           Salary
                         </th>
-                        <th className="column-title fontWeight300    right-border-1 text-center">Phone</th>
-                        <th className="column-title fontWeight300    right-border-1 text-center">
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="9%">Phone</th>
+                        <th className="column-title fontWeight300    right-border-1 text-center" width="4%">
                           Status
                         </th>
-                        <th className="column-title fontWeight300   right-border-1 text-center ">
+                        <th className="column-title fontWeight300   right-border-1 text-center " width="5%">
                           Action
                         </th>
                       </tr>
@@ -996,7 +933,7 @@ const EmployeeList = () => {
                                   )
                                     .then((response) => response.text())
                                     .then((result) => {
-                                      var arrData = ListOfEmployee;
+                                      var arrData = employeeStatusState;
                                       var updatedData = arrData.filter(
                                         (eachEmp) => {
                                           return (
@@ -1004,7 +941,7 @@ const EmployeeList = () => {
                                             item.employee_Id
                                           );
                                         }
-                                      ); // old emp  except updated
+                                      );
                                       var newEMpl = arrData.filter(
                                         (eachEmp) => {
                                           return (
@@ -1012,7 +949,8 @@ const EmployeeList = () => {
                                             item.employee_Id
                                           );
                                         }
-                                      );   // //new updated emp
+                                      );
+
                                       var empToBeUpdate = newEMpl[0];
                                       var arrayUnSorted = [
                                         ...updatedData,
@@ -1024,12 +962,13 @@ const EmployeeList = () => {
                                               : "Active",
                                         },
                                       ];
+
                                       var sorted = arrayUnSorted.sort(
                                         (a, b) => a.name.localeCompare(b.name)
                                       );
-                                      setListOfEmployee(sorted);
+
                                       // Searching sstate managing
-                                      var ListOfEmployeeInitialData = allEmpListConst;
+                                      var ListOfEmployeeInitialData = employeeStatusState;
 
                                       var updatedDataConst = ListOfEmployeeInitialData.filter(
                                         (eachEmp) => {
@@ -1038,7 +977,7 @@ const EmployeeList = () => {
                                             item.employee_Id
                                           );
                                         }
-                                      ); // old emp  except updated
+                                      );
                                       var unSortedEmpConst = [...updatedDataConst, {
                                         ...empToBeUpdate,
                                         jobStatus:
@@ -1049,6 +988,9 @@ const EmployeeList = () => {
                                       var sortedEmpConst = unSortedEmpConst.sort(
                                         (a, b) => a.name.localeCompare(b.name)
                                       );
+                                      setListOfEmployee(sorted);
+                                      setEmployeeStatusState(sorted)
+                                      setStatusFilterValue(statusFilterOptions[0])
                                       setAllEmpListConst(sortedEmpConst)
 
                                     })
@@ -1092,7 +1034,8 @@ const EmployeeList = () => {
                 </div>
               </div>
             </div>
-            {/* )} */}
+
+
           </div>
         </>
       )}
