@@ -1,57 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Loader from "../../../Layout/Loader/Loader";
 import { endPoint } from "../../../config/Config";
-import { setNavSm, updateCurrentId } from "../../../store/actions/NavState";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, } from "react-router-dom";
 import ReactToPrint from "react-to-print";
-import Select from "react-select";
 import JVReportReciept from "./JVReportReciept";
 import UpdateJVReport from "./UpdateJVReport";
 import { toast } from "react-toastify";
 import '../financeStyle.css'
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
 
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "28px",
-    height: "28px",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-  }),
-};
 const JVReport = () => {
 
   const { state } = useLocation();
@@ -204,6 +160,12 @@ const JVReport = () => {
   return (
     <>
       <div
+        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+          }   `}
+      >
+        <span>&nbsp; Journal Voucher Report</span>
+      </div>
+      <div
         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
           } `}
         role="main"
@@ -212,34 +174,19 @@ const JVReport = () => {
         <div className="row">
           <div className="col-md-4 ">
             <div className="x_panel">
-              <div className="x_title">
-                <h2 className="pl-2 pt-2">JV Report Generator</h2>
-                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
-                <div className="clearfix" />
-              </div>
-              <div className="x_content  ">
-                {/* <span className="section">Personal Info</span> */}
-                {/* <div className="field item form-group">
-                  <label className="col-form-label col-md-4 col-sm-4  label-align px-0">
-                    Select Employee
-                  </label>
-                  <div className="col-md-8 col-sm-8">
-                    <Select
-                      required
-                      className="basic-single"
-                      classNamePrefix="select"
-                      value={weaverValue}
-                      onChange={(e) => {
-                        setWeaverValue({ label: e.label, value: e.value });
 
-                      }}
-                      isSearchable={true}
-                      name="color"
-                      options={weaverOptions}
-                      styles={customStyles}
-                    />
+              <div className="x_content  ">
+                <span className="section">
+                  <div className="row px-2  pt-3">
+                    <div className="col-11 ">
+                      <i className='fa fa-list'></i>&nbsp;History
+                    </div>
+
+
+
+
                   </div>
-                </div> */}
+                </span>
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4   label-align px-0">
                     Date From
@@ -286,7 +233,7 @@ const JVReport = () => {
 
 
             <>
-              {" "}
+
               {
                 dontShowuntillselect ? <>
                   <div className="x_panel ">
@@ -296,8 +243,8 @@ const JVReport = () => {
                           <thead>
                             <tr className="headings positionFixed">
                               <th className="column-title fontStyleForHistoryHead right-border-1  text-center" width="22%"> Vouch.Date</th>
-                              <th className="column-title text-center fontStyleForHistoryHead right-border-1  text-center "  width="26%">Vouch.Inv</th>
-                              <th className="column-title text-center py-0"  width="52%">
+                              <th className="column-title text-center fontStyleForHistoryHead right-border-1  text-center " width="26%">Vouch.Inv</th>
+                              <th className="column-title text-center py-0" width="52%">
                                 <div className="col-md-6 fontStyleForHistoryHead  right-border-1 text-center " >Dr</div>
                                 <div className="col-md-6 fontStyleForHistoryHead  text-center ">Cr</div>
                               </th>
@@ -392,53 +339,64 @@ const JVReport = () => {
             <>
               <div className="col-md-8">
                 <div className="x_panel">
-                  <div className="x_title">
-                    <h2 className="pl-2 pt-2">Journal Voucher Report</h2>
-                    <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                      <li>
-                        <ReactToPrint
-                          trigger={() => {
-                            return (
+                  <div className="x_content ">
+                    <span className="section pb-0">
+                      <div className="row px-2 ">
+                        <div className="col-3  pt-3">
+                          <i className='fa fa-list'></i>&nbsp;Report
+                        </div>
+                        <div className="col-9 text-right ">
+                          <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+                            <li>
+                              <ReactToPrint
+                                trigger={() => {
+                                  return (
+                                    <button
+                                      className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                    >
+                                      <i className="fa fa-print"></i>
+                                    </button>
+                                  );
+                                }}
+                                content={() => componentRef.current}
+                                documentTitle="new docs"
+                                pageStyle="print"
+                              />
+                            </li>
+                            <li>
                               <button
-                                className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                                className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
+                                onClick={() => console.log("print")}
                               >
-                                <i className="fa fa-print"></i>
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
                               </button>
-                            );
-                          }}
-                          content={() => componentRef.current}
-                          documentTitle="new docs"
-                          pageStyle="print"
-                        />
-                      </li>
-                      <li>
-                        <button
-                          className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
-                          onClick={() => console.log("print")}
-                        >
-                          <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
-                          onClick={() => {
+                            </li>
+                            <li>
+                              <button
+                                className="btn btn-sm btn-customOrange my-2 pt-1 borderRadiusRound"
+                                onClick={() => {
 
-                            setModalShowForUpdate(true)
-                            setbackupValueOfUpdate(JVReportData)
-                          }}
-                        >
-                          <i className="fa fa-edit"></i>
-                        </button>
-                      </li>
-                    </ul>
-                    <div className="clearfix" />
+                                  setModalShowForUpdate(true)
+                                  setbackupValueOfUpdate(JVReportData)
+                                }}
+                              >
+                                <i className="fa fa-edit"></i>
+                              </button>
+                            </li>
+                          </ul>
+                        </div>
+
+
+
+
+                      </div>
+                    </span>
+
+                    <JVReportReciept ref={componentRef}
+                      JVReportData={JVReportData}
+
+                    />
                   </div>
-
-                  <JVReportReciept ref={componentRef}
-                    JVReportData={JVReportData}
-
-                  />
                 </div>
               </div>
             </></> : <></>}

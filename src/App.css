@@ -86,13 +86,11 @@ body {
   }
 }
 
-.Toastify__toast-body {
-  color: #fff !important;
-  background-color: #003a4d;
+/* .Toastify__toast-body {  
   margin: 0px !important;
-}
+} */
 
-.Toastify__toast-theme--light {
+/* .Toastify__toast-theme--light {
   background-color: #003a4d !important;
 }
 
@@ -102,7 +100,7 @@ body {
 
 .Toastify__toast-container {
   margin-right: 15px !important;
-}
+} */
 
 .page-link:focus,
 .page-link:active {

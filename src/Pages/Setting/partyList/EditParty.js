@@ -20,10 +20,14 @@ const [disableEditButton, setdisableEditButton] = useState(false)
                     <div className="x_panel mb-0">
                         <div className="x_title">
                             <h2 className="pl-2 pt-2">
-                                <i className='fa fa-list'></i>&nbsp;Edit Party</h2>
-                            <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                                <li></li>
-                            </ul>
+                                <i className='fa fa-edit'></i>&nbsp;Edit Party</h2>
+                                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+    <li>
+        <a className="close-link">
+            <i className="fa fa-close" onClick={props.onHide} />
+        </a>
+    </li>
+</ul>
                             <div className="clearfix" />
                             <div className="x_content"></div>
                         </div>

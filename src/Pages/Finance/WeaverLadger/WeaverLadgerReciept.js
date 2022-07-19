@@ -58,7 +58,7 @@ const WeaverLadgerReciept = React.forwardRef(
 
               <div className="row mx-3  reportTableBody">
                 <div className="  col-md-12   col-12  bottom-border-2  font-size-12 py-1  py-1  right-border-2 left-border-2  d-flex   ">
-                  <strong>     Opening Balance Balance Account at Date&nbsp;
+                  <strong>     Opening Balance at &nbsp;
                     <u className="text-customOrange">
                       {`${dateFrom.slice(8, 10)}-${dateFrom.slice(5, 7)}-${dateFrom.slice(0, 4)}`}
                     </u>
@@ -166,7 +166,7 @@ const WeaverLadgerReciept = React.forwardRef(
               </div>
               <div className="row mx-3  reportTableBody">
                 <div className="  col-md-12  col-12   bottom-border-2  font-size-12 py-1  py-1  right-border-2 left-border-2  d-flex   ">
-                  <strong>     Closing Balance Account at Date&nbsp;
+                  <strong>     Closing Balance at &nbsp;
                     {/* {LadgerData.ladgerData[LadgerData.ladgerData.length -1].date} */}
                     <u className="text-customOrange">
                       {`${LadgerData.ladgerData[

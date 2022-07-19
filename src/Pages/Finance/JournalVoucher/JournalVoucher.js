@@ -2,50 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import { endPoint } from "../../../config/Config";
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "28px",
-    height: "28px",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-  }),
-};
+import { customStyles } from "../../../config/react-select-style";
 
 
 const JournalVoucher = () => {
@@ -88,7 +47,6 @@ const JournalVoucher = () => {
       headers: myHeaders,
       redirect: "follow",
     };
-    // http://localhost:63145/
     fetch(`${endPoint}api/employeeListsName`, requestOptions)
       .then((response) => response.text())
       .then((result) => {
@@ -200,95 +158,114 @@ const JournalVoucher = () => {
   }, []);
 
   return (
-    <div
-      role="main"
-      className={`top_nav bg-light p-1 px-3 heightForJV ${showNavMenu == false ? "right_col-margin-remove" : " "
-        }  `}
-    >
-      <div className="x_panel p ">
-        <div className="x_title">
-          <h2 className="pl-2 pt-2">Journal Voucher</h2>
-          <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
-          <div className="clearfix" />
-        </div>
-        <div className="x_content my-3">
-          <form>
-            <div className="row">
-              <div className="col-md-4 px-0  ">
-                <label className="col-form-label col-md-3 col-sm-3  offset-md-1 label-align">
-                  Voucher Inv
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control form-control-sm"
-                    value={jvFormBody.voucherInv}
-                    disabled
-                  />
+    <>
+      <div
+        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+          }   `}
+      >
+        <span>&nbsp;Journal Voucher</span>
+      </div>
+
+
+
+      <div
+        className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
+          } `}
+        role="main"
+      >
+        <div className="x_panel p ">
+
+          <div className="x_content my-3">
+            <span className="section">
+              <div className="row px-2   ">
+                <div className="col-5 ">
+                  <i className='fa fa-edit'></i>&nbsp;Add Journal Voucher
+                </div>
+                <div className="col-7 text-right px-0 ">
+                  <div className="col-md-5"> </div>
+                  <div className="col-md-4  text-left "> </div>
+                  <div className="col-md-3 pr-4">
+                  </div>
                 </div>
               </div>
-              <div className="col-md-5 px-0  ">
-                {" "}
-                <div className="field item form-group">
-                  <label className="col-form-label col-md-4 col-sm-4  label-align">
-                    Select Employee
+            </span>
+            <form>
+              <div className="row">
+                <div className="col-md-4 px-0  ">
+                  <label className="col-form-label col-md-3 col-sm-3  offset-md-1 label-align">
+                    Voucher Inv
                   </label>
                   <div className="col-md-8 col-sm-8">
-                    <Select
-                      required
-                      className="basic-single"
-                      classNamePrefix="select"
-                      value={weaverValue}
-                      onChange={(e) => {
-                        setWeaverValue({ label: e.label, value: e.value });
-                        setDisableSaveButtonInitial(false)
-                        fetchLadgerBalance(e.value);
-                        setLodgerBalanceDontShowAtStart(false);
-                      }}
-                      isSearchable={true}
-                      name="color"
-                      options={weaverOptions}
-                      styles={customStyles}
+                    <input
+                      className="form-control form-control-sm"
+                      value={jvFormBody.voucherInv}
+                      disabled
                     />
                   </div>
                 </div>
-              </div>
-
-              {!lodgerBalanceDontShowAtStart ? (
-                <div className="col-md-3 px-0">
+                <div className="col-md-5 px-0  ">
+                  {" "}
                   <div className="field item form-group">
-                    <label className="col-form-label col-md-12 col-sm-12 text-left label-align">
-                      Ladger Balance{" "}
-                      <strong className="text-dark">
-                        {" "}
-                        {LadgerBalanceState < 0
-                          ? `${(Math.abs((LadgerBalanceState))).toFixed(2)}  Cr
-                          `
-                          : `${(Math.abs(LadgerBalanceState)).toFixed(2)} Dr`}
-                      </strong>
+                    <label className="col-form-label col-md-4 col-sm-4  label-align">
+                      Select Employee
                     </label>
+                    <div className="col-md-8 col-sm-8">
+                      <Select
+                        required
+                        className="basic-single"
+                        classNamePrefix="select"
+                        value={weaverValue}
+                        onChange={(e) => {
+                          setWeaverValue({ label: e.label, value: e.value });
+                          setDisableSaveButtonInitial(false)
+                          fetchLadgerBalance(e.value);
+                          setLodgerBalanceDontShowAtStart(false);
+                        }}
+                        isSearchable={true}
+                        name="color"
+                        options={weaverOptions}
+                        styles={customStyles}
+                      />
+                    </div>
                   </div>
                 </div>
-              ) : (
-                <></>
-              )}
-            </div>
-            <div className="row">
-              <div className="col-md-4 px-0  ">
-                <label className="col-form-label col-md-3 col-sm-3  offset-md-1 label-align">
-                  Date
-                </label>
-                <div className="col-md-8 col-sm-8">
-                  <input
-                    className="form-control form-control-sm"
-                    type="date"
-                    value={dateSelected}
-                    onChange={(e) => {
-                      setDateSelected(e.target.value);
-                    }}
-                  />
-                </div>
+
+                {!lodgerBalanceDontShowAtStart ? (
+                  <div className="col-md-3 px-0">
+                    <div className="field item form-group">
+                      <label className="col-form-label col-md-12 col-sm-12 text-left label-align">
+                        Ladger Balance{" "}
+                        <strong className="text-dark">
+                          {" "}
+                          {LadgerBalanceState < 0
+                            ? `${(Math.abs((LadgerBalanceState))).toFixed(2)}  Cr
+                          `
+                            : `${(Math.abs(LadgerBalanceState)).toFixed(2)} Dr`}
+                        </strong>
+                      </label>
+                    </div>
+                  </div>
+                ) : (
+                  <></>
+                )}
               </div>
-              {/* <div className="col-md-5 px-0  ">
+              <div className="row">
+                <div className="col-md-4 px-0  ">
+                  <label className="col-form-label col-md-3 col-sm-3  offset-md-1 label-align">
+                    Date
+                  </label>
+                  <div className="col-md-8 col-sm-8">
+                    <input
+                      className="form-control form-control-sm"
+                      type="date"
+                      value={dateSelected}
+                      onChange={(e) => {
+                        setDateSelected(e.target.value);
+                      }}
+                    />
+                  </div>
+                </div>
+                {/* <div className="col-md-5 px-0  ">
                 {" "}
                 <div className="field item form-group">
                   <label className="col-form-label col-md-4 col-sm-4  label-align">
@@ -303,10 +280,10 @@ const JournalVoucher = () => {
                   </div>
                 </div>
               </div> */}
-            </div>
+              </div>
 
-            {/* date  */}
-            {/* <div className="field item form-group e">
+              {/* date  */}
+              {/* <div className="field item form-group e">
               <label className="col-form-label col-md-4 col-sm-4  label-align">
                 Date
               </label>
@@ -321,214 +298,214 @@ const JournalVoucher = () => {
                 />
               </div>
             </div> */}
-          </form>
+            </form>
 
-          {/* ---------------table */}
+            {/* ---------------table */}
 
-          <div className="x_content mt-2">
-            <div
-              className="table-responsive px-2"
-              style={{ overflowX: "unset" }}
-            >
-              <table
-                className="table   jambo_table bulk_action "
-              // style={{ height: "129px" }}
+            <div className="x_content mt-2">
+              <div
+                className="table-responsive px-2"
+                style={{ overflowX: "unset" }}
               >
-                <thead>
-                  {/* */}
-                  <tr className="headings-for-Production-Form-Shif ">
-                    <th
-                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                <table
+                  className="table   jambo_table bulk_action "
+                // style={{ height: "129px" }}
+                >
+                  <thead>
+                    {/* */}
+                    <tr className="headings-for-Production-Form-Shif ">
+                      <th
+                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                      style={{ width: "40%" }}
-                    >
-                      <div className=" d-flex justify-content-center ">
-                        Description
-                      </div>
-                    </th>
-                    <th
-                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                        style={{ width: "40%" }}
+                      >
+                        <div className=" d-flex justify-content-center ">
+                          Description
+                        </div>
+                      </th>
+                      <th
+                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                      style={{ width: "20%" }}
-                    >
-                      <div className=" d-flex justify-content-center ">
-                        Debit
-                      </div>
-                    </th>
-                    <th
-                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                        style={{ width: "20%" }}
+                      >
+                        <div className=" d-flex justify-content-center ">
+                          Debit
+                        </div>
+                      </th>
+                      <th
+                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                      style={{ width: "20%" }}
-                    >
-                      <div className=" d-flex justify-content-center ">
-                        Credit
-                      </div>
-                    </th>
-                    <th
-                      className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
+                        style={{ width: "20%" }}
+                      >
+                        <div className=" d-flex justify-content-center ">
+                          Credit
+                        </div>
+                      </th>
+                      <th
+                        className="column-title   border border-primary removePadding  border-bottom-color border-bottom-color 
                                          removeLeftBorder  removeTopBorder text-center fontWeight300"
-                      style={{ width: "20%" }}
-                    >
-                      <div className=" d-flex justify-content-center ">
-                        Balance
-                      </div>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="headings-for-Production-Form-Shif ">
-                    <td
-                      className="column-title     text-center  p-0 px-1"
-                      style={{
-                        width: "10%",
-                        paddingRight: "2px",
-                        paddingLeft: "2px",
-                      }}
-                    >
-                      <div className="">
-                        <input
-                          className={formValidator.description ? "form-control" : "form-control requiredValidateInput "}
-                          type="text"
-                          value={jvFormBody.description}
-                          onChange={(e) => {
-                            setjvFormBody({
-                              ...jvFormBody,
-                              description: e.target.value,
-                            });
-                          }}
-                          placeholder="Desc. Here....."
-                        />
-                      </div>
-                    </td>
-                    <td
-                      className="column-title     text-center  p-0 px-1"
-                      style={{
-                        paddingRight: "2px",
-                        paddingLeft: "2px",
-                      }}
-                    >
-                      <div className="">
-                        <input
-                          className={formValidator.debit ? "form-control" : "form-control requiredValidateInput "}
-                          type="number"
-                          value={jvFormBody.debit && Math.max(0, jvFormBody.debit)}
-                          onChange={(e) => {
-                            setjvFormBody({
-                              ...jvFormBody,
-                              debit: e.target.value,
-                              credit: 0,
-                            });
-                          }}
-                          placeholder="Debit Ex.3456...."
-                        />
-                      </div>
-                    </td>
-                    <td
-                      className="column-title     text-center  p-0 px-1"
-                      style={{
-                        paddingRight: "2px",
-                        paddingLeft: "2px",
-                      }}
-                    >
-                      <div className="">
-                        <input
-                          className={formValidator.credit ? "form-control" : "form-control requiredValidateInput "}
-                          type="number"
-                          value={jvFormBody.credit && Math.max(0, jvFormBody.credit)}
-                          onChange={(e) => {
-                            setjvFormBody({
-                              ...jvFormBody,
-                              credit: e.target.value,
-                              debit: 0,
-                            });
-                          }}
-                          placeholder="Credit Ex.3456...."
-                        />
-                      </div>
-                    </td>
-                    <td
-                      className="column-title     text-center  p-0 px-1"
-                      style={{
-                        paddingRight: "2px",
-                        paddingLeft: "2px",
-                      }}
-                    >
-                      <div className="">
-                        <input
-                          className="form-control"
-                          type="text"
-                          // {LadgerBalanceState < 0
-                          //   ? `${ Math.abs(( LadgerBalanceState))  }  Cr
-                          //   `
-                          //   : `${Math.abs(LadgerBalanceState)} Dr` }
-                          value={
-                            parseFloat(LadgerBalanceState) -
-                              parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit) <
-                              0
-                              ?
-                              `${(Math.abs(parseFloat(LadgerBalanceState) -
-                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
+                        style={{ width: "20%" }}
+                      >
+                        <div className=" d-flex justify-content-center ">
+                          Balance
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr className="headings-for-Production-Form-Shif ">
+                      <td
+                        className="column-title     text-center  p-0 px-1"
+                        style={{
+                          width: "10%",
+                          paddingRight: "2px",
+                          paddingLeft: "2px",
+                        }}
+                      >
+                        <div className="">
+                          <input
+                            className={formValidator.description ? "form-control" : "form-control requiredValidateInput "}
+                            type="text"
+                            value={jvFormBody.description}
+                            onChange={(e) => {
+                              setjvFormBody({
+                                ...jvFormBody,
+                                description: e.target.value,
+                              });
+                            }}
+                            placeholder="Desc. Here....."
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className="column-title     text-center  p-0 px-1"
+                        style={{
+                          paddingRight: "2px",
+                          paddingLeft: "2px",
+                        }}
+                      >
+                        <div className="">
+                          <input
+                            className={formValidator.debit ? "form-control" : "form-control requiredValidateInput "}
+                            type="number"
+                            value={jvFormBody.debit && Math.max(0, jvFormBody.debit)}
+                            onChange={(e) => {
+                              setjvFormBody({
+                                ...jvFormBody,
+                                debit: e.target.value,
+                                credit: 0,
+                              });
+                            }}
+                            placeholder="Debit Ex.3456...."
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className="column-title     text-center  p-0 px-1"
+                        style={{
+                          paddingRight: "2px",
+                          paddingLeft: "2px",
+                        }}
+                      >
+                        <div className="">
+                          <input
+                            className={formValidator.credit ? "form-control" : "form-control requiredValidateInput "}
+                            type="number"
+                            value={jvFormBody.credit && Math.max(0, jvFormBody.credit)}
+                            onChange={(e) => {
+                              setjvFormBody({
+                                ...jvFormBody,
+                                credit: e.target.value,
+                                debit: 0,
+                              });
+                            }}
+                            placeholder="Credit Ex.3456...."
+                          />
+                        </div>
+                      </td>
+                      <td
+                        className="column-title     text-center  p-0 px-1"
+                        style={{
+                          paddingRight: "2px",
+                          paddingLeft: "2px",
+                        }}
+                      >
+                        <div className="">
+                          <input
+                            className="form-control"
+                            type="text"
+                            // {LadgerBalanceState < 0
+                            //   ? `${ Math.abs(( LadgerBalanceState))  }  Cr
+                            //   `
+                            //   : `${Math.abs(LadgerBalanceState)} Dr` }
+                            value={
+                              parseFloat(LadgerBalanceState) -
+                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit) <
+                                0
+                                ?
+                                `${(Math.abs(parseFloat(LadgerBalanceState) -
+                                  parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
 
-                              } Cr ` :
-                              `${(Math.abs(parseFloat(LadgerBalanceState) -
-                                parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
+                                } Cr ` :
+                                `${(Math.abs(parseFloat(LadgerBalanceState) -
+                                  parseFloat(jvFormBody.credit) + parseFloat(jvFormBody.debit))).toFixed(2)
 
-                              } Dr `
+                                } Dr `
+                            }
+                            disabled={true}
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="row ">
+                  <div className="col-md-12 text-right my-2">
+                    <button
+                      className="btn btn-sm btn-success  "
+                      style={{ width: "110px" }}
+                      disabled={disableSaveButtonInitial}
+                      onClick={() => {
+                        saveJVForm();
+
+                      }}
+                    >
+                      Save And New
+                    </button>
+                    <button
+                      className="btn btn-sm btn-primary  "
+                      style={{ width: "110px" }}
+                      disabled={disableSaveButtonInitial}
+                      onClick={async () => {
+                        const resp = await saveJVForm();
+                        console.log(resp, "-0-----");
+                        navigate('/JournalVoucherReport', {
+                          state: {
+                            date: resp.financeNew.voucher_date,
+                            voucherInv: resp.financeNew.voucher_inv,
+                            description: resp.financeEntry.description,
+                            debit: resp.financeEntry.debit,
+                            credit: resp.financeEntry.credit,
+                            weaverId: weaverValue.value,
+                            financeMainId: resp.financeNew.finance_main_id,
+                            weaverName: weaverValue.label,
+                            createdBy: resp.createdBy,
                           }
-                          disabled={true}
-                        />
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-              <div className="row ">
-                <div className="col-md-12 text-right my-2">
-                  <button
-                    className="btn btn-sm btn-success  "
-                    style={{ width: "110px" }}
-                    disabled={disableSaveButtonInitial}
-                    onClick={() => {
-                      saveJVForm();
 
-                    }}
-                  >
-                    Save And New
-                  </button>
-                  <button
-                    className="btn btn-sm btn-primary  "
-                    style={{ width: "110px" }}
-                    disabled={disableSaveButtonInitial}
-                    onClick={async () => {
-                      const resp = await saveJVForm();
-                      console.log(resp, "-0-----");
-                      navigate('/JournalVoucherReport', {
-                        state: {
-                          date: resp.financeNew.voucher_date,
-                          voucherInv: resp.financeNew.voucher_inv,
-                          description: resp.financeEntry.description,
-                          debit: resp.financeEntry.debit,
-                          credit: resp.financeEntry.credit,
-                          weaverId: weaverValue.value,
-                          financeMainId: resp.financeNew.finance_main_id,
-                          weaverName: weaverValue.label,
-                          createdBy: resp.createdBy,
-                        }
+                        });
 
-                      });
-
-                    }}
-                  >
-                    Save & View
-                  </button>
+                      }}
+                    >
+                      Save & View
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
+          </div>
         </div>
-      </div>
-    </div>
+      </div></>
   );
 };
 

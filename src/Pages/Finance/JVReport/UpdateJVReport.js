@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Modal } from "react-bootstrap";
 import { endPoint } from '../../../config/Config';
-import { ToastContainer, toast } from "react-toastify";
- 
+import { toast } from "react-toastify";
+
 const UpdateJVReport = (props) => {
-    const notifyUpdate= () => toast("Report updated Successfully!");
+    const notifyUpdate = () => toast("Report updated Successfully!");
 
 
     return (
@@ -16,16 +16,17 @@ const UpdateJVReport = (props) => {
                 {" "}
                 <div className="x_panel mb-0">
                     <div className="x_title">
-                        <h2 className="pl-2 pt-2">Update JV Report</h2>
-                 
-                        <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
-                            <li>
-                                <a className="close-link">
-                                    <i className="fa fa-close" onClick={props.onHide} />
-                                </a>
-                            </li>
-                        </ul>
+                        <h2 className="pl-2 pt-2">
+                            <i className='fa fa-edit'></i>&nbsp;Edit Journal Voucher Report</h2>
+                            <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">
+    <li>
+        <a className="close-link">
+            <i className="fa fa-close" onClick={props.onHide} />
+        </a>
+    </li>
+</ul>
                         <div className="clearfix" />
+                        <div className="x_content"></div>
                     </div>
                     <div className="x_content mb-2 mt-2">
                         <form>
@@ -42,10 +43,10 @@ const UpdateJVReport = (props) => {
                                         value={props.JVReportData.description}
                                         onChange={(e) => {
                                             props.setJVReportData({
-                                              ...props.JVReportData,
-                                              description: e.target.value,
+                                                ...props.JVReportData,
+                                                description: e.target.value,
                                             })
-                                          }}
+                                        }}
 
 
                                     />
@@ -66,12 +67,12 @@ const UpdateJVReport = (props) => {
                                         value={props.JVReportData.debit}
                                         onChange={(e) => {
                                             props.setJVReportData({
-                                              ...props.JVReportData,
-                                              debit: e.target.value,
-                                              credit:0,
+                                                ...props.JVReportData,
+                                                debit: e.target.value,
+                                                credit: 0,
                                             })
-                                         
-                                          }}
+
+                                        }}
 
                                     />
                                 </div>
@@ -90,52 +91,46 @@ const UpdateJVReport = (props) => {
                                         value={props.JVReportData.credit}
                                         onChange={(e) => {
                                             props.setJVReportData({
-                                              ...props.JVReportData,
-                                              credit: e.target.value,
-                                              debit: 0,
-                                            })  
+                                                ...props.JVReportData,
+                                                credit: e.target.value,
+                                                debit: 0,
+                                            })
                                         }}
                                     />
                                 </div>
                             </div>
 
                             <div className="form-group mt-2 ">
-                                <div className="col-md-6 offset-md-3 pb-2  ">
+                                <div className="col-md-8 offset-md-3 pb-2 pr-2 text-right">
                                     <button
                                         className="btn btn-primary btn-sm px-4"
                                         onClick={(e) => {
-e.preventDefault()
-                                        
-
-
-
-
-
+                                            e.preventDefault()
                                             var myHeaders = new Headers();
                                             myHeaders.append("Authorization", `Bearer ${JSON.parse(localStorage.getItem("access_token")).access_token}`);
                                             myHeaders.append("Content-Type", "application/json");
-                                            
+
                                             var raw = JSON.stringify({
-                                              "date": props.JVReportData.date,
-                                              "voucherInv": props.JVReportData.voucherInv,
-                                              "description":props.JVReportData.description,
-                                              "debit": props.JVReportData.debit,
-                                              "credit": props.JVReportData.credit
+                                                "date": props.JVReportData.date,
+                                                "voucherInv": props.JVReportData.voucherInv,
+                                                "description": props.JVReportData.description,
+                                                "debit": props.JVReportData.debit,
+                                                "credit": props.JVReportData.credit
                                             });
-                                            
                                             var requestOptions = {
-                                              method: 'PUT',
-                                              headers: myHeaders,
-                                              body: raw,
-                                              redirect: 'follow'
+                                                method: 'PUT',
+                                                headers: myHeaders,
+                                                body: raw,
+                                                redirect: 'follow'
                                             };
-                                            
-                                            fetch( `${endPoint}api/PutJVReport?financeMainId=${props.JVReportData.financeMainId}&weaverId=${props.weaverValue.value}`, requestOptions)
-                                              .then(response => response.text())
-                                              .then(result => {props.setModalShowForUpdate(false)
-                                                notifyUpdate();
-                                            })
-                                              .catch(error => console.log('error', error));
+
+                                            fetch(`${endPoint}api/PutJVReport?financeMainId=${props.JVReportData.financeMainId}&weaverId=${props.weaverValue.value}`, requestOptions)
+                                                .then(response => response.text())
+                                                .then(result => {
+                                                    props.setModalShowForUpdate(false)
+                                                    notifyUpdate();
+                                                })
+                                                .catch(error => console.log('error', error));
 
 
 

@@ -25,7 +25,7 @@ const SalaryReport = () => {
     grandFinalSumary: { grandTotal: "", paidAmount: "" }
   })
 
-  const [dataToPrint , setDataToPrint] = useState({})
+  const [dataToPrint, setDataToPrint] = useState({})
 
   const [notDataAvailable, setNotDataAvailable] = useState(true)
   const fetchReportData = () => {
@@ -92,7 +92,12 @@ const SalaryReport = () => {
 
   return (
     <>
-
+   <div
+        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+          }   `}
+      >
+        <span>&nbsp; Salary Report</span>
+      </div>
 
       <div
         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
@@ -102,12 +107,22 @@ const SalaryReport = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="x_panel">
-              <div className="x_title">
-                <h2 className="pl-2 pt-2">Salary Report</h2>
-                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
-                <div className="clearfix" />
-              </div>
-              <div className="x_content">
+             
+              <div className="x_content mb-3">   <span className="section pb-0">
+                  <div className="row px-2 ">
+                    <div className="col-3  py-3">
+                      <i className='fa fa-list'></i>&nbsp;Report
+                    </div>
+                    <div className="col-9 text-right ">
+                      <ul className="nav navbar-right panel_toolbox d-flex justify-content-end">  </ul>
+                    </div>
+
+
+
+
+                  </div>
+                </span> 
+
                 <form>
                   {/* <span className="section">Personal Info</span> */}
                   <div className="field item form-group">
@@ -151,7 +166,7 @@ const SalaryReport = () => {
                         <button
                           className="btn btn-sm btn-customOrange pl-3"
                           onClick={(e) => {
-                            setDataToPrint({dateFrom , dateTo})
+                            setDataToPrint({ dateFrom, dateTo })
                             e.preventDefault();
                             fetchReportData()
                           }}
@@ -165,43 +180,43 @@ const SalaryReport = () => {
                 </form>
               </div>
               <>
-              <div className={` col-md-12 px-0 ${displaySalaryReportReciept?"d-block" :"d-none"}`} >
+                <div className={` col-md-12 px-0 ${displaySalaryReportReciept ? "d-block" : "d-none"}`} >
 
-                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end px-3">
-                  <li>
-                    <ReactToPrint
-                      trigger={() => {
-                        return (
-                          <button
-                            className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
-                          >
-                            <i className="fa fa-print"></i>
-                          </button>
-                        );
-                      }}
-                      content={() => componentRef.current}
-                      documentTitle="Salary Report"
-                      pageStyle="print"
-                    />
-                  </li>
-                  <li>
-                    <button
-                      className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
-                      onClick={() => console.log("print")}
-                    >
-                      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-                    </button>
-                  </li>
+                  <ul className="nav navbar-right panel_toolbox d-flex justify-content-end px-3">
+                    <li>
+                      <ReactToPrint
+                        trigger={() => {
+                          return (
+                            <button
+                              className="btn btn-sm btn-success my-2 pt-1 borderRadiusRound"
+                            >
+                              <i className="fa fa-print"></i>
+                            </button>
+                          );
+                        }}
+                        content={() => componentRef.current}
+                        documentTitle="Salary Report"
+                        pageStyle="print"
+                      />
+                    </li>
+                    <li>
+                      <button
+                        className="btn btn-sm btn-primary my-2 pt-1 borderRadiusRound"
+                        onClick={() => console.log("print")}
+                      >
+                        <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+                      </button>
+                    </li>
 
 
-                </ul>
+                  </ul>
 
-                <SalaryReportReciept ref={componentRef}
-                  salaryDetailReport={salaryDetailReport} notDataAvailable={notDataAvailable}
-                  dataToPrint={dataToPrint}
-                />
+                  <SalaryReportReciept ref={componentRef}
+                    salaryDetailReport={salaryDetailReport} notDataAvailable={notDataAvailable}
+                    dataToPrint={dataToPrint}
+                  />
 
-              </div></>
+                </div></>
             </div>
           </div>
         </div>

@@ -5,90 +5,7 @@ import { endPoint } from "../../../config/Config";
 import Select from "react-select";
 import ReactToPrint from "react-to-print";
 import WeaverLadgerReciept from "./WeaverLadgerReciept";
-const customStyles = {
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "28px",
-    height: "28px",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "28px",
-  }),
-};
-const customStylesDanger = {
-  // control: base => ({
-  //   ...base, 
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: '#fff',
-    borderColor: 'red',
-    borderRadius: "none",
-    minHeight: '30px',
-    height: '30px',
-
-    ...base, boxShadow: 'none'
-  }),
-  option: (provided, state) => ({
-    ...provided,
-
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: '#fff',
-
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided, fontSize: "11px",
-    height: '30px',
-    padding: '0 6px',
-    // background: '#fff',
-
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: '0px',
-
-  }),
-  indicatorSeparator: state => ({
-    display: 'none',
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: '30px',
-
-  }),
-
-}
+import { customStyles, customStylesDanger } from '../../../config/react-select-style'
 const WeaverLadger = () => {
   const componentRef = useRef();
   const dispatch = useDispatch();
@@ -100,7 +17,7 @@ const WeaverLadger = () => {
   const [dateFrom, setdateFrom] = useState(dateToday);
   const [dateTo, setdateTo] = useState(dateToday);
   const [isLoadingSelector, setIsLoadingSelector] = useState(true);
-  const [employeeNameForPrint , setEmployeeNameForPrint] =useState("---")
+  const [employeeNameForPrint, setEmployeeNameForPrint] = useState("---")
   const [employeeWeaverOptions, setEmployeeWeaverOptions] = useState([]);
   const [employeeWeaverValue, setEmployeeWeaverValue] = useState({
     label: "",
@@ -185,10 +102,10 @@ const WeaverLadger = () => {
       )
         .then((response) => response.text())
         .then((result) => {
-        
 
 
-          var apiResponse = JSON.parse(result); 
+
+          var apiResponse = JSON.parse(result);
           var arrayForCurrentBalance = []
           let balance = JSON.parse(result).openingBalance;
           console.log(balance, "balance");
@@ -196,8 +113,8 @@ const WeaverLadger = () => {
             balance = balance + (eachLadgerItem.debit - eachLadgerItem.credit)
             arrayForCurrentBalance.push(balance);
           })
-          setLadgerData({...apiResponse ,arrayForCurrentBalance })
- 
+          setLadgerData({ ...apiResponse, arrayForCurrentBalance })
+
 
 
 
@@ -227,6 +144,12 @@ const WeaverLadger = () => {
   return (
     <>
       <div
+        className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
+          }   `}
+      >
+        <span>&nbsp;Ledger Report</span>
+      </div>
+      <div
         className={`right_col  h-10 heightFixForFAult  ${showNavMenu == false ? "right_col-margin-remove" : " "
           } `}
         role="main"
@@ -234,25 +157,23 @@ const WeaverLadger = () => {
         <div className="row">
           <div className="col-md-12">
             <div className="x_panel">
-              <div className="x_title">
-                <h2 className="pl-2 pt-2">Laeger Report</h2>
-                <ul className="nav navbar-right panel_toolbox d-flex justify-content-end"></ul>
-                <div className="clearfix" />
-              </div>
+
               <div className="x_content">
-                <div className="row  pr-4">
-
-                </div>
-                <div className="row  pr-4">
-                  <div className="col-md-12 px-0">
-
+                <span className="section">
+                  <div className="row px-2  pt-3">
+                    <div className="col-5 ">
+                      <i className='fa fa-list'></i>&nbsp;Listing
+                    </div>
+                    <div className="col-7 text-right px-0 ">
+                      <div className="col-md-5"> </div>
+                      <div className="col-md-4  text-left "> </div>
+                      <div className="col-md-3 pr-4">
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="row  pr-4">
-                  <div className="col-md-12 px-0">
+                </span>
 
-                  </div>
-                </div>
+
 
                 <div className="row">
                   <div className="col-md-4">
@@ -324,12 +245,12 @@ const WeaverLadger = () => {
                     <button
                       className="btn btn-sm btn-customOrange pl-3"
                       onClick={(e) => {
-                           setEmployeeNameForPrint( employeeWeaverValue.label)
+                        setEmployeeNameForPrint(employeeWeaverValue.label)
                         e.preventDefault();
 
                         fetchLadger()
                       }}
-              
+
                     >
                       Search <i className="fa fa-search pl-3 pr-2"></i>
                     </button>
@@ -367,7 +288,7 @@ const WeaverLadger = () => {
               {/* </div> */}
               <WeaverLadgerReciept ref={componentRef} LadgerData={LadgerData}
                 grandTotal={grandTotal} selectValidation={selectValidation}
-                dateFrom={dateFrom}  dateTo={dateTo} employeeNameForPrint={employeeNameForPrint}  
+                dateFrom={dateFrom} dateTo={dateTo} employeeNameForPrint={employeeNameForPrint}
               />
               {/* </div> */}
             </div>
