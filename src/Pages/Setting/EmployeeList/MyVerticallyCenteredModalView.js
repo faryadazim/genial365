@@ -1,93 +1,10 @@
 import { Modal, Button } from "react-bootstrap";
 import Creatable from "react-select/creatable";
-import Select from "react-select";
-import { endPoint } from "../../../config/Config";
+import Select from "react-select"; 
 import { useState } from "react";
 import { preventMinus } from "../../../config/oreventMinus";
-const customStyles = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "#d9e4e8",
-    borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
-const customStylesDanger = {
-  // control: base => ({
-  //   ...base,
-  //   // This line disable the blue border
-
-  // })
-  control: (provided, state, base) => ({
-    ...provided,
-    background: "#fff",
-    borderColor: "red",
-    borderRadius: "none",
-    minHeight: "30px",
-    height: "30px",
-    // boxShadow: state.isFocused ? null : null,
-    ...base,
-    boxShadow: "none",
-  }),
-  option: (provided, state) => ({
-    ...provided,
-    borderBottom: "1px  #003a4d",
-    color: state.isSelected ? "#f79c74" : "#003a4d",
-    background: "#fff",
-  }),
-  valueContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-    padding: "0 6px",
-    // background: '#fff',
-  }),
-
-  input: (provided, state) => ({
-    ...provided,
-    margin: "0px",
-  }),
-  indicatorSeparator: (state) => ({
-    display: "none",
-  }),
-  indicatorsContainer: (provided, state) => ({
-    ...provided,
-    height: "30px",
-  }),
-};
+import { customStyles } from "../../../config/react-select-style";
+ 
 const customStylesBorderRemove = {
   // control: base => ({
   //   ...base,
