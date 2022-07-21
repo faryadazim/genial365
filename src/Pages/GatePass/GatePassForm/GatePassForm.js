@@ -456,7 +456,7 @@ const GatePassForm = () => {
         className={`container-fluid page-title-bar ${showNavMenu == false ? "right_col-margin-remove" : ""
           }   `}
       >
-        <span>&nbsp; Salary Report</span>
+        <span>&nbsp; Gate Pass Form</span>
       </div>
 
       <div

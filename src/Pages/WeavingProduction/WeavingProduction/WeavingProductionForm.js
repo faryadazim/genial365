@@ -1104,8 +1104,8 @@ const WeavingProductionForm = () => {
         setborderQualityValue(data.borderQualityLabelId) //
         setBorderSizeValue(data.borderSizeLabelId)   //
 
-
-
+console.log(data , "data for editing");
+setGrayProductStatus("Activate")
         setrollDetail({
           rollNo: data.roll_no,
           date: data.production_date.slice(0, 10),
@@ -1129,8 +1129,7 @@ const WeavingProductionForm = () => {
         // setProductStatus()
         setShiftTotalState(data.shiftData.map((eachShift, i) => {
 
-
-
+ 
           return {
             shiftName: eachShift.shift_name,
             weaverName: eachShift.weaver_EmployeeDNameId.value,
@@ -1146,7 +1145,11 @@ const WeavingProductionForm = () => {
             }
 
             ),
-            nativing: eachShift.natting_EmployeeNameId.value,
+
+            
+
+            // {label: 'waqas', value: 84}
+             nativing:eachShift.natting_EmployeeNameId===null? {label: 'waqas', value: 84}:eachShift.natting_EmployeeNameId.value,
 
 
             shiftSelectorValue: { label: eachShift.shift_name, value: eachShift.shift_name },
