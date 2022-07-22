@@ -109,7 +109,7 @@ const ColorConfig = () => {
                             }   `}
                     >
                         <span>&nbsp; Color Management</span>
-                    </div>
+                    </div> 
                     <div
                         role="main"
                         className={`right_col  h-100  ${showNavMenu === false ? "right_col-margin-remove" : " "

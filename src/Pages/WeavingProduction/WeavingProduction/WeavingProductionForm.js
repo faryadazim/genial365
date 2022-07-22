@@ -1123,8 +1123,7 @@ setGrayProductStatus("Activate")
           jacquard: data.loomLabelId.loomJacquard,
           drawBox: data.loomLabelId.loomDrawBox,
           NumOfPieceOneBorder: data.piece_in_one_border,
-          grayProductId: data.grayProduct_id
-
+          grayProductId: data.grayProduct_id 
         });
         // setProductStatus()
         setShiftTotalState(data.shiftData.map((eachShift, i) => {

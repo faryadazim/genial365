@@ -85,12 +85,21 @@ const Login = ({ setisLogin, isLogin, fetchNavigation , setShowMainLoader  }) =>
                       })
                         .then((result) => {
                           result.json().then((response) => {
+                            console.log(response , "after login");
                             if (result.status === 200) {
                               // localStorage.setItem(  
                               localStorage.setItem(
                                 "access_token",
                                 JSON.stringify(response)
                               );
+                              localStorage.setItem(
+                                "access_token",
+                                JSON.stringify(response)
+                              );
+                              localStorage.setItem(
+                                "loginId",
+                                JSON.stringify(response.userName)
+                              ); 
                               setisLogin(true)
                               // fetchNavigation(response.access_token);
 
